@@ -31,12 +31,16 @@ By definition, the covariance function is symmetric. Furthermore, it is positive
 Suppose that $K(\cdot,\cdot)$ is a valid covariance function defined on $\mathcal{D}\times\mathcal{D}$.
 
 **Definition** (Stationarity). A covariance function $K$ is called stationary if $\forall s_1,s_2\in\mathcal{D}$, $K(s_1,s_2)$ only depends on $s_1-s_2$. That is, there exists some $K_1:\mathcal{D}-\mathcal{D}\to\mathbb{R}$ such that
+
 $$K(s_1,s_2) = K_1(s_1-s_2)\ \ \forall s_1,s_2\in\mathcal{D}.$$
+
 A stationary covariance function is invariant to translation.
 
 **Definition** (Isotropy). A covariance function $K$ is called isotropic if $\forall s_1,s_2\in\mathcal{D}$, $K(s_1,s_2)$ only depends on $\Vert s_1-s_2\Vert$, where $\Vert\cdot\Vert$ denotes $L_2$-norm. That is, there exists some $K_2:\mathbb{R}^*\to\mathbb{R}$ such that
+
 $$K(s_1,s_2) = K_2(\Vert s_1-s_2\Vert)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 
 **Definition** (Dot product). A covariance function $K$ has rotational invariance if $\forall s_1,s_2\in\mathcal{D}$, $K(s_1,s_2)$ only depends on their dot product $s_1\cdot s_2$. That is, there exists some $K_3:\mathbb{R}\to\mathbb{R}$ such that
+
 $$K(s_1,s_2) = K_3(s_1\cdot s_2)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 
