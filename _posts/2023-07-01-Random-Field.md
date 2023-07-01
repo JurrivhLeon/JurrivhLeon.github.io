@@ -109,8 +109,13 @@ $$c_0 := \lim_{h\to 0}\gamma(h).$$
 
 It can be caused by random noise or measurement errors, and is shown graphically in the variogram plot as a discontinuity at the origin of the function.
 
-<img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/blob/main/figs/nugget.png' width='600'/>
+![avatar](https://github.com/JurrivhLeon/JurrivhLeon.github.io/blob/main/figs/nugget.png)
 
 ### Empirical Variogram
 
+Suppose that we have observations $z(s_1),\cdots,z(s_n)$, an empirical semivariogram is given by
+
+$$\hat{\gamma}(h) = \frac{1}{2\vert\mathcal{N}(h)\vert}\sum_{(i,j)\in\mathcal{N}(h)}\left\lbrace z(s_i) - z(s_j)\right\rbrace^2,$$
+
+where $\mathcal{N}(h)$ is a set of observation pairs whose distance is close to $h$.
 
