@@ -47,11 +47,9 @@ $$K(s_1,s_2) = K_3(s_1\cdot s_2)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 ## Staionarity and Isotropy of Random Field
 **Definition.** Given a probability space $(\Omega, \mathcal{F},\mathbb{P})$. A random field $Z(\cdot)$ is called stationary (isotropic) if it satisfies the following 3 conditions:
 
-  (I) $Z(\cdot)$ has constant mean, that is, $\mu_Z$ is a constant; 
-
- (II) $Z(\cdot)$ has finite 2nd moment, that is, $Z(\cdot)\subseteq L_2(\Omega)$;
-
-(III) $Z(\cdot)$ has stationary (isotropic) covariance function.
++ $Z(\cdot)$ has constant mean, that is, $\mu_Z$ is a constant; 
++ $Z(\cdot)$ has finite 2nd moment, that is, $Z(\cdot)\subseteq L_2(\Omega)$;
++ $Z(\cdot)$ has stationary (isotropic) covariance function.
 
 A random field $Z'(\cdot)$ is called anisotropic if it is not isotropic.
 
