@@ -109,6 +109,8 @@ $$c_0 := \lim_{h\to 0}\gamma(h).$$
 
 It can be caused by random noise or measurement errors, and is shown graphically in the variogram plot as a discontinuity at the origin of the function.
 
+<img src='../figs/nugget.png' width='600'/>
+
 ### Empirical Variogram
 
 
