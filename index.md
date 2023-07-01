@@ -1,5 +1,3 @@
-Here you can say lots of fun things about your site.
+## Welcome to my blog site!
 
-Maybe say a some things about yourself.
-
-Or maybe what you plan to blog about.
+I am an undergraduate student studying at School of Data Science, Fudan University. My research interests include on statistics and reinforcement learning. I plan to share some topics I have been learning on this website.
