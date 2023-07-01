@@ -44,3 +44,71 @@ $$K(s_1,s_2) = K_2(\Vert s_1-s_2\Vert)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 
 $$K(s_1,s_2) = K_3(s_1\cdot s_2)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 
+## Staionarity and Isotropy of Random Field
+**Definition.** Given a probability space $(\Omega, \mathcal{F},\mathbb{P})$. A random field $Z(\cdot)$ is called stationary (isotropic) if it satisfies the following 3 conditions:
+
+  (I) $Z(\cdot)$ has constant mean, that is, $\mu_Z$ is a constant; 
+
+ (II) $Z(\cdot)$ has finite 2nd moment, that is, $Z(\cdot)\subseteq L_2(\Omega)$;
+
+(III) $Z(\cdot)$ has stationary (isotropic) covariance function.
+
+A random field $Z'(\cdot)$ is called anisotropic if it is not isotropic.
+
+**Definition** (Geometric anisotropy). A random field $Z(\cdot)$ is called geometrically isotropic if it is isotropic after a linear transformation, i.e. there exists a non-singular matrix $V\in\mathbb{R}^{d\times d}$ such that $Z': s \mapsto Z(Vs)$ is isotropic.
+
+## Variogram
+
+**Definition.** Given a random field $Z(\cdot)$ defined on $\mathcal{D}\subseteq\mathbb{R}^d$, the variogram of $Z(\cdot)$ is defined as the variance of the difference between field values at two locations:
+
+$$2\gamma(s_1,s_2) := \mathrm{Var}\lbrace Z(s_1) - Z(s_2)\rbrace,$$
+
+where $\gamma$ is called the semivariogram. 
+
+A stationary variogram and semivariogram can be represented as a function of the difference $h=s_1-s_2$ between locations only:
+
+$$2\gamma(h) := \mathrm{Var}\lbrace Z(s + h) - Z(s)\rbrace.$$
+
+In the case of stationary random field, we have
+
+$$2\gamma(h) = 2K_Z(0) - 2K_Z(h),$$
+
+where $K_Z$ is the covariance function of stationary field $Z(\cdot)$. Hence, a stationary random field has a stationary variogram.
+
+Analogously, an isotropic variogram and semivariogram can be represented as a function of the distance $\Vert h\Vert = \Vert s_1-s_2\Vert$ between locations only:
+
+$$2\gamma(\Vert h\Vert) := \mathrm{Var}\lbrace Z(s + h) - Z(s)\rbrace.$$
+
+In general, a variogram gives a description of the spatial continuity of our data.
+
+### Properties
+**Property 1.**  The semivariogram is nonnegative and symmetric, that is, $\gamma(s_1,s_2)=\gamma(s_2,s_1) \geq 0\ \forall s_1,s_2\in\mathcal{D}$.
+
+**Property 2.**  The (isotropic) semivariogram at distance 0 is always 0, since $Z(s) - Z(s) \equiv 0$.
+
+**Property 3.**  A function $\gamma$ is a semivariogram if and only if it is a conditionally negative definite function, i.e. for all weights $w_1,\cdots,w_n$ subjected to $w_1+\cdots + w_n = 0$ and locations $s_1,\cdots,s_n \in\mathcal{D}$, it holds
+
+$$\sum_{i=1}^n\sum_{j=1}^n w_iw_j\gamma(s_i,s_j) \leq 0.$$
+
+**Proof.** Consider a random vector $\mathbf{Z} = \left(Z(s_1),\cdots,Z(s_n)\right)^\top$ with mean $\mu=\mathbb{E}\mathbf{Z}$ and covariance matrix $\mathbf{K}=\lbrace K(s_i,s_j)\rbrace_{i,j=1}^n$. Define the semivariogram matrix of $\mathbf{Z}$ to be $\Gamma = \lbrace\gamma(s_i,s_j)\rbrace_{i,j=1}^n$. By definition,
+
+$$\Gamma = \frac{1}{2}\mathrm{vdiag}(\mathbf{K})\mathbf{1}_n^\top + \frac{1}{2}\mathbf{1}_n\mathrm{vdiag}(\mathbf{K})^\top  - \mathbf{K}$$
+
+where $\mathrm{vdiag}(\mathbf{K}) = (\mathbf{K}_{11},\cdots,\mathbf{K} _{nn})^\top$ and $\mathbf{1}_n$ is an $n$-dimensional all-one vector. All diagonal entries of $\Gamma$ are zero.
+
+Hence for any $\mathbf{w}\in\mathbb{R}^n$ such that $\mathbf{1}^n\mathbf{w}=0$,
+
+$$\mathbf{w}^\top\Gamma\mathbf{w} = -\mathbf{w}^\top\mathbf{Kw} \leq 0,$$
+
+which implies that $\gamma$ is negative definite.
+
+### Nugget Effect
+**Definition** The nugget effect is the variation of the process at a finer scale than the smallest distance measured:
+
+$$c_0 := \lim_{h\to 0}\gamma(h).$$
+
+It can be caused by random noise or measurement errors, and is shown graphically in the variogram plot as a discontinuity at the origin of the function.
+
+### Empirical Variogram
+
+
