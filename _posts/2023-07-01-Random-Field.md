@@ -28,9 +28,9 @@ $$K_Z(s_1,s_2) := \mathrm{Cov}\left(Z(s_1),Z(s_2)\right) = \mathbb{E}\left[\left
 By definition, the covariance function is symmetric. Furthermore, it is positive definite, i.e., $\forall n\in\mathbb{N}^*,\ \forall s_1,\cdots,s_n\in\mathcal{D}$, the Gram matrix defined by $\mathbf{K} = \lbrace K_Z(s_i,s_j)\rbrace_{i,j=1}^n$ is positive semidefinite.
 
 ### Properties of Covariance Function
-Suppose that $K(\cdot,\cdot)$ is a valid covariance function defined on $\mathcal{D}\times\mathcal{D}$.
+Suppose that $K(\cdot,\cdot)$ is a valid covariance function defined on $\mathcal{D}\times\mathcal{D}$, where $\mathcal{D}\subseteq\mathbb{R}^d$.
 
-**Definition** (Stationarity). A covariance function $K$ is called stationary if $\forall s_1,s_2\in\mathcal{D}$, $K(s_1,s_2)$ only depends on $s_1-s_2$. That is, there exists some $K_1:\mathcal{D}-\mathcal{D}\to\mathbb{R}$ such that
+**Definition** (Stationarity). A covariance function $K$ is called stationary if $\forall s_1,s_2\in\mathcal{D}$, $K(s_1,s_2)$ only depends on $s_1-s_2$. That is, there exists some $K_1:\mathbb{R}^d\to\mathbb{R}$ such that
 
 $$K(s_1,s_2) = K_1(s_1-s_2)\ \ \forall s_1,s_2\in\mathcal{D}.$$
 
