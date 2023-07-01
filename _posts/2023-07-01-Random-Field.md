@@ -103,7 +103,7 @@ $$\mathbf{w}^\top\Gamma\mathbf{w} = -\mathbf{w}^\top\mathbf{Kw} \leq 0,$$
 which implies that $\gamma$ is negative definite.
 
 ### Nugget Effect
-**Definition** The nugget effect is the variation of the process at a finer scale than the smallest distance measured:
+**Definition.** The nugget effect is the variation of the process at a finer scale than the smallest distance measured:
 
 $$c_0 := \lim_{h\to 0}\gamma(h).$$
 
