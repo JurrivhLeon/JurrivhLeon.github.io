@@ -1,10 +1,10 @@
 # Spatial Statistics: Random Field
 ## Definition and Properties
-**Definition.** Given a probability space $(\Omega, \mathcal{F},\mathbb{P})$, a random field is a family or collection of random variables indexed by elements in a topological space $\mathcal{T}$. That is, a random field $Z(\cdot)$ is a collection
+**Definition.** Given a probability space $(\Omega, \mathcal{F},\mathbb{P})$, a random field is a family or collection of random variables indexed by elements in a topological space $\mathcal{T}$. That is, a random field $Z(\cdot)$ is a collection of random variables
 
-$$\left\lbrace Z(s): s\in\mathcal{T}\right\rbrace,$$
+$$\left\lbrace Z(s): \Omega\to\mathbb{R} \,\vert\, s\in\mathcal{T}\right\rbrace,$$
 
-where each $Z(s)$ is a random variable.
+where each $Z(s)$ is a random variable indexed by $s$.
 
 Some examples are shown below.
 
