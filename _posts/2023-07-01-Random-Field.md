@@ -4,7 +4,7 @@
 
 $$\left\lbrace Z(s): \Omega\to\mathbb{R} \ \vert\ s\in\mathcal{T}\right\rbrace,$$
 
-where each $Z(s)$ is a random variable indexed by $s$.
+where each $Z(s)$ is a random variable indexed by $s$. 
 
 Some examples are shown below.
 
