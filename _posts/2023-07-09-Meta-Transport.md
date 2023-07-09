@@ -34,7 +34,7 @@ and
   $$p^{*}_{\mathscr{M}_1}(y\vert\mathrm{do}(x)) \neq p^{*}_{\mathscr{M}_2}(y\vert\mathrm{do}(x)).$$
 </p>
 
-The proof is straightforward. Let $\mathcal{I}=\bigcup_{i\in[n]} I^{(i)}$ and $\mathcal{P}=\bigcup_{i\in[n]} p^{(i)}.$ The collection of all interventional distributions $p^{(i)}(V\backslash W\vert\mathrm{do}(W))\in I^i,\ \forall W\subseteq V.$ Then the last inequality rules out the existence of a function from $\langle\mathcal{I},\mathcal{P},p^{* }\rangle$ to $p^{* }(y|\mathrm{do}(x)).$
+The proof is straightforward. Let $\mathcal{I}=\bigcup_{i\in[n]} I^{(i)}$ and $\mathcal{P}=\bigcup_{i\in[n]} p^{(i)}.$ The collection of all interventional distributions $p^{(i)}(V\backslash W\vert\mathrm{do}(W))\in I^i,\ \forall W\subseteq V.$ Then the last inequality rules out the existence of a function from $\langle\mathcal{I},\mathcal{P},p^{* }\rangle$ to $p^{* }(y\vert\mathrm{do}(x)).$
 
 ## Characterizing $µ$-Transportable Relations
 Tian and Pearl (2002) introduced the concept of confounded components (or C-components, for short) to represent the clusters of variables connected through bidirected arcs, which stand for unobserved confoundings. An illustrative example is given below.
