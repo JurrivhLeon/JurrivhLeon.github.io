@@ -40,3 +40,5 @@ Let $W(a,z)$ and $Y(a,z)$ denote the corresponding counterfactuals with respect 
 5. Overlap: $\left\vert\frac{\pi(a\vert x)}{f(a\vert x,u)}\right\vert < \infty, \forall a\in\mathcal{A},x\in\mathcal{X},u\in\mathcal{U}$.
 
 For brevity, we use $O:=(Z,X,W,A,Y)$ to denote the observable variables, since $U$ is unobserved. In general, our observations contains $n$ independent and identically distributed realizations of $O.$
+
+## Bridge Functions
