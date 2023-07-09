@@ -37,5 +37,41 @@ and
 The proof is straightforward. Let $\mathcal{I}=\bigcup_{i\in[n]} I^{(i)}$ and $\mathcal{P}=\bigcup_{i\in[n]} p^{(i)}.$ The collection of all interventional distributions $p^{(i)}(V\backslash W\vert\mathrm{do}(W))\in I^i,\ \forall W\subseteq V.$ Then the last inequality rules out the existence of a function from $\langle\mathcal{I},\mathcal{P},p^{* }\rangle$ to $p^{* }(y|\mathrm{do}(x)).$
 
 ## Characterizing $µ$-Transportable Relations
-Tian and Pearl (2002) introduced the concept of confounded components (or C-components, for short) to represent the clusters of variables connected through bidirected arcs, which stand for unobserved confoundings. 
+Tian and Pearl (2002) introduced the concept of confounded components (or C-components, for short) to represent the clusters of variables connected through bidirected arcs, which stand for unobserved confoundings. An illustrative example is given below.
 
+<div align=center>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/causalDAGa.png' width='648.9'/> 
+</div>
+
+The left causal DAG includes unobserved variables $U_0,U_1,U_2$ as its nodes. We modified it as the right causal DAG so that it contains only observed variables as its nodes. In this DAG, the $C$-components are $\lbrace W_0,X,Y,Z\rbrace$ and $\lbrace W_1\rbrace.$ Note that any causal DAG $\mathcal{G}$ can be uniquely partitioned to an irreducible set $\mathcal{C}(\mathcal{G})$ of C-components.
+
+**Definition 4** (Selection confounded component, sC-component). Let $\mathcal{D}$ be a selection diagram with variable set $V$ and the set of selection nodes $S.$ If a subset of the bidirected arcs in $\mathcal{D}$ forms a spanning tree over $V$, then $\mathcal{D}$ is a sC-component.
+
+The existence of sC-components does not prevent $\mu$-transportability. Recall the example given in the previous blog:
+
+<div align=center>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/causalDAG9.png' width='648.9'/> 
+</div>
+
+both graphs are sC-components, but $p^{* }(y\vert\mathrm{do}(x))$ is $\mu$-transportable.
+
+**Definition 5** (sC-tree). Let $\mathcal{D}$ be a selection diagram such that, all observable nodes have at most one child, and there is a node $Y$, which is a descendent of all nodes, and there is a selection node pointing to $Y$. Then $\mathcal{D}$ is called a $Y$-rooted sC-tree.
+
+**Definition 6** (sC-forest). Let $\mathcal{D}$ be a selection diagram, where $Y$ is the maximal root set. Then $\mathcal{D}$ is a $Y$-rooted sC-forest if $\mathcal{D}$ is a sC-component, all observable nodes have at most one child, and there is a selection node pointing to some node of $\mathcal{D}$ (Not necessarily in $Y$).
+
+**Definition 7** ($\mu s$-hedge). Let $X,Y$ be two disjoint sets of variables in domains $\Pi$ and $\pi^{* }$ characterized by $\mathscr{D}.$ Let $F,F'$ be $R$-rooted sC-forests such that
+<p>
+$$F\cap X\neq \emptyset,\ F'\cap X=\emptyset,\ F'\subseteq F,\ R\subset An(Y)_{\mathcal{G}_{\overline{X}}}$$ 
+</p>
+
+in every $\mathcal{D}_i\in\mathscr{D}.$ Then $F$ and $F'$ form a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x))$ in $\mathscr{D}.$
+
+An oversimplified sample is given below.
+
+<div align=center>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/causalDAGb.png' width='648.9'/> 
+</div>
+
+In this example, $Y$-rooted sC-forests $F'=\lbrace Z,Y\rbrace$ and $F=\lbrace X,Z,Y\rbrace$ forms a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x)).$
+
+**Theorem 2.** Assume there exists a pair of sC-forests $F,F'$ that form a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x))$ in $\mathscr{D}.$ Then $p^{* }(y\vert\mathrm{do}(x))$ is not transportable from $\Pi$ to $\pi^{* }.$
