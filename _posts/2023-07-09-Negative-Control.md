@@ -12,8 +12,8 @@ Define the action space to be $\mathcal{A}$ which can be discrete or continuous.
 Some illustrative examples are given below.
 + (Counterfactual mean). Let $\mathcal{A}$ be discrete and finite with counting measure $\mu,$ and define $\pi(a|x)=\mathbb{1}{\lbrace a=a_0\rbrace}.$ Then the counterfactual mean can be derived as
   <p>$$\mathbb{E}[Y(a_0)] = \sum_{a\in\mathcal{A}}\mathbb{E}\left[Y(a)\mathbb{1}{\lbrace a=a_0\rbrace}\right] =: J_{a_0} $$</p>
-+ (Average treatment effect, ATE). Let $\mathcal{A}=\lbrace 0,1\rbrace.$ If we are interested in the effect of treatment $A=1$ compared with control $A=0,$ we can define $\pi(a|x)=2a-1,$ then we can obtain the average treatment effect $J=\mathbb{E}[Y(1) - Y(0)].$
-+ (Policy evaluation). If $\pi(a|x)$ is a density on $\mathcal{A}$ for each $x\in\mathcal{X}$ with respect to $\mu,$ then $J$ is the average outcome when we follow a policy that assigns an action drawn from $\pi(\cdot\vert X)$ to an individual with covariate $X.$
++ (Average treatment effect, ATE). Let $\mathcal{A}=\lbrace 0,1\rbrace.$ If we are interested in the effect of treatment $A=1$ compared with control $A=0,$ we can define $\pi(a\vert x)=2a-1,$ then we can obtain the average treatment effect $J=\mathbb{E}[Y(1) - Y(0)].$
++ (Policy evaluation). If $\pi(a\vert x)$ is a density on $\mathcal{A}$ for each $x\in\mathcal{X}$ with respect to $\mu,$ then $J$ is the average outcome when we follow a policy that assigns an action drawn from $\pi(\cdot\vert X)$ to an individual with covariate $X.$
 
 In real scenario, the observed covariates $X$ are not sufficient to account for confounding. Hence, assume there exist additional unmeasured confounders $U\in\mathcal{U}\subseteq\mathbb{R}^{p_u},$ so that
 
@@ -26,6 +26,7 @@ The negative control framework is proposed to handle the problem of unmeasured c
 
 The idea of negative control is borrowed from biomedical experiments. The negative actions $Z$ do not directly affect the outcome $Y$, and neither the negative actions $Z$ nor the primary action $A$ can affect the negative outcomes $W.$ Meanwhile, both $Z$ and $W$ are relevant to the unmeasured confounders, hence they can be viewed as proxies for $U$ to some degree. A typical causal DAG for this setting is shown below.
 
-
-
+<div align=center>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/negcontrol.png' width='320'/> 
+</div>
 
