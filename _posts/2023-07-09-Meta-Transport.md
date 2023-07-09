@@ -90,3 +90,5 @@ The algorithm **µsID** is proven to be sound and complete. Furthermore, one of 
 + Bareinboim, E. and J. Pearl (2013a). A general algorithm for deciding transportability of experimental results. *Journal of Causal Inference 1*, 107–34.
 + Bareinboim, E. and J. Pearl (2013b). Meta-transportability of causal effects: A formal approach. In *Proceedings of the 16th International Conference on Artificial Intelligence
   Statistics (AISTATS 2013)*.
++ Tian, J. and J. Pearl (2002). A general identification condition for causal effects. In *Proceedings of the 18th National Conference on Artificial Intelligence (AAAI 2002)*.
+
