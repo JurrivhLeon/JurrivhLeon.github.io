@@ -77,3 +77,16 @@ In this example, $Y$-rooted sC-forests $F'=\lbrace Z,Y\rbrace$ and $F=\lbrace X,
 A formal relationship between $\mu s$-hedges and $\mu$-transportability is stated below.
 
 **Theorem 2.** Assume there exists a pair of sC-forests $F,F'$ that form a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x))$ in $\mathscr{D}.$ Then $p^{* }(y\vert\mathrm{do}(x))$ is not transportable from $\Pi$ to $\pi^{* }.$
+
+## Complete Algorithm for Deciding $\mu$-Transportability of Joint Effects
+Bareinboim and Pearl (2013b) has constructed an algorithm named **µsID** to solve the general $\mu$-identifiability problem. The algorithm **µsID** simplifies and decomposes the inputted selection diagrams $\mathcal{D}$ (which is also a causal diagram over $\pi^*$ when we disregard the $S$-nodes), partitioning the original problem into smaller blocks until either the entire expression is $\mu$-transportable, or it runs into the problematic $\mu s$-hedge structure.
+
+The algorithm **µsID** is proven to be sound and complete. Furthermore, one of its corollary is given below.
+
+**Corollary 1.** $p^{* }(y\vert\mathrm{do}(x))$ is $\mu$-transportable from $\Pi$ to $\pi^{* }$ in $\mathscr{D}$ if and only if there exists no $\mu s$-hedge for $p^{* }(y'\vert\mathrm{do}(x'))$ in $\mathscr{D}$ for any $X'\subseteq X$ and $Y'\subseteq Y.$
+
+
+## References
++ Bareinboim, E. and J. Pearl (2013a). A general algorithm for deciding transportability of experimental results. *Journal of Causal Inference 1*, 107–34.
++ Bareinboim, E. and J. Pearl (2013b). Meta-transportability of causal effects: A formal approach. In *Proceedings of the 16th International Conference on Artificial Intelligence
+  Statistics (AISTATS 2013)*.
