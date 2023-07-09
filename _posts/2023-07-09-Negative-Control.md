@@ -31,4 +31,12 @@ The idea of negative control is borrowed from biomedical experiments. The negati
 </div>
 
 Let $W(a,z)$ and $Y(a,z)$ denote the corresponding counterfactuals with respect to $(a,z)\in\mathcal{A}\times\mathcal{Z},$ then we can formalize the negative control assumptions as follows.
+
 **Assumption 1** (Negative controls).
+1. Consistency: $Y=Y(A,Z),\ W=W(A,Z)$;
+2. Negative control actions: $Y(a,z)=Y(a),\ \forall a\in\mathcal{A}$;
+3. Negative control outcomes: $W(a,z)=W,\ \forall a\in\mathcal{A},z\in\mathcal{Z}$;
+4. Latent unconfoundedness: $(A,Z)\perp(Y(a),W)\ \vert\ U,X,\ \forall a\in\mathcal{A}$;
+5. Overlap: $\left\vert\frac{\pi(a\vert x)}{f(a\vert x,u)}\right\vert < \infty, \forall a\in\mathcal{A},x\in\mathcal{X},u\in\mathcal{U}$.
+
+For brevity, we use $O:=(Z,X,W,A,Y)$ to denote the observable variables, since $U$ is unobserved. In general, our observations contains $n$ independent and identically distributed realizations of $O.$
