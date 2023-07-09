@@ -66,12 +66,14 @@ $$F\cap X\neq \emptyset,\ F'\cap X=\emptyset,\ F'\subseteq F,\ R\subset An(Y)_{\
 
 in every $\mathcal{D}_i\in\mathscr{D}.$ Then $F$ and $F'$ form a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x))$ in $\mathscr{D}.$
 
-An oversimplified sample is given below.
+An oversimplified sample is presented below.
 
 <div align=center>
    <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/causalDAGb.png' width='648.9'/> 
 </div>
 
 In this example, $Y$-rooted sC-forests $F'=\lbrace Z,Y\rbrace$ and $F=\lbrace X,Z,Y\rbrace$ forms a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x)).$
+
+A formal relationship between $\mu s$-hedges and $\mu$-transportability is stated below.
 
 **Theorem 2.** Assume there exists a pair of sC-forests $F,F'$ that form a $\mu s$-hedge for $p^{* }(y\vert\mathrm{do}(x))$ in $\mathscr{D}.$ Then $p^{* }(y\vert\mathrm{do}(x))$ is not transportable from $\Pi$ to $\pi^{* }.$
