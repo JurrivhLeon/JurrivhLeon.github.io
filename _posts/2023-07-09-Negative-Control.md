@@ -30,3 +30,5 @@ The idea of negative control is borrowed from biomedical experiments. The negati
    <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/negcontrol.png' width='320'/> 
 </div>
 
+Let $W(a,z)$ and $Y(a,z)$ denote the corresponding counterfactuals with respect to $(a,z)\in\mathcal{A}\times\mathcal{Z},$ then we can formalize the negative control assumptions as follows.
+**Assumption 1** (Negative controls).
