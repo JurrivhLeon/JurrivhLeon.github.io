@@ -18,18 +18,18 @@ Some illustrative examples are given below.
 
 In real scenario, the observed covariates $X$ are not sufficient to account for confounding. Hence, assume there exist additional unmeasured confounders $U\in\mathcal{U}\subseteq\mathbb{R}^{p_u},$ so that
 
-$$Y(a)\not\perp A\ \vert\ X,\ \text{but}\ Y(a)\perp A\ \vert\ X,U\ \ \forall a\in\mathcal{A}.$$
+$$Y(a)\not\perp A\ \vert\ X,\ \text{but}\ Y(a)\perp A\ \vert\ U,X\ \ \forall a\in\mathcal{A}.$$
 
 We could easily identify $J$ by adjusting for both $X$ and $U$ if they were observed.
 
 ### Identification of GACE under NUCA
 In ideal setting, no unobserved confounding assumption is admitted, i.e. both $X$ and $U$ were observed. We suggest three commonly-used estimators below.
-+ (Inverse probability weighting, IPW). Define the generalized propensity score $f(a\vert x,u)$ as the conditional density of the distribution $A\ \vert\ U, X$ relative to the base measure $\mu.$ 
-  <p>$$\phi_\mathrm{IPW}(y,a,u,x;f) = \frac{\pi(a|x)}{f(a|x,u)}y. $$</p>
-+ (Regression adjustment). To account for confoundings, covariates $X$ and $U$ can be included in a regression model. We define the regression function as $k_0$ and assume that it is correct, i.e. $k_0(a,u,x)=\mathbb{E}[Y|A=a,U=u,X=x].$ The regression-based estimator is obtained by taking the expectation of
++ (Inverse probability weighting, IPW). Define the generalized propensity score $f(a\vert u,x)$ as the conditional density of the distribution $A\ \vert\ U, X$ relative to the base measure $\mu.$ 
+  <p>$$\phi_\mathrm{IPW}(y,a,u,x;f) = \frac{\pi(a|x)}{f(a|u,x)}y. $$</p>
++ (Regression adjustment). To account for confoundings, covariates $X$ and $U$ can be included in a regression model. We define the regression function as $k_0$ and assume that it is correct, i.e. $k_0(a,u,x)=\mathbb{E}[Y\vert A=a,U=u,X=x].$ The regression-based estimator is obtained by taking the expectation of
   <p>$$\phi_\mathrm{REG}(y,a,u,x;k_0) = \int k_0(a',u,x)\pi(a'|x)\mathrm{d}\mu(a').$$</p>
 + (Doubly robust estimation) Based on the generalized propensity score $f$ and regression function $k_0,$ the dobly robust estimator is obtained by taking the expectation of
-  <p>$$\phi_\mathrm{DR}(y,a,u,x;k_0,f) = \frac{\pi(a|x)}{f(a|x,u)}\left(y - k_0(a,u,x)\right) + \int k_0(a',u,x)\pi(a'|x)\mathrm{d}\mu(a'). $$</p>
+  <p>$$\phi_\mathrm{DR}(y,a,u,x;k_0,f) = \frac{\pi(a|x)}{f(a|u,x)}\left(y - k_0(a,u,x)\right) + \int k_0(a',u,x)\pi(a'|x)\mathrm{d}\mu(a'). $$</p>
 
 **Lemma 1.** If $Y(a)\perp A\ \vert\ U,X$ and $\vert\pi(A\vert X)/f(A\vert X,U)\vert < \infty,$ then
 <p>$$J = \mathbb{E}\phi_\mathrm{IPW}(Y,A,U,X;f) = \mathbb{E}\phi_\mathrm{REG}(Y,A,U,X;k_0) = \mathbb{E}\phi_\mathrm{DR}(Y,A,U,X;k_0,f).$$</p>
@@ -37,6 +37,7 @@ In ideal setting, no unobserved confounding assumption is admitted, i.e. both $X
 However, since $U$ are unobserved, we may resort to some alternative methods with extra data or stronger assumptions.
 
 ## Negative Control
+### Framework
 The negative control framework is proposed to handle the problem of unmeasured confounding. Two additional types of observed variables are introduced in this framework: negative control actions $Z\in\mathcal{Z}\subseteq \mathbb{R}^{p_z}$ and negative control outcomes $W\in\mathcal{W}\subseteq\mathbb{R}^{p_u}.$
 
 The idea of negative control is borrowed from biomedical experiments. The negative actions $Z$ do not directly affect the outcome $Y$, and neither the negative actions $Z$ nor the primary action $A$ can affect the negative outcomes $W.$ Meanwhile, both $Z$ and $W$ are relevant to the unmeasured confounders, hence they can be viewed as proxies for $U$ to some degree. A typical causal DAG for this setting is shown below.
@@ -56,4 +57,40 @@ Let $W(a,z)$ and $Y(a,z)$ denote the corresponding counterfactuals with respect 
 
 For brevity, we use $O:=(Z,X,W,A,Y)$ to denote the observable variables, since $U$ is unobserved. In general, our observations contains $n$ independent and identically distributed realizations of $O.$
 
-## Bridge Functions
+### Bridge Functions
+We inherit the notations from the NUCA setting, i.e. $f(a\vert u,x)$ is the generalized propensity score and $k_0(a,u,x)=\mathbb{E}[Y\vert A=a,U=u,X=x]$ the regression function. When $U$ is unobserved, neither $f$ nor $k_0$ are estimable. In the negative control framework, two types of bridge functions are proposed for compensation.
+
+**Definition 2** (Bridge functions). An outcome bridge function is $h_0 ∈\in L_2(W, A, X)$ with
+<p>$$\mathbb{E}[h_0(W,A,X)|A,U,X] = k_0(A,U,X).$$</p>
+
+An action bridge function is $q_0$ with $\pi q_0\in L_2(Z,A,X)$ and
+<p>$$\mathbb{E}[\pi(A|X)q_0(Z,A,X)|A,U,X] = \frac{\pi(A|X)}{f(A|U,X)}.$$</p>
+
+These bridge functions are not necessarily unique, and we define the classes of bridge functions as follows:
+<p>
+  $$\begin{align}
+  \mathcal{H}_0 &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|A,U,X] = 0\rbrace, \\
+  \mathcal{Q}_0 &= \left\lbrace q:\ \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right]\right\rbrace.
+  \end{align}$$
+</p>
+
+### Identification of GACE
+With correctly specified bridge functions, the identification of GACE becomes possible. We define an integral operator $\mathcal{T}:L_2(W,A,X)\to L_2(W,X)$ as
+
+$$(\mathcal{T}h)(w,x) = \int h(w,a,x)\pi(a|x)\mathrm{d}\mu(a).$$
+
+Then analogous to the NUCA case, we define the corresponding estimators below:
+<p>
+  $$\begin{align}
+  \tilde{\phi}_\mathrm{IPW}(O;q_0) &= \pi(A|X)q_0(Z,A,X)Y,\\
+  \tilde{\phi}_\mathrm{REG}(O;h_0) &= (\mathcal{T}h_0)(W,X),\\
+  \tilde{\phi}_\mathrm{DR}(O;h_0,q_0) &=  \pi(A|X)q_0(Z,A,X)(Y - h_0(W,A,X)) + (\mathcal{T}h_0)(W,X).
+  \end{align}$$
+</p>
+
+**Lemma 2.** Suppose that Assumption 1 holds. For any $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0,$
+<p>
+  $$J = \mathbb{E}\tilde{\phi}_\mathrm{IPW}(O;q_0) = \mathbb{E}\tilde{\phi}_\mathrm{REG}(O;h_0) = \mathbb{E}\tilde{\phi}_\mathrm{DR}(O;h_0,q_0).$$
+</p>
+
+**Proof.** 
