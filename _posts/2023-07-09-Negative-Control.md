@@ -102,9 +102,9 @@ For the IPW estimator,
   &= \frac{\pi(A|X)}{f(A|U,X)}\mathbb{E}[Y\,|\, A,U,X],\\
   \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\,U,X] &= \int \frac{\pi(a|X)}{f(a|U,X)}\mathbb{E}\left[Y(a)\,|\, U,X\right]f(a|U,X)\mathrm{d}\mu(a)\\
   &= \int \pi(a|X)\,\mathbb{E}\left[Y(a)\,|\, U,X\right]\mathrm{d}\mu(a)\\
-  &= \mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\,|\, U,X\right],\\
+  &= \mathbb{E}\left[\left.\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right|\, U,X\right],\\
   \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)] &= \mathbb{E}\left[\mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\,U,X]\right]\\
-  &= \mathbb{E}\left[\mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\,|\, U,X\right]\right]\\
+  &= \mathbb{E}\left[\mathbb{E}\left[\left.\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right|U,X\right]\right]\\
   &= \mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right] = J.
   \end{align}$$
 </p>
