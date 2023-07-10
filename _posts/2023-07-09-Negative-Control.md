@@ -93,9 +93,53 @@ Then analogous to the NUCA case, we define the corresponding estimators below:
   $$J = \mathbb{E}\tilde{\phi}_\mathrm{IPW}(O;q_0) = \mathbb{E}\tilde{\phi}_\mathrm{REG}(O;h_0) = \mathbb{E}\tilde{\phi}_\mathrm{DR}(O;h_0,q_0).$$
 </p>
 
-**Proof.** By assumption 1, we have the latent unconfoundedness $Z \perp(Y,W)\ \vert\ A,U,X.$ Then we have
+**Proof.** By assumption 1, we have the latent unconfoundedness $Z \perp(Y,W)\ \vert\ A,U,X.$
+
+For the IPW estimator,
 <p>
   $$\begin{align}
-  \mathbb{E}[\pi(A|X)q_0(Z,A,X)Y\,|\, A,U,X] = \mathbb{E}[\pi(A|X)q_0(Z,A,X)\,|\, A,U,X]\,\mathbb{E}[Y\,|\, A,U,X]
+  \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\, A,U,X] &= \mathbb{E}[\pi(A|X)q_0(Z,A,X)\,|\, A,U,X]\,\mathbb{E}[Y\,|\, A,U,X]\\
+  &= \frac{\pi(A|X)}{f(A|U,X)}\mathbb{E}[Y\,|\, A,U,X],\\
+  \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\,U,X] &= \int \frac{\pi(a|X)}{f(a|U,X)}\mathbb{E}\left[Y(a)\,|\, U,X\right]f(a|U,X)\mathrm{d}\mu(a)\\
+  &= \int \pi(a|X)\,\mathbb{E}\left[Y(a)\,|\, U,X\right]\mathrm{d}\mu(a)\\
+  &= \mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\,|\, U,X\right],\\
+  \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)] &= \mathbb{E}\left[\mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\,U,X]\right]\\
+  &= \mathbb{E}\left[\mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\,|\, U,X\right]\right]\\
+  &= \mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right] = J.
   \end{align}$$
+</p>
+
+For the regression-based estimator,
+<p>
+  $$\begin{align}
+  \mathbb{E}[\tilde{\phi}_\mathrm{REG}(O;h_0)\,|\, U,X] &= \mathbb{E}\left[\left.\int h(W,a,X)\pi(a|X)\mathrm{d}\mu(a)\right| U,X\right]\\
+  &= \int k_0(a,U,X)\pi(a|X)\mathrm{d}\mu(a)\\
+  &= \mathbb{E}\left[\left.\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right|U,X\right],\\
+  \mathbb{E}[\tilde{\phi}_\mathrm{REG}(O;h_0)] &= \mathbb{E}\left[\mathbb{E}[\tilde{\phi}_\mathrm{REG}(O;h_0)\,|\, U,X]\right]\\
+  &= \mathbb{E}\left[\mathbb{E}\left[\left.\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right|U,X\right]\right]\\
+  &= \mathbb{E}\left[\int Y(a)\pi(a|X)\mathrm{d}\mu(a)\right] = J.
+  \end{align}$$
+</p>
+
+For the doubly robust estimator, note that $Z\perp W\ \vert\ A,U,X,$ we have
+<p>
+  $$\begin{align}
+  \mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)\,|\, A,U,X] &= \frac{\pi(A|X)}{f(A,U,X)}\mathbb{E}[Y\,|\, A,U,X]\\
+  &= \mathbb{E}[\pi(A|X)q_0(Z,A,X)\,|\,A,U,X]\\
+  &\quad\; \times\mathbb{E}[h_0(W,A,X)\,|\,A,U,X]\\
+  &= \mathbb{E}[\pi(A|X)q_0(Z,A,X)h_0(W,A,X)\,|\,A,U,X],
+  \end{align}$$
+</p>
+
+then
+<p>
+  $$\mathbb{E}[\tilde{\phi}_\mathrm{IPW}(O;q_0)] - \mathbb{E}[\pi(A|X)q_0(Z,A,X)h_0(W,A,X)] = 0,$$
+</p>
+<p>
+  $$\mathbb{E}[\tilde{\phi}_\mathrm{DR}(O;h_0,q_0)] = \mathbb{E}[\tilde{\phi}_\mathrm{REG}(O;h_0)].$$
+</p>
+
+Therefore,
+<p>
+  $$J = \mathbb{E}\tilde{\phi}_\mathrm{IPW}(O;q_0) = \mathbb{E}\tilde{\phi}_\mathrm{REG}(O;h_0) = \mathbb{E}\tilde{\phi}_\mathrm{DR}(O;h_0,q_0).$$
 </p>
