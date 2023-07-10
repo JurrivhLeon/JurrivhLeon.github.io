@@ -60,17 +60,19 @@ For brevity, we use $O:=(Z,X,W,A,Y)$ to denote the observable variables, since $
 ### Bridge Functions
 We inherit the notations from the NUCA setting, i.e. $f(a\vert u,x)$ is the generalized propensity score and $k_0(a,u,x)=\mathbb{E}[Y\vert A=a,U=u,X=x]$ the regression function. When $U$ is unobserved, neither $f$ nor $k_0$ are estimable. In the negative control framework, two types of bridge functions are proposed for compensation.
 
-**Definition 2** (Bridge functions). An outcome bridge function is $h_0 ∈\in L_2(W, A, X)$ with
-<p>$$\mathbb{E}[h_0(W,A,X)|A,U,X] = k_0(A,U,X).$$</p>
+**Definition 2** (Bridge functions). $h_0$ is called a outcome bridge function, if $h_0 \in L_2(W, A, X)$ and
+<p>$$\mathbb{E}[h_0(W,A,X)|A,U,X] = k_0(A,U,X)$$</p>
+holds almost surely.
 
-An action bridge function is $q_0$ with $\pi q_0\in L_2(Z,A,X)$ and
-<p>$$\mathbb{E}[\pi(A|X)q_0(Z,A,X)|A,U,X] = \frac{\pi(A|X)}{f(A|U,X)}.$$</p>
+$q_0$ is called an action bridge function, if $\pi q_0\in L_2(Z,A,X)$ and
+<p>$$\mathbb{E}[\pi(A|X)q_0(Z,A,X)|A,U,X] = \frac{\pi(A|X)}{f(A|U,X)}$$</p>
+holds almost surely.
 
 These bridge functions are not necessarily unique, and we define the classes of bridge functions as follows:
 <p>
   $$\begin{align}
-  \mathcal{H}_0 &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|A,U,X] = 0\rbrace, \\
-  \mathcal{Q}_0 &= \left\lbrace q:\ \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right] = 0\right\rbrace.
+  \mathcal{H}_0 &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|A,U,X] = 0\ \ \mathrm{a.s.}\rbrace, \\
+  \mathcal{Q}_0 &= \left\lbrace q:\ \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right] = 0\ \ \mathrm{a.s.}\right\rbrace.
   \end{align}$$
 </p>
 
@@ -152,8 +154,8 @@ In the previous discussion, we find that the GACE is identifiable under the nega
 **Lemma 3.** Under assumption 1, any $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ satisfy
 <p>
   $$\begin{align}
-  \mathbb{E}[Y - h_0(W,A,X)|Z,A,X] = 0, \\
-  \mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0.
+  \mathbb{E}[Y - h_0(W,A,X)|Z,A,X] = 0\ \ \mathrm{a.s.}, \\
+  \mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0\ \ \mathrm{a.s.}.
   \end{align}$$
 </p>
 
@@ -194,8 +196,8 @@ where the third equality follows from $W\perp Z\ \vert\ A,U,X.$
 **Remark.** From Lemma 3, we can define classes of observed bridge functions as follows:
 <p>
   $$\begin{align}
-  \mathcal{H}_0^{\text{obs}} &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|Z,A,X] = 0\rbrace,\\
-  \mathcal{Q}_0^{\text{obs}} &= \left\lbrace q: \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0\right\rbrace.
+  \mathcal{H}_0^{\text{obs}} &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|Z,A,X] = 0\ \ \mathrm{a.s.}\rbrace,\\
+  \mathcal{Q}_0^{\text{obs}} &= \left\lbrace q: \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0\ \ \mathrm{a.s.}\right\rbrace.
   \end{align}$$
 </p>
 
