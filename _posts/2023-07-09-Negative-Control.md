@@ -93,4 +93,9 @@ Then analogous to the NUCA case, we define the corresponding estimators below:
   $$J = \mathbb{E}\tilde{\phi}_\mathrm{IPW}(O;q_0) = \mathbb{E}\tilde{\phi}_\mathrm{REG}(O;h_0) = \mathbb{E}\tilde{\phi}_\mathrm{DR}(O;h_0,q_0).$$
 </p>
 
-**Proof.** 
+**Proof.** By assumption 1, we have the latent unconfoundedness $Z \perp(Y,W)\ \vert\ A,U,X.$ Then we have
+<p>
+  $$\begin{align}
+  \mathbb{E}[\pi(A|X)q_0(Z,A,X)Y\,|\, A,U,X] = \mathbb{E}[\pi(A|X)q_0(Z,A,X)\,|\, A,U,X]\,\mathbb{E}[Y\,|\, A,U,X]
+  \end{align}$$
+</p>
