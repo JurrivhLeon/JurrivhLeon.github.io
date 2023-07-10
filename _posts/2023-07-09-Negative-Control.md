@@ -4,6 +4,7 @@ In the following discussion, we are interested about the causal effect of an act
 
 Define the action space to be $\mathcal{A}$ which can be discrete or continuous. Correspoondingly, define a measure $\mu$ on $\mathcal{A}$, *e.g.* the counting measure if $\mathcal{A}$ is finite or Lebesgue measure if $\mathcal{A}$ is continuous. Let $Y(a)$ denote the real-valued counterfactual outcome that would be observed if the action was set to $a\in\mathcal{A}.$ Then the observed outcome $Y$ is consistent with the actual action $A$, i.e. $Y=Y(A).$ Furthermore, let $X\in\mathcal{X}\subseteq\mathbb{R}^d$ be a collection of observed covariates. 
 
+### Generalized Average Causal Effect
 **Definition 1** (Generalized average causal effect, GACE). Given a contrast function $\pi:\mathcal{A}\times\mathcal{X}\to\mathbb{R},$ the corresponding GACE is defined as
 <p>
   $$J := \mathbb{E}\left[\int_\mathcal{A}Y(a)\pi(a|X)\mathrm{d}\mu(a)\right]. \tag{1}$$
@@ -19,7 +20,21 @@ In real scenario, the observed covariates $X$ are not sufficient to account for 
 
 $$Y(a)\not\perp A\ \vert\ X,\ \text{but}\ Y(a)\perp A\ \vert\ X,U\ \ \forall a\in\mathcal{A}.$$
 
-We could easily identify $J$ by adjusting for both $X$ and $U$ if they were observed. However, since $U$ are unobserved, we may resort to some alternative methods with extra data or stronger assumptions.
+We could easily identify $J$ by adjusting for both $X$ and $U$ if they were observed.
+
+### Identification of GACE under NUCA
+In ideal setting, no unobserved confounding assumption is admitted, i.e. both $X$ and $U$ were observed. We suggest three commonly-used estimators below.
++ (Inverse probability weighting, IPW). Define the generalized propensity score $f(a\vert x,u)$ as the conditional density of the distribution $A\ \vert\ U, X$ relative to the base measure $\mu.$ 
+  <p>$$\phi_\mathrm{IPW}(y,a,u,x;f) = \frac{\pi(a|x)}{f(a|x,u)}y. $$</p>
++ (Regression adjustment). To account for confoundings, covariates $X$ and $U$ can be included in a regression model. We define the regression function as $k_0$ and assume that it is correct, i.e. $k_0(a,u,x)=\mathbb{E}[Y|A=a,U=u,X=x].$ The regression-based estimator is obtained by taking the expectation of
+  <p>$$\phi_\mathrm{REG}(y,a,u,x;k_0) = \int k_0(a',u,x)\pi(a'|x)\mathrm{d}\mu(a').$$</p>
++ (Doubly robust estimation) Based on the generalized propensity score $f$ and regression function $k_0,$ the dobly robust estimator is obtained by taking the expectation of
+  <p>$$\phi_\mathrm{DR}(y,a,u,x;k_0,f) = \frac{\pi(a|x)}{f(a|x,u)}\left(y - k_0(a,u,x)\right) + \int k_0(a',u,x)\pi(a'|x)\mathrm{d}\mu(a'). $$</p>
+
+**Lemma 1.** If $Y(a)\perp A\ \vert\ U,X$ and $\vert\pi(A\vert X)/f(A\vert X,U)\vert < \infty,$ then
+<p>$$J = \mathbb{E}\phi_\mathrm{IPW}(Y,A,U,X;f) = \mathbb{E}\phi_\mathrm{REG}(Y,A,U,X;k_0) = \mathbb{E}\phi_\mathrm{DR}(Y,A,U,X;k_0,f).$$</p>
+
+However, since $U$ are unobserved, we may resort to some alternative methods with extra data or stronger assumptions.
 
 ## Negative Control
 The negative control framework is proposed to handle the problem of unmeasured confounding. Two additional types of observed variables are introduced in this framework: negative control actions $Z\in\mathcal{Z}\subseteq \mathbb{R}^{p_z}$ and negative control outcomes $W\in\mathcal{W}\subseteq\mathbb{R}^{p_u}.$
