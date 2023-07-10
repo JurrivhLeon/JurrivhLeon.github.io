@@ -242,6 +242,8 @@ Then by definition we have $\mathcal{H}_0=\mathcal{H}_0^{\text{obs}}, \mathcal{Q
 
 **Remark.** If the completeness condition holds, we can ensure that the observed bridge functions learned from $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ are valid. Moreover, the existence of bridge functions are guaranteed with some additional regularity conditions, hence the bridge functions are learnable from observed data.
 
-
-
+## References
++ Wang Miao, Xu Shi, and Eric Tchetgen Tchetgen. A confounding bridge approach for double negative control inference on causal effects. *arXiv preprint arXiv:1808.04945*, 2018.
++ Yifan Cui, Hongming Pu, Xu Shi, Wang Miao, and Eric Tchetgen Tchetgen. Semiparametric proximal causal inference. *arXiv preprint arXiv:2011.08411*, 2020.
++ Nathan Kallus, Xiaojie Mao, Masatoshi Uehara. Causal Inference Under Unmeasured Confounding With Negative Controls: A Minimax Learning Approach. *arXiv preprint arXiv:2103.14029*, 2022.
 
