@@ -70,7 +70,7 @@ These bridge functions are not necessarily unique, and we define the classes of 
 <p>
   $$\begin{align}
   \mathcal{H}_0 &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|A,U,X] = 0\rbrace, \\
-  \mathcal{Q}_0 &= \left\lbrace q:\ \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right]\right\rbrace.
+  \mathcal{Q}_0 &= \left\lbrace q:\ \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right] = 0\right\rbrace.
   \end{align}$$
 </p>
 
@@ -143,3 +143,61 @@ Therefore,
 <p>
   $$J = \mathbb{E}\tilde{\phi}_\mathrm{IPW}(O;q_0) = \mathbb{E}\tilde{\phi}_\mathrm{REG}(O;h_0) = \mathbb{E}\tilde{\phi}_\mathrm{DR}(O;h_0,q_0).$$
 </p>
+
+**Remark.** The bridge functions $h_0$ and $q_0$ only depends on observed variables. Once we find appropriate bridge functions, we can apply Lemma 2 to estimate the GACE.
+
+## Learning Bridge Functions from Observations
+In the previous discussion, we find that the GACE is identifiable under the negative control framework even when there exists unobserved confounding. However, the definition of bridge functions $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ is dependent on unobserved variables $U.$ To handle this challenge, we need to find some method to learn bridge functions from observable data $O=(Z,X,W,A,Y).$ 
+
+**Lemma 3.** Under assumption 1, any $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ satisfy
+<p>
+  $$\begin{align}
+  \mathbb{E}[Y - h_0(W,A,X)|Z,A,X] = 0, \\
+  \mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0.
+  \end{align}$$
+</p>
+
+**Proof.** For the first equation, we have
+<p>
+  $$\begin{align}
+  & \mathbb{E}[Y - h_0(W,A,X)|Z,A,X]\\
+  &= \mathbb{E}[\mathbb{E}[Y - h_0(W,A,X)|Z,A,U,X]|Z,A,X]\\
+  &= \mathbb{E}[\mathbb{E}[Y - h_0(W,A,X)|A,U,X]|Z,A,X] = 0.
+  \end{align}$$
+</p>
+
+The first equality holds by the law of total expectation, and the second by the conditional independence $Z \perp(Y,W)\ \vert\ A,U,X$ from latent unconfoundedness in Assumption 1. The third equality follows from the definition of $\mathcal{H}_0.$
+
+For the second equation, we first deal with the generalized propensity score $f(W,X)$:
+<p>
+  $$\begin{align}
+  \mathbb{E}\left[\left.\frac{1}{f(A|U,X)}\right|W,A,X\right] &= \int\frac{f(u|W,A,X)}{f(A|u,X)}\mathrm{d}\mu(u)\\
+  &= \int \frac{f(u,W,A,X)}{f(A|u,X)f(W,A,X)}\mathrm{d}\mu(u)\\
+  &= \int \frac{f(A|u,W,X)f(u,W,X)}{f(A|u,X)f(W,A,X)}\mathrm{d}\mu(u)\\
+  &= \int \frac{f(u,W,X)}{f(W,A,X)}\mathrm{d}\mu(u)\\
+  &= \frac{1}{f(A|W,X)},
+  \end{align}$$
+</p>
+
+the fourth equality follows from $W\perp A\ \vert\ U,X.$ Then,
+<p>
+  $$\begin{align}
+  &\mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right] \\
+  &= \mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|U,X)})|W,A,X\right] \\
+  &= \mathbb{E}\left[\left.\mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|U,X)})|W,A,U,X\right]\right|W,A,X\right]\\
+  &= \mathbb{E}\left[\left.\mathbb{E}\left[\pi(A|X)(q_0(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right]\right|W,A,X\right] = 0.
+  \end{align}$$
+</p>
+
+where the third equality follows from $W\perp Z\ \vert\ A,U,X.$
+
+**Remark.** From Lemma 3, we can define classes of observed bridge functions as follows:
+<p>
+  $$\begin{align}
+  \mathcal{H}_0^{\text{obs}} &= \lbrace h\in L_2(W,A,X):\ \mathbb{E}[Y - h(W,A,X)|Z,A,X] = 0\rbrace,\\
+  \mathcal{Q}_0^{\text{obs}} &= \left\lbrace q: \pi q\in L_2(Z,A,X),\ \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]=0\right\rbrace.
+  \end{align}$$
+</p>
+
+Since $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ are independent from $U,$ they are learnable from observed data. Moreover, we have $\mathcal{H}_0\subseteq\mathcal{H}_0^{\text{obs}},\ \mathcal{Q}_0\subseteq\mathcal{Q}_0^{\text{obs}}.$
+
