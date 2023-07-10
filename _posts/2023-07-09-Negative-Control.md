@@ -203,3 +203,10 @@ where the third equality follows from $W\perp Z\ \vert\ A,U,X.$
 
 Since $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ are independent from $U,$ they are learnable from observed data. Moreover, we have $\mathcal{H}_0\subseteq\mathcal{H}_0^{\text{obs}},\ \mathcal{Q}_0\subseteq\mathcal{Q}_0^{\text{obs}}.$
 
+### Completeness Condition
+The construction of $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ make it possible to learn bridge functions from observed data. However, since the true bridge function classes $\mathcal{H}_0, \mathcal{Q}_0$ are subsets of the observed bridge function classes, we cannot ensure that that functions learned from $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ are valid bridge functions. Moreover, the existence of bridge functions, i.e. $\mathcal{H}_0\neq\emptyset,\mathcal{Q}_0\neq\emptyset,$ is not guaranteed. The completeness condition is proposed to deal with these problems.
+
+**Assumption 2** (Completeness). For any $g\in L_2(U,A,X),$ $\mathbb{E}[g(U,A,X)\vert Z,A,X] = 0$ almost surely if and only if $g(U,A,X)=0$ almost surely, and $\mathbb{E}[g(U,A,X)\vert W,A,X] = 0$ almost surely if and only if $g(U,A,X)=0$ almost surely.
+
+The completeness condition mean that the negative controls $Z, W$ have sufficient variability relative to the variability of the unobserved confounders $U.$
+
