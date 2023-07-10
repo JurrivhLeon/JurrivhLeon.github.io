@@ -151,7 +151,7 @@ Therefore,
 ## Learning Bridge Functions from Observations
 In the previous discussion, we find that the GACE is identifiable under the negative control framework even when there exists unobserved confounding. However, the definition of bridge functions $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ is dependent on unobserved variables $U.$ To handle this challenge, we need to find some method to learn bridge functions from observable data $O=(Z,X,W,A,Y).$ 
 
-**Lemma 3.** Under assumption 1, any $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ satisfy
+**Lemma 3.** Under Assumption 1, any $h_0\in\mathcal{H}_0$ and $q_0\in\mathcal{Q}_0$ satisfy
 <p>
   $$\begin{align}
   \mathbb{E}[Y - h_0(W,A,X)|Z,A,X] = 0\ \ \mathrm{a.s.}, \\
@@ -209,4 +209,39 @@ The construction of $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ make
 **Assumption 2** (Completeness). For any $g\in L_2(U,A,X),$ $\mathbb{E}[g(U,A,X)\vert Z,A,X] = 0$ almost surely if and only if $g(U,A,X)=0$ almost surely, and $\mathbb{E}[g(U,A,X)\vert W,A,X] = 0$ almost surely if and only if $g(U,A,X)=0$ almost surely.
 
 The completeness condition mean that the negative controls $Z, W$ have sufficient variability relative to the variability of the unobserved confounders $U.$
+
+**Theorem 1.** Under Assumptions 1 and 2, we have $\mathcal{H}_0=\mathcal{H}_0^{\text{obs}}, \mathcal{Q}_0=\mathcal{Q}_0^{\text{obs}}.$
+
+**Proof.** In Lemma 3, we have proven that under Assumption 1, for any $h\in L_2(W,A,X)$ and $q$ with $\pi q\in L_2(Z,A,X)$
+<p>
+  $$\begin{align}
+  & \mathbb{E}[Y - h(W,A,X)|Z,A,X] = \mathbb{E}[\mathbb{E}[Y - h(W,A,X)|A,U,X]|Z,A,X],\\
+  & \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right]\\
+  &= \mathbb{E}\left[\left.\mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right]\right|W,A,X\right].
+  \end{align}$$
+</p>
+
+By Assumption 2, we have
+<p>
+  $$\begin{align}
+  &\mathbb{E}[Y - h(W,A,X)|Z,A,X] = 0 \Leftrightarrow \mathbb{E}[Y - h(W,A,X)|A,U,X] = 0,\\
+  &\mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right] = 0\\
+  &\Leftrightarrow \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|U,X)})|A,U,X\right] = 0.
+  \end{align}$$
+</p>
+
+Then by definition we have $\mathcal{H}_0=\mathcal{H}_0^{\text{obs}}, \mathcal{Q}_0=\mathcal{Q}_0^{\text{obs}}.$
+
+**Theorem 2.** Under Assumptions 1, 2 and some regularity conditions, $\mathcal{H}_0\neq\emptyset,\mathcal{Q}_0\neq\emptyset.$ That is, the solutions of following equations exist:
+<p>
+  $$\begin{align}
+  \mathbb{E}[Y - h(W,A,X)|Z,A,X] &= 0,\\
+  \mathbb{E}\left[\pi(A|X)(q(Z,A,X) - \frac{1}{f(A|W,X)})|W,A,X\right] &= 0.
+  \end{align}$$
+</p>
+
+**Remark.** If the completeness condition holds, we can ensure that the observed bridge functions learned from $\mathcal{H}_0^{\text{obs}},\mathcal{Q}_0^{\text{obs}}$ are valid. Moreover, the existence of bridge functions are guaranteed with some additional regularity conditions, hence the bridge functions are learnable from observed data.
+
+
+
 
