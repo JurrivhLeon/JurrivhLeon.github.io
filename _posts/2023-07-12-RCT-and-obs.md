@@ -49,8 +49,10 @@ Conditional mean outcome: for $x\in\mathbb{R}^p$,\ a\in\lbrace 0,1\rbrace,$
   $$\mu_a(x)=\mathbb{E}[Y(a)|X=x],\ \mu_{a,1}(x)=\mathbb{E}[Y(a)|X=x].$$
 </p>
 
-Finally, denote by $\alpha(x)$ the conditional odds that an individual with covariates $x$ is in the RCT or in the observational sample:
+Denote by $\alpha(x)$ the conditional odds that an individual with covariates $x$ is in the RCT or in the observational sample:
 <p>
   $$\alpha(x) = \frac{\mathbb{P}(i\in\mathcal{R}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)}{\mathbb{P}(i\in\mathcal{O}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)} = \frac{\pi_\mathcal{R}(x)}{\pi_\mathcal{O}(x)} = \frac{\pi_\mathcal{R}(x)}{1-\pi_\mathcal{R}(x)}.$$
 </p>
+
+Finally, we denote the distribution of covariates in observational data as $f.$ Correspondingly, the distribution of covariates in RCT can be obtaine by $f(\cdot\vert S=1).$
 
