@@ -24,9 +24,19 @@ Now we are ready to establish the most general transportability.
 
 **Remark.** For any $1\leq i\leq n,$ $\emptyset\in\mathcal{Z}^{(i)},$ hence $\mathcal{Z}^{(i)}$ contains not only the post-interventional distributions but also the observational distribution $p^{(i)}$ on $\pi_i$.
 
-**Lemma 1.** A causal effect $p_\mathbf{x}(\mathbf{y}\vert\mathbf{w})$ is g-transportable with respect to $\langle\mathcal{G},\mathscr{Z}\rangle,$ if the expression $p_\mathbf{x}(\mathbf{y}\vert\mathbf{w},\mathbf{S})$ is reducible, using the rules of do-calculus, to an expression in which every term of the form $p_\mathbf{z}(\mathbf{b}\vert \mathbf{c},\mathbf{S}')$ satisfies $\mathbf{Z}\in\mathcal{Z}^{(i)}$ for some domains $\pi_i\in\Pi,$ and
+### Characterizing g-transportability
+**Lemma 1.** A causal effect $p^{* }_ \mathbf{x}(\mathbf{y}\vert\mathbf{w})$ is g-transportable with respect to $\langle\mathcal{G},\mathscr{Z}\rangle,$ if the expression $p_ \mathbf{x}(\mathbf{y}\vert\mathbf{w},\mathbf{S})$ is reducible, using the rules of do-calculus, to an expression in which every term of the form $p_\mathbf{z}(\mathbf{b}\vert \mathbf{c},\mathbf{S}')$ satisfies $\mathbf{Z}\in\mathcal{Z}^{(i)}$ for some domains $\pi_i\in\Pi,$ and
 <p>
   $$(\mathbf{S}\backslash\mathbf{S}')\perp\mathbf{B}|\mathbf{C}\ \text{in}\ {\mathcal{G}^\boldsymbol{\Delta}\backslash\mathbf{Z}},\ \mathbf{S}^{(i)}\cap\mathbf{S}'= \emptyset.$$
 </p>
 
-**Proof.**
+**Proof.** The condition implies that $p_\mathbf{x}(\mathbf{y}\vert\mathbf{w},\mathbf{S}=0)$ can be written as an expression of $p_\mathbf{z}(\mathbf{b}\vert\mathbf{c},\mathbf{S}'=0).$ Furthermore, for any $\pi_i$ such that $\mathbf{Z}\in\mathcal{Z}^{(i)},$ we have $\mathbf{S}^{(i)}\subseteq\mathbf{S}\backslash\mathbf{S'}.$ By rule 1 of do-calculus,
+<p>
+  $$p_\mathbf{z}(\mathbf{b}\vert\mathbf{c},\mathbf{S}=0) = p_\mathbf{z}(\mathbf{b}\vert\mathbf{c},\mathbf{S}^{(i)}=i,\mathbf{S}^{(-i)}=0)=p^{(i)}_\mathbf{z}(\mathbf{b}\vert\mathbf{c}).$$
+</p>
+
+Since $p_\mathbf{z}^{(i)}\in\mathcal{P}^{\Pi}_ \mathscr{Z},$ the expression is uniquely computable.
+
+**Lemma 2.** A causal effect $p^{* }_ \mathbf{x}(\mathbf{y}\vert\mathbf{w})$ is not g-transportable with respect to $\langle\mathcal{G},\mathscr{Z}\rangle,$ if there exist two SCMs compatible with $\mathcal{G}^\boldsymbol{\Delta}$ where both agree on $\mathcal{P}^\Pi_\mathscr{Z}$ while disagreeing on $p^{* }_ \mathbf{x}(\mathbf{y}\vert\mathbf{w}).$
+
+This is a g-version of Lemma 1 in [Meta-transportability](https://jurrivhleon.github.io/2023/07/09/Meta-Transport.html).
