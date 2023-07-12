@@ -61,7 +61,7 @@ We first suggest two assumptions to generalize the findings in RCT to a target p
 
 **Assumption 1** (Transportability of CATE). $\tau(x)=\tau_1(x)$ for all $x.$
 
-**Assumption 2** (Positivity of trial participation) There exists some constant $c>0$ such that $\mathbb{P}(S=1|X) \geq c$ almost surely.
+**Assumption 2** (Positivity of trial participation) There exists some constant $c>0$ such that $\mathbb{P}(S=1\vert X) \geq c$ almost surely.
 
 ### Inverse probability of sampling weighting (IPSW)
 Under Assumption 1 and 2, and exchangeability holds for RCT, the ATE can be identified:
@@ -119,8 +119,8 @@ Replace the expectation operator with an empirical one, we obtain the IPSW estim
 It is shown that, under some regularity conditions, the IPSW estimator is consistent.
 
 **Assumption 3** (Consistency of conditional odds $\alpha$) Denoting by $\frac{n}{m\hat{\alpha}_{n,m}(x)}$ the estimated weights, the following conditions hold:
-+ $\sup_{x\in\mathcal{X}}\left\vert \frac{n}{m\hat{\alpha}_ {n,m}(x)} - \frac{f_ X(x)}{f_ {X|S=1}(x)}\right\vert = \epsilon_{n,m} \overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
-+ For all $n,m$ large enough $\mathbb{E}[\epsilon^2_{n,m}]$ exists and $\mathbb{E}[\epsilon^2_{n,m}]\overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
++ $\sup_{x\in\mathcal{X}}\left\vert \frac{n}{m\hat{\alpha}_ {n,m}(x)} - \frac{f_ X(x)}{f_ {X\vert S=1}(x)}\right\vert = \epsilon_{n,m} \overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
++ For all $n,m$ large enough, $\mathbb{E}[\epsilon^2_{n,m}]$ exists and $\mathbb{E}[\epsilon^2_{n,m}]\overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
 + $Y$ is square integrable.
 
 **Theorem 1** (Consistency of IPSW estimator) Suppose consistency and exchangeability hold for RCT. Under assumptions 1, 2 and 3, $\hat{\tau}_ {\mathrm{IPSW},n,m}$ converges to $\tau$ in $L^1$ norm:
@@ -129,6 +129,7 @@ $$\hat{\tau}_{\mathrm{IPSW},n,m}\overset{L_1}{\to}\tau,\ n,m\to\infty.$$
 
 ### Plug-in g-formula
 If exchangeability holds for RCT and Assumption 1,2 holds, then ATE can be identified with another approach:
+
 $$\tau = \mathbb{E}[\mu_{1,1}(X) - \mu_{0,1}(X)] = \mathbb{E}[\tau_1(X)].$$
 
 Then, we can fit an estimator $\hat{\mu}_ {a,1}(\cdot)$ of $\mu_ {a,1}(\cdot)$ for $a=0,1,$ using the RCT data. Note that a correctly specified regression model consistently estimates the mean outcome:
