@@ -120,7 +120,8 @@ It is shown that, under some regularity conditions, the IPSW estimator is consis
 
 **Assumption 3** (Consistency of conditional odds $\alpha$) Denoting by $\frac{n}{m\hat{\alpha}_{n,m}(x)}$ the estimated weights, the following conditions hold:
 + $\sup_{x\in\mathcal{X}}\left\vert \frac{n}{m\hat{\alpha}_ {n,m}(x)} - \frac{f_ X(x)}{f_ {X\vert S=1}(x)}\right\vert = \epsilon_{n,m} \overset{\mathrm{a.s.}}{\to} 0$ when $n,m\to\infty.$
-+ For all $n,m$ large enough, $\mathbb{E}\left[\epsilon^2_{n,m}\right]$ exists and $\mathbb{E}[\epsilon^2_{n,m}]\overset{\mathrm{a.s.}}{\to} 0$ when $n,m\to\infty.$
++ For all $n,m$ large enough,
+  $\mathbb{E}\left[\epsilon^2_{n,m}\right]$ exists, and $\mathbb{E}\left[\epsilon^2_{n,m}\right]\overset{\mathrm{a.s.}}{\to} 0$ when $n,m\to\infty.$
 + $Y$ is square integrable.
 
 **Theorem 1** (Consistency of IPSW estimator) Suppose consistency and exchangeability hold for RCT. Under assumptions 1, 2 and 3, $\hat{\tau}_ {\mathrm{IPSW},n,m}$ converges to $\tau$ in $L^1$ norm:
