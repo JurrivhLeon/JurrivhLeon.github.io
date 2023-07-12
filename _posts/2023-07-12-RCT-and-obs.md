@@ -72,4 +72,41 @@ Under Assumption 1 and 2, and the exchangeability of RCT holds, the ATE can be i
   \end{align}$$
 </p>
 
-**Proof.**
+**Proof.** First, note that
+<p>
+  $$\begin{align}
+  \tau_1(x) &= \mathbb{E}[Y(1)|X=x,S=1] - \mathbb{E}[Y(0)|X=x,S=1]\\
+  &= \frac{\mathbb{E}[AY(1)|X=x,S=1]}{e_1(x)} - \frac{\mathbb{E}[(1-A)Y(0)|X=x,S=1]}{1-e_1(x)} \ \ \text{(Exchangeability)}\\
+  &= \frac{\mathbb{E}[AY|X=x,S=1]}{e_1(x)} - \frac{\mathbb{E}[(1-A)Y|X=x,S=1]}{1-e_1(x)} \ \ \text{(Consistency)}\\
+  &= \mathbb{E}\left[\left.\left(\frac{A}{e_1(X)} - \frac{1-A}{1-e_1(X)}\right)Y\right|X=x,S=1\right],
+  \end{align}$$
+</p>
+
+we have
+<p>
+  $$\begin{align}
+  \mathbb{E}\left[\left.\frac{n\tau_1(X)}{m\alpha(X)}\right|S=1\right] &= \mathbb{E}\left[\left.\mathbb{E}\left[\left.\frac{n}{m\alpha(X)}\left(\frac{A}{e_1(X)} - \frac{1-A}{1-e_1(X)}\right)Y\right|X,S=1\right]\right|S=1\right]\\
+  &= \mathbb{E}\left[\left.\left(\frac{A}{e_1(X)} - \frac{1-A}{1-e_1(X)}\right)Y\right|S=1\right],
+  \end{align}$$
+</p>
+
+which concludes the second equality.
+
+Furthermore,
+<p>
+  $$\begin{align}
+  \alpha(x) &= \frac{\mathbb{P}(i\in\mathcal{R}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)}{\mathbb{P}(i\in\mathcal{O}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)}\\
+  &= \frac{\mathbb{P}(i\in\mathcal{R})}{\mathbb{P}(i\in\mathcal{O})}\times\frac{\mathbb{P}(X_i=x|i\in\mathcal{R})}{\mathbb{P}(X_i=x|i\in\mathcal{O})}\\
+  &= \frac{n}{m}\frac{f_1(x)}{f(x)}.
+  \end{align}$$
+</p>
+
+then the first equality holds using the idea of importance sampling:
+<p>
+  $$\begin{align}
+  \tau = \int \tau(x)f(x)\mathrm{d}x &= \int \tau(x)\frac{f(x)}{f_1(x)}f_1(x)\mathrm{d}x\\
+  &= \int \tau_1(x)\frac{n}{m\alpha(x)}f_1(x)\mathrm{d}x = \mathbb{E}\left[\left.\frac{n}{m\alpha(X)}\tau_1(X)\right|S=1\right].
+  \end{align}$$
+</p>
+
+
