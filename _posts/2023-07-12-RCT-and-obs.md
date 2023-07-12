@@ -44,7 +44,7 @@ Propensity score: for $x\in\mathbb{R}^p$,
   $$e(x) = \mathbb{P}(A=1|X=x),\ e_1(x) = \mathbb{P}(A=1|X=x,S=1).$$
 </p>
 
-Conditional mean outcome: for $x\in\mathbb{R}^p$,\ a\in\lbrace 0,1\rbrace,$
+Conditional mean outcome: for $x\in\mathbb{R}^p,\ a\in\lbrace 0,1\rbrace,$
 <p>
   $$\mu_a(x)=\mathbb{E}[Y(a)|X=x],\ \mu_{a,1}(x)=\mathbb{E}[Y(a)|X=x].$$
 </p>
@@ -54,5 +54,22 @@ Denote by $\alpha(x)$ the conditional odds that an individual with covariates $x
   $$\alpha(x) = \frac{\mathbb{P}(i\in\mathcal{R}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)}{\mathbb{P}(i\in\mathcal{O}\ |\ \exists i\in\mathcal{R}\cup\mathcal{O},X_i=x)} = \frac{\pi_\mathcal{R}(x)}{\pi_\mathcal{O}(x)} = \frac{\pi_\mathcal{R}(x)}{1-\pi_\mathcal{R}(x)}.$$
 </p>
 
-Finally, we denote the distribution of covariates in observational data as $f.$ Correspondingly, the distribution of covariates in RCT can be obtaine by $f(\cdot\vert S=1).$
+Finally, we denote the distribution of covariates in observational data as $f.$ Correspondingly, the distribution of covariates in RCT can be obtaine by $f_1(\cdot)=f(\cdot\vert S=1).$
 
+## Observational Data with no Treatment and Outcome
+We first suggest two assumptions to generalize the findings in RCT to a target population.
+
+**Assumption 1** (Transportability of CATE). $\tau(x)=\tau_1(x)$ for all $x.$
+
+**Assumption 2** (Positivity of trial participation) There exists some constant $c>0$ such that $\mathbb{P}(S=1|X) \geq c$ almost surely.
+
+### Inverse probability of sampling weighting (IPSW)
+Under Assumption 1 and 2, and the exchangeability of RCT holds, the ATE can be identified:
+<p>
+  $$\begin{align}
+  \tau &= \mathbb{E}\left[\left.\frac{n}{m\alpha(X)}\tau_1(X)\right|S=1\right]\\
+  &= \mathbb{E}\left[\left.\frac{n}{m\alpha(X)}\left(\frac{A}{e_1(X)} - \frac{1-A}{1-e_1(X)}\right)Y\right|S=1\right].
+  \end{align}$$
+</p>
+
+**Proof.**
