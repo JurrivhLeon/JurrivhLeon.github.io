@@ -64,7 +64,7 @@ We first suggest two assumptions to generalize the findings in RCT to a target p
 **Assumption 2** (Positivity of trial participation) There exists some constant $c>0$ such that $\mathbb{P}(S=1|X) \geq c$ almost surely.
 
 ### Inverse probability of sampling weighting (IPSW)
-Under Assumption 1 and 2, and the exchangeability of RCT holds, the ATE can be identified:
+Under Assumption 1 and 2, and exchangeability holds for RCT, the ATE can be identified:
 <p>
   $$\begin{align}
   \tau &= \mathbb{E}\left[\left.\frac{n}{m\alpha(X)}\tau_1(X)\right|S=1\right]\\
@@ -109,4 +109,48 @@ then the first equality holds using the idea of importance sampling:
   \end{align}$$
 </p>
 
+Replace the expectation operator with an empirical one, we obtain the IPSW estimator:
 
+**Definition 1** (IPSW estimator) Let $\alpha_{n,m}$ be an estimate of the odds of the indicatrix of being in the RCT, the IPSW estimator is given by
+<p>
+  $$\hat{\tau}_{\mathrm{IPSW},n,m} = \frac{1}{n}\sum_{i=1}^n\frac{nY_i}{m\hat{\alpha}_{n,m}(X_i)}\left(\frac{A_i}{e_1(X_i)} - \frac{1-A_i}{1-e_1(X_i)}\right).$$
+</p>
+
+It is shown that, under some regularity conditions, the IPSW estimator is consistent.
+
+**Assumption 3** (Consistency of conditional odds $\alpha$) Denoting by $\frac{n}{m\hat{\alpha}_{n,m}(x)}$ the estimated weights, the following conditions hold:
++ $\sup_{x\in\mathcal{X}}\left\vert \frac{n}{m\hat{\alpha}_ {n,m}(x)} - \frac{f_ X(x)}{f_ {X|S=1}(x)}\right\vert = \epsilon_{n,m} \overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
++ For all $n,m$ large enough $\mathbb{E}[\epsilon^2_{n,m}]$ exists and $\mathbb{E}[\epsilon^2_{n,m}]\overset{\mathrm{a.s.}}{\to} 0$ whem $n,m\to\infty.$
++ $Y$ is square integrable.
+
+**Theorem 1** (Consistency of IPSW estimator) Suppose consistency and exchangeability hold for RCT. Under assumptions 1, 2 and 3, $\hat{\tau}_ {\mathrm{IPSW},n,m}$ converges to $\tau$ in $L^1$ norm:
+
+$$\hat{\tau}_{\mathrm{IPSW},n,m}\overset{L_1}{\to}\tau,\ n,m\to\infty.$$
+
+### Plug-in g-formula
+If exchangeability holds for RCT and Assumption 1,2 holds, then ATE can be identified with another approach:
+$$\tau = \mathbb{E}[\mu_{1,1}(X) - \mu_{0,1}(X)] = \mathbb{E}[\tau_1(X)].$$
+
+Then, we can fit an estimator $\hat{\mu}_ {a,1}(\cdot)$ of $\mu_ {a,1}(\cdot)$ for $a=0,1,$ using the RCT data. Note that a correctly specified regression model consistently estimates the mean outcome:
+<p>
+  $$\begin{align}
+  \mathbb{E}[Y(a)|X=x] &= \mathbb{E}[Y(a)|X=x,S=1] \ \ \text{(Mean exchangeability)}\\
+  &= \mathbb{E}[Y(a)|A=a, X=x,S=1]\ \ \text{(Exchangeability)}\\
+  &=  \mathbb{E}[Y|A=a, X=x,S=1].\ \ \text{(Consistency)}
+  \end{align}$$
+</p>
+
+Note that the assumption of mean exchangeability is stronger than Assumption 1. With an observational distribution of $X,$ plug-in the estimated (conditional) mean outcome to g-formula, we obtain
+
+<p>
+  $$\mathbb{E}[Y(a)] = \int\mathbb{E}[Y|A=a,X=x,S=1]f(x)\mathrm{d}x.$$
+</p>
+
+Take the empirical version, we obtain the plug-in g-formula estimator:
+
+**Definition 2** (Plug-in g-formula estimator / Outcome model-based estimator) Let $\hat{\mu}_ {a,1, n}$ be an estimator of $\mu_ {a,1}$ fitted using RCT data. The plug-in g-formula estimator is then defined as:
+<p>
+  $$\hat{\tau}_{\mathrm{G},m,n} = \frac{1}{m}\sum_{i=n+1}^{n+m} \left(\hat{\mu}_ {1,1,n}(X_i) - \hat{\mu}_ {0,1,n}(X_i)\right).$$
+</p>
+
+Analogous to the IPSW estimator, the plug-in g-formula estimator $\hat{\tau}_ {\mathrm{G},m,n}$ converges to $\tau$ in $L^1$ norm as $n,m\to\infty,$ provided some regularity conditions about the consistency and boundedness of $\hat{\mu}_ {a,n}.$
