@@ -78,7 +78,7 @@ With the theorem above, the necessary and sufficient condition for the g-transpo
 
 **Proof.** The sufficiency holds true since
 <p>
-  $$p^*_\mathbf{x}(\mathbf{y}|\mathbf{w}) = \frac{p^*_\mathbf{x}(\mathbf{y},\mathbf{w})}{\sum_{\mathbf{y}'}p^*_\mathbf{x}(\mathbf{y}',\mathbf{w})}.$$
+  $$p^*_\mathbf{x}(\mathbf{y}|\mathbf{w}) = \frac{p^*_\mathbf{x}(\mathbf{y},\mathbf{w})}{\sum_{\mathbf{y}'}p^*_\mathbf{x}(\mathbf{y}',\mathbf{w})}.\tag{1}$$
 </p>
 
 For the necessity, note that 
@@ -89,4 +89,13 @@ For the necessity, note that
 Then if $p^{* }_ \mathbf{x}(\mathbf{y},\mathbf{w})$ is not g-transportable, at least one of $p^{* }_ \mathbf{x}(\mathbf{w})$ and $p^{* }_ \mathbf{x}(\mathbf{y}\vert\mathbf{w}).$ By theorem 1, the non-g-transportability of $p^{* }_ \mathbf{x}(\mathbf{y}\vert\mathbf{w})$ always holds.
 
 ## Sound and Complete Algorithm
-Lee, Correa and Bareinboim (2020) has constructed an algorithm ^^gTR^^ to 
+Lee, Correa and Bareinboim (2020) have proposed an algorithm **gTR** for solving any g-transportability instance. The algorithm **gTR** first converts the input causal query to a conditionally minimal expression, then solve an unconditional causal effect via function **gTRu** and compute the conditional one through equation (1) in Theorem 2. Function **gTRu** breaks down the query to subqueries and solve them. It is shown that whenever **gTRu** fails to g-transport a given query, an s-thicket for the query is encountered.
+
+The algorithm µsID is proven to be sound and complete. Furthermore, the necessary and sufficient condition for the non-g-transportability of an unconditional causal effect can be derived:
+
+**Corollary 1.** A causal effect $p^{* }_\mathbf{x}(\mathbf{y})$ is not g-transportable with respect to $\langle\mathcal{G}^\boldsymbol{\Delta},\mathscr{Z}\rangle$ if and only if there exists an s-thicket $\mathcal{T}$ formed for it.
+
+## References
+
++ Shpitser, I., and J. Pearl, 2006. Identification of joint interventional distributions in recursive semi-Markovian causal models. In *Proceedings of The Twenty-First National Conference on Artificial Intelligence*, 1219–1226. AAAI Press.
++ Lee, S., J. D. Correa and E. Bareinboim, 2020. General Transportability – Synthesizing Observations and Experiments from Heterogeneous Domains. In *Proceedings of the AAAI Conference on Artificial Intelligence, 34(06)*, 10210-10217.
