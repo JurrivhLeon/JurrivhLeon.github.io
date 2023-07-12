@@ -154,3 +154,8 @@ Take the empirical version, we obtain the plug-in g-formula estimator:
 </p>
 
 Analogous to the IPSW estimator, the plug-in g-formula estimator $\hat{\tau}_ {\mathrm{G},m,n}$ converges to $\tau$ in $L^1$ norm as $n,m\to\infty,$ provided some regularity conditions about the consistency and boundedness of $\hat{\mu}_ {a,n}.$
+
+### Calibration weighting
+
+
+### Doubly-robust estimators
