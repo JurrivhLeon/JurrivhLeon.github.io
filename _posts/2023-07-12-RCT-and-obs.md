@@ -156,7 +156,36 @@ Take the empirical version, we obtain the plug-in g-formula estimator:
 
 Analogous to the IPSW estimator, the plug-in g-formula estimator $\hat{\tau}_ {\mathrm{G},m,n}$ converges to $\tau$ in $L^1$ norm as $n,m\to\infty,$ provided some regularity conditions about the consistency and boundedness of $\hat{\mu}_ {a,n}.$
 
+### Doubly-robust estimator
+The IPSW and outcome models can be combined to construct an Augmented IPSW (AIPSW) estimator:
+
+**Definition 3** (AIPSW estimator). Based on the estimated $\hat{\alpha}_ {n,m}(\cdot)$ and $\mu_ a(\cdot)\ (a=0,1)$ (See Definitions 1 and 2), the AIPSW is given by
+<p>
+  $$\begin{align}\hat{\tau}_{\mathrm{AIPSW},n,m} = \sum_{i=1}^n \frac{1}{m\hat{\alpha}_{n,m}(X_i)}\left(\frac{A_i(Y_i - \hat{\mu}_{1,1,n}(X_i))}{e_1(X_i)} - \frac{(1-A_i)(Y_i - \hat{\mu}_{0,1,n}(X_i))}{1-e_1(X_i)}\right)\\
+  + \frac{1}{m}\sum_{i=n+1}^{n+m} \left(\hat{\mu}_ {1,1,n}(X_i) - \hat{\mu}_ {0,1,n}(X_i)\right).
+  \end{align}$$
+</p>
+
+**Remark.** It can be shown that this estimator is doubly robust, i.e., consistent when either one of the two models for $\hat{\alpha}_ {n,m}(\cdot)$ and $\mu_ a(\cdot)\ (a=0,1)$ is correctly specified. Moreover, it can be shown that under some regularity conditions, $\hat{\tau}_ {\mathrm{AIPSW},n,m}$ converges towards $\tau$ in $L_1$ norm as $n,m\to\infty.$
+
 ### Calibration weighting
+Let $\mathbf{g}(X)$ be a vector of functions of $X$ to be calibrated. Then the weight $\omega_i$ of each individuals in the RCT sample can be solved via minimizing the negative entropy under the balancing constraint:
 
+**Definition 4** (Calibration weighting, CW) Given the calibration functions $\mathbf{g},$ we assign a weight $\omega_i$ to each individual $i$ in tbe RCT sample by solving the following optimization problem:
+<p>
+  $$\begin{align}
+  \min_{\omega_1,\cdots,\omega_n} \sum_{i=1}^n\omega_i\log\omega_i,\\
+  \text{subjected to}\ \ \omega_i\geq 0,\ i=1,\cdots,n,\\
+  \sum_{i=1}^n\omega_i=1,\ \sum_{i=1}^n\omega_i\mathbf{g}(X_i)=\frac{1}{m}\sum_{j=n+1}^{n+m}\mathbf{g}(X_j).
+  \end{align}$$
+</p>
 
-### Doubly-robust estimators
+Based on the calibration weights, the CW estimator is given by
+<p>
+  $$\hat{\tau}_{\mathrm{CW},n,m}=\sum_{i=1}^n \omega_i Y_i\left(\frac{A_i}{e_1(X_i)} - \frac{1 - A_i}{1 - e_1(X_i)}\right).$$
+</p>
+
+**Remark.**
++ Minimizing the negative entropy ensures that the empirical distribution of calibration weights is not too far away from the uniform distribution. The balancing constraint requires that the weighted mean of $\mathrm{g}$ in RCT sample is equal to the mean in the observational sample, as an estimator of $\mathbb{E}[g(X)].$
++ Analogous to the AIPSW estimator, an augmented calibration weighting (ACW) estimator can be constructed cby combining CW and plug-in g-formula.
+
