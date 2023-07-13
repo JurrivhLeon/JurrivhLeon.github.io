@@ -89,7 +89,7 @@ Then, we can introduce the following variable to mimic $Y(0):$
   $$H_{\psi_0} = Y-\tau_{\varphi_0}(X)A - (1-S)\lambda_{\phi_0}(X)(A-e(X)).$$
 </p>
 
-**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert X,S] = \mathbb{E}[Y|X,S].$
+**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert X,S] = \mathbb{E}[Y(0)|X,S].$
 
 
 ## References
