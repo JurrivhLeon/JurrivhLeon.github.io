@@ -39,6 +39,36 @@ note that $\hat{\tau}_m^\mathcal{O}(\cdot)$ is learned on the observational data
 
 Under some regularity conditions, the $\hat{\theta}_{n,m}$ estimated through least squares is consistent, and $\hat{\tau}(\cdot)$ is consistent on its target population.
 
+### Deconfounding: Model the confounding
+This idea comes from Yang et al. (2020). We first assume the mean exchangeability:
+
+**Assumption 1** (Mean exchangeability over trial participation) $\mathbb{E}[Y(a)\vert X=x,S=1] = \mathbb{E}[Y(a)\vert X=x]\ \forall x\in\mathcal{X},\ a\in\lbrace 0,1\rbrace.$
+
+We denote the CATE $\tau(\cdot)$ and confounding function by
+<p>
+  $$\begin{align}
+  \tau(x) &= \mathbb{E}[Y(1)-Y(0)|X=x],\\
+  \lambda(x) &= \mathbb{E}[Y(0)|A=1,X=x] - \mathbb{E}[Y(0)|A=0,X=x].
+  \end{align}$$
+</p>
+
+Then we can parameterize $\tau(\cdot)$ and $\lambda(\cdot)$:
+
+**Assumption 2** (Parametric tructural model). The heterogeneity of treatment effect and confounding functions are
+<p>$$\tau(x)=\tau_{\varphi_0}(x),\ \lambda(x)=\lambda_{\phi_0}(x),$$</p>
+
+where $\varphi\in\mathbb{R}^{p_1},\phi\in\mathbb{R}^{p_2}.$
+
+Note that
+<p>
+  $$\begin{align}
+  \mathbb{E}[Y-\tau(X)A|A,X] &= \mathbb{E}[Y(A)-A(Y(1)-Y(0))|A,X] = \mathbb{E}[Y(0)|A,X],\\
+  \mathbb{E}[Y(0)|A,X] - \mathbb{E}[Y(0)|X] &= \mathbb{E}[Y(0)|A,X] - e(X)\mathbb{E}[Y(0)|A=1,X] - (1-e(X))\mathbb{E}[Y(0)|A=0,X]\\
+  &= \left(A-e(X)\right)\left\lbrace\mathbb{E}[Y(0)|A=1,X]-\mathbb{E}[Y(0)|A=0,X]\right\rbrace\\
+  &= \lambda_{\phi_0}(X)\left(A-e(X)\right).
+  \end{align}$$
+</p>
+
 
 ## References
 + Colnet, B., Mayer, I., Chen, G., Dieng, A., Li, R., Varoquaux, G., Vert, J.P., Josse, J. and Yang, S. (2020). Causal inference methods for combining randomized trials and observational studies: a review. *arXiv preprint arXiv:2011.08047*.
