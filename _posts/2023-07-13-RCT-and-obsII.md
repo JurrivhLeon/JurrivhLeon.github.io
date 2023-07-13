@@ -29,10 +29,15 @@ Now, we use a reweighting approach to obtain the expression of $\tau$：
 
 Then we can learn $\theta$ through a least-squares approach on the RCT sample:
 <p>
-  $$\hat{\theta} = \underset{\theta\in\mathbb{R}^p}{\mathrm{argmin}}\sum_{i=1}^n\left(\tau_i^* - \tau_m^\mathcal{O}(X_i) - \theta^\top X_i\right)^2$$
+  $$\hat{\theta} = \underset{\theta\in\mathbb{R}^p}{\mathrm{argmin}}\sum_{i=1}^n\left(\tau_i^* - \hat{\tau}_m^\mathcal{O}(X_i) - \theta^\top X_i\right)^2$$
 </p>
 
-note that $\tau_m^\mathcal{O}(\cdot)$ is learned on the observational data.
+note that $\hat{\tau}_m^\mathcal{O}(\cdot)$ is learned on the observational data. Using the estimated $\hat{\theta},$ we can recover the causal effect:
+<p>
+  $$\hat{\tau}_{n,m}(x) = \hat{\tau}_m^\mathcal{O}(x) + \hat{\theta}_{n,m}^\top x.$$
+</p>
+
+Under some regularity conditions, the $\hat{\theta}_{n,m}$ estimated through least squares is consistent, and $\hat{\tau}(\cdot)$ is consistent on its target population.
 
 
 ## References
