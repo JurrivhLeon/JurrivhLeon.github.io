@@ -40,19 +40,21 @@ note that $\hat{\tau}_m^\mathcal{O}(\cdot)$ is learned on the observational data
 Under some regularity conditions, the $\hat{\theta}_{n,m}$ estimated through least squares is consistent, and $\hat{\tau}(\cdot)$ is consistent on its target population.
 
 ### Deconfounding: Model the confounding
-This idea comes from Yang et al. (2020). We first assume the mean exchangeability:
+This idea comes from Yang et al. (2020). Different from the previous discussion, we use $S=1$ to denote the RCT sample and $S=0$ the observational data.
 
-**Assumption 1** (Mean exchangeability over trial participation) $\mathbb{E}[Y(a)\vert X=x,S=1] = \mathbb{E}[Y(a)\vert X=x]\ \forall x\in\mathcal{X},\ a\in\lbrace 0,1\rbrace.$
+**Assumption 1** (Transportability and strong ignorability of trial treatment assignment). 
++ $\mathbb{E}[Y(1)-Y(0)\vert X,S=1] = \mathbb{E}[Y(1) - Y(0)\vert X,S=0] = \tau(X),$ and
++ $Y(a)\perp A\ \vert\ (X,S=1)\ \text{for}\ a\in\lbrace 0,1\rbrace,$ and $e(X,S)>0$ almost surely.
 
 We denote the CATE $\tau(\cdot)$ and confounding function by
 <p>
   $$\begin{align}
   \tau(x) &= \mathbb{E}[Y(1)-Y(0)|X=x],\\
-  \lambda(x) &= \mathbb{E}[Y(0)|A=1,X=x] - \mathbb{E}[Y(0)|A=0,X=x].
+  \lambda(x) &= \mathbb{E}[Y(0)|A=1,X=x,S=0] - \mathbb{E}[Y(0)|A=0,X=x,S=0].
   \end{align}$$
 </p>
 
-Then we can parameterize $\tau(\cdot)$ and $\lambda(\cdot)$:
+Then we can parameterize $\tau(\cdot)$ and $\lambda(\cdot)$ as follows:
 
 **Assumption 2** (Parametric tructural model). The heterogeneity of treatment effect and confounding functions are
 <p>$$\tau(x)=\tau_{\varphi_0}(x),\ \lambda(x)=\lambda_{\phi_0}(x),$$</p>
@@ -62,10 +64,23 @@ where $\varphi\in\mathbb{R}^{p_1},\phi\in\mathbb{R}^{p_2}.$
 Note that
 <p>
   $$\begin{align}
-  \mathbb{E}[Y-\tau(X)A|A,X] &= \mathbb{E}[Y(A)-A(Y(1)-Y(0))|A,X] = \mathbb{E}[Y(0)|A,X],\\
-  \mathbb{E}[Y(0)|A,X] - \mathbb{E}[Y(0)|X] &= \mathbb{E}[Y(0)|A,X] - e(X)\mathbb{E}[Y(0)|A=1,X] - (1-e(X))\mathbb{E}[Y(0)|A=0,X]\\
-  &= \left(A-e(X)\right)\left\lbrace\mathbb{E}[Y(0)|A=1,X]-\mathbb{E}[Y(0)|A=0,X]\right\rbrace\\
-  &= \lambda_{\phi_0}(X)\left(A-e(X)\right).
+  \mathbb{E}[Y-\tau(X)A|A,X,S] &= \mathbb{E}[Y(A)-A(Y(1)-Y(0))|A,X,S] = \mathbb{E}[Y(0)|A,X,S],
+  \end{align}$$
+</p>
+
+that by Assumption 1
+<p>
+  $$\mathbb{E}[Y(0)|A,X,S=1] - \mathbb{E}[Y(0)|X,S=1] = 0,$$
+</p>
+
+and that
+<p>
+  $$\begin{align}
+  &\mathbb{E}[Y(0)|A,X,S=0] - \mathbb{E}[Y(0)|X,S=0] \\
+  &= \mathbb{E}[Y(0)|A,X,S=0] - \mathbb{E}[Y(0)|A=1,X,S=0]\times e(X,0)\\
+  &\quad - \mathbb{E}[Y(0)|A=0,X,S=0]\times(1-e(X,0))\\
+  &= \left(A-e(X,0)\right)\left\lbrace\mathbb{E}[Y(0)|A=1,X,S=0]-\mathbb{E}[Y(0)|A=0,X,S=0]\right\rbrace\\
+  &= \lambda_{\phi_0}(X)\left(A-e(X,0)\right).
   \end{align}$$
 </p>
 
@@ -73,6 +88,8 @@ Then, we can introduce the following variable to mimic $Y(0):$
 <p>
   $$H_{\psi_0} = Y-\tau_{\varphi_0}(X)A - (1-S)\lambda_{\phi_0}(X)(A-e(X)).$$
 </p>
+
+**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert X,S] = \mathbb{E}[Y|X,S].$
 
 
 ## References
