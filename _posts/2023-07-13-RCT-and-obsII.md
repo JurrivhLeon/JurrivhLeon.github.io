@@ -70,7 +70,7 @@ We parameterize $\tau(\cdot)$ and $\lambda(\cdot)$ as follows:
 
 where $\psi_0 = (\varphi_0^\top,\phi_0^\top)^\top\in\mathbb{R}^{p_1}\times\mathbb{R}^{p_2}.$
 
-**Remark.** A crude estimator of $\psi_0$ can be obtained by least squares, since $\tau(x)_ {\varphi_ 0}(x)$ and $\lambda_ {\phi_ 0}(x)$ are idetified.
+**Remark.** A crude estimator of $\psi_0$ can be obtained by least squares, since $\tau_ {\varphi_ 0}(x)$ and $\lambda_ {\phi_ 0}(x)$ are idetified.
 
 Note that
 <p>
