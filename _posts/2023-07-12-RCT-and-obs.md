@@ -189,3 +189,6 @@ Based on the calibration weights, the CW estimator is given by
 + Minimizing the negative entropy ensures that the empirical distribution of calibration weights is not too far away from the uniform distribution. The balancing constraint requires that the weighted mean of $\mathrm{g}$ in RCT sample is equal to the mean in the observational sample, as an estimator of $\mathbb{E}[g(X)].$
 + Analogous to the AIPSW estimator, an augmented calibration weighting (ACW) estimator can be constructed cby combining CW and plug-in g-formula.
 
+## References
++ Colnet, B., Mayer, I., Chen, G., Dieng, A., Li, R., Varoquaux, G., Vert, J.P., Josse, J. and Yang, S., 2020. Causal inference methods for combining randomized trials and observational studies: a review. *arXiv preprint arXiv:2011.08047*.
++ Lee D., Yang S., Dong L., Wang X., Zeng D., Cai J., 2023. Improving trial generalizability using observational studies. *Biometrics*. 2023 Jun;79(2):1213-1225.
