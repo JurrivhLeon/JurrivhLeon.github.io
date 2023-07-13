@@ -54,12 +54,23 @@ We denote the CATE $\tau(\cdot)$ and confounding function by
   \end{align}$$
 </p>
 
-Then we can parameterize $\tau(\cdot)$ and $\lambda(\cdot)$ as follows:
+Both of them can be identified:
+<p>
+  $$\begin{align}
+  \tau(x) &= \mathbb{E}[Y|A=1,X=x,S=1] - \mathbb{E}[Y|A=0,X=x,S=1],\\
+  \lambda(x) &= \mathbb{E}[Y|A=1,X=x,S=0] - \mathbb{E}[Y|A=0,X=x,S=0] - \tau(x).
+  \end{align}$$
+</p>
+
+
+We parameterize $\tau(\cdot)$ and $\lambda(\cdot)$ as follows:
 
 **Assumption 2** (Parametric tructural model). The heterogeneity of treatment effect and confounding functions are
 <p>$$\tau(x)=\tau_{\varphi_0}(x),\ \lambda(x)=\lambda_{\phi_0}(x),$$</p>
 
-where $\varphi\in\mathbb{R}^{p_1},\phi\in\mathbb{R}^{p_2}.$
+where $\psi_0 = (\varphi_0^\top,\phi_0^\top)^\top\in\mathbb{R}^{p_1}\times\mathbb{R}^{p_2}.$
+
+**Remark.** A crude estimator of $\psi_0$ can be obtained by least squares, since $\tau(x)_ {\varphi_ 0}(x)$ and $\lambda_ {\phi_ 0}(x)$ are idetified.
 
 Note that
 <p>
@@ -84,12 +95,14 @@ and that
   \end{align}$$
 </p>
 
-Then, we can introduce the following variable to mimic $Y(0):$
+Then, we introduce the following variable to mimic $Y(0):$
 <p>
   $$H_{\psi_0} = Y-\tau_{\varphi_0}(X)A - (1-S)\lambda_{\phi_0}(X)(A-e(X)).$$
 </p>
 
-**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert X,S] = \mathbb{E}[Y(0)|X,S].$
+**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert A,X,S] = \mathbb{E}[Y(0)|X,S].$
+
+Furthermore, the semiparametric efficiency score of $\psi_0$ can be derived. An estimating equation using this score is applied to solve a semiparametric efficient estimator of $\psi_0.$
 
 
 ## References
