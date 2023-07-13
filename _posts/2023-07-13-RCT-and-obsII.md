@@ -69,6 +69,11 @@ Note that
   \end{align}$$
 </p>
 
+Then, we can introduce the following variable to mimic $Y(0):$
+<p>
+  $$H_{\psi_0} = Y-\tau_{\varphi_0}(X)A - (1-S)\lambda_{\phi_0}(X)(A-e(X)).$$
+</p>
+
 
 ## References
 + Colnet, B., Mayer, I., Chen, G., Dieng, A., Li, R., Varoquaux, G., Vert, J.P., Josse, J. and Yang, S. (2020). Causal inference methods for combining randomized trials and observational studies: a review. *arXiv preprint arXiv:2011.08047*.
