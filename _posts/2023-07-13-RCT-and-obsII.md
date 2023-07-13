@@ -100,7 +100,7 @@ Then, we introduce the following variable to mimic $Y(0):$
   $$H_{\psi_0} = Y-\tau_{\varphi_0}(X)A - (1-S)\lambda_{\phi_0}(X)(A-e(X)).$$
 </p>
 
-**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert A,X,S] = \mathbb{E}[Y(0)|X,S].$
+**Proposition 1.** Under Assumptions 1 and 2, we have $\mathbb{E}[H_{\psi_0}\vert A,X,S] = \mathbb{E}[Y(0)\vert X,S].$
 
 Furthermore, the semiparametric efficiency score of $\psi_0$ can be derived. An estimating equation using this score is applied to solve a semiparametric efficient estimator of $\psi_0.$
 
