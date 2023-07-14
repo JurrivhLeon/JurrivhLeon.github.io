@@ -91,7 +91,8 @@ C-UCB-VI maintains a dataset $\mathcal{H}$ of historical tuples $(s_ h^k,a_ h^k,
 </p>
 
 Based on the estimated kernel $\hat{\mathbb{P}}^k$ and bonus $b^k,$ the learner runs value iteration in each episode $k.$ Initialize $V_ {H+1}^k(s) = 0\ \forall s\in\mathcal{S},$ the following steps are executed for $h=H,H-1,\cdots,1.$
-+ $\forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\ q_h^k(s,\mathbf{z}) = \min\lbrace R(s,\mathbf{z}) + \hat{\mathbb{P}}^k V_ {h+1}^k(s,\mathbf{z}) + b_ h^k(s,\mathbf{z}), H\rbrace\ \text{if}\ N(s,\mathbf{z}) > 0,\ \text{else}\ H.$
++ $\forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\ q_h^k(s,\mathbf{z}) = \min\lbrace R(s,\mathbf{z}) + \hat{\mathbb{P}}^k V_ {h+1}^k(s,\mathbf{z}) + b_ h^k(s,\mathbf{z}), H\rbrace$
+   $\text{if}\ N(s,\mathbf{z}) > 0,\ \text{else}\ H.$
 + $\forall (s,a)\in\mathcal{S}\times\mathcal{A},\ Q_ h^k(s,a) = \sum_{\mathbf{z}\in\mathcal{Z}} p(\mathbf{z}\vert s,a)q_ h^k(s,\mathbf{z}).$
 + $\forall s\in\mathcal{S},\ V_ h^k(s) = \max_{a\in\mathcal{A}} Q_ h^k(s,a).$
 
