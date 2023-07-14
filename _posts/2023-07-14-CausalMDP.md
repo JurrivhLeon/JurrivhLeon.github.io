@@ -39,7 +39,7 @@ $$\mathbf{A} = \lbrace\mathbf{do}(\mathbf{X}_a=\mathbf{x}_a)\vert \mathbf{X}_a\s
 
 At each state $s\in\mathcal{S},$ two causal graphs are defined: the reward graph $\mathcal{G}^R(s)$ and the state transition graph $\mathcal{G}^S(s),$ which contain variables $\mathbf{X}^R = \mathbf{X}^I\cup\mathbf{Z}^\mathbf{R}\cup\mathbf{R}$ and $\mathbf{X}^S = \mathbf{X}^I\cup\mathbf{Z}^\mathbf{S}\cup\mathbf{S}.$ The variation of $s$ does not impact the identity of variables, while it possibly changes their underlying distributions.
 
-In a causal MDP, a learner is given the intervention set $a\in\mathcal{A},$ the identity of parent variables $\mathbf{Z}=\mathbf{Z}^\mathbf{R}\cup\mathbf{Z}^\mathbf{S}$ and their conditional distributions of $\mathbf{Z}$ given any state action pair $(s,a)\in\mathcal{S}\times\mathcal{A},$ denoted as $p(\mathbf{z}|s,a).$
+In a causal MDP, a learner is given the intervention set $a\in\mathcal{A},$ the identity of parent variables $\mathbf{Z}=\mathbf{Z}^\mathbf{R}\cup\mathbf{Z}^\mathbf{S}$ and their conditional distributions of $\mathbf{Z}$ given any state action pair $(s,a)\in\mathcal{S}\times\mathcal{A},$ denoted as $p(\mathbf{z}\vert s,a).$
 
 Denote the domain set for $\mathbf{Z}$ as $\mathcal{Z},$ and its cardinality as $Z=\vert\mathcal{Z}\vert.$ At each step $h\in[H],$ the learner observes the state $s_n\in\mathcal{S}$ and the realizations $\mathbf{z}_h$ of $\mathbf{Z}.$ The causal identity implies that
 <p>
@@ -79,13 +79,25 @@ Lu et al. (2022) has proposed an efficient algorithm for causal MDPs named causa
 C-UCB-VI maintains a dataset $\mathcal{H}$ of historical tuples $(s_ h^k,a_ h^k,\mathbf{z}_ h^k, s_ {h+1}^k)$ indexed by episode and step to estimate the transition kernel. After each episode, the transition kernel $\mathbb{P}$ is estiamted as follows:
 <p>
   $$\begin{align}
-  N_k(s,\mathbf{z},y) &= \sum_{(s',\mathbf{z}',y')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z},y'=y)\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S},\\
-  N_k(s,\mathbf{z}) &= \sum_{(s',\mathbf{z}')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z})\ \forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\\
-  \hat{\mathbb{P}}(y|s,\mathbf{z}) &= \frac{N_k(s,\mathbf{z},y)}{N_k(s,\mathbf{z})}.
+  N^k(s,\mathbf{z},y) &= \sum_{(s',\mathbf{z}',y')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z},y'=y)\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S},\\
+  N^k(s,\mathbf{z}) &= \sum_{(s',\mathbf{z}')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z})\ \forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\\
+  \hat{\mathbb{P}}^k(y|s,\mathbf{z}) &= \frac{N_k(s,\mathbf{z},y)}{N_k(s,\mathbf{z})}\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S}\ \ \text{s.t.}\ N^k(s,\mathbf{z})>0.
   \end{align}$$
 </p>
 
+**Value Iteration.** Like in UCB-VI, we first propose a bonus to construct an upper confidence bound. We choose some $\delta >0.$ Then for all $(s,\mathbf{z})$ such that $N^k(s,\mathbf{z})>0,$ define the bonus
+<p>
+  $$b_h^k = 7HL\sqrt{\frac{S}{N^k(s,\mathbf{z})}},\ \text{where}\ L=5\log(5SHKZT/\delta).$$
+</p>
 
+Based on the estimated kernel $\hat{\mathbb{P}}^k$ and bonus $b^k,$ the learner runs value iteration in each episode $k.$ Initialize $V_ {H+1}^k(s) = 0\ \forall s\in\mathcal{S},$ the following steps are executed for $h=H,H-1,\cdots,1.$
++ $\forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\ q_h^k(s,\mathbf{z}) = \min\lbrace R(s,\mathbf{z}) + \hat{\mathbb{P}}^k V_ {h+1}^k(s,\mathbf{z}) + b_ h^k(s,\mathbf{z}), H\rbrace\ \text{if}\ N(s,\mathbf{z}) > 0,\ \text{else}\ H.$
++ $\forall (s,a)\in\mathcal{S}\times\mathcal{A},\ Q_ h^k(s,a) = \sum_{\mathbf{z}\in\mathcal{Z}} p(\mathbf{z}\vert s,a)q_ h^k(s,\mathbf{z}).$
++ $\forall s\in\mathcal{S},\ V_ h^k(s) = \max_{a\in\mathcal{A}} Q_ h^k(s,a).$
+
+**Running Episodes.** Since transition kernel $P$ and Q-value function are estimated, an immediate choice of policy is the one that maximizes the estimated value. Initialize the dataset $\mathcal{H}=\emptyset$ and $Q^0_ h(s,a)=0$ for all $h,s,a,$ the learner execute the following steps sequentially in each episode $k=1,\cdots,K$:
+1. for step $h=1,\cdots,H,$ take the action $a_{k,h} = \mathrm{argmax}_ {a\in\mathcal{A}}Q_ h^{k-1}(s,a),$ and update $\mathcal{H}\gets\mathcal{H}\cup\lbrace(s_ h^k,a_ h^k,\mathbf{z}_ h^k,s_ {h+1}^k)\rbrace.$
+2. run value iteration to get $Q_ h^k(s,a)$ for all $(h,s,a)\in[H]\times\mathcal{S}\times\mathcal{A}.$
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
