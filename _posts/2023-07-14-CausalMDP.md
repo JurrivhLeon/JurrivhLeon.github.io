@@ -96,9 +96,11 @@ Based on the estimated kernel $\hat{\mathbb{P}}^k$ and bonus $b^k,$ the learner 
 + $\forall (s,a)\in\mathcal{S}\times\mathcal{A},\ Q_ h^k(s,a) = \sum_{\mathbf{z}\in\mathcal{Z}} p(\mathbf{z}\vert s,a)q_ h^k(s,\mathbf{z}).$
 + $\forall s\in\mathcal{S},\ V_ h^k(s) = \max_{a\in\mathcal{A}} Q_ h^k(s,a).$
 
-**Running Episodes.** Since transition kernel $P$ and Q-value function are estimated, an immediate choice of policy is the one that maximizes the estimated value. Initialize the dataset $\mathcal{H}=\emptyset$ and $Q^0_ h(s,a)=0$ for all $h,s,a,$ the learner execute the following steps sequentially in each episode $k=1,\cdots,K$:
+**Running Episodes.** Since transition kernel $P$ and Q-value function are estimated, an immediate choice of policy is the one that maximizes the estimated value. Initialize the dataset $\mathcal{H}=\emptyset$ and $Q^0_ h(s,a)=H$ for all $h,s,a,$ the learner execute the following steps sequentially in each episode $k=1,\cdots,K$:
 1. for step $h=1,\cdots,H,$ take the action $a_{k,h} = \mathrm{argmax}_ {a\in\mathcal{A}}Q_ h^{k-1}(s,a),$ and update $\mathcal{H}\gets\mathcal{H}\cup\lbrace(s_ h^k,a_ h^k,\mathbf{z}_ h^k,s_ {h+1}^k)\rbrace.$
 2. run value iteration to get $Q_ h^k(s,a)$ for all $(h,s,a)\in[H]\times\mathcal{S}\times\mathcal{A}.$
+
+Note that in the first episode, the learner always adopts a uniform policy $\pi^1_h=\mathrm{Unif}(\mathcal{A}).$
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
