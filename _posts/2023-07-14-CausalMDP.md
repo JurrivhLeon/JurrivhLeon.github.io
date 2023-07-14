@@ -76,7 +76,14 @@ The goal of our learner is to follow a sequence of policies $\pi_1,\cdots,\pi_K$
 ### Algorithm
 Lu et al. (2022) has proposed an efficient algorithm for causal MDPs named causal UCB-VI (C-UCB-VI), which generalizes upper confidence bound value iteration (UCB-VI) algorithm to its causal counterpart.
 
-C-UCB-VI maintains a dataset $\mathcal{H}$ of historical tuples $(s_ h^k,a_ h^k,\mathbf{z}_ h^k, s_ {h+1}^k)$ indexed by episode and step.
+C-UCB-VI maintains a dataset $\mathcal{H}$ of historical tuples $(s_ h^k,a_ h^k,\mathbf{z}_ h^k, s_ {h+1}^k)$ indexed by episode and step to estimate the transition kernel. After each episode, the transition kernel $\mathbb{P}$ is estiamted as follows:
+<p>
+  $$\begin{align}
+  N_k(s,\mathbf{z},y) &= \sum_{(s',\mathbf{z}',y')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z},y'=y)\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S},\\
+  N_k(s,\mathbf{z}) &= \sum_{(s',\mathbf{z}')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z})\ \forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\\
+  \hat{\mathbb{P}}(y|s,\mathbf{z}) &= \frac{N_k(s,\mathbf{z},y)}{N_k(s,\mathbf{z})}.
+  \end{align}$$
+</p>
 
 
 
