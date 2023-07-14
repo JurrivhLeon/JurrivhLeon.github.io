@@ -27,8 +27,8 @@ Furthermore, a policy $\pi$ also induces the state transition kernel $\mathbb{P}
 For every $V:\mathbf{S}\to\mathbb{R},$ define
 <p>
   $$\begin{align}
-  (\mathbb{P}_hV)(s,a) := \mathbb{E}_{s'\sim\mathbb{P}_h(\cdot|s,a)}[V(s')] = \sum_{s'\in\mathcal{S}}\mathbb{P}_h(s'\vert s,a)V(s'),\\
-  (\mathbb{P}^\pi_hV)(s) := \mathbb{E}_{s'\sim\mathbb{P}^\pi_h(\cdot|s)}[V(s')] = \sum_{s'\in\mathcal{S}}\mathbb{P}^\pi_h(s'\vert s)V(s').
+  (\mathbb{P}_hV)(s,a) &:= \mathbb{E}_{s'\sim\mathbb{P}_h(\cdot|s,a)}[V(s')] = \sum_{s'\in\mathcal{S}}\mathbb{P}_h(s'\vert s,a)V(s'),\\
+  (\mathbb{P}^\pi_hV)(s) &:= \mathbb{E}_{s'\sim\mathbb{P}^\pi_h(\cdot|s)}[V(s')] = \sum_{s'\in\mathcal{S}}\mathbb{P}^\pi_h(s'\vert s)V(s').
   \end{align}$$
 </p>
 
