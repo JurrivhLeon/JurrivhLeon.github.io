@@ -179,3 +179,7 @@ By defining a state-action map $\psi(s,a)=\sum_{\mathbf{z}\in\mathcal{Z}}p(\math
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
++ Azar, M.G., Osband, I. and Munos, R., 2017. Minimax Regret Bounds for Reinforcement Learning. *Proceedings of the 34th International Conference on Machine Learning*, in *Proceedings of Machine Learning Research* 70:263-272.
++ Jin, C., Yang, Z., Wang, Z. and Jordan, M.I., 2020. Provably efficient reinforcement learning with linear function approximation. *Proceedings of Thirty Third Conference on Learning Theory*, in *Proceedings of Machine Learning Research* 125:2137-2143.
+
+
