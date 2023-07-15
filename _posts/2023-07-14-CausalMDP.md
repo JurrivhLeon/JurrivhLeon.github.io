@@ -8,18 +8,18 @@ To circumvent the curse of dimensionality where $A$ is enormous, a causal approa
 A directed acyclic graph $\mathcal{G}$ is used to model the causal structure over a set of random variables $\mathbf{X}=\lbrace X_1,\cdots,X_n\rbrace$ in $\boldsymbol{\mathcal{X}}=\mathcal{X}_ 1\times\cdots\times\mathcal{X}_ n.$ Denote the joint distribution over $\mathbf{X}$ along graph $\mathcal{G}$ at states $s$ as $p(\cdot\vert s).$ A size $m$ intervention (action) corresponds to $\mathrm{do}(\mathbf{X}_ a=\mathbf{x}_ a)$ such that $\mathrm{dim}(\mathbf{X}_ a)=m.$ Such an intervention results a new graph $\mathcal{G}_ {\overline{\mathbf{X}_ a}}$ and induces a probability distribution $p(\cdot\vert s,\mathrm{do}(\mathbf{X}_ a=\mathbf{x}_ a))$ over $\mathbf{X}\backslash\mathbf{X}_ a.$
 
 ### Markov Decision Process (MDP)
-A tabular episodic MDP is defined by a tuple $\mathcal{M}=(\mathcal{S},\mathcal{A},\mathbb{P},R,H),$ where $\mathcal{S}$ and $\mathcal{A}$ are state and action spaces with finite cardinalities $S$ and $A,$ respectively, $H$ is the planning horizon in each episode, $\mathbb{P}$ is a transition kernel such that $\mathbb{P}(\cdot\vert s,a)$ defines the distribution over next state if an action $a\in\mathcal{A}$ is taken on state $s\in\mathcal{S},$ and $R:\mathcal{S}\times\mathcal{A}\to [0,1]$ is a deterministic reward function over a state-action pair.
+A tabular episodic MDP is defined by a tuple $\mathcal{M}=(\mathcal{S},\mathcal{A},\mathbb{P},R,H),$ where $\mathcal{S}$ and $\mathcal{A}$ are state and action spaces with finite cardinalities $S$ and $A,$ respectively, $H$ is the planning horizon in each episode, $\mathbb{P}$ is a transition kernel such that $\mathbb{P}(\cdot\vert s,a)$ defines the distribution over next state if an action $a\in\mathcal{A}$ is taken on state $s\in\mathcal{S},$ and $R=\lbrace R_h\rbrace_{h\in[H]}$ is a group of rewards such that $R_h:\mathcal{S}\times\mathcal{A}\to [0,1]$ is a deterministic reward function over a state-action pair.
 
-The agent interacts with the enviroment in a sequence of episodes: at the begining, an initial state $s_1\in\mathcal{S}$ is picked by an adversary. At each step $h\in[H],$ the agent observes the environment state $s_h\in\mathcal{S},$ takes an action $a_h\in\mathcal{A}$ and obtains a reward $R(s_h,a_h).$ The environment samples the next state $s_{h+1}\sim\mathbb{P}(\cdot\vert s_n,a_h).$ The episode ends when $s_{h+1}$ is reached.
+The agent interacts with the enviroment in a sequence of episodes: at the begining, an initial state $s_1\in\mathcal{S}$ is picked by an adversary. At each step $h\in[H],$ the agent observes the environment state $s_h\in\mathcal{S},$ takes an action $a_h\in\mathcal{A}$ and obtains a reward $R_h(s_h,a_h).$ The environment samples the next state $s_{h+1}\sim\mathbb{P}(\cdot\vert s_n,a_h).$ The episode ends when $s_{h+1}$ is reached.
 
 A (deterministic) policy is defined by a mapping $\mathcal{S}\times[H]\to\mathcal{A}.$ The value function $V^{\pi}_h:\mathcal{S}\to\mathbb{R}$ is defined as the expected sum of remaining rewards starting from step $h,$ under the policy $\pi.$ i.e.,
 <p>
-  $$V^\pi_h(s) := \mathbb{E}_\pi\left[\left.\sum_{t=h}^H R(s_t,a_t)\right\vert s_h=s\right].$$
+  $$V^\pi_h(s) := \mathbb{E}_\pi\left[\left.\sum_{t=h}^H R_t(s_t,a_t)\right\vert s_h=s\right].$$
 </p>
 
 Similarly, the Q-value $Q_h^\pi:\mathcal{S}\times\mathcal{A}\to\mathbb{R}$ is defined as
 <p>
-  $$Q^\pi_h(s) := \mathbb{E}_\pi\left[\left.\sum_{t=h}^H R(s_t,a_t)\right\vert s_h=s,a_h=a\right].$$
+  $$Q^\pi_h(s) := \mathbb{E}_\pi\left[\left.\sum_{t=h}^H R_t(s_t,a_t)\right\vert s_h=s,a_h=a\right].$$
 </p>
 
 Furthermore, a policy $\pi$ also induces the state transition kernel $\mathbb{P}^\pi$ such that $\mathbb{P}^\pi_ h(\cdot\vert s) = \mathbb{P}_ h(\cdot\vert s,\pi_ h(s)),$ and the reward function $r^\pi$ such that $r^\pi_ h: s \mapsto R(s,\pi_h(s)).$ 
@@ -61,7 +61,7 @@ By definition we have
   $$Q_h^\pi(s,a) = \sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}|s,a)q^\pi_h(s,\mathbf{z}).$$
 </p>
 
-Therefore, a causal MDP is defined by a tuple $\mathcal{M}_C = (\mathcal{S},\mathcal{A},\mathbb{P},R,H,\mathcal{G}^R,\mathcal{G}^S),$ which can be viewed as a MDP equipped with dynamic causal graphs $\mathcal{G}^R$ and $\mathcal{G}^S.$ For simplicity, the transition kernel $\mathbb{P}$ does not vary with step $h.$  Moreover, assume the following regularity condition holds.
+Therefore, a causal MDP is defined by a tuple $\mathcal{M}_C = (\mathcal{S},\mathcal{A},\mathbb{P},R,H,\mathcal{G}^R,\mathcal{G}^S),$ which can be viewed as a MDP equipped with dynamic causal graphs $\mathcal{G}^R$ and $\mathcal{G}^S.$ For simplicity, the transition kernel $\mathbb{P}$ and rewards $R$ does not vary with step $h.$  Moreover, assume the following regularity condition holds.
 
 **Assumption 1** (Causal MDP regularity). For causal MDPs, $\mathcal{S},\mathcal{A},\mathcal{Z}$ are finite sets with cardinalities $S,A,Z,$ respectively. The immediate rewards $R(s,\mathbf{z})=\mathbb{E}[\mathbf{R}\vert s,\mathbf{z}] \in [0,1]$ are known for $s\in\mathcal{S},\mathbf{z}\in\mathcal{Z}.$
 
@@ -157,6 +157,25 @@ The remaining part is analogous to C-UCB-VI. Further analysis finds a regret bou
 Since $S = \prod_{i\in[m]} S[i],$ CF-UCB-VI indeed reduces the cost of learning compared with C-UCB-VI.
 
 ## Causal Linear MDP
+**Definition 4** (Causal linear MDP). A causal linear MDP is a causal MDP equipped with a feature map $\phi:\mathbf{S}\times\mathbf{Z}\to\mathbb{R}^d,$ where there exists $d$ unknown measures $\mu = (\mu^{(1)},\cdots,\mu^{(d)})^\top$ over $\mathcal{S}$ and an unknown vector $\omega\in\mathbb{R}^d,$ such that for any $(s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},$ we have
+<p>
+  $$\mathbb{P}(s'|s,\mathbf{z}) = \langle \phi(s,\mathbf{z}), \mu(s')\rangle,\ R(s,\mathbf{z}) = \langle \phi(s,\mathbf{z}), \omega\rangle.$$
+</p>
+
+Furthermore, assume norm bounds:
++ $\sup_{(s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z}}\Vert \phi(s,\mathbf{z})\Vert_2 \leq 1;$
++ $\left\Vert \int_\mathcal{S}f\mathrm{d}\mu(s)\right\Vert_2 \leq \sqrt{d}\ \ \forall \Vert f\Vert_\infty \geq 1;$
++ $\Vert \omega\Vert_2 \leq W.$
+
+For every $(s,a)\in\mathcal{S}\times\mathcal{A},$ it holds
+<p>
+  $$\begin{align}
+  \mathbb{P}(s'|s,a) &= \left\langle\sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}|s,a)\phi(s,\mathbf{z}),\mu(s')\right\rangle,\\
+  R(s,a) &= \left\langle\sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}|s,a)\phi(s,\mathbf{z}),\omega\right\rangle.
+  \end{align}$$
+</p>
+
+By defining a state-action map $\psi(s,a)=\sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}|s,a)\phi(s,\mathbf{z}),$ one can treat causal linear MDPs as a special case of standard linear MDPs, and a regret bound of $\tilde{O}\left(\sqrt{d^3H^3T}\right)$ is reachable using UCB-LSVI.
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
