@@ -175,7 +175,7 @@ For every $(s,a)\in\mathcal{S}\times\mathcal{A},$ it holds
   \end{align}$$
 </p>
 
-By defining a state-action map $\psi(s,a)=\sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}|s,a)\phi(s,\mathbf{z}),$ one can treat causal linear MDPs as a special case of standard linear MDPs, and a regret bound of $\tilde{O}\left(\sqrt{d^3H^3T}\right)$ is reachable using UCB-LSVI.
+By defining a state-action map $\psi(s,a)=\sum_{\mathbf{z}\in\mathcal{Z}}p(\mathbf{z}\vert s,a)\phi(s,\mathbf{z}),$ one can treat causal linear MDPs as a special case of standard linear MDPs, and a regret bound of $\tilde{O}\left(\sqrt{d^3H^3T}\right)$ is reachable using UCB-LSVI.
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
