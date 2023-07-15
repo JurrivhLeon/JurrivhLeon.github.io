@@ -157,7 +157,7 @@ The remaining part is analogous to C-UCB-VI. Further analysis finds a regret bou
 Since $S = \prod_{i\in[m]} S[i],$ CF-UCB-VI indeed reduces the cost of learning compared with C-UCB-VI.
 
 ## Causal Linear MDP
-**Definition 4** (Causal linear MDP). A causal linear MDP is a causal MDP equipped with a feature map $\phi:\mathbf{S}\times\mathbf{Z}\to\mathbb{R}^d,$ where there exists $d$ unknown measures $\mu = (\mu^{(1)},\cdots,\mu^{(d)})^\top$ over $\mathcal{S}$ and an unknown vector $\omega\in\mathbb{R}^d,$ such that for any $(s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},$ we have
+**Definition 4** (Causal linear MDP). A causal linear MDP is a causal MDP equipped with a feature map $\phi:\mathcal{S}\times\mathcal{Z}\to\mathbb{R}^d,$ where there exists $d$ unknown measures $\mu = (\mu^{(1)},\cdots,\mu^{(d)})^\top$ over $\mathcal{S}$ and an unknown vector $\omega\in\mathbb{R}^d,$ such that for any $(s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},$ we have
 <p>
   $$\mathbb{P}(s'|s,\mathbf{z}) = \langle \phi(s,\mathbf{z}), \mu(s')\rangle,\ R(s,\mathbf{z}) = \langle \phi(s,\mathbf{z}), \omega\rangle.$$
 </p>
