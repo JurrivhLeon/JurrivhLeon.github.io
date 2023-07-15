@@ -35,7 +35,9 @@ For every $V:\mathbf{S}\to\mathbb{R},$ define
 ## Causal MDP
 In causal MDPs, the actions are composed by interventions. We denote the reward and state variables by $\mathbf{R}$ and $\mathbf{S},$ respectively. Suppose that the agent is able to intervene on variables $\mathbf{X}^I,$ but not able to intervene on the parent variables of $\mathbf{R}$ (denoted as $\mathbf{Z}^\mathbf{R}:=Pa(\mathbf{R})_ \mathcal{G}$) and $\mathbf{S}$ (denoted as $\mathbf{Z}^\mathbf{S}:=Pa(\mathbf{S})_ \mathcal{G}$). The action space is defined as
 
-$$\mathbf{A} = \lbrace\mathbf{do}(\mathbf{X}_a=\mathbf{x}_a)\vert \mathbf{X}_a\subseteq\mathbf{X}^I,\mathbf{x}_a\in\mathcal{X}_a\rbrace.$$
+<p>
+  $$\mathcal{A} = \left\lbrace\mathbf{do}(\mathbf{X}_a=\mathbf{x}_a)\vert \mathbf{X}_a\subseteq\mathbf{X}^I,\mathbf{x}_a\in\bigotimes_{i:X_i\in\mathbf{X}_a}\mathcal{X}_i\right\rbrace.$$
+</p>
 
 At each state $s\in\mathcal{S},$ two causal graphs are defined: the reward graph $\mathcal{G}^R(s)$ and the state transition graph $\mathcal{G}^S(s),$ which contain variables $\mathbf{X}^R = \mathbf{X}^I\cup\mathbf{Z}^\mathbf{R}\cup\mathbf{R}$ and $\mathbf{X}^S = \mathbf{X}^I\cup\mathbf{Z}^\mathbf{S}\cup\mathbf{S}.$ The variation of $s$ does not impact the identity of variables, while it possibly changes their underlying distributions.
 
@@ -81,13 +83,13 @@ C-UCB-VI maintains a dataset $\mathcal{H}$ of historical tuples $(s_ h^k,a_ h^k,
   $$\begin{align}
   N^k(s,\mathbf{z},y) &= \sum_{(s',\mathbf{z}',y')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z},y'=y)\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S},\\
   N^k(s,\mathbf{z}) &= \sum_{(s',\mathbf{z}')\in\mathcal{H}}\mathbb{1}(s'=s,\mathbf{z}'=\mathbf{z})\ \forall (s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z},\\
-  \hat{\mathbb{P}}^k(y|s,\mathbf{z}) &= \frac{N_k(s,\mathbf{z},y)}{N_k(s,\mathbf{z})}\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S}\ \ \text{s.t.}\ N^k(s,\mathbf{z})>0.
+  \hat{\mathbb{P}}^k(y|s,\mathbf{z}) &= \frac{N^k(s,\mathbf{z},y)}{N^k(s,\mathbf{z})}\ \forall (s,\mathbf{z},y)\in\mathcal{S}\times\mathcal{Z}\times\mathcal{S}\ \ \text{s.t.}\ N^k(s,\mathbf{z})>0.
   \end{align}$$
 </p>
 
 **Value Iteration.** Like in UCB-VI, we first propose a bonus to construct an upper confidence bound. We choose some $\delta >0.$ Then for all $(s,\mathbf{z})$ such that $N^k(s,\mathbf{z})>0,$ define the bonus
 <p>
-  $$b_h^k = 7HL\sqrt{\frac{S}{N^k(s,\mathbf{z})}},\ \text{where}\ L=5\log(5SHKZT/\delta).$$
+  $$b_h^k = 7HL\sqrt{\frac{S}{N^k(s,\mathbf{z})}},\ \text{where}\ L=\log(5SHKZT/\delta).$$
 </p>
 
 Based on the estimated kernel $\hat{\mathbb{P}}^k$ and bonus $b^k,$ the learner runs value iteration in each episode $k.$ Initialize $V_ {H+1}^k(s) = 0\ \forall s\in\mathcal{S},$ the following steps are executed for $h=H,H-1,\cdots,1.$
@@ -96,11 +98,65 @@ Based on the estimated kernel $\hat{\mathbb{P}}^k$ and bonus $b^k,$ the learner 
 + $\forall (s,a)\in\mathcal{S}\times\mathcal{A},\ Q_ h^k(s,a) = \sum_{\mathbf{z}\in\mathcal{Z}} p(\mathbf{z}\vert s,a)q_ h^k(s,\mathbf{z}).$
 + $\forall s\in\mathcal{S},\ V_ h^k(s) = \max_{a\in\mathcal{A}} Q_ h^k(s,a).$
 
-**Running Episodes.** Since transition kernel $P$ and Q-value function are estimated, an immediate choice of policy is the one that maximizes the estimated value. Initialize the dataset $\mathcal{H}=\emptyset$ and $Q^0_ h(s,a)=H$ for all $h,s,a,$ the learner execute the following steps sequentially in each episode $k=1,\cdots,K$:
-1. for step $h=1,\cdots,H,$ take the action $a_{k,h} = \mathrm{argmax}_ {a\in\mathcal{A}}Q_ h^{k-1}(s,a),$ and update $\mathcal{H}\gets\mathcal{H}\cup\lbrace(s_ h^k,a_ h^k,\mathbf{z}_ h^k,s_ {h+1}^k)\rbrace.$
-2. run value iteration to get $Q_ h^k(s,a)$ for all $(h,s,a)\in[H]\times\mathcal{S}\times\mathcal{A}.$
+**Running Episodes.** Since transition kernel $P$ and Q-value function are estimated, an immediate choice of policy is the one that maximizes the estimated value. Initialize the dataset $\mathcal{H}=\emptyset$ and $Q^1_ h(s,a)=H$ for all $h,s,a,$ the learner execute the following steps sequentially in each episode $k=1,\cdots,K$:
+1. run value iteration to get $Q_ h^k(s,a)$ for all $(h,s,a)\in[H]\times\mathcal{S}\times\mathcal{A}.$
+2. for step $h=1,\cdots,H,$ take the action $a_{k,h} = \mathrm{argmax}_ {a\in\mathcal{A}}Q_ h^{k}(s,a),$ and update $\mathcal{H}\gets\mathcal{H}\cup\lbrace(s_ h^k,a_ h^k,\mathbf{z}_ h^k,s_ {h+1}^k)\rbrace.$
 
 Note that in the first episode, the learner always adopts a uniform policy $\pi^1_h=\mathrm{Unif}(\mathcal{A}).$
+
+### Analysis
+**Lemma 1.** (Optimism) With probability at least $1-\delta,$ we have
+<p>
+  $$V_h^k(s) \geq V_h^*(s)\ \forall h\in[H],k\in[K],s\in\mathcal{S}.$$
+</p>
+
+This lemma states that the optimal $V^{* }$ is upper bounded by the estimated value function $V^k$ with high probability.
+
+**Theorem 1.** (Regret bound for C-UCB-VI). With probability at least $1-\delta,$ the regret of C-UCB-VI is bounded by:
+<p>
+  $$\mathrm{Regret}(K) = \tilde{O}\left(HS\sqrt{ZT}\right),$$
+</p>
+
+Where $\tilde{O}(\cdot)$ absorbs all logarithmic terms.
+
+**Remark.** Compared with standard UCB-VI, the regret bound of C-UCB-VI does not depend on the cardinality $A$ of action space $\mathcal{A}.$  In practical applications, $Z$ is usually less than $A,$ hence the regret bound is improved via a causal approach. 
+
+## Causal Factored MDP (CF-MDP)
+**Definition 1** (Scope operation). For any subset $I$ of indices $\lbrace 1,\cdots,m\rbrace,$ define the scope set $\mathcal{S}[I] := \bigotimes_ {i\in I}\mathcal{S}_ i.$ For any $s\in\mathcal{S},$ define the scope variable $s[I]\in\mathcal{S}[I]$ to be the value of the variables $s_i\in\mathcal{S}_i$ with indices $i\in I.$ For singleton sets, write $s[\lbrace i\rbrace] = s[i]$ for simplicity.
+
+Let $\mathcal{P}_{\mathcal{X},\mathcal{Y}}$ be the set of funnctionals mapping elements of a finite set $\mathcal{X}$ to probability mass functions over a finite set $\mathcal{Y}.$
+
+**Definition 2** (Factored state transition) The transition function class $\mathcal{P}$ is factored over $\mathcal{S}\times\mathcal{Z}$ and $\mathcal{S} = \bigotimes_ {i\in[m]}\mathcal{S}_ i$ with scopes $I_ 1,\cdots,I_ m$ if and only if, $\forall \mathbb{P}\in\mathcal{P}, s,s'\in\mathcal{S},\mathbf{z}\in\mathcal{Z},$ there exists some $\lbrace \mathbb{P}_ i\in\mathcal{P}_ {\mathcal{S}[I_i]\times\mathcal{Z},\mathcal{S}_i}\rbrace$ such that
+<p>
+  $$\mathbb{P}(s'|s,\mathbf{z}) = \prod_{i=1}^m\mathbb{P}_ {[i]}(s'[i]|s[I_ i],\mathbf{z}).$$
+</p>
+
+**Definition 3** (Factored deterministic reward functions). The reward function $R$ is factored over $\mathcal{S}\times\mathcal{Z}$ with scopes $J_ 1,\cdots,J_ m,$ i.e. $\forall s\in\mathcal{S},\mathbf{z}\in\mathcal{Z}$ we have
+<p>
+  $$R(s,\mathbf{z}) = \sum_{i=1}^m R_i(s[J_i],\mathbf{z}).$$
+</p>
+
+Then, a causal factored MDP can be defined as a causal MDP with factored rewards and factored transitions:
+<p>
+  $$\mathcal{M}_{CF} = \left(\lbrace\mathcal{S}_i\rbrace_{i=1}^m, \mathcal{A},\lbrace I_i\rbrace_{i=1}^m, \lbrace\mathbb{P}_i\rbrace_{i=1}^m, \lbrace J_i\rbrace_{i=1}^m, \lbrace R_i\rbrace_{i=1}^m, \lbrace J_i\rbrace_{i=1}^m, H, \mathcal{G}^\mathbf{R}, \mathcal{G}^\mathbf{S}\right).$$
+</p>
+
+### Causal Factored UCB-VI (CF-UCB-VI)
+With slight modification, we can extend the C-UCB-VI algorithm to CF-MDPs. Using factored state transition, we have
+<p>
+  $$\hat{\mathbb{P}}^k(s'|s,\mathbf{z}) = \prod_{i=1}^m\hat{\mathbb{P}}^k_{[i]}(s'[i]|s[I_i],\mathbf{z}) = \prod_{i=1}^m\frac{N^k_{[i]}(s[I_i],\mathbf{z},s'[i])}{N^k_{[i]}(s[I_i],\mathbf{z})}.$$
+</p>
+
+The remaining part is analogous to C-UCB-VI. Further analysis finds a regret bound for CF-UCB-VI as follows.
+
+**Theorem 2.** (Regret bound for CF-UCB-VI). With probability at least $1-\delta,$ the regret of CF-UCB-VI is bounded by:
+<p>
+  $$\mathrm{Regret}(K) = \tilde{O}\left(H\sum_{i=1}^m\sqrt{S[I_i]S[i]ZT}\right),$$
+</p>
+
+Since $S = \prod_{i\in[m]} S[i],$ CF-UCB-VI indeed reduces the cost of learning compared with C-UCB-VI.
+
+## Causal Linear MDP
 
 ## References
 + Lu Y., Meisami A. and Tewari A., 2022. Efficient Reinforcement Learning with Prior Causal Knowledge. *Proceedings of the First Conference on Causal Learning and Reasoning*, in *Proceedings of Machine Learning Research* 177:526-541.
