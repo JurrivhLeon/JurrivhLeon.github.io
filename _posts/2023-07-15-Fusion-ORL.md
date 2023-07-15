@@ -10,3 +10,4 @@ The goal of our agent is to quickly learn about its environment by consolidating
 + **Counterfactual data** (though traditionally computed from a fully specified model or under specific empirical conditions) represents the rewards associated with actions under a particular (or “personalized”) instantiation of the unobserved confounders.
 
 ## $K$-Armed Bandits with Unobserved Confounders
+**Setting.** In standard multi-armed bandit problems, an agent is faced with $K\geq 2$ arms, each associated with an unknown independent distribution of rewards. In each round the agent chooses an arm to and receives a reward sampled from the corresponding distribution. The goal of the agent is to maximize the cumulative rewards over a series of rounds.
