@@ -18,7 +18,54 @@ Intent can be viewed as an agent’s chosen action before its execution, which i
 
 **Definition 2** ($K$-armed bandits with unobserved confounders, MABUC) A $K$-armed bandit problem ($K\in\mathbb{N},K\geq 2$) with unobserved confounders is defined as a SCM $\mathcal{M}$ with a reward distribution over $p(u)$ where, for each round $0 < t < T,\ t\in\mathbb{N}:$
 1. Unobserved confounders: $U_t$ represents the unobserved variables encoding the payout rate and unobserved influences to the propensity to choose arm $x_t$ at round $t.$
-2. Intent: $I_t \in \lbrace i_1, \cdots, i_ k\rbrace$ represents the agent’s intended arm choice at round $t$ (prior to its final choice, $X_t$) such that $I_t = f_i(pa_{x_t}, u_t).$
+2. Intent: $I_t \in \lbrace x_ 1, \cdots, x_ k\rbrace$ represents the agent’s intended arm choice at round $t$ (prior to its final choice, $X_t$) such that $I_t = f_i(pa_{x_t}, u_t).$
 3. Policy: $\pi_t \in \lbrace x_ 1, \cdots, x_ k\rbrace$ denotes the agent’s decision algorithm as a function of its history and current intent, $f_\pi(h_t, i_t).$
 4. Choice: $X_t \in \lbrace x_ 1, \cdots, x_ k\rbrace$ denotes the agent’s final arm choice that is “pulled” at round $t$, $x_t = f_x(\pi_t).$
-5. Reward: $Y_t \in \lbrace 0, 1\rbrace$ represents the Bernoulli reward (0 for losing, 1 for winning) from choosing arm $x_t$ under unobserved confounder state $u_t$ as decided by $y_t = f_y(x_t, u_t).$
+5. Reward: $Y_t \in \lbrace 0, 1\rbrace$ represents a Bernoulli reward (0 for losing, 1 for winning) from choosing arm $x_t$ under unobserved confounder state $u_t$ as decided by $y_t = f_y(x_t, u_t).$
+
+A graphical illustration of MABUC is given below.
+
+<div align='center'>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/mabuc.png' width='350'>
+</div>
+
+At every round $t$ of MABUC, the unobserved state $u_t$ is drawn from distribution $p_(u)$, which is then considered by the strategy $\pi_t$ in concert with the game’s history $h_t$; the
+strategy makes a final arm choice, which is then pulled, as represented by $x_t,$ and the reward $y_t$ is revealed.
+
+**Definition 3** (Regret decision criterion, RDC). In a MABUC instance with arm choice $X,$ intent $I = i$, and reward $Y,$ agents should choose the action a that maximizes their intent-specific reward, or formally:
+
+<p>$$a^* = \underset{a}{\mathrm{argmax}}[Y_a|X=i],$$</p>
+
+where $Y_a$ is the counterfactual had $X$ been $a.$
+
+## Data Fusion Strategy
+Suppose that the agent in MABUC possesses:
++ observation of arm choices and payouts from other players, in forms of $\mathbf{E}[Y\vert X]$;
++ the randomized experimental results from the state investigator, in forms of $\mathbb{E}[Y\vert \mathbf{do}(X)]$;
++ the knowledge to employ intent in its decision-making for choosing arms by maximizing the counterfactual RDC $\mathbb{E}[Y_a\vert X=i]$ where $i$ encodes information about unobserved confounders since $i=f_i(pa_{x},u)$.
+
+We expand the expected counterfactual $\mathbb{E}[Y_x]$ as follows:
+<p>
+  $$\mathbb{E}[Y_x] = \sum_{i=1}^K \mathbb{E}[Y_x|X=x_i]\mathbb{P}(X=x_i).$$
+</p>
+
+The first term $\mathbb{E}[Y_x\vert X=x_i],$ referred to as the effect of treatment on the treated (ETT), is the expectation of intent-specified counterfactual, which is maximized by RDC. The following theorem states that RDC indeed measures the counterfactual quantity of ETT.
+
+**Theorem 1.** The counterfactual ETT is empirically estimable for arbitrary action-choice dimension when agents condition on their intent $I = i$ and estimate the response $Y$ to their final action choice $X = a.$
+
+**Proof.** Expand the ETT:
+<p>
+  $$\begin{align}
+  \mathbb{E}[Y_a|X=i] &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|X=i,I=i']\mathbb{P}(I=i'|X=i)\\
+  &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|I=i']\mathbb{P}(I=i'|X=i)\\
+  &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|I_a=i']\mathbb{P}(I=i'|X=i)\\
+  &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y|\mathrm{do}(A=a),I=i']\mathbb{P}(I=i'|X=i)\\
+  &= \mathbb{E}[Y|\mathrm{do}(A=a),I=i].
+  \end{align}$$
+</p>
+
+The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \vert\ I.$ The third equality, where $I_a$ is the counterfactual version of $I$ intervening $X=a,$ follows from $I\vert X$ in $\mathcal{G}_{\overline{X}}.$ The last equality holds by the fact that an agent’s final arm choice will always coincide with their intent, i.e. $\mathbb{P}(I=i'|X=i)=\mathbb{1}(i'=i).$
+
+**Remark.** The ETT can be estimated empirically through counterfactual-based randomization.
+
+
