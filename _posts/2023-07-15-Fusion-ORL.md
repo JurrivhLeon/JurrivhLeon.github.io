@@ -49,7 +49,7 @@ We expand the expected counterfactual $\mathbb{E}[Y_x]$ as follows:
   $$\mathbb{E}[Y_x] = \sum_{i=1}^K \mathbb{E}[Y_x|X=x_i]\mathbb{P}(X=x_i).$$
 </p>
 
-The first term $\mathbb{E}[Y_x\vert X=x_i],$ referred to as the effect of treatment on the treated (ETT), is the expectation of intent-specified counterfactual, which is maximized by RDC. The following theorem states that RDC indeed measures the counterfactual quantity of ETT.
+The LHS $\mathbb{E}[Y_x]$ can be estimated from the experimental dataset since $\mathbb{E}[Y_x]=\mathbb{E}[Y\vert\mathrm{do}(X=x)].$ On the RHS, the counterfactual term $\mathbb{E}[Y_x\vert X=x_i],$ referred to as the effect of treatment on the treated (ETT), is the expectation of intent-specified counterfactual, which is to be maximized by RDC. The following theorem states that RDC indeed measures the counterfactual quantity of ETT.
 
 **Theorem 1.** The counterfactual ETT is empirically estimable for arbitrary action-choice dimension when agents condition on their intent $I = i$ and estimate the response $Y$ to their final action choice $X = a.$
 
@@ -66,6 +66,14 @@ The first term $\mathbb{E}[Y_x\vert X=x_i],$ referred to as the effect of treatm
 
 The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \vert\ I.$ The third equality, where $I_a$ is the counterfactual version of $I$ intervening $X=a,$ follows from $I\vert X$ in $\mathcal{G}_{\overline{X}}.$ The last equality holds by the fact that an agent’s final arm choice will always coincide with their intent, i.e. $\mathbb{P}(I=i'|X=i)=\mathbb{1}(i'=i).$
 
-**Remark.** The ETT can be estimated empirically through counterfactual-based randomization.
+### Strategies for Online Agents
+Since the ETT can be estimated empirically through randomization within intent conditions, a counterfactual reward-history table can be recorded as follows.
 
-
+<center>
+|  | $I=x_1$ | $I=x_2$ | $\cdots$ | $I=x_K$ |
+| :-: | :-: | :-: | :-: | :-: |
+| $X=x_1$ | $\mathbb{E}[Y_{x_1}\vert x_1]$ | $\mathbb{E}[Y_{x_1}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_1}\vert x_K]$ |
+| $X=x_2$ | $\mathbb{E}[Y_{x_2}\vert x_1]$ | $\mathbb{E}[Y_{x_2}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_2}\vert x_K]$ |
+| $\vdots$ | $\vdots$ | $\vdots$ | $\ddots$ | $\vdots$ |
+| $X=x_K$ | $\mathbb{E}[Y_{x_K}\vert x_1]$ | $\mathbb{E}[Y_{x_K}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_K}\vert x_K]$ |
+</center>
