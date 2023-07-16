@@ -64,7 +64,7 @@ The LHS $\mathbb{E}[Y_x]$ can be estimated from the experimental dataset since $
   \end{align}$$
 </p>
 
-The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \vert\ I.$ The third equality, where $I_a$ is the counterfactual version of $I$ intervening $X=a,$ follows from $I\vert X$ in $\mathcal{G}_{\overline{X}}.$ The last equality holds by the fact that an agent’s final arm choice will always coincide with their intent, i.e. $\mathbb{P}(I=i'|X=i)=\mathbb{1}(i'=i).$
+The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \vert\ I.$ The third equality, where $I_a$ is the counterfactual version of $I$ intervening $X=a,$ follows from $I\vert X$ in $\mathcal{G}_{\overline{X}}.$ The last equality holds by the fact that an agent’s final arm choice will always coincide with their intent, i.e. $\mathbb{P}(I=i'\vert X=i)=\mathbb{1}(i'=i).$
 
 ### Strategies for Online Agents
 Since the ETT can be estimated empirically through randomization within intent conditions, a counterfactual reward-history table can be recorded as follows.
@@ -77,3 +77,4 @@ Since the ETT can be estimated empirically through randomization within intent c
 | $\vdots$ | $\vdots$ | $\vdots$ | $\ddots$ | $\vdots$ |
 | $X=x_K$ | $\mathbb{E}[Y_{x_K}\vert x_1]$ | $\mathbb{E}[Y_{x_K}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_K}\vert x_K]$ |
 </center>
+
