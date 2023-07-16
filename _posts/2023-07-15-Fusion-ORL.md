@@ -79,8 +79,28 @@ Since the ETT can be estimated empirically through randomization within intent c
 The diagonal cells can be filled since $\mathbb{E}[Y_x\vert I=x]=\mathbb{E}[Y\vert I=x]$ by the axiom of consistency, and the non-diagonal cells, though not initially known, can be learned by our agent. With finite-sample concerns, different learning strategies are proposed to exploit the datasets’ relationship while managing the uncertainty implicit in a MAB learning scenario.
 
 #### Strategy 1. Cross-Intent Learning
-Consider the expansion of counterfactual quantity $\mathbb{E}[Y_x],$ a single cell in this system can be solved；
+Consider the expansion of counterfactual quantity $\mathbb{E}[Y_x],$ a single cell in this system can be solve as:
 <p>
-   $$\mathbb{E}_{\text{XInt}}[Y_{x_r} | x_w] = \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{P}(x_w)}$$
+   $$\mathbb{E}_{\text{XInt}}[Y_{x_r} | x_w] = \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{P}(x_w)}.$$
 </p>
 
+This form provides a systematic way of learning about arm payouts across intent conditions, which is desirable because an arm pulled under one intent condition provides knowledge about the payouts of that arm under other intent conditions.
+
+#### Strategy 2. Cross-Arm Learning
+Consider a single-cell quary $\mathbb{E}[Y_{x_r}\vert x_w].$ For any three arms $x_r, x_s, x_w$ such that $r\notin\lbrace s,w\rbrace,$ it holds
+<p>
+   $$\mathbb{E}[Y_{x_r}] = \sum_{i=1}^K \mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i),\ \ \mathbb{E}[Y_{x_s}] = \sum_{i=1}^K \mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)$$
+</p>
+
+Then the query intent $\mathbb{P}(x_w)$ can be expressed as
+<p>
+   $$\begin{align}
+   \mathbb{P}(x_w) &= \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{E}[Y_{x_r}|x_w]}\\
+   &= \frac{\mathbb{E}[Y_{x_s}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)}{\mathbb{E}[Y_{x_s}|x_w]},
+   \end{align}$$
+</p>
+
+and we can solve our query in terms of the paired arm $x_s$:
+<p>
+   $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\left\lbrace\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)\right\rbrace\mathbb{E}[Y_{x_s}|x_w]}{\mathbb{E}[Y_{x_s}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)}.$$
+</p>
