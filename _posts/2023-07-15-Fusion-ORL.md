@@ -46,7 +46,7 @@ Suppose that the agent in MABUC possesses:
 
 We expand the expected counterfactual $\mathbb{E}[Y_x]$ as follows:
 <p>
-  $$\mathbb{E}[Y_x] = \sum_{i=1}^K \mathbb{E}[Y_x|X=x_i]\mathbb{P}(X=x_i).$$
+  $$\mathbb{E}[Y_x] = \sum_{i=1}^K \mathbb{E}[Y_x|X=x_i]\mathbb{P}(X=x_i). \tag{1}$$
 </p>
 
 The LHS $\mathbb{E}[Y_x]$ can be estimated from the experimental dataset since $\mathbb{E}[Y_x]=\mathbb{E}[Y\vert\mathrm{do}(X=x)].$ On the RHS, the counterfactual term $\mathbb{E}[Y_x\vert X=x_i],$ referred to as the effect of treatment on the treated (ETT), is the expectation of intent-specified counterfactual, which is to be maximized by RDC. The following theorem states that RDC indeed measures the counterfactual quantity of ETT.
@@ -81,7 +81,7 @@ The diagonal cells can be filled since $\mathbb{E}[Y_x\vert I=x]=\mathbb{E}[Y\ve
 #### Strategy 1. Cross-Intent Learning
 Consider the expansion of counterfactual quantity $\mathbb{E}[Y_x],$ a single cell in this system can be solve as:
 <p>
-   $$\mathbb{E}_{\text{XInt}}[Y_{x_r} | x_w] = \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{P}(x_w)}.$$
+   $$\mathbb{E}_{\text{XInt}}[Y_{x_r} | x_w] = \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{P}(x_w)}. \tag{2}$$
 </p>
 
 This form provides a systematic way of learning about arm payouts across intent conditions, which is desirable because an arm pulled under one intent condition provides knowledge about the payouts of that arm under other intent conditions.
@@ -102,9 +102,35 @@ Then the query intent $\mathbb{P}(x_w)$ can be expressed as
 
 and we can solve our query in terms of the paired arm $x_s$:
 <p>
-   $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\left\lbrace\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)\right\rbrace\mathbb{E}[Y_{x_s}|x_w]}{\mathbb{E}[Y_{x_s}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)}.$$
+   $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\left\lbrace\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)\right\rbrace\mathbb{E}[Y_{x_s}|x_w]}{\mathbb{E}[Y_{x_s}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)}. \tag{3}$$
 </p>
 
 This formula allows our agent to estimate $\mathbb{E}[Y_{x_r}\vert x_w]$ from samples in which any arm $x_s \neq x_r$ was pulled under the same intent $x_w.$ It can be viewed as information about $Y_{x_r}\vert x_w$ flowing from arm $x_s \neq x_r$ to $x_r$ (under intent $x_w$).
 
+A more robust estimate of the query can be obtained via inverse-variance-weighted average. Consider a function $h_ \text{XArm}$ such that $\mathbb{E}_ {\text{XArm}}[Y_ {x_ r} \vert x_ w]=h_ \text{XArm}(x_ r,x_ w,x_ s)$ and $h_ \text{XArm}$ performs the empirical evaluation of the RHS of the equation above. Moreover, let $\sigma^2_{x,i} = \widehat{\mathrm{Var}}(Y_ x\vert i)$ indicate the empirical payout variance for each arm-intent condition. Then our estimator is
+<p>
+   $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\sum_{i=1,i\neq r}^K h_\text{XArm}(x_r,x_w,x_i) / \sigma^2_{x,i}}{\sum_{i=1,i\neq r}^K 1 / \sigma^2_{x,i}}. \tag{4}$$
+</p>
+
 #### Strategy 3. The Combined Approach
+Until now, three methods are proposed to estimate an intent-specific counterfactual reward $\mathbb{E}[Y_{x_r}\vert x_s]:$
++ $\hat{\mathbb{E}}[Y_ {x_ r}\vert x_ s]$ from conditionally randomized experiment.
++ $\mathbb{E}_ {\text{XInt}}[Y_ {x_ r} \vert x_ w]$ from cross-intent learning.
++ $\mathbb{E}_ {\text{XArm}}[Y_ {x_ r} \vert x_ w]$ from cross-arm learning.
+
+While the variance of $\hat{\mathbb{E}}[Y_ {x_ r}\vert x_ s]$ can be estimated directly as the conditional sample variance $\sigma_ {x_ r,x_ s}^2=\widehat{\mathrm{Var}}(Y_ {x_ r}\vert {x_ s}),$ the cross-intent and cross-arm estimates, as combinations of sample payout estimates, have roughly estimated variances:
+<p>
+   $$\begin{align}
+   \sigma_\text{XInt}^2 &= \frac{1}{2K-1}\left[\left(\sum_{i=1,i\neq w}^K\sigma_{x_r,x_i}^2 \right) + \left(\sum_{i=1,i\neq w}^K\sigma_{x_s,x_i}^2\right) + \sigma_{x_s,x_w}^2\right],\\
+   \sigma_\text{XArm}^2 &= \frac{1}{K-1}\sum_{i=1,i\neq w}^K\sigma_{x_r,x_i}^2.
+   \end{align}$$
+</p>
+
+Then, an inverse-variance weighting scheme can be employed to leverage the three estimators:
+<p>
+   $$\begin{align}
+   &\alpha = \hat{\mathbb{E}}[Y_{x_r}\vert x_s] / \sigma_{x_r,x_s}^2 + \mathbb{E}_{\text{XInt}}[Y_{x_r} \vert x_w] / \sigma_\text{XInt}^2 + \mathbb{E}_{\text{XArm}}[Y_{x_r} \vert x_w] / \sigma_\text{XArm}^2,\\
+   &\beta = 1 / \sigma_{x_r,x_s}^2 + 1 / \sigma_\text{XInt}^2 + 1 / \sigma_\text{XArm}^2,\\
+   &\mathbb{E}_\text{combo}[Y_{x_r}\vert x_s] = \alpha / \beta.
+   \end{align}$$
+</p>
