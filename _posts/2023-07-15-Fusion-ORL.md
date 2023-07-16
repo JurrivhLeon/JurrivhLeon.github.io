@@ -134,3 +134,8 @@ Then, an inverse-variance weighting scheme can be employed to leverage the three
    &\mathbb{E}_\text{combo}[Y_{x_r}\vert x_s] = \alpha / \beta.
    \end{align}$$
 </p>
+
+## References
++ Forney, A., Pearl, J. and Bareinboim, E., 2017. Counterfactual Data-Fusion for Online Reinforcement Learners. *Proceedings of the 34th International Conference on Machine Learning*, in *Proceedings of Machine Learning Research* 70:1156-1164.
+
+
