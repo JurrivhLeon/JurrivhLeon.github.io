@@ -78,6 +78,9 @@ Since the ETT can be estimated empirically through randomization within intent c
 
 The diagonal cells can be filled since $\mathbb{E}[Y_x\vert I=x]=\mathbb{E}[Y\vert I=x]$ by the axiom of consistency, and the non-diagonal cells, though not initially known, can be learned by our agent. With finite-sample concerns, different learning strategies are proposed to exploit the datasets’ relationship while managing the uncertainty implicit in a MAB learning scenario.
 
-
-
+#### Strategy 1. Cross-Intent Learning
+Consider the expansion of counterfactual quantity $\mathbb{E}[Y_x],$ a single cell in this system can be solved；
+<p>
+   $$\mathbb{E}_{\text{XInt}}[Y_{x_r} | x_w] = \frac{\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)}{\mathbb{P}(x_w)}$$
+</p>
 
