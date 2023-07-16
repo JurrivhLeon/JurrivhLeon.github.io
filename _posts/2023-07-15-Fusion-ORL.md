@@ -69,12 +69,14 @@ The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \
 ### Strategies for Online Agents
 Since the ETT can be estimated empirically through randomization within intent conditions, a counterfactual reward-history table can be recorded as follows.
 
-<center>
 |  | $I=x_1$ | $I=x_2$ | $\cdots$ | $I=x_K$ |
 | :-: | :-: | :-: | :-: | :-: |
 | $X=x_1$ | $\mathbb{E}[Y_{x_1}\vert x_1]$ | $\mathbb{E}[Y_{x_1}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_1}\vert x_K]$ |
 | $X=x_2$ | $\mathbb{E}[Y_{x_2}\vert x_1]$ | $\mathbb{E}[Y_{x_2}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_2}\vert x_K]$ |
 | $\vdots$ | $\vdots$ | $\vdots$ | $\ddots$ | $\vdots$ |
 | $X=x_K$ | $\mathbb{E}[Y_{x_K}\vert x_1]$ | $\mathbb{E}[Y_{x_K}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_K}\vert x_K]$ |
-</center>
+
+
+
+
 
