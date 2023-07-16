@@ -104,3 +104,7 @@ and we can solve our query in terms of the paired arm $x_s$:
 <p>
    $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\left\lbrace\mathbb{E}[Y_{x_r}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_r}|x_i]\mathbb{P}(x_i)\right\rbrace\mathbb{E}[Y_{x_s}|x_w]}{\mathbb{E}[Y_{x_s}] - \sum_{i=1,i\neq w}^K\mathbb{E}[Y_{x_s}|x_i]\mathbb{P}(x_i)}.$$
 </p>
+
+This formula allows our agent to estimate $\mathbb{E}[Y_{x_r}\vert x_w]$ from samples in which any arm $x_s \neq x_r$ was pulled under the same intent $x_w.$ It can be viewed as information about $Y_{x_r}\vert x_w$ flowing from arm $x_s \neq x_r$ to $x_r$ (under intent $x_w$).
+
+#### Strategy 3. The Combined Approach
