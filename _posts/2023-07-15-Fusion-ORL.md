@@ -138,6 +138,11 @@ Then, an inverse-variance weighting scheme can be employed to leverage the three
 ### Overview
 The data fusion process can be summerized in the figure below. I borrowed it from Forney et al. (2017).
 
+<div align='center'>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/fusion.png' width='350'>
+</div>
+
+Here is an illustration.
 1. Assume that our agent has collected large samples of experimental and observational data from its environment.
 2. Unobserved confounders (UCs) in the environment are realized by the agent, though their labels and values are unknown.
 3. From these UCs and any other observed features in the environment, the agent’s heuristics suggest an action to take, i.e., its intent. With its intent known, the agent combines the data in its history (in this work, by the prescription of Strategy 3 above) to better inform its decision-making.
