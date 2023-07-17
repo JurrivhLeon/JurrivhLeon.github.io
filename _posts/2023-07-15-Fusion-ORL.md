@@ -40,7 +40,7 @@ where $Y_a$ is the counterfactual had $X$ been $a.$
 
 ## Data Fusion Strategy
 Suppose that the agent in MABUC possesses:
-+ observation of arm choices and payouts from other players, in forms of $\mathbf{E}[Y\vert X]$;
++ observation of arm choices and payouts from other players, in forms of $\mathbb{E}[Y\vert X]$;
 + the randomized experimental results from the state investigator, in forms of $\mathbb{E}[Y\vert \mathbf{do}(X)]$;
 + the knowledge to employ intent in its decision-making for choosing arms by maximizing the counterfactual RDC $\mathbb{E}[Y_a\vert X=i]$ where $i$ encodes information about unobserved confounders since $i=f_i(pa_{x},u)$.
 
