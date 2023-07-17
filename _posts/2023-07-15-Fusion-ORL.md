@@ -135,6 +135,23 @@ Then, an inverse-variance weighting scheme can be employed to leverage the three
    \end{align}$$
 </p>
 
+### Overview
+The data fusion process can be summerized in the figure below. I borrowed it from Forney et al. (2017).
+
+1. Assume that our agent has collected large samples of experimental and observational data from its environment.
+2. Unobserved confounders (UCs) in the environment are realized by the agent, though their labels and values are unknown.
+3. From these UCs and any other observed features in the environment, the agent’s heuristics suggest an action to take, i.e., its intent. With its intent known, the agent combines the data in its history (in this work, by the prescription of Strategy 3 above) to better inform its decision-making.
+4. Based on its intent and combined history, the agent commits to a final action choice.
+5. The action’s response in the environment (i.e., its reward) is observed, and the collected data point is added to the agent’s counterfactual dataset.
+
+## Thompson Sampling with RDC
+To address the MABUC problem using data fusion strategy, Forney et al. proposed an implementation of RDC using Thompson Sampling as its basis. In each round $t,$ the agent performs as follows:
++ Observe the intent $i_t$ from the realization of unobserved confounders $u_t$ in the current round;
++ For each arm $x_ r,\ r=1,\cdots,K,$ sample $\hat{E}[Y_ {x_ r}\vert i_ t]$ from $\mathrm{Beta}(s_ {x_ r,i_ t},f_ {x_ r,i_ t})$ in which $s_ {x_ r,i_ t}$ is the number of successes ($Y=1$) and $f_ {x_ r,i_ t}$ the number of failures ($Y=0$).
++ Compute the $i_t$-specific score for each arm using the combined datasets via Strategy 3.
++ According to RDC, choose the arm $x_a$ with the highest $i_t$-specific score.
++ Observe the result and update $\hat{E}[Y_ {x_ a}\vert i_ t].$
+
 ## References
 + Forney, A., Pearl, J. and Bareinboim, E., 2017. Counterfactual Data-Fusion for Online Reinforcement Learners. *Proceedings of the 34th International Conference on Machine Learning*, in *Proceedings of Machine Learning Research* 70:1156-1164.
 
