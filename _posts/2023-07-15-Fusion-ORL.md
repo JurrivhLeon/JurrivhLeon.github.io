@@ -107,7 +107,7 @@ and we can solve our query in terms of the paired arm $x_s$:
 
 This formula allows our agent to estimate $\mathbb{E}[Y_{x_r}\vert x_w]$ from samples in which any arm $x_s \neq x_r$ was pulled under the same intent $x_w.$ It can be viewed as information about $Y_{x_r}\vert x_w$ flowing from arm $x_s \neq x_r$ to $x_r$ (under intent $x_w$).
 
-A more robust estimate of the query can be obtained via inverse-variance-weighted average. Consider a function $h_ \text{XArm}$ such that $\mathbb{E}_ {\text{XArm}}[Y_ {x_ r} \vert x_ w]=h_ \text{XArm}(x_ r,x_ w,x_ s)$ and $h_ \text{XArm}$ performs the empirical evaluation of the RHS of the equation above. Moreover, let $\sigma^2_{x,i} = \widehat{\mathrm{Var}}(Y_ x\vert i)$ indicate the empirical payout variance for each arm-intent condition. Then our estimator is
+A more robust estimate of the query can be obtained via inverse-variance-weighted average. Consider a function $h_ \text{XArm}$ such that $\mathbb{E}_ {\text{XArm}}[Y_ {x_ r} \vert x_ w]=h_ \text{XArm}(x_ r,x_ w,x_ s)$ and $h_ \text{XArm}$ performs the empirical evaluation of the RHS of the equation above. Moreover, let $\sigma^2_ {x,i} = \widehat{\mathrm{Var}}(Y_ x\vert i)$ indicate the empirical payout variance for each arm-intent condition. Then our estimator is
 <p>
    $$\mathbb{E}_{\text{XArm}}[Y_{x_r} | x_w] = \frac{\sum_{i=1,i\neq r}^K h_\text{XArm}(x_r,x_w,x_i) / \sigma^2_{x,i}}{\sum_{i=1,i\neq r}^K 1 / \sigma^2_{x,i}}. \tag{4}$$
 </p>
