@@ -69,14 +69,14 @@ The second equality follows from $\lbrace Y_x\rbrace_{x\in\mathcal{X}}\perp X\ \
 ### Strategies for Online Agents
 Since the ETT can be estimated empirically through randomization within intent conditions, a counterfactual dataset can be recorded as follows.
 
-|  | $I=x_1$ | $I=x_2$ | $\cdots$ | $I=x_K$ |
+|  | $i=x_1$ | $i=x_2$ | $\cdots$ | $i=x_K$ |
 | :-: | :-: | :-: | :-: | :-: |
 | $X=x_1$ | $\mathbb{E}[Y_{x_1}\vert x_1]$ | $\mathbb{E}[Y_{x_1}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_1}\vert x_K]$ |
 | $X=x_2$ | $\mathbb{E}[Y_{x_2}\vert x_1]$ | $\mathbb{E}[Y_{x_2}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_2}\vert x_K]$ |
 | $\vdots$ | $\vdots$ | $\vdots$ | $\ddots$ | $\vdots$ |
 | $X=x_K$ | $\mathbb{E}[Y_{x_K}\vert x_1]$ | $\mathbb{E}[Y_{x_K}\vert x_2]$ | $\cdots$ | $\mathbb{E}[Y_{x_K}\vert x_K]$ |
 
-The diagonal cells can be filled since $\mathbb{E}[Y_x\vert I=x]=\mathbb{E}[Y\vert I=x]$ by the axiom of consistency, and the non-diagonal cells, though not initially known, can be learned by our agent. With finite-sample concerns, different learning strategies are proposed to exploit the datasets’ relationship while managing the uncertainty implicit in a MAB learning scenario.
+The diagonal cells can be filled since $\mathbb{E}[Y_x\vert X=x]=\mathbb{E}[Y\vert X=x]$ by the axiom of consistency, and the non-diagonal cells, though not initially known, can be learned by our agent. With finite-sample concerns, different learning strategies are proposed to exploit the datasets’ relationship while managing the uncertainty implicit in a MAB learning scenario.
 
 #### Strategy 1. Cross-Intent Learning
 Consider the expansion of counterfactual quantity $\mathbb{E}[Y_x],$ a single cell in this system can be solve as:
