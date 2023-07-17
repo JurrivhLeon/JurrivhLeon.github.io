@@ -152,10 +152,10 @@ Here is an illustration.
 ## Thompson Sampling with RDC
 To address the MABUC problem using data fusion strategy, Forney et al. proposed an implementation of RDC using Thompson Sampling as its basis. In each round $t,$ the agent performs as follows:
 + Observe the intent $i_t$ from the realization of unobserved confounders $u_t$ in the current round;
-+ For each arm $x_ r,\ r=1,\cdots,K,$ sample $\hat{E}[Y_ {x_ r}\vert i_ t]$ from $\mathrm{Beta}(s_ {x_ r,i_ t},f_ {x_ r,i_ t})$ in which $s_ {x_ r,i_ t}$ is the number of successes ($Y=1$) and $f_ {x_ r,i_ t}$ the number of failures ($Y=0$).
++ For each arm $x_ r,\ r=1,\cdots,K,$ sample $\hat{\mathbb{E}}[Y_ {x_ r}\vert i_ t]$ from distribution $\mathrm{Beta}(s_ {x_ r,i_ t},f_ {x_ r,i_ t})$ in which $s_ {x_ r,i_ t}$ is the number of successes ($Y=1$) and $f_ {x_ r,i_ t}$ the number of failures ($Y=0$).
 + Compute the $i_t$-specific score for each arm using the combined datasets via Strategy 3.
 + According to RDC, choose the arm $x_a$ with the highest $i_t$-specific score.
-+ Observe the result and update $\hat{E}[Y_ {x_ a}\vert i_ t].$
++ Observe the result and update $\hat{\mathbb{E}}[Y_ {x_ a}\vert i_ t].$
 
 ## References
 + Forney, A., Pearl, J. and Bareinboim, E., 2017. Counterfactual Data-Fusion for Online Reinforcement Learners. *Proceedings of the 34th International Conference on Machine Learning*, in *Proceedings of Machine Learning Research* 70:1156-1164.
