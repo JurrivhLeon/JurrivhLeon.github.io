@@ -139,7 +139,7 @@ Then, an inverse-variance weighting scheme can be employed to leverage the three
 The data fusion process can be summerized in the figure below. I borrowed it from Forney et al. (2017).
 
 <div align='center'>
-   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/fusion.png' width='350'>
+   <img src='https://github.com/JurrivhLeon/JurrivhLeon.github.io/raw/main/figs/fusion.png' width='450'>
 </div>
 
 Here is an illustration.
