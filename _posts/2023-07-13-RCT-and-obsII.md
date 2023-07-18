@@ -22,7 +22,7 @@ Here $\tau^{\mathcal{O}}(x) = \mathbb{E}[Y\vert X=x,A=1] - \mathbb{E}[Y\vert X=x
   $$\tau(x) = \tau^\mathcal{O}(x) + \theta^\top x,\ \theta\in\mathbb{R}^p.$$
 </p>
 
-Now, we use a reweighting approach to obtain the expression of $\tau$：
+Now, we use a reweighting approach to obtain the expression of $\tau$:
 <p>
   $$\tau^*_i = \left(\frac{A_i}{e(X_i)} - \frac{1-A_i}{1-e(X_i)}\right)Y_i.$$
 </p>
