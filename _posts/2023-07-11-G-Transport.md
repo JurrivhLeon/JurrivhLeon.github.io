@@ -8,7 +8,7 @@ We consider the set of heterogenous domains $\Pi=\lbrace\pi_1,\cdots,\pi_n\rbrac
 
 In the following discussion, we denote $\Delta_i$ as the discrepancy between domain $\pi_i$ and $\pi^*.$
 
-**Definition 2** (Selection Diagram). Given a collection of discrepancies $\boldsymbol{\Delta}=\lbrace\Delta_1,\cdots,\Delta_n\rbrace$ with respect to graph $\mathcal{G}=\langle\mathbf{V},\mathbf{E}\rangle,$ let $\mathcal{S}=\lbrace S_V: V\in\bigcup_{i\in[n]}\Delta_i\rbrace$ be the set of selection variables. Then, the selection diagram $\mathcal{G}^\boldsymbol{\Delta}$ is defined as
+**Definition 2** (Selection Diagram). Given a collection of discrepancies $\boldsymbol{\Delta}=\lbrace\Delta_1,\cdots,\Delta_n\rbrace$ with respect to graph $\mathcal{G}=\langle\mathbf{V},\mathbf{E}\rangle,$ let $\mathbf{S}=\lbrace S_V: V\in\bigcup_{i\in[n]}\Delta_i\rbrace$ be the set of selection variables. Then, the selection diagram $\mathcal{G}^\boldsymbol{\Delta}$ is defined as
 <p>
   $$\mathcal{G}^\boldsymbol{\Delta}:=\langle\mathbf{V}\cup\mathbf{S},\mathbf{E}\cup\lbrace S_V\to V\rbrace_{V:S_V\in\mathbf{S}}\rangle.$$
 </p>
