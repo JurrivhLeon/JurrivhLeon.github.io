@@ -4,7 +4,7 @@ This blog continues to discuss the topic of combining causal knowledge from mult
 ## Formulation
 We consider the set of heterogenous domains $\Pi=\lbrace\pi_1,\cdots,\pi_n\rbrace,$ where each domain associates with a SCM compatible with a common diagram $\mathcal{G}.$ Then, we fix the domain $\pi_0$ as the domain in which we are interested in answerinf a causal query. For emphasis we write $\pi_0$ as $\pi^{* }.$
 
-**Definition 1** (Domain discrepancy). Let $\pi$ and $\pi$ be domains compatible with a causal DAG $\mathcal{G}.$ We denote $\Delta\subseteq\mathbf{V}$ as a set of variables such that, for each $V\in\Delta,$ there might exist a discrepancy; either $f_ V\neq f^{* }_ V,$ or $p(\mathbf{U}_ V) \neq p^{* }(\mathbf{U}_ V).$
+**Definition 1** (Domain discrepancy). Let $\pi$ and $\pi^{* }$ be domains compatible with a causal DAG $\mathcal{G}.$ We denote $\Delta\subseteq\mathbf{V}$ as a set of variables such that, for each $V\in\Delta,$ there might exist a discrepancy; either $f_ V\neq f^{* }_ V,$ or $p(\mathbf{U}_ V) \neq p^{* }(\mathbf{U}_ V).$
 
 In the following discussion, we denote $\Delta_i$ as the discrepancy between domain $\pi_i$ and $\pi^*.$
 
