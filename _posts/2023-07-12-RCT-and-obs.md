@@ -186,7 +186,7 @@ Based on the calibration weights, the CW estimator is given by
 </p>
 
 **Remark.**
-+ Minimizing the negative entropy ensures that the empirical distribution of calibration weights is not too far away from the uniform distribution. The balancing constraint requires that the weighted mean of $\mathrm{g}$ in RCT sample is equal to the mean in the observational sample, as an estimator of $\mathbb{E}[g(X)].$
++ Minimizing the negative entropy ensures that the empirical distribution of calibration weights is not too far away from the uniform distribution. The balancing constraint requires that the weighted mean of $\mathbf{g}$ in RCT sample is equal to the mean in the observational sample, as an estimator of $\mathbb{E}[\mathbf{g}(X)].$
 + Analogous to the AIPSW estimator, an augmented calibration weighting (ACW) estimator can be constructed cby combining CW and plug-in g-formula.
 
 ## References
