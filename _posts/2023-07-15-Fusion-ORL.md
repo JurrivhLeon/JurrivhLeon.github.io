@@ -41,7 +41,7 @@ where $Y_a$ is the counterfactual had $X$ been $a.$
 ## Data Fusion Strategy
 Suppose that the agent in MABUC possesses:
 + observation of arm choices and payouts from other players, in forms of $\mathbb{E}[Y\vert X]$;
-+ the randomized experimental results from the state investigator, in forms of $\mathbb{E}[Y\vert \mathbf{do}(X)]$;
++ the randomized experimental results from the state investigator, in forms of $\mathbb{E}[Y\vert \mathrm{do}(X)]$;
 + the knowledge to employ intent in its decision-making for choosing arms by maximizing the counterfactual RDC $\mathbb{E}[Y_a\vert X=i]$ where $i$ encodes information about unobserved confounders since $i=f_i(pa_{x},u)$.
 
 We expand the expected counterfactual $\mathbb{E}[Y_x]$ as follows:
@@ -59,7 +59,7 @@ The LHS $\mathbb{E}[Y_x]$ can be estimated from the experimental dataset since $
   \mathbb{E}[Y_a|X=i] &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|X=i,I=i']\mathbb{P}(I=i'|X=i)\\
   &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|I=i']\mathbb{P}(I=i'|X=i)\\
   &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y_a|I_a=i']\mathbb{P}(I=i'|X=i)\\
-  &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y|\mathrm{do}(A=a),I=i']\mathbb{P}(I=i'|X=i)\\
+  &= \sum_{i'\in\mathcal{X}}\mathbb{E}[Y|\mathrm{do}(X=a),I=i']\mathbb{P}(I=i'|X=i)\\
   &= \mathbb{E}[Y|\mathrm{do}(A=a),I=i].
   \end{align}$$
 </p>
