@@ -164,8 +164,7 @@ Since $S = \prod_{i\in[m]} S[i],$ CF-UCB-VI indeed reduces the cost of learning 
 
 Furthermore, assume norm bounds:
 + $\sup_{(s,\mathbf{z})\in\mathcal{S}\times\mathcal{Z}}\Vert \phi(s,\mathbf{z})\Vert_2 \leq 1;$
-+ $\left\Vert \int_\mathcal{S}f\mathrm{d}\mu(s)\right\Vert_2 \leq \sqrt{d}\ \ \forall \Vert f\Vert_\infty \geq 1;$
-+ $\Vert \omega\Vert_2 \leq W.$
++ $\max\left\lbrace\left\Vert\mu(\mathcal{S})\right\Vert_2,\Vert\omega\Vert_2\right\rbrace \leq \sqrt{d},\ \text{where}\  \Vert\mu(\mathcal{S})\Vert_2 = \int_\mathcal{S}\Vert\mu(s)\Vert_2\mathrm{d}s;$
 
 For every $(s,a)\in\mathcal{S}\times\mathcal{A},$ it holds
 <p>
