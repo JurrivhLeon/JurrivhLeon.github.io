@@ -1,7 +1,7 @@
 # Support Points
 My notes for reading *Support Points*, by Simon Mak and V. Roshan Joseph. This paper proposed a method for compacting a continuous probability distribution into a set of representative points called support points.
 
-## Energy Distance and Support Points
+## Energy Distance 
 **Definition 1** (Energy distance). Let $F$ and $G$ be two distributions on a non-empty set $\mathcal{X}\subset\mathbb{R}^p$ with finite means, and let $\mathbf{X},\mathbf{X}'\overset{\text{i.i.d.}}{\sim} G$ and $\mathbf{Y},\mathbf{Y}'\overset{\text{i.i.d.}}{\sim} F.$ The energe distance between $F$ and $G$ is defined as
 <p>$$\mathcal{E}(F,G) := 2\mathbb{E}\Vert\mathbf{X}-\mathbf{Y}\Vert_2 - \mathbb{E}\Vert\mathbf{X}-\mathbf{X}'\Vert_2 - \mathbb{E}\Vert\mathbf{Y} - \mathbf{Y}'\Vert_2.$$</p>
 
@@ -46,6 +46,7 @@ $$\begin{align*}
 \mathcal{E}(F,G) = 2\Vert F-G\Vert_{L_2(\mathbb{R})}^2.
 \end{align*}$$
 
+## Support Points
 
 When $G=F_ n$ is the empirical distribution function (e.d.f.) for $\lbrace\mathbf{x}_ i\rbrace_ {i=1}^n\subseteq\mathcal{X},$ this energy distance becomes
 <p>$$\mathcal{E}(F,F_n) := \frac{2}{n}\sum_{i=1}^n\mathbb{E}\Vert\mathbf{x}_i-\mathbf{Y}\Vert_2 - \frac{1}{n^2}\sum_{1=1}^n\sum_{j=1}^n\mathbb{E}\Vert\mathbf{x}_i-\mathbf{x}_j\Vert_2 - \mathbb{E}\Vert\mathbf{Y} - \mathbf{Y}'\Vert_2.$$</p>
@@ -57,3 +58,5 @@ We assume that $F$ is a continuous distribution with finite mean. The energe dis
   \lbrace\xi_i\rbrace_{i=1}^n &\in \underset{\mathbf{x}_1,\cdots,\mathbf{x}_n\in\mathcal{X}}{\mathrm{argmin}} \mathcal{E}(F,F_n)\\
   &= \underset{\mathbf{x}_1,\cdots,\mathbf{x}_n\in\mathcal{X}}{\mathrm{argmin}} \left\lbrace\frac{2}{n}\sum_{i=1}^n\mathbb{E}\Vert\mathbf{x}_i-\mathbf{Y}\Vert_2 - \frac{1}{n^2}\sum_{1=1}^n\sum_{j=1}^n\mathbb{E}\Vert\mathbf{x}_i-\mathbf{x}_j\Vert_2\right\rbrace.
   \end{align*}$$</p>
+
+Also, in the univariate setting of $p=1$, the support points of $F$ are equal to the point set with minimum $L_2$-discrepancy, since $\mathcal{E}(F,F_n)=2\Vert F-F_n\Vert_{L_2(\mathbb{R})}$. But in multivariate setting of $p>1$, the equivalence does not generally hold.
