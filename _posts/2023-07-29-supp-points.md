@@ -90,7 +90,7 @@ Denote the space of $d$-variate polynomials of absolute degree at most $m$ by $\
 
 **Definition 5** (Native space). Let $\Phi:\mathbb{R}^d\to\mathbb{R}$ be a c.p.d. kernel of order $m\geq 1$ and $\mathcal{P}=\pi_{m-1}(\mathbb{R}^d)$ be the space of polynomials with degree less than $m.$ Define the linear space
 <p>$$\begin{align*}
-  \mathcal{F}_\Phi(\mathbb{R}^d) = \left\lbrace f(\cdot) = \sum_{j=1}^N\zeta_j\Phi(\mathbf{x}_j - \cdot):\begin{array}
+  F_\Phi(\mathbb{R}^d) = \left\lbrace f(\cdot) = \sum_{j=1}^N\zeta_j\Phi(\mathbf{x}_j - \cdot):\begin{array}
   \ N\in\mathbb{N},\boldsymbol{\zeta}\in\mathbb{R}^N,\mathbf{x}_1,\cdots,\mathbf{x}_N\in\mathbb{R}^d,\\
   \sum_{j=1}^N\zeta_jp(\mathbf{x}_j)=0\ \forall p\in\mathcal{P}
   \end{array}\right\rbrace
@@ -101,9 +101,38 @@ equipped with the inner product
   \left\langle \sum_{j=1}^M\zeta_j\Phi(\mathbf{x}_j - \cdot), \sum_{k=1}^N\zeta_k^\prime\Phi(\mathbf{y}_k - \cdot)\right\rangle_\mathbf{\Phi} = \sum_{j=1}^M\sum_{k=1}^N\zeta_j\zeta_k^\prime\Phi(\mathbf{x}_j - \mathbf{y}_k).
 \end{align*}$$</p>
 
-Let $\lbrace\boldsymbol{\psi}_ 1,\cdots,\boldsymbol{\psi}_ m\rbrace\subset\mathbb{R}^d, m=\mathrm{dim}(\mathcal{P})$ be a $\mathcal{P}$-unisolvent subset, and $\lbrace{p_1,\cdots,p_m}$ be a Lagrange basis of $\mathcal{P}$ for such a subset. Furthermore, define the projective map $\Pi_ \mathcal{P}:C(\mathbb{R}^p)\to\mathcal{P}$ as $\Pi_ \mathcal{P}(f) = \sum_ {k=1}^m f(\boldsymbol{\psi}_ k)p_ k,$ and the map $\mathcal{R}:\mathcal{F}_ \Phi(\mathbb{R}^d)\to C(\mathbb{R}^d)$ as $\mathcal{R}[f] (\mathbf{x}) = f(\mathbf{x}) - \Pi_ \mathcal{P}f(\mathbf{x}).$ The native space for $\Phi$ is then defined as
+Let $\mathcal{F}_ \Phi(\mathbb{R}^d)$ be the completion of $F_ \Phi(\mathbb{R}^d).$ Let $\lbrace\boldsymbol{\psi}_ 1,\cdots,\boldsymbol{\psi}_ m\rbrace\subset\mathbb{R}^d, m=\mathrm{dim}(\mathcal{P})$ be a $\mathcal{P}$-unisolvent subset, and $\lbrace p_1,\cdots,p_m\rbrace$ be a Lagrange basis of $\mathcal{P}$ for such a subset. Furthermore, define the projective map $\Pi_ \mathcal{P}:C(\mathbb{R}^d)\to\mathcal{P}$ as $\Pi_ \mathcal{P}(f) = \sum_ {k=1}^m f(\boldsymbol{\psi}_ k)p_ k,$ and the map $\mathcal{R}:\mathcal{F}_ \Phi(\mathbb{R}^d)\to C(\mathbb{R}^d)$ as $\mathcal{R}[f] (\mathbf{x}) = f(\mathbf{x}) - \Pi_ \mathcal{P}f(\mathbf{x}).$ The native space for $\Phi$ is then defined as
 <p>$$\mathcal{N}_\Phi(\mathbb{R}^d) = \mathcal{R}(\mathcal{F}_\Phi\left(\mathbb{R}^p)\right) + \mathcal{P},$$</p>
 
 and is equipped with the semi-inner product
 <p>$$\langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} = \left\langle \mathcal{R}^{-1}(f - \Pi_\mathcal{P}f), \mathcal{R}^{-1}(g - \Pi_\mathcal{P}g)\right\rangle_\Phi.$$</p>
+
+**Remark.** Generally, $\Phi(x-\cdot)\in\mathcal{N}_\Phi(\mathbb{R}^d)$ does not hold. Instead, we define a new functional
+<p>$$\delta_{(\mathbf{x})} = \delta_\mathbf{x} - \sum_{l=1}^mp_l(x)\delta_{\boldsymbol{\psi}_l}$$</p>
+
+and a function
+<p>$$G(\cdot,\mathbf{x}) = \Phi(\mathbf{x}-\cdot) - \sum_{l=1}^m p_l(\mathbf{x})\Phi(\boldsymbol{\psi}_l - \cdot).$$</p>
+
+Then we have that for any $f\in\mathcal{F}_\Phi(\mathbb{R}^d),$
+<p>$$\mathcal{R}[f] (\mathbf{x}) = \delta_{(\mathbf{x})}[f] = \langle f,G(\cdot,\mathbf{x})\rangle_\Phi.$$</p>
+
+Moreover, since $\lbrace p_1,\cdots,p_m\rbrace$ is a Lagrange basis of $\mathcal{P},$ we have
+<p>$$\delta_{(x)} [p] = 0\ \ \forall p\in\mathcal{P},$$</p>
+
+hence $G(\cdot,\mathbf{x})\in\mathcal{N}_\Phi(\mathbb{R}^d).$
+
+Now we consider an arbitrary $f\in\mathcal{N}_\Phi(\mathbb{R}^d)$ for any $\mathbb{x}\in\mathbb{R}^d.$
+
+**Theorem 3** (From native space to RKHS). The native space $\mathcal{N}_ \Phi(\mathbb{R}^p)$ for a c.p.d. kernel $\Phi$ carries the inner product
+<p>$$\langle f,g\rangle = \langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + \sum_{l=1}^m f(\boldsymbol{\psi}_l)g(\boldsymbol{\psi}_l).$$</p>
+
+With this inner product, $\mathcal{N}_\Phi(\mathbb{R}^d)$ becomes a RKHS with reproducing kernel:
+<p>$$\begin{align*}
+  k(\mathbf{x},\mathbf{y}) &= \Phi(\mathbf{x}-\mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{x})\Phi(\boldsymbol{\psi}_l - \mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{y})\Phi(\mathbf{x} - \boldsymbol{\psi}_l)\\
+  &\qquad + \sum_{l=1}^m\sum_{l'=1}^m p_l(\mathbf{x})p_{l'}(\mathbf{y})\Phi(\boldsymbol{\psi}_l - \boldsymbol{\psi}_{l'}) + \sum_{l=1}^m p_l(\mathbf{x})p_l(\mathbf{y}).
+\end{align*}$$</p>
+
+
+
+
 
