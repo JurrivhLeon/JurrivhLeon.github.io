@@ -12,16 +12,17 @@ $$\mathcal{E}(F,G) = \frac{\Gamma\left(\frac{d+1}{2}\right)}{\pi^{(d+1)/2}}\int_
 Hence we have $\mathcal{E}(F,G)\geq 0$ with equality holding if and only if $F=G.$
 
 Now we consider the $L_2$ distance between $F$ and $G$ in the univariate case:
-
-$$\begin{align*}
+<p>
+  $$\begin{align*}
 \Vert F-G\Vert_{L_2(\mathbb{R})}^2 &= \int_\mathbb{R} \left[F(t) - G(t)\right]^2\mathrm{d}t\\
 &= \int_{-\infty}^{+\infty} [F(t)(1-G(t)) + G(t)(1-F(t))\\
 &\qquad\qquad - F(t)(1-F(t)) - G(t)(1-G(t))]\mathrm{d}t;\\
 \end{align*}$$
+</p>
 
 Moreover, for independent $X,X^\prime\sim G,\ Y,Y^\prime\sim F,$ we have
-
-$$\begin{align*}
+<p>
+  $$\begin{align*}
 \mathbb{E}\vert X - Y\vert &= \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\vert x-y\vert\ \mathrm{d}G(x)\mathrm{d}F(y)\\
 &=\int_{-\infty}^{+\infty}\int_{y}^{+\infty}(x-y)\mathrm{d}G(x)\mathrm{d}F(y) + \int_{-\infty}^{+\infty}\int_{-\infty}^{y}(y-x)\mathrm{d}G(x)\mathrm{d}F(y)\\
 &=\int_{-\infty}^{+\infty}\int_{-\infty}^{x}x\mathrm{d}F(y)\mathrm{d}G(x) - \int_{-\infty}^{+\infty}\int_{y}^{+\infty}y\mathrm{d}G(x)\mathrm{d}F(y)\\
@@ -32,6 +33,7 @@ $$\begin{align*}
 &= -\int_{-\infty}^{+\infty}t\mathrm{d}\lbrace F(t)(1-G(t)) + (1-F(t))G(t)\rbrace\\
 &= \int_{-\infty}^{+\infty}\lbrace F(t)(1-G(t)) + (1-F(t))G(t)\rbrace\mathrm{d}t,
 \end{align*}$$
+</p>
 
 likewise,
 
@@ -69,5 +71,23 @@ This theorem states that support points are representative of the target dstribu
 + If $g:\mathcal{X}\to\mathbb{R}$ is continuous, then $g(\mathbf{X}_ n)\overset{d}{\to}g(\mathbf{X}).$
 + If $g:\mathcal{X}\to\mathbb{R}$ is continuous and bounded, then $\lim_ {n\to\infty}\mathbb{E}[g(\mathbf{X}_ n)] = \mathbb{E}[g(\mathbf{X})].$
 
+This directly follows from the continuous mapping theorem and Portmanteau theorem.
 
+### A Koksma-Hlawka-like bound
+First we introduce the concept of conditionally positive definite (c.p.d.) kernels.
+
+**Definition 3** (c.p.d. kernel). A continuous function $\Phi:\mathbb{R}^p\to\mathbb{R}$ is a c.p.d. kernel of order $m$ if for all $N\in\mathbb{N},$ all pairwise distinct $\mathbf{x}_ 1,\cdots,\mathbf{x}_ N$ and all $\zeta\in\mathbb{R}^p\backslash\lbrace 0\rbrace$ satisfying $\sum_ {j=1}^N \zeta_ jp(\mathbf{x}_ j)$ for all real-valued polynomials of degree less than $m,$ the quadratic form
+
+$$\begin{align*}\sum_{j=1}^N\sum_{k=1}^N \zeta_j\zeta_k\Phi(\mathbf{x}_j - \mathbf{x}_k) > 0.\end{align*}$$
+
+Denote the space of $d$-variate polynomials of absolute degree at most $m$ by $\pi_m(\mathbb{R}^d).$ Then dimensionality of $\pi_m(\mathbb{R}^d)$ is
+<p>$$\begin{align*}
+  \mathrm{dim}\left(\pi_m(\mathbb{R}^d)\right) = \sum_{k=0}^m \begin{pmatrix} k+d-1 \\ d-1\end{pmatrix} = \begin{pmatrix} m+d \\ d\end{pmatrix}.
+\end{align*}$$</p>
+
+**Definition 4** (Unisolvent Set). The points $\mathbf{X}=\lbrace\mathbf{x}_1,\cdots,\mathbf{N}\rbrace\subset\mathbb{R}^d$ with $N\geq\mathrm{dim}\left(\pi_m(\mathbb{R}^d)\right)$ are called $\pi_m(\mathbb{R}^d)$-unisolvent if the zero polynomial is the only polynomial from $\pi_m(\mathbb{R}^d)$ that vanishes on all of them.
+
+**Definition 4** (Native space). Let $\Phi:\mathbb{R}^p\to\mathbb{R}$ be a c.p.d. kernel of order $m\geq 1$ and $\mathcal{P}=\pi_{m-1}(\mathbb{R}^p)$ be the space of polynomials with degree less than $m.$ Define the linear space
+<p>$$\begin{align*}
+\end{align*}$$</p>
 
