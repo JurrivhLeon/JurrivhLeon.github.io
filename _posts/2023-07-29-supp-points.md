@@ -60,3 +60,14 @@ We assume that $F$ is a continuous distribution with finite mean. The energe dis
   \end{align*}$$</p>
 
 Also, in the univariate setting of $p=1$, the support points of $F$ are equal to the point set with minimum $L_2$-discrepancy, since $\mathcal{E}(F,F_n)=2\Vert F-F_n\Vert_{L_2(\mathbb{R})}$. But in multivariate setting of $p>1$, the equivalence does not generally hold.
+
+**Theorem 1** (Distributional convergence). Let $\mathbf{X}\sim F$ and $\mathbf{X}_ n\sim F_ n,$ where $F_ n$ is the e.d.f. of the support points. Then $\mathbf{X}_n\overset{d}{\to}\mathbf{X}.$
+
+This theorem states that support points are representative of the target dstribution $F$ as the number of points $n$ increases. Furthermore, the consistency of support points can be established:
+
+**Corollary 1** (Consistency). Let $\mathbf{X}\sim F$ and $\mathbf{X}_ n\sim F_ n,$ where $F_ n$ is the e.d.f. of the support points.
++ If $g:\mathcal{X}\to\mathbb{R}$ is continuous, then $g(\mathbf{X}_ n)\overset{d}{\to}g(\mathbf{X}).$
++ If $g:\mathcal{X}\to\mathbb{R}$ is continuous and bounded, then $\lim_ {n\to\infty}\mathbb{E}[g(\mathbf{X}_ n)] = \mathbb{E}[g(\mathbf{X})].$
+
+
+
