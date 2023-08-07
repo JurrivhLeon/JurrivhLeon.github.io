@@ -114,16 +114,42 @@ and a function
 <p>$$G(\cdot,\mathbf{x}) = \Phi(\mathbf{x}-\cdot) - \sum_{l=1}^m p_l(\mathbf{x})\Phi(\boldsymbol{\psi}_l - \cdot).$$</p>
 
 Then we have that for any $f\in\mathcal{F}_\Phi(\mathbb{R}^d),$
-<p>$$\mathcal{R}[f] (\mathbf{x}) = \delta_{(\mathbf{x})}[f] = \langle f,G(\cdot,\mathbf{x})\rangle_\Phi.$$</p>
+<p>$$\mathcal{R}[f] (\mathbf{x}) = \delta_{(\mathbf{x})}[f] = f(\mathbf{x})-\sum_{l=1}^m f(\boldsymbol{\psi}_l)p_l(\mathbf{x}) = \langle f,G(\cdot,\mathbf{x})\rangle_\Phi.$$</p>
+
+For any $\boldsymbol{\psi}_ l,$ we have that $G(\boldsymbol{\psi}_ l) = 0,$ then $\Pi_ \mathcal{P}\mathcal{R}[f] = \sum_ {l=1}^m \mathcal{R}[f] (\boldsymbol{\psi}_ l)p_ l = 0.$ Therefore, for any $h\in\mathcal{N}_ \Phi(\mathbb{R}^d)$ such that $h=\mathcal{R}[f] + p$ with $f\in\mathcal{F}_ \Phi(\mathbb{R}^d)$ and $p\in\mathcal{P},$ we have $\Pi_ \mathcal{P}\ h = p,$ and
+<p>$$f = \mathcal{R}^{-1}[h - \Pi_\mathcal{P}h].$$</p>
+
+(This expression requires that $\mathcal{R}$ is injective. To show this, it suffices to show that $\mathcal{R}[f] = 0$ if and only if $f=0.$)
 
 Moreover, since $\lbrace p_1,\cdots,p_m\rbrace$ is a Lagrange basis of $\mathcal{P},$ we have
-<p>$$\delta_{(x)} [p] = 0\ \ \forall p\in\mathcal{P},$$</p>
+<p>$$\delta_{(\mathbf{x})} [p] = 0\ \ \forall p\in\mathcal{P},$$</p>
 
-hence $G(\cdot,\mathbf{x})\in\mathcal{N}_\Phi(\mathbb{R}^d).$
+hence $G(\cdot,\mathbf{x})\in\mathcal{F}_ \Phi(\mathbb{R}^d),$ and $G(\cdot,\mathbf{x}) = \mathcal{R}^{-1}[G(\cdot,\mathbf{x}) - \Pi_ \mathcal{P}G(\cdot,\mathbf{x})].$
 
-Now we consider an arbitrary $f\in\mathcal{N}_\Phi(\mathbb{R}^d)$ for any $\mathbb{x}\in\mathbb{R}^d.$
+**Theorem 3.** With the conclusions above, $h\in\mathcal{N}_ \Phi(\mathbb{R}^d)$ admits the following decomposition:
+<p>$$\begin{align*}
+  h(\mathbf{x}) &= \mathcal{R}^{-1}[h-\Pi_\mathcal{P}h](\mathbf{x}) + \Pi_\mathcal{P}h(\mathbf{x})\\
+  &= \left\langle\mathcal{R}^{-1}[h-\Pi_\mathcal{P}h], G(\cdot,x)\right\rangle_\Phi + \Pi_\mathcal{P}h(\mathbf{x})\\
+  &= \left\langle\mathcal{R}^{-1}[h-\Pi_\mathcal{P}h], \mathcal{R}^{-1}[G(\cdot,\mathbf{x}) - \Pi_ \mathcal{P}G(\cdot,\mathbf{x})]\right\rangle_\Phi + \Pi_\mathcal{P}h(\mathbf{x})\\
+  &= \left\langle h, G(\cdot,\mathbf{x})\right\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + \Pi_\mathcal{P}h(\mathbf{x}).
+\end{align*}$$</p>
 
-**Theorem 3** (From native space to RKHS). The native space $\mathcal{N}_ \Phi(\mathbb{R}^p)$ for a c.p.d. kernel $\Phi$ carries the inner product
+Now suppose for any $\mathbf{x}\in\mathbb{R}^d,$
+<p>$$k(\cdot,\mathbf{x}) := \mathcal{R}[G(\cdot,\mathbf{x})] + \sum_{l=1}^m p_l(\cdot)p_l(\mathbf{x}) \in \mathcal{R}\left(\mathcal{F}_\Phi(\mathbb{R}^d)\right) + \mathcal{P},$$</p>
+
+then we have
+<p>$$\mathcal{R}^{-1}[k(\cdot,\mathbf{x}) - \Pi_\mathcal{P}k(\cdot,\mathbf{x})] = \mathcal{R}^{-1}\left[\mathcal{R}[G(\cdot,\mathbf{x})]\right] = G(\cdot,\mathbf{x}).$$</p>
+
+Then for any $h\in\mathcal{N}_ \Phi(\mathbb{R}^d),$ we have the reproducing property:
+<p>$$\begin{align*}
+  h(\mathbf{x}) &= \left\langle\mathcal{R}^{-1}[h - \Pi_\mathcal{P}h], G(\cdot,x)\right\rangle_\Phi + \Pi_\mathcal{P}h(\mathbf{x})\\
+  &= \left\langle\mathcal{R}^{-1}[h - \Pi_\mathcal{P}h], \mathcal{R}^{-1}[k(\cdot,\mathbf{x}) - \Pi_\mathcal{P}k(\cdot,\mathbf{x})]\right\rangle_\Phi + \Pi_\mathcal{P}h(\mathbf{x})\\
+  &= \left\langle h,k(\cdot,\mathbf{x})\right\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + \sum_{l=1}^m h(\boldsymbol{\psi}_l)k(\boldsymbol{\psi}_l,\mathbf{x}).
+\end{align*}$$</p>
+
+Thus we can transform a native space into a RKHS.
+
+**Theorem 3** (From native space to RKHS). The native space $\mathcal{N}_ \Phi(\mathbb{R}^d)$ for a c.p.d. kernel $\Phi$ carries the inner product
 <p>$$\langle f,g\rangle = \langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + \sum_{l=1}^m f(\boldsymbol{\psi}_l)g(\boldsymbol{\psi}_l).$$</p>
 
 With this inner product, $\mathcal{N}_\Phi(\mathbb{R}^d)$ becomes a RKHS with reproducing kernel:
@@ -131,8 +157,6 @@ With this inner product, $\mathcal{N}_\Phi(\mathbb{R}^d)$ becomes a RKHS with re
   k(\mathbf{x},\mathbf{y}) &= \Phi(\mathbf{x}-\mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{x})\Phi(\boldsymbol{\psi}_l - \mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{y})\Phi(\mathbf{x} - \boldsymbol{\psi}_l)\\
   &\qquad + \sum_{l=1}^m\sum_{l'=1}^m p_l(\mathbf{x})p_{l'}(\mathbf{y})\Phi(\boldsymbol{\psi}_l - \boldsymbol{\psi}_{l'}) + \sum_{l=1}^m p_l(\mathbf{x})p_l(\mathbf{y}).
 \end{align*}$$</p>
-
-
 
 
 
