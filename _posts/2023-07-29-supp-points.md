@@ -198,5 +198,18 @@ Then part (a) can be derived from the GFT. For part (b), note the kernel $\Phi(\
 with the reproducing kernel being
 <p>$$\tilde{k}(\mathbf{x},\mathbf{y}) = \Phi(\mathbf{x}-\mathbf{y}) - \Phi(\boldsymbol{\psi} - \mathbf{y}) - \Phi(\mathbf{x}-\boldsymbol{\psi}) + 1.$$</p>
 
+Now we bound the integration error:
+<p>$$\begin{align*}
+  I(g;F,F_n) &= \left\vert\int g(\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\vert\\
+  &= \left\vert\int \langle g(\cdot),\tilde{k}(\cdot,\mathbf{x})\rangle_{\mathcal{G}_d}\mathrm{d}[F-F_n](\mathbf{x})\right\vert\\
+  &= \left\vert\left\langle g(\cdot),\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\rangle_{\mathcal{G}_d}\right\vert\\
+  &= \left\Vert g(\cdot)\right\Vert_{\mathcal{G}_d}\left\Vert\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\Vert_{\mathcal{G}_d},
+\end{align*}$$</p>
 
-
+and
+<p>$$\begin{align*}
+  \left\Vert\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\Vert_{\mathcal{G}_d} &= \sqrt{\left\langle\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x}),\int\tilde{k}(\cdot,\mathbf{y})\mathrm{d}[F-F_n](\mathbf{y})\right\rangle_{\mathcal{G}_d}}\\
+  &= \sqrt{\int\int\tilde{k}(\mathbf{x},\mathbf{y})\mathrm{d}[F-F_n](\mathbf{x})\mathrm{d}[F-F_n](\mathbf{y})}\\
+  &= \sqrt{\int\int\Phi(\mathbf{x}-\mathbf{y})\mathrm{d}[F-F_n](\mathbf{x})\mathrm{d}[F-F_n](\mathbf{y})}\\
+  &= \sqrt{\mathcal{E}(F,F_n)}.
+\end{align*}$$</p>
