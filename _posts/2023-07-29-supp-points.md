@@ -217,6 +217,6 @@ and
 where the third equality follows from 
 <p>$$\int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = \int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = \int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = 0.$$</p>
 
-Then we connect the integration $I(g;F,F_ n)$ with the energy distance $\mathcal{E}(F,F_ n)$ for all intergrands $g$ in the function space $\mathcal{G}_ d.$
+Then we connect the integration $I(g;F,F_ n)$ with the energy distance $\mathcal{E}(F,F_ n)$ for all integrands $g$ in the function space $\mathcal{G}_ d.$
 
-
+## Convergence Rate
