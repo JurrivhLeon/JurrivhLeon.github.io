@@ -211,5 +211,12 @@ and
   \left\Vert\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\Vert_{\mathcal{G}_d} &= \sqrt{\left\langle\int\tilde{k}(\cdot,\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x}),\int\tilde{k}(\cdot,\mathbf{y})\mathrm{d}[F-F_n](\mathbf{y})\right\rangle_{\mathcal{G}_d}}\\
   &= \sqrt{\int\int\tilde{k}(\mathbf{x},\mathbf{y})\mathrm{d}[F-F_n](\mathbf{x})\mathrm{d}[F-F_n](\mathbf{y})}\\
   &= \sqrt{\int\int\Phi(\mathbf{x}-\mathbf{y})\mathrm{d}[F-F_n](\mathbf{x})\mathrm{d}[F-F_n](\mathbf{y})}\\
-  &= \sqrt{\mathcal{E}(F,F_n)}.
+  &= \sqrt{\mathcal{E}(F,F_n)},
 \end{align*}$$</p>
+
+where the third equality follows from 
+<p>$$\int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = \int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = \int\Phi(\mathbf{x}-\boldsymbol{\psi})\mathrm{d}[F-F_n] (\mathbf{x}) = 0.$$</p>
+
+Then we connect the integration $I(g;F,F_ n)$ with the energy distance $\mathcal{E}(F,F_ n)$ for all intergrands $g$ in the function space $\mathcal{G}_ d.$
+
+
