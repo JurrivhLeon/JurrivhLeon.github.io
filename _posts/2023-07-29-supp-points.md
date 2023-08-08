@@ -73,7 +73,8 @@ This theorem states that support points are representative of the target dstribu
 
 This directly follows from the continuous mapping theorem and Portmanteau theorem.
 
-### A Koksma-Hlawka-like bound
+## A Koksma-Hlawka-like bound
+### Conditionally positive definite kernel
 First we introduce the concept of conditionally positive definite (c.p.d.) kernels.
 
 **Definition 3** (c.p.d. kernel). A continuous function $\Phi:\mathbb{R}^d\to\mathbb{R}$ is a c.p.d. kernel of order $m$ if for all $N\in\mathbb{N},$ all pairwise distinct $\mathbf{x}_ 1,\cdots,\mathbf{x}_ N$ and all $\boldsymbol{\zeta}\in\mathbb{R}^d\backslash\lbrace 0\rbrace$ satisfying $\sum_ {j=1}^N \zeta_ jp(\mathbf{x}_ j)$ for all real-valued polynomials of degree less than $m,$ the quadratic form
@@ -81,14 +82,24 @@ First we introduce the concept of conditionally positive definite (c.p.d.) kerne
   $$\begin{align*}\sum_{j=1}^N\sum_{k=1}^N \zeta_j\zeta_k\Phi(\mathbf{x}_j - \mathbf{x}_k) > 0.\end{align*}$$
 </p>
 
+**Definition 4** (Generalized Fourier transform, GFT). Suppose $\Phi:\mathbb{R}^d\to\mathbb{C}$ is continuous and slowly increasing. A measurable function $\widehat{\Phi}\in L_2^{\mathrm{loc}}(\mathbb{R}^d\backslash\lbrace 0\rbrace)$ is called the generalized Fourier transform of $f$ if $\exists m\in\frac{1}{2}\mathbb{N}_0$ such that
+<p>$$\int_{\mathbb{R}^d}\Phi(\mathbf{x})\widehat{\gamma}(\mathbf{x})\mathrm{d}\mathbf{x} = \int_{\mathbb{R}^d}\widehat{\Phi}(\omega)\gamma(\omega)\mathrm{d}\omega$$</p>
+
+is satisfied for all $\gamma\in\mathcal{S}_ {2m},$ where $\widehat{\gamma}$ denotes the standard Fourier transform of $\gamma,$ $\mathcal{S}_ {2m}=\lbrace\gamma\in\mathcal{S}:\gamma(\omega)=\mathcal{O}(\Vert\omega\Vert_2^{2m})\ \text{for}\ \Vert\omega\Vert_2\to 0\rbrace,$ and $\mathcal{S}$ denote the Schiwartz space.
+
+With the GFT, c.p.d. kernels can be characterized:
+
+**Theorem 3.** Suppose $\Phi: \mathbb{R}^d\to\mathbb{C}$ is continuous, slowly increasing, and possesses a GFT $\widehat{\Phi}$ of order $m/2,$ which is continuous on $\mathbb{R}^d\backslash\lbrace 0\rbrace.$ Then $\Phi$ is a c.p.d. kernel of order $m$ if and only if $\widehat{\Phi}$ is nonnegative and nonvanishing.
+
+### Native space
 Denote the space of $d$-variate polynomials of absolute degree at most $m$ by $\pi_m(\mathbb{R}^d).$ Then dimensionality of $\pi_m(\mathbb{R}^d)$ is
 <p>$$\begin{align*}
   \mathrm{dim}\left(\pi_m(\mathbb{R}^d)\right) = \sum_{k=0}^m \begin{pmatrix} k+d-1 \\ d-1\end{pmatrix} = \begin{pmatrix} m+d \\ d\end{pmatrix}.
 \end{align*}$$</p>
 
-**Definition 4** (Unisolvent Set). The points $\mathbf{X}=\lbrace\mathbf{x}_1,\cdots,\mathbf{N}\rbrace\subset\mathbb{R}^d$ with $N\geq\mathrm{dim}\left(\pi_m(\mathbb{R}^d)\right)$ are called $\pi_m(\mathbb{R}^d)$-unisolvent if the zero polynomial is the only polynomial from $\pi_m(\mathbb{R}^d)$ that vanishes on all of them.
+**Definition 5** (Unisolvent Set). The points $\mathbf{X}=\lbrace\mathbf{x}_1,\cdots,\mathbf{N}\rbrace\subset\mathbb{R}^d$ with $N\geq\mathrm{dim}\left(\pi_m(\mathbb{R}^d)\right)$ are called $\pi_m(\mathbb{R}^d)$-unisolvent if the zero polynomial is the only polynomial from $\pi_m(\mathbb{R}^d)$ that vanishes on all of them.
 
-**Definition 5** (Native space). Let $\Phi:\mathbb{R}^d\to\mathbb{R}$ be a c.p.d. kernel of order $m\geq 1$ and $\mathcal{P}=\pi_{m-1}(\mathbb{R}^d)$ be the space of polynomials with degree less than $m.$ Define the linear space
+**Definition 6** (Native space). Let $\Phi:\mathbb{R}^d\to\mathbb{R}$ be a c.p.d. kernel of order $m\geq 1$ and $\mathcal{P}=\pi_{m-1}(\mathbb{R}^d)$ be the space of polynomials with degree less than $m.$ Define the linear space
 <p>$$\begin{align*}
   F_\Phi(\mathbb{R}^d) = \left\lbrace f(\cdot) = \sum_{j=1}^N\zeta_j\Phi(\mathbf{x}_j - \cdot):\begin{array}
   \ N\in\mathbb{N},\boldsymbol{\zeta}\in\mathbb{R}^N,\mathbf{x}_1,\cdots,\mathbf{x}_N\in\mathbb{R}^d,\\
@@ -126,7 +137,7 @@ Moreover, since $\lbrace p_1,\cdots,p_m\rbrace$ is a Lagrange basis of $\mathcal
 
 hence $G(\cdot,\mathbf{x})\in\mathcal{F}_ \Phi(\mathbb{R}^d),$ and $G(\cdot,\mathbf{x}) = \mathcal{R}^{-1}[G(\cdot,\mathbf{x}) - \Pi_ \mathcal{P}G(\cdot,\mathbf{x})].$
 
-**Theorem 3.** With the conclusions above, $h\in\mathcal{N}_ \Phi(\mathbb{R}^d)$ admits the following decomposition:
+**Theorem 4.** With the conclusions above, $h\in\mathcal{N}_ \Phi(\mathbb{R}^d)$ admits the following decomposition:
 <p>$$\begin{align*}
   h(\mathbf{x}) &= \mathcal{R}^{-1}[h-\Pi_\mathcal{P}h](\mathbf{x}) + \Pi_\mathcal{P}h(\mathbf{x})\\
   &= \left\langle\mathcal{R}^{-1}[h-\Pi_\mathcal{P}h], G(\cdot,x)\right\rangle_\Phi + \Pi_\mathcal{P}h(\mathbf{x})\\
@@ -149,7 +160,7 @@ Then for any $h\in\mathcal{N}_ \Phi(\mathbb{R}^d),$ we have the reproducing prop
 
 Thus we can transform a native space into a RKHS.
 
-**Theorem 3** (From native space to RKHS). The native space $\mathcal{N}_ \Phi(\mathbb{R}^d)$ for a c.p.d. kernel $\Phi$ carries the inner product
+**Theorem 5** (From native space to RKHS). The native space $\mathcal{N}_ \Phi(\mathbb{R}^d)$ for a c.p.d. kernel $\Phi$ carries the inner product
 <p>$$\langle f,g\rangle = \langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + \sum_{l=1}^m f(\boldsymbol{\psi}_l)g(\boldsymbol{\psi}_l).$$</p>
 
 With this inner product, $\mathcal{N}_\Phi(\mathbb{R}^d)$ becomes a RKHS with reproducing kernel:
@@ -157,6 +168,35 @@ With this inner product, $\mathcal{N}_\Phi(\mathbb{R}^d)$ becomes a RKHS with re
   k(\mathbf{x},\mathbf{y}) &= \Phi(\mathbf{x}-\mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{x})\Phi(\boldsymbol{\psi}_l - \mathbf{y}) - \sum_{l=1}^m p_l(\mathbf{y})\Phi(\mathbf{x} - \boldsymbol{\psi}_l)\\
   &\qquad + \sum_{l=1}^m\sum_{l'=1}^m p_l(\mathbf{x})p_{l'}(\mathbf{y})\Phi(\boldsymbol{\psi}_l - \boldsymbol{\psi}_{l'}) + \sum_{l=1}^m p_l(\mathbf{x})p_l(\mathbf{y}).
 \end{align*}$$</p>
+
+###  A Koksma-Hlawka-like bound
+
+**Theorem 6** (Koksma-Hlawka). Let $\lbrace\mathbf{x}_ i\rbrace_ {i=1}^n\subseteq\mathcal{X}\subseteq\mathbb{R}^d$ be a point set with e.d.f. $F_ n,$ and let $\Phi(\mathbf{x}) = -\Vert\mathbf{x}\Vert_ 2.$ Then $\Phi$ is a c.p.d. kernel of order 1. Moreover:
+(a) The native space $\mathcal{N}_ \Phi(\mathbb{R}^d)$ can be explicitly written as
+<p>$$\mathcal{N}_\Phi(\mathbb{R}^d) = \left\lbrace
+  f\in C(\mathbb{R}^d):\begin{eqnarray}
+  &\text{(G1)}&\ \exists m\in\mathbb{N}_0\ \text{s.t.}\ f(\mathbf{x})=\mathcal{O}(\Vert\mathbf{x}\Vert_2^m)\ \text{for}\ \Vert\mathbf{x}\Vert_2\to\infty\\
+  &\text{(G2)}&\ f\ \text{has a GFT}\ \widehat{f}\ \text{of order}\ 1/2\\
+  &\text{(G3)}&\ \int\Vert\omega\Vert_2^{p+1}\vert\widehat{f}(\omega)\vert^2\mathrm{d}\omega < \infty
+  \end{eqnarray}\right\rbrace,$$</p>
+
+with semi-inner product given by
+<p>$$\langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} = \left\lbrace\Gamma\left(\frac{d+1}{2}\right)2^d\pi^{\frac{d-1}{2}}\right\rbrace^{-1}\int\widehat{f}(\omega)\overline{\widehat{g}(\omega)}\Vert\omega\Vert_2^{d+1}\mathrm{d}\omega.$$</p>
+
+(b) Consider the function space $\mathcal{G}_ d=\mathcal{N}_ \Phi(\mathbb{R}^d)$ equipped with inner product
+<p>$$\langle f,g\rangle_{\mathcal{G}_d} = \langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + f(\boldsymbol{\psi})g(\boldsymbol{\psi})$$</p>
+
+for a fixed choice of $\boldsymbol{\psi}\in\mathcal{X}.$ Then $(\mathcal{G}_ d,\langle\cdot,\cdot\rangle_ {\mathcal{G}_ d})$ is a RKHS, and for any integrand $g\in\mathcal{G}_ d,$ the integration error is bounded by
+<p>$$ I(g;F,F_n) := \left\vert\int g(\mathbf{x})\mathrm{d}[F-F_n](\mathbf{x})\right\vert \leq \Vert g\Vert_{\mathcal{G}_d}\sqrt{\mathcal{E}(F,F_n)}.$$</p>
+
+**Remark.** The conditionally positive-definiteness of $\Phi(\mathbf{x}) = -\Vert\mathbf{x}\Vert_2$ is characterized by its GFT of order 1/2:
+<p>$$\widehat{\Phi}(\mathbf{x}) = \frac{2^{d/2}\Gamma\left(\frac{d+1}{2}\right)}{\sqrt{\pi}}\Vert\omega\Vert_2^{-(d+1)},\ \omega\in\mathbb{R}^d\backslash\lbrace 0\rbrace.$$</p>
+
+Then part (a) can be derived from the GFT. For part (b), note the kernel $\Phi(\cdot)$ is c.p.d. of order 1, the $\mathcal{P}=\pi_0(\mathbb{R}^d)=\lbrace f(\mathbf{x})\equiv C\ \text{for some}\ C\in\mathbb{R}\rbrace.$ Hence any choice of $\boldsymbol{\psi}\in\mathcal{X}$ is $\mathcal{P}$-unisolvent, with the Lagrange basis $p(\cdot)\equiv 1.$ By Theorem 5, the native space $\mathcal{N}_ \Phi(\mathbb{R}^d)$ can be transformed into a RKHS $\mathcal{G}_ d$ by equipping a new inner product
+<p>$$\langle f,g\rangle_{\mathcal{G}_d} = \langle f,g\rangle_{\mathcal{N}_\Phi(\mathbb{R}^d)} + f(\boldsymbol{\psi})g(\boldsymbol{\psi}),$$</p>
+
+with the reproducing kernel being
+<p>$$\tilde{k}(\mathbf{x},\mathbf{y}) = \Phi(\mathbf{x}-\mathbf{y}) - \Phi(\boldsymbol{\psi} - \mathbf{y}) - \Phi(\mathbf{x}-\boldsymbol{\psi}) + 1.$$</p>
 
 
 
