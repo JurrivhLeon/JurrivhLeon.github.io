@@ -226,4 +226,5 @@ Then we connect the integration $I(g;F,F_ n)$ with the energy distance $\mathcal
 If (i) $\mathbb{E}\left[\Vert\mathbf{Y}\Vert_ 2^3\right] < \infty,$ and (ii) the weighted eigenvalues of $k$ under $F$ satisfy $\sum_ {l=1}^\infty \lambda_ l^{1/\alpha} < \infty$ for some $\alpha > 1,$ then
 <p>$$I(g;F,F_n) = \mathcal{O}\left\lbrace\Vert g\Vert_{\mathcal{G}_d}n^{-1/2}(\log n)^{-(1-\alpha)/2}\right\rbrace,$$</p>
 
-with constant terms depending on $\alpha$ and $d.$
+with constant terms depending on $\alpha$ and $d.$ Here the weighted eigenvalue sequence of $k$ under $F$ is the decreasing sequence $(\lambda_ l)_ {l=1}^\infty$ satisfying 
+<p>$$\lambda_ l\phi_ l(\mathbf{x}) = \mathbb{E}[k(\mathbf{x},\mathbf{Y})\phi_ l(\mathbf{Y})],\ \ \mathbb{E}[\phi_l(\mathbf{Y})^2]=1.$$</p>
