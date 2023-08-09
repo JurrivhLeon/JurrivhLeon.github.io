@@ -220,3 +220,10 @@ where the third equality follows from
 Then we connect the integration $I(g;F,F_ n)$ with the energy distance $\mathcal{E}(F,F_ n)$ for all integrands $g$ in the function space $\mathcal{G}_ d.$
 
 ## Convergence Rate
+**Theorem 7** (Error rate). Let $F_ n$ be the e.d.f. for support points $\lbrace\boldsymbol{\xi}_ i\rbrace_ {i=1}^n,$ and let $g\in\mathcal{G}_ d.$ Define the kernel
+<p>$$k(\mathbf{x},\mathbf{y}) = \mathbb{E}\Vert\mathbf{x} - \mathbf{Y}\Vert_2 + \mathbb{E}\Vert\mathbf{y} - \mathbf{Y}\Vert_2 - \mathbb{E}\Vert\mathbf{Y} - \mathbf{Y}^\prime\Vert_2 - \mathbb{E}\Vert\mathbf{x} - \mathbf{y}\Vert_2,\ \ \mathbf{Y},\mathbf{Y}^\prime\overset{\mathrm{i.i.d.}}{\sim} F.$$</p>
+
+If (i) $\mathbb{E}\left[\Vert\mathbf{Y}\Vert_ 2^3\right] < \infty,$ and (ii) the weighted eigenvalues of $k$ under $F$ satisfy $\sum_ {l=1}^\infty \lambda_ l^{1/\alpha} < \infty$ for some $\alpha > 1,$ then
+<p>$$I(g;F,F_n) = \mathcal{O}\left\lbrace\Vert g\Vert_{\mathcal{G}_d}n^{-1/2}(\log n)^{-(1-\alpha)/2}\right\rbrace,$$</p>
+
+with constant terms depending on $\alpha$ and $d.$
