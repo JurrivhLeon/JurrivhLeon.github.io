@@ -8,3 +8,5 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 [Energy distance, maximum mean discrepancy and f-divergence](https://jurrivhleon.github.io/notes/energy_fdiv.pdf)
 
 [A derivation of non-central chi-square density](https://jurrivhleon.github.io/notes/noncentral_chisq.pdf)
+
+[Transportability and data fusion in causal inference](https://jurrivhleon.github.io/notes/tdfci.pdf)
