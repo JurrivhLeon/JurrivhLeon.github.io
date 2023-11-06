@@ -10,3 +10,5 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 [A derivation of non-central chi-square density](https://jurrivhleon.github.io/notes/noncentral_chisq.pdf)
 
 [Transportability and data fusion in causal inference](https://jurrivhleon.github.io/notes/tdfci.pdf)
+
+[Selected topics of spatial statistics](https://jurrivhleon.github.io/notes/spatial_stat.pdf)
