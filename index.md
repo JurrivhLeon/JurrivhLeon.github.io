@@ -5,6 +5,8 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 ## Notes
 [Sub-Gaussian variables and empirical processes](https://jurrivhleon.github.io/notes/subgaussian_concentration.pdf)
 
+[Conformal prediction](https://jurrivhleon.github.io/notes/conformal.pdf)
+
 [Energy distance, maximum mean discrepancy and f-divergence](https://jurrivhleon.github.io/notes/energy_fdiv.pdf)
 
 [A derivation of non-central chi-square density](https://jurrivhleon.github.io/notes/noncentral_chisq.pdf)
