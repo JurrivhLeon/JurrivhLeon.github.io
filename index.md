@@ -14,3 +14,6 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 [Transportability and data fusion in causal inference](https://jurrivhleon.github.io/notes/tdfci.pdf)
 
 [Selected topics of spatial statistics](https://jurrivhleon.github.io/notes/spatial_stat.pdf)
+
+[General topology: technical notes](https://jurrivhleon.github.io/notes/basic_topology.pdf)
+
