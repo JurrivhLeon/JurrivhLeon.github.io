@@ -17,3 +17,5 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 
 [General topology: technical notes](https://jurrivhleon.github.io/notes/basic_topology.pdf)
 
+[Fundementals of functional analysis](https://jurrivhleon.github.io/notes/functional_analysis.pdf)
+
