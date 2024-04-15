@@ -1,8 +1,8 @@
 # Kalman Filtering
 ## One-dimensional Case
-**Setting.** We consider the following dynamics:
-<p>$$\begin{aligned}\textit{State:}\quad &X_0\sim N(0,\nu^2),\ X_{n+1}=aX_n+\xi_n,\ \ \forall n\geq 0,\ \ \textit{where}\ \ \xi_n\sim N(0,\sigma^2)\ \ i.i.d.,\\
-  \textit{Observation:}\quad &Y_{n} = cX_{n} + \eta_{n},\ \ \forall n\geq 1,\ \ \textit{where}\ \ \eta_n\sim N(0,\gamma^2)\ \ i.i.d..
+**Setting.** We consider the following dynamics, where $X_0$, $(\xi_ n)_ {n=0}^\infty$ and $(\eta_ n)_ {n=1}^\infty$ are independent Gaussian variables:
+<p>$$\begin{aligned}&\textit{State:}\quad X_0\sim N(0,\nu^2),\ X_{n+1}=aX_n+\xi_n,\ \ \forall n\geq 0,\ \ \textit{where}\ \ \xi_n\sim N(0,\sigma^2)\ \ i.i.d.,\\
+  &\textit{Observation:}\quad Y_{n} = cX_{n} + \eta_{n},\ \ \forall n\geq 1,\ \ \textit{where}\ \ \eta_n\sim N(0,\gamma^2)\ \ i.i.d..
   \end{aligned}$$</p>
   
 Our goal is to find a recursive formula for computing these conditional expectations:
@@ -21,3 +21,15 @@ The second equality holds because $\xi_n\perp (Y_1,\cdots,Y_n)$.
 
 As a result, $Z_n$ is orthogonal to the Gaussian space spanned by $\lbrace Y_1,\cdots,Y_{n-1}\rbrace,$ and we have the following decomposition:
 $$\mathrm{span}\lbrace Y_1,\cdots,Y_n\rbrace = \mathrm{span}\lbrace Y_1,\cdots,Y_{n-1}\rbrace \oplus \mathrm{span}\lbrace Z_n\rbrace.$$
+
+According to the properties of projection in Hilbert spaces, we have
+<p>$$\begin{aligned}\mathbb{E}[X_n|Y_1,\cdots,Y_n]=\mathbb{E}[X_n|Y_1,\cdots,Y_{n-1}]+\mathbb{E}[X_n|Z_n]\quad \Rightarrow\quad M_n=\widehat{M}_n + \frac{\langle X_n,Z_n\rangle}{\Vert Z_n\Vert^2}Z_n.\end{aligned}$$</p>
+
+**Step III.** Define the projection error $P_n=\mathbb{E}[(X_n-\widehat{M}_n)^2] = \langle X_n, X_n-\widehat{M}_n\rangle$ for all $n\geq 1$. We can express $\langle X_n,Z_n\rangle$ and $\Vert Z_n\Vert^2$ in terms of $P_n$:
+<p>$$\begin{aligned}\langle X_n,Z_n\rangle=\mathbb{E}\left[X_n\left(cX_n+\eta_n - c\widehat{M}_n\right)\right] = \mathbb{E}[X_n\eta_n] + c\mathbb{E}\left[X_n\left(X_n-\widehat{M}_n\right)\right]=cP_n,\\
+  \Vert Z_n\Vert^2 = \mathbb{E}\left[\left(cX_n+\eta_n - c\widehat{M}_n\right)^2\right] = c^2\mathbb{E}\left[\left(X_n - \widehat{M}_n\right)^2\right]+\mathbb{E}[\eta_n^2] = c^2P_n+\gamma^2.\end{aligned}$$</p>
+
+Plugging-in to the result we obtain in Steps I and II, we have
+<p>$$\begin{aligned} M_n=\widehat{M}_n + \frac{cP_n}{c^2P_n+\gamma^2}Z_n,\ \ \forall n\geq 1,\quad\Rightarrow\quad \widehat{M}_{n+1}=a\left(\widehat{M}_n + \frac{cP_n}{c^2P_n+\gamma^2}Z_n\right).\end{aligned}$$</p>
+
+**Step IV.**
