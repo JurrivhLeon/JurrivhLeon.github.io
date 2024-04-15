@@ -100,5 +100,5 @@ where the last equality follows from Sherman-Morrison-Woodbury formula.
 
 where the last equality follows from Sherman-Morrison-Woodbury formula. To summarize, we have
 <p>$$\begin{aligned}
-  P_1 = \Sigma + \Phi^\top C_0\Phi,\quad P_{n+1}=\Sigma + \Phi^\top\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}\Phi,\\
-  \widehat{m}_1 = 0,\quad m_n = \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\quad \widehat{m}_{n+1}=\Phi m_n. \end{aligned}$$</p>
+  &P_1 = \Sigma + \Phi^\top C_0\Phi,\quad P_{n+1}=\Sigma + \Phi^\top\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}\Phi,\\
+  &\widehat{m}_1 = 0,\quad m_n = \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\quad \widehat{m}_{n+1}=\Phi m_n. \end{aligned}$$</p>
