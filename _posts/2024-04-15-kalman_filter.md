@@ -60,7 +60,7 @@ Here $(x_n)_ {n=0}^\infty$ are $p$-dimensional variables, $(y_n)_ {n=1}^\infty$ 
   \end{aligned}$$</p>
 
 **Step I.** We have $\widehat{m}_{n+1}=\Phi m_n$ for all $n\geq 0$:
-<p>$$\begin{aligned} \mathbb{E}[\Phi x_n+\xi_n|Y_1,\cdots,Y_n] = \mathbb{E}[\Phi x_n+\xi_n|y_1,\cdots,y_n] = \Phi\mathbb{E}[x_n|y_1,\cdots,y_n].\end{aligned}$$</p>
+<p>$$\begin{aligned} \mathbb{E}[\Phi x_n+\xi_n|y_1,\cdots,y_n] = \mathbb{E}[\Phi x_n+\xi_n|y_1,\cdots,y_n] = \Phi\mathbb{E}[x_n|y_1,\cdots,y_n].\end{aligned}$$</p>
 
 The second equality holds because $\xi_n\perp (y_1,\cdots,y_n)$.
 
@@ -83,11 +83,12 @@ The maximand is a convex function of $A$, and we can let its derivative vanish t
 <p>$$\begin{aligned} \mathbb{E}[x_nz_n^\top]=P_nH^\top,\quad \mathbb{E}[z_nz_n^\top]= \Gamma + HP_nH^\top.\end{aligned}$$</p>
 
 This gives the formulas to compute $m_n$ and $\widehat{m}_n$ respectively:
-<p>$$\begin{aligned} m_n &= \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\\
-  &= \widehat{m}_n + (P_n^{-1}+H^\top\Gamma^{-1}H)^{-1}H^\top\Gamma^{-1}(y_n-Hm_n);\\
+<p>$$\begin{aligned} m_n &= \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-H\widehat{m}_n),\\
+  &= \widehat{m}_n + (P_n^{-1}+H^\top\Gamma^{-1}H)^{-1}H^\top\Gamma^{-1}(y_n-H\widehat{m}_n)\\
+  &= (P_n^{-1}+H^\top\Gamma^{-1}H)^{-1}(H^\top\Gamma^{-1}y_n+P_n^{-1}\widehat{m}_n);\\
   \widehat{m}_{n+1}&=\Phi m_n.\end{aligned}$$</p>
 
-where the last equality follows from Sherman-Morrison-Woodbury formula.
+where the second equality follows from Sherman-Morrison-Woodbury formula.
 
 **Step IV.** It remains to find the recursion formula for $P_n$. For $n=1$, we have $P_1=\mathbb{E}[(\Phi x_0+\xi_0)(\Phi x_0+\xi_0)^\top]= \Sigma+\Phi C_0\Phi^\top$. Furthermore,
 <p>$$\begin{aligned}P_{n+1}&=\mathbb{E}\left[\left(\Phi x_n + \xi_n - \Phi m_n\right)\left(\Phi x_n + \xi_n - \Phi m_n\right)^\top\right]\\
@@ -101,9 +102,22 @@ where the last equality follows from Sherman-Morrison-Woodbury formula.
 where the last equality follows from Sherman-Morrison-Woodbury formula. To summarize, we have
 <p>$$\begin{aligned}
   &P_1 = \Sigma + \Phi^\top C_0\Phi,\quad P_{n+1}=\Sigma + \Phi^\top\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}\Phi,\\
-  &\widehat{m}_1 = 0,\quad m_n = \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\quad \widehat{m}_{n+1}=\Phi m_n. \end{aligned}$$</p>
+  & m_n = (P_n^{-1}+H^\top\Gamma^{-1}H)^{-1}(H^\top\Gamma^{-1}y_n+P_n^{-1}\widehat{m}_n),\quad \widehat{m}_{n+1}=\Phi m_n. \end{aligned}$$</p>
+
+Note we let $m_0=0$ by converntion.
 
 ### Posterior Distribution
-
+Since all related variables fall in a Gaussian space, we can determine the conditional distributions of state variables:
+<p>$$\begin{aligned}
+  x_n|y_1,\cdots,y_{n-1}\sim N(\widehat{m}_n,\widehat{C}_n),\quad &\textit{where}\quad \widehat{C}_n=P_n,\\
+  x_n|y_1,\cdots,y_n\sim N\left(m_n,C_n\right),\quad &\textit{where}\quad C_n=\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}.\end{aligned}$$</p>
+  
 ### A Sequential Optimization Viewpoint
+The update of $\widehat{m}_n$ and $m_n$ can be viewed as a sequential optimization:
+<p>$$\begin{aligned}
+  \textit{Predict}:\quad \widehat{m}_n=\Phi m_{n-1},\\
+  \textit{Model-Data Compromise}:\quad J_n(m)=\frac{1}{2}\left\Vert m - \widehat{m}_n\right\Vert_{\widehat{C}_n}^2 + \frac{1}{2}\left\Vert y_n-Hm\right\Vert_{\Gamma}^2,\\
+  \textit{Optimize}:\quad m_n=\underset{m\in\mathbb{R}^p}{\mathrm{argmin}}\ J_n(m).\\
+  \end{aligned}$$</p>
 
+  
