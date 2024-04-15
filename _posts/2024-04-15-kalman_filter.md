@@ -83,7 +83,11 @@ The maximand is a convex function of $A$, and we can let its derivative vanish t
 <p>$$\begin{aligned} \mathbb{E}[x_nz_n^\top]=P_nH^\top,\quad \mathbb{E}[z_nz_n^\top]= \Gamma + HP_nH^\top.\end{aligned}$$</p>
 
 This gives the formulas to compute $m_n$ and $\widehat{m}_n$ respectively:
-<p>$$\begin{aligned} m_n = \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\quad \widehat{m}_{n+1}=\Phi m_n.\end{aligned}$$</p>
+<p>$$\begin{aligned} m_n &= \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\\
+  &= \widehat{m}_n + (P_n^{-1}+H^\top\Gamma^{-1}H)^{-1}H^\top\Gamma^{-1}(y_n-Hm_n);\\
+  \widehat{m}_{n+1}&=\Phi m_n.\end{aligned}$$</p>
+
+where the last equality follows from Sherman-Morrison-Woodbury formula.
 
 **Step IV.** It remains to find the recursion formula for $P_n$. For $n=1$, we have $P_1=\mathbb{E}[(\Phi x_0+\xi_0)(\Phi x_0+\xi_0)^\top]= \Sigma+\Phi C_0\Phi^\top$. Furthermore,
 <p>$$\begin{aligned}P_{n+1}&=\mathbb{E}\left[\left(\Phi x_n + \xi_n - \Phi m_n\right)\left(\Phi x_n + \xi_n - \Phi m_n\right)^\top\right]\\
@@ -92,4 +96,9 @@ This gives the formulas to compute $m_n$ and $\widehat{m}_n$ respectively:
   &=\Sigma + \Phi^\top\left(P_n-\mathbb{E}[x_nz_n^\top]\left(\mathbb{E}[z_nz_n^\top]\right)^{-1}\mathbb{E}[z_nx_n^\top]\right)\Phi\\
   &=\Sigma + \Phi^\top\left(P_n-P_nH^\top(\Gamma+HP_nH^\top)^{-1}HP_n\right)\Phi\\
   &=\Sigma + \Phi^\top\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}\Phi.
-  \end{aligned}$$</p>
+  \end{aligned},$$</p>
+
+where the last equality follows from Sherman-Morrison-Woodbury formula. To summarize, we have
+<p>$$\begin{aligned}
+  P_1 = \Sigma + \Phi^\top C_0\Phi,\quad P_{n+1}=\Sigma + \Phi^\top\left(P_n^{-1}+H^\top\Gamma^{-1}H\right)^{-1}\Phi,\\
+  \widehat{m}_1 = 0,\quad m_n = \widehat{m}_n + P_nH^\top\left(\Gamma + HP_nH^\top\right)^{-1}(y_n-Hm_n),\quad \widehat{m}_{n+1}=\Phi m_n. \end{aligned}$$</p>
