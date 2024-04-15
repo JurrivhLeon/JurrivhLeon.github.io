@@ -114,11 +114,11 @@ Since all related variables fall in a Gaussian space, we can determine the condi
 
 Using this notation, we can write the update criterion of Kalman filter as follows:
 <p>$$\begin{aligned}
-  &\widehat{C}_n = \Sigma + H C_{n-1}^{-1}\Phi^\top,\quad \widehat{m}_n =\Phi m_{n-1},\\
+  &\widehat{C}_n = \Sigma + \Phi C_{n-1}^{-1}\Phi^\top,\quad \widehat{m}_n =\Phi m_{n-1},\\
   &C_n=\widehat{C}_n-\widehat{C}_nH_n^\top(\Gamma + H_n\widehat{C}_n H_n^\top)^{-1}H_n\widehat{C}_n,\\
   &m_n = \widehat{m}_n + \widehat{C_n}H^\top\left(\Gamma + H\widehat{C_n}H^\top\right)^{-1}(y_n-H\widehat{m}_n),
   \end{aligned}$$</p>
-or
+or the inerse formula given by Sherman-Morrison-Woodbury formula:
 <p>$$\begin{aligned}
   C_n^{-1}=\widehat{C}_n^{-1}+H^\top\Gamma^{-1}H,\quad m_n=C_n(H^\top\Gamma^{-1}y_n+\widehat{C}_n^{-1}\widehat{m}_n).\end{aligned}$$</p>
   
