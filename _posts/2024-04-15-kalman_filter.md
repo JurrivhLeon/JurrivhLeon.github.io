@@ -106,7 +106,7 @@ where the last equality follows from Sherman-Morrison-Woodbury formula. To summa
 
 Note we let $m_0=0$ by converntion.
 
-### Posterior Distribution
+### Filtering Distribution
 Since all related variables fall in a Gaussian space, we can determine the conditional distributions of state variables:
 <p>$$\begin{aligned}
   x_n|y_1,\cdots,y_{n-1}\sim N(\widehat{m}_n,\widehat{C}_n),\quad &\textit{where}\quad \widehat{C}_n=P_n,\\
@@ -135,4 +135,4 @@ where $\widehat{C}_ n=P_ n$ is the covariance matrix of $\widehat{m}_ n$, and $\
 ## Ensemble Kalman Filter
 Classical Kalman filter can be computationally inaffordable in high-dimensional situation. The Ensemble Kalman Filter (EnKF) is proposed to address this difficulty.
 
-Assume we already have 
+Assume we already have an ensemble $s_n^1,\cdots,s_n^N$, which is a sample drawn from the filtering distribution $s_n^j\sim N(m_n,C_n)$.
