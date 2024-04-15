@@ -153,6 +153,7 @@ Here we use the *Kalman gain* $K_n=\widehat{C}_ nH^\top\left(\Gamma + H\widehat{
   \end{aligned}$$</p>
 
 Hence $x_n^{(j)}\sim N(m_n,C_n).$ The formulas (1) and (2) reveal an approach to generate observations from filtering distributions. Still, the compution of Kalman gain $K_n$ requires operation on the $p\times p$ covariance matrix $C_n$. To deal with this, we choose an analogue $\widetilde{C}_ n$ to approximate $\widehat{C}_ n$, for example, the sample covariance matrix of $\widehat{x}_n^{(1)},\cdots,\widehat{x}_n^{(N)}$, and use the estimated form of Kalman gain:
+
 $$\widetilde{K}_n=\widetilde{C}_nH^\top\left(\Gamma + H\widetilde{C}_nH^\top\right)^{-1}.\tag{3}$$
 
 Consequently, given an initial ensemble $x_0^{(1)},\cdots,x_0^{(N)}$, one can implement the following Stochastic EnKF algorithm, which can be intepreted as an approximate version of classical Kalman filtering.
