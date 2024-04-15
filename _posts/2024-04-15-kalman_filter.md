@@ -3,8 +3,8 @@
 Throughout our discussion, we suppose all related random variables fall in a Gaussian space, which is a closed subspace of $L^2$ containing only (centered) Gaussian random variables. We use notations $\langle X,Y\rangle = \mathbb{E}[XY]$ and $\Vert X\Vert^2=\mathbb{E}[X^2]$.
 
 ## One-dimensional Case
-**Setting.** We consider the following dynamics, where $X_0$, $(\xi_ n)_ {n=0}^\infty$ and $(\eta_ n)_ {n=1}^\infty$ are independent Gaussian variables:
-<p>$$\begin{aligned}&\textit{State:}\quad X_0=0,\ X_{n+1}=aX_n+\xi_n,\ \ \forall n\geq 0,\ \ \textit{where}\ \ \xi_n\sim N(0,\sigma^2)\ \ i.i.d.,\\
+**Setting.** We consider the following dynamics, where $X_0,(\xi_ n)_ {n=1}^\infty$ and $(\eta_ n)_ {n=1}^\infty$ are independent Gaussian variables:
+<p>$$\begin{aligned}&\textit{State:}\quad X_0=0,\ X_n=aX_{n-1}+\xi_n,\ \ \forall n\geq 1,\ \ \textit{where}\ \ \xi_n\sim N(0,\sigma^2)\ \ i.i.d.,\\
   &\textit{Observation:}\quad Y_{n} = cX_{n} + \eta_{n},\ \ \forall n\geq 1,\ \ \textit{where}\ \ \eta_n\sim N(0,\gamma^2)\ \ i.i.d..
   \end{aligned}$$</p>
   
@@ -15,9 +15,9 @@ Our goal is to find a recursive formula for computing these conditional expectat
   \end{aligned}$$</p>
 
 **Step I.** We have $\widehat{M}_{n+1}=aM_n$ for all $n\geq 0$:
-<p>$$\begin{aligned} \mathbb{E}[aX_n+\xi_n|Y_1,\cdots,Y_n] = \mathbb{E}[aX_n+\xi_n|Y_1,\cdots,Y_n] = a\mathbb{E}[X_n|Y_1,\cdots,Y_{n-1},Y_n].\end{aligned}$$</p>
+<p>$$\begin{aligned} \mathbb{E}[Y_{n+1}|Y_1,\cdots,Y_n] = \mathbb{E}[aX_n+\xi_{n+1}|Y_1,\cdots,Y_n] = a\mathbb{E}[X_n|Y_1,\cdots,Y_n].\end{aligned}$$</p>
 
-The second equality holds because $\xi_n\perp (Y_1,\cdots,Y_n)$.
+The second equality holds because $\xi_{n+1}\perp (Y_1,\cdots,Y_n)$.
 
 **Step II.** Define $Z_n:=Y_n-c\widehat{M}_n$ for all $n\geq 1$. Then for all $1\leq k\leq n-1,$ we have
 <p>$$\begin{aligned}\langle Y_k,Z_n\rangle = \mathbb{E}\left[\mathbb{E}\left[Y_k(cX_n+\eta_n-c\widehat{M}_n)|Y_1,\cdots,Y_{n-1}\right]\right]=\mathbb{E}\left[Y_k(c\widehat{M}_n-c\widehat{M}_n)\right]=0.\end{aligned}$$</p>
@@ -38,31 +38,31 @@ Plugging-in to the result we obtain in Steps I and II, we have
 
 **Step IV.** Now it remains to find the recursive formula for computing $P_n$. Clearly, we have $\widehat{M}_n=\mathbb{E}[X_1]=0$, and $P_1=\sigma^2$. For the case $n>1$, note that $X_n-M_n\perp M_n-\widehat{M}_n$. Then the projection theorem implies
 <p>$$\begin{aligned} P_n &=\Vert X_n-\widehat{M}_n\Vert^2 = \Vert X_n-M_n\Vert^2 + \Vert M_n-\widehat{M}_n\Vert^2\\
-  &= \frac{1}{a^2}\left\Vert X_{n+1}-\xi_n - \widehat{M}_{n+1}\right\Vert^2 + \frac{\langle X_n,Z_n\rangle^2}{\Vert Z_n\Vert^2}\\
-  &=\frac{1}{a^2}\left(\left\Vert X_{n+1} - \widehat{M}_{n+1}\right\Vert^2 - \left\Vert\xi_n\right\Vert^2\right) + \frac{\langle X_n,Z_n\rangle^2}{\Vert Z_n\Vert^2}\\
+  &= \frac{1}{a^2}\left\Vert X_{n+1}-\xi_{n+1} - \widehat{M}_{n+1}\right\Vert^2 + \frac{\langle X_n,Z_n\rangle^2}{\Vert Z_n\Vert^2}\\
+  &=\frac{1}{a^2}\left(\left\Vert X_{n+1} - \widehat{M}_{n+1}\right\Vert^2 - \left\Vert\xi_{n+1}\right\Vert^2\right) + \frac{\langle X_n,Z_n\rangle^2}{\Vert Z_n\Vert^2}\\
   &= \frac{1}{a^2}\left(P_{n+1} - \sigma^2\right) + \frac{c^2P_n^2}{c^2P_n+\gamma^2}.\end{aligned}$$</p>
 
 Hence we have
 <p>$$\begin{aligned} P_{n+1} = \sigma^2 + a^2\frac{1}{(c^2/\gamma^2)+P_n^{-1}},\quad\forall n\geq 1.\end{aligned}$$</p>
 
-Up to now, we have determined a recursive formula for computing $P_n$, $M_n$ and $\widehat{M}_n$.
+Up to now, we have determined a recursive formula for computing $P_n,M_n$ and $\widehat{M}_n$.
 
 ## Multi-dimensional Case
-**Setting.** We consider the following dynamics, where $x_0$, $(\xi_ n)_ {n=0}^\infty$ and $(\eta_ n)_ {n=1}^\infty$ are independent Gaussian vectors:
-<p>$$\begin{aligned}&\textit{State:}\quad x_0\sim N(m_0,C_0),\ x_{n+1}=\Phi x_n+\xi_n,\ \ \forall n\geq 0,\ \ \textit{where}\ \ \xi_n\sim N(0,\Sigma)\ \ i.i.d.,\\
+**Setting.** We consider the following dynamics, where $x_0,(\xi_ n)_ {n=1}^\infty$ and $(\eta_ n)_ {n=1}^\infty$ are independent Gaussian vectors:
+<p>$$\begin{aligned}&\textit{State:}\quad x_0\sim N(m_0,C_0),\ x_n=\Phi x_{n-1}+\xi_n,\ \ \forall n\geq 1,\ \ \textit{where}\ \ \xi_n\sim N(0,\Sigma)\ \ i.i.d.,\\
   &\textit{Observation:}\quad y_n = Hx_n + \eta_{n},\ \ \forall n\geq 1,\ \ \textit{where}\ \ \eta_n\sim N(0,\Gamma)\ \ i.i.d..
   \end{aligned}$$</p>
   
-Here $(x_n)_ {n=0}^\infty$ are $p$-dimensional variables, $(y_n)_ {n=1}^\infty$ are $q$-dimensional variables, $\Phi\in\mathbb{R}^{p\times p}$, and $H\in\mathbb{R}^{q\times p}$. Without loss of generality, we suppose $m_0=\mathbf{0}_p$. Again, our goal is to find a recursive formula for computing these conditional expectations:
+Here $(x_n)_ {n=1}^\infty$ are $p$-dimensional variables, $(y_n)_ {n=1}^\infty$ are $q$-dimensional variables, $\Phi\in\mathbb{R}^{p\times p}$, and $H\in\mathbb{R}^{q\times p}$. Without loss of generality, we suppose $m_0=\mathbf{0}_p$. Again, our goal is to find a recursive formula for computing these conditional expectations:
 
 <p>$$\begin{aligned}
   m_n=\mathbb{E}[x_n|y_1,\cdots,y_n],\ \ \forall n\geq 0,\quad \textit{and}\quad \widehat{m}_n=\mathbb{E}[x_n|y_1,\cdots,y_{n-1}],\ \ \forall n\geq 1.
   \end{aligned}$$</p>
 
 **Step I.** We have $\widehat{m}_{n+1}=\Phi m_n$ for all $n\geq 0$:
-<p>$$\begin{aligned} \mathbb{E}[\Phi x_n+\xi_n|y_1,\cdots,y_n] = \mathbb{E}[\Phi x_n+\xi_n|y_1,\cdots,y_n] = \Phi\mathbb{E}[x_n|y_1,\cdots,y_n].\end{aligned}$$</p>
+<p>$$\begin{aligned} \mathbb{E}[\Phi x_{n+1}|y_1,\cdots,y_n] = \mathbb{E}[\Phi x_n+\xi_{n+1}|y_1,\cdots,y_n] = \Phi\mathbb{E}[x_n|y_1,\cdots,y_n].\end{aligned}$$</p>
 
-The second equality holds because $\xi_n\perp (y_1,\cdots,y_n)$.
+The second equality holds because $\xi_{n+1}\perp (y_1,\cdots,y_n)$.
 
 **Step II.** Define $z_n:=y_n-H\widehat{m}_n$ for all $n\geq 1$. Then for all $1\leq k\leq n-1,$ we have
 <p>$$\begin{aligned} \mathbb{E}[y_kz_n^\top] = \mathbb{E}\left[\mathbb{E}\left[y_k(\Phi x_n+\eta_n-\Phi\widehat{m}_n)^\top|y_1,\cdots,y_{n-1}\right]\right]=\Phi\mathbb{E}\left[y_k(\widehat{m}_n-\widehat{m}_n)\right]=0.\end{aligned}$$</p>
@@ -91,8 +91,8 @@ This gives the formulas to compute $m_n$ and $\widehat{m}_n$ respectively:
 where the second equality follows from Sherman-Morrison-Woodbury formula.
 
 **Step IV.** It remains to find the recursion formula for $P_n$. For $n=1$, we have $P_1=\mathbb{E}[(\Phi x_0+\xi_0)(\Phi x_0+\xi_0)^\top]= \Sigma+\Phi C_0\Phi^\top$. Furthermore,
-<p>$$\begin{aligned}P_{n+1}&=\mathbb{E}\left[\left(\Phi x_n + \xi_n - \Phi m_n\right)\left(\Phi x_n + \xi_n - \Phi m_n\right)^\top\right]\\
-  &=\mathbb{E}[\xi_n\xi_n^\top]+\Phi\,\mathbb{E}\left[\left(x_n - m_n\right)\left(x_n - m_n\right)^\top\right]\Phi^\top\\
+<p>$$\begin{aligned}P_{n+1}&=\mathbb{E}\left[\left(\Phi x_n + \xi_{n+1} - \Phi m_n\right)\left(\Phi x_n + \xi_{n+1} - \Phi m_n\right)^\top\right]\\
+  &=\mathbb{E}[\xi_{n+1}\xi_{n+1}^\top]+\Phi\,\mathbb{E}\left[\left(x_n - m_n\right)\left(x_n - m_n\right)^\top\right]\Phi^\top\\
   &=\Sigma + \Phi^\top\,\mathbb{E}\left[\left(x_n - \widehat{m}_n\right)\left(x_n - \widehat{m}_n\right)^\top-\left(m_n - \widehat{m}_n\right)\left(m_n - \widehat{m}_n\right)^\top\right]\Phi\\
   &=\Sigma + \Phi^\top\left(P_n-\mathbb{E}[x_nz_n^\top]\left(\mathbb{E}[z_nz_n^\top]\right)^{-1}\mathbb{E}[z_nx_n^\top]\right)\Phi\\
   &=\Sigma + \Phi^\top\left(P_n-P_nH^\top(\Gamma+HP_nH^\top)^{-1}HP_n\right)\Phi\\
@@ -120,6 +120,7 @@ The update of $\widehat{m}_n$ and $m_n$ can be viewed as a sequential optimizati
   &\textit{Optimization}:\quad m_n=\underset{m\in\mathbb{R}^p}{\mathrm{argmin}}\ J_n(m),\\
   \end{aligned}$$</p>
 
-where $\widehat{C}_n=P_n$ is the covariance matrix of $\widehat{m}_n$, and $\Vert v\Vert_{\Sigma} = \Vert\Sigma^{-1}v\Vert$ is the seminorm generated by a semi-definite matrix $A$.
+where $\widehat{C}_ n=P_ n$ is the covariance matrix of $\widehat{m}_ n$, and $\Vert v\Vert_{\Sigma} = \Vert\Sigma^{-1}v\Vert$ is the seminorm generated by a semi-definite matrix $A$.
 
-  
+## Ensemble Kalman Filter
+
