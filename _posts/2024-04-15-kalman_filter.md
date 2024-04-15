@@ -155,4 +155,27 @@ Here we use the *Kalman gain* $K_n=\widehat{C}_ nH^\top\left(\Gamma + H\widehat{
 Hence $x_n^{(j)}\sim N(m_n,C_n).$ The formulas (1) and (2) reveal an approach to generate observations from filtering distributions. Still, the compution of Kalman gain $K_n$ requires operation on the $p\times p$ covariance matrix $C_n$. To deal with this, we choose an analogue $\widetilde{C}_ n$ to approximate $\widehat{C}_ n$, for example, the sample covariance matrix of $\widehat{x}_n^{(1)},\cdots,\widehat{x}_n^{(N)}$, and use the estimated form of Kalman gain:
 $$\widetilde{K}_n=\widetilde{C}_nH^\top\left(\Gamma + H\widetilde{C}_nH^\top\right)^{-1}.\tag{3}$$
 
-Consequently, given an initial ensemble $x_0^{(1)},\cdots,x_0^{(N)}$, one can implement the following Stochastic EnKF algorithm, which can be intepreted as an approximate version of classical Kalman filtering:
+Consequently, given an initial ensemble $x_0^{(1)},\cdots,x_0^{(N)}$, one can implement the following Stochastic EnKF algorithm, which can be intepreted as an approximate version of classical Kalman filtering.
+
+1. For $n=1,2,\cdots$
+   1. Forecast: Draw $\eta_n^{(j)}\sim N(0,\Sigma)$ and compute $\widehat{x}_ n^{(j)}=x_ {n-1}^{(j)}+\eta_ n^{(j)}$ for all $j=1,\cdots,N$;
+   2. Compute $\widetilde{K}_n$ according to (3)
+   3. Update: Draw $\eta_n^{(j)}\sim N(0,\Gamma)$ and compute $x_n^{(j)}=\widehat{x}_n^{(j)} + \widetilde{K}_n(y_n-(H\widehat{x}_n^{(j)} - \eta_n^{(j)}))$ for all $j=1,\cdots,N$.
+
+We can also replace the update step by a deterministic approach (Deterministic EnKF):
+<p>$$\begin{aligned}
+  &\textit{Standardization:}\quad z_n^{(j)} = \widehat{C}_n^{-1/2}(\widehat{x}_n^{(j)}-\widehat{m}_n),\\
+  &\textit{Rescaling:}\quad x_n^{(j)} = m_n + C_n^{1/2}z_n^{(j)}.
+  \end{aligned}$$</p>
+
+This approach also relies on fast computation of covariance matrices.
+
+### A Sequential Optimization Viewpoint
+The update of $\widehat{x}_n^{(j)}$ and $x_n^{(j)}$ can be viewed as a sequential optimization:
+<p>$$\begin{aligned}
+  &\textit{Forecast}:\quad \widehat{x}_n^{(j)} =\Phi x_{n-1}^{(j)}+\xi_n^{(j)},\\
+  &\textit{Loss}:\quad J_n(x)=\frac{1}{2}\left\Vert x - \widehat{x}_n^{(j)}\right\Vert_{\widetilde{C}_n}^2 + \frac{1}{2}\left\Vert y_n + \eta_n^{(j)} -Hx\right\Vert_{\Gamma}^2,\\
+  &\textit{Optimization}:\quad x_n=\underset{x\in\mathbb{R}^p}{\mathrm{argmin}}\ J_n(x).
+  \end{aligned}$$</p>
+
+Note we are also calculating the estimated covariance $\widetilde{C}_n$ and Kalman gain $\widetilde{K}_n$ in each iteration.
