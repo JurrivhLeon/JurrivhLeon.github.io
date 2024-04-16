@@ -183,6 +183,8 @@ Note we are also calculating the estimated covariance $\widetilde{C}_n$ and Kalm
 
 ## References
 [1] R. Kalman. *A new approach to linear filtering and prediction problems.* Journal of Basic Engineering, 82:35–45, 1960.
+
 [2] G. Evensen. *Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics.* Journal of Geophysical Research: Oceans, 99(C5):10143–10162, 1994.
-[3] M. Katzfuss, J.R. Stroud, and C.K. Wikle. *Understanding the Ensemble Kalman Filter*
+
+[3] M. Katzfuss, J.R. Stroud, and C.K. Wikle. *Understanding the Ensemble Kalman Filter.* The American Statistican, 70:350-357, 2016.
 
