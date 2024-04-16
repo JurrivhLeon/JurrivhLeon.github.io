@@ -172,7 +172,7 @@ We can also replace the update step by a deterministic approach (Deterministic E
 This approach also relies on fast computation of covariance matrices.
 
 ### A Sequential Optimization Viewpoint
-The update of $\widehat{x}_n^{(j)}$ and $x_n^{(j)}$ can be viewed as a sequential optimization:
+The update of $\widehat{x}_n^{(j)}$ and $x_n^{(j)}$ in (stochastic) EnKF can be viewed as a sequential optimization:
 <p>$$\begin{aligned}
   &\textit{Forecast}:\quad \widehat{x}_n^{(j)} =\Phi x_{n-1}^{(j)}+\xi_n^{(j)},\\
   &\textit{Loss}:\quad J_n(x)=\frac{1}{2}\left\Vert x - \widehat{x}_n^{(j)}\right\Vert_{\widetilde{C}_n}^2 + \frac{1}{2}\left\Vert y_n + \eta_n^{(j)} -Hx\right\Vert_{\Gamma}^2,\\
