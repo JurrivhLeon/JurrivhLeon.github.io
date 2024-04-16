@@ -188,3 +188,5 @@ Note we are also calculating the estimated covariance $\widetilde{C}_n$ and Kalm
 
 [3] M. Katzfuss, J.R. Stroud, and C.K. Wikle. *Understanding the Ensemble Kalman Filter.* The American Statistican, 70:350-357, 2016.
 
+[4] J.F. Le Gall. *Brownian Motion, Martingales, and Stochastic Calculus.* Springer, Berlin. 2013.
+
