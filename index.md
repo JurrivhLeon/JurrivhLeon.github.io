@@ -23,3 +23,5 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 
 [Sobolev Spaces](https://jurrivhleon.github.io/notes/pde.pdf)
 
+[Information Theory](https://jurrivhleon.github.io/notes/it_ece.pdf)
+
