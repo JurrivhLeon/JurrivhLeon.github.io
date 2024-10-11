@@ -24,5 +24,6 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 [Sobolev spaces](https://jurrivhleon.github.io/notes/pde.pdf)
 
 [An elementary proof of minimax theorem](https://jurrivhleon.github.io/notes/minimax.pdf)
+
 [Information Theory](https://jurrivhleon.github.io/notes/it_ece.pdf)
 
