@@ -19,6 +19,8 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 
 [Stochastic analysis](https://jurrivhleon.github.io/notes/stochastic_analysis.pdf)
 
+[Complex analysis](https://jurrivhleon.github.io/notes/complex_analysis.pdf)
+
 [Fundementals of functional analysis](https://jurrivhleon.github.io/notes/functional_analysis.pdf)
 
 [Sobolev spaces](https://jurrivhleon.github.io/notes/pde.pdf)
