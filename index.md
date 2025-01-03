@@ -23,6 +23,8 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 
 [Fundementals of functional analysis](https://jurrivhleon.github.io/notes/functional_analysis.pdf)
 
+[Further topics in Measure Theory](https://jurrivhleon.github.io/notes/distr.pdf)
+
 [Sobolev spaces](https://jurrivhleon.github.io/notes/pde.pdf)
 
 [An elementary proof of minimax theorem](https://jurrivhleon.github.io/notes/minimax.pdf)
