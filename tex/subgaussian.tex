@@ -1,0 +1,660 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{float} 
+\usepackage{graphicx}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{subfigure} 
+\usepackage{threeparttable}
+\usepackage[dvipsnames]{xcolor}
+\lstdefinestyle{pystyle}{
+	language=Python,
+	backgroundcolor=\color{white},   
+	commentstyle=\color{ForestGreen},
+	keywordstyle=\color{Cerulean},
+	numberstyle=\tiny\color{Gray},
+	stringstyle=\color{Peach},
+	basicstyle=\ttfamily,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=pystyle}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\perp}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\proofname}{\textit{Proof}}
+\renewcommand*{\thesubfigure}{(\arabic{subfigure})}
+\renewcommand{\baselinestretch}{1.25}
+\title{\bf Sub-Gaussian Concentration}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.80}
+\author{\textsc{Jyunyi Liao}}
+\date{}
+\begin{document}
+\maketitle
+\section{Sub-Gaussian random variables}
+\subsection{Moment-generating function and Chernoff bound}
+In probability theory, the moment-generating function is an alternative characterization of probability distributions. The $k$-th moment of a distribution can be obtained by evaluating the $k$-th derivative of its moment-generating function at 0, as is implied by the nomenclature. In contrast to characteristic functions, the moment-generating function of a distribution does not necessarily exist. (As a counterexample, consider a standard Cauchy distribution with density $\frac{1}{\pi(1+x^2)},\ -\infty < x < \infty$.)
+
+\paragraph{Definition 1.1} (Moment-generating function, MGF). Let $X$ be a real-valued random variable such that $\E[\mathrm{e}^{tX}]$ exists in some neighborhood of $0$, i.e. $\exists b>0$ such that $\E[\mathrm{e}^{tX}] < \infty$ for $t\in(-b,b).$ The moment-generating function (MGF) of $X$, denoted by $M_X,$ is defined as
+\begin{equation*}
+	M_X(t) := \E[\mathrm{e}^{tX}].\tag{1.1}
+\end{equation*}
+We also define the centered MGF as
+\begin{equation*}
+	M_X^*(t) := \E[\mathrm{e}^{t(X - \E X)}] = \mathrm{e}^{-t\E X}M_X(t).\tag{1.2}
+\end{equation*}
+It can be verified that the existence of first-moment $\E X$ is ensured by the existence of MGF.
+
+\paragraph{} In practical situations, we may wonder if our sample properly depicts the population. In other words, we are interested in the probability that a variable falls in the tail of a distribution. Applying Markov's inequality to the integrand in MGF, we can attain the Chernoff bound:
+\paragraph{Lemma 1.2} (Chernoff bound). Suppose that $M_X(t)<\infty$ for all $t\in\mathbb{R}.$ Then for all $\epsilon \geq 0,$ we have
+\begin{equation*}
+	\mathbb{P}(X - \E X \geq \epsilon)\leq M_X^*(t)\mathrm{e}^{-t\epsilon},\ \forall t\geq 0.\tag{1.3}
+\end{equation*}
+To obtain a tight bound, take the infimum of RHS: 
+\begin{equation*}
+	\mathbb{P}(X - \E X \geq \epsilon)\leq \inf_{t\geq 0} M_X^*(t)\mathrm{e}^{-t\epsilon}.\tag{1.4}
+\end{equation*}
+
+\paragraph{} As an example, let's investigate the Chernoff bound of a Gaussian variable $Z\sim N(0,\sigma^2).$ The MGF of $Z$ is
+\begin{equation*}
+	M_Z^*(t) = \frac{1}{\sqrt{2\pi}\sigma}\int\mathrm{e}^{tz-\frac{z^2}{2\sigma^2}}\mathrm{d}z = \exp\left(\frac{t^2\sigma^2}{2}\right).\tag{1.5}
+\end{equation*}
+And we get the bound
+\begin{equation*}
+	\mathbb{P}(Z\geq\epsilon) \leq \inf_{t\geq 0}\exp\left(\frac{t^2\sigma^2}{2} - t\epsilon\right) = \exp\left(-\frac{\epsilon^2}{2\sigma^2}\right).\tag{1.6}
+\end{equation*}
+
+\subsection{Sub-Gaussian random variable}
+From the above discussion, we can conclude that if a random variable $X$ satisfies $M_X^*(t)\leq\exp\left(t^2\sigma^2/2\right)$ uniformly, then a decay rate in form of (1.6) can be obtained. This motivates the definition of sub-Gaussian random variables.
+\paragraph{Definition 1.3} (Sub-Gaussian random variable). Let $\sigma > 0.$ A random variable $X$ with mean $\mu=\E X$ is said to sub-Gaussian with variance proxy $\sigma^2$ (or $\sigma^2$-sub-Gaussian), if
+\begin{equation*}
+	M_X^*(t) = \E[\mathrm{e}^{t(X-\mu)}] \leq \exp\left(\frac{t^2\sigma^2}{2}\right),\ \forall t\in\mathbb{R}.\tag{1.7}
+\end{equation*}
+
+By definition, we know that if a random variable is $\sigma^2$-sub-Gaussian, then it is $\rho^2$-gaussian for any $\rho > \sigma.$ This definition generalizes Gaussian tail bounds to non-Gaussian variables on the MGF condition. Nevertheless, there are several equivalent characterizations of sub-Gaussianity. This is an exercise in Handel's book, chapter 3.
+
+\paragraph{Theorem 1.4} (Characterizations of sub-Gaussian variables). Let $X$ be a centered random variable, i.e., $\E X=0$. Then the following statements are equivalent:
+\begin{itemize}
+\item[(i)] (MGF condition). There is a constant $\sigma >0$ such that
+\begin{equation*}
+	\E[\mathrm{e}^{tX}] \leq \exp\left(\frac{t^2\sigma^2}{2}\right),\ \forall t\in\mathbb{R}.\tag{1.8}
+\end{equation*}
+\item[(ii)] (Tail bound condition). There is a constant $\rho>0$ such that
+\begin{equation*}
+	\mathbb{P}(\vert X\vert \geq \epsilon)\leq 2\exp\left(-\frac{\epsilon^2}{2\rho^2}\right),\ \forall \epsilon > 0.\tag{1.9}
+\end{equation*}
+\item[(iii)] There is a constant $\nu > 0$ such that
+\begin{equation*}
+	\E\left[\exp\left(\frac{X^2}{2\nu^2}\right)\right]\leq 2.\tag{1.10}
+\end{equation*}
+\item[(iv)] (Moment condition) There is a constant $\theta > 0$ such that
+\begin{equation*}
+	\E[X^{2k}] \leq \frac{(2k)!}{2^k k!}\theta^{2k},\ \forall k\in\mathbb{N}.\tag{1.11}
+\end{equation*}
+\end{itemize}
+\begin{proof}
+(i) $\Rightarrow$ (ii): Fix $\epsilon > 0.$ For any $t>0$, we have
+\begin{equation*}
+	\mathbb{P}(X\geq \epsilon) = \mathbb{P}\left(\mathrm{e}^{tX}\geq \mathrm{e}^{-t\epsilon}\right)\leq \mathrm{e}^{t\epsilon}\E[\mathrm{e}^{tX}]\leq \exp\left(\frac{1}{2}t^2\sigma^2 - t\epsilon\right).\tag{1.12}
+\end{equation*}
+Setting $t=\epsilon / \sigma^2$ implies $\mathbb{P}(X\geq\epsilon)\leq\exp\left(-\epsilon^2/2\sigma^2\right).$ By applying similar calculation to $-X,$ we can obtain $\mathbb{P}(X\leq -\epsilon)\leq\exp\left(-\epsilon^2/2\sigma^2\right),$ and the result (1.9) immediately follows for $\rho = \sigma.$
+
+\paragraph{} (ii) $\Rightarrow$ (iii): Suppose (1.9) holds for $\rho > 0.$ We will use the following fact, if $Y$ is an random variable that is almost surely non-negative and has distribution $F$, and $\phi$ is a differentiable increasing function, then
+\begin{align*}
+	\E[\phi(Y)] = \int_0^\infty \phi(y)\mathrm{d}F(y) &= \int_0^\infty\left(\phi(0) + \int_0^y\phi^\prime(\epsilon)\mathrm{d}\epsilon\right)\mathrm{d}F(y)\\
+	&= \phi(0) + \int_0^\infty\int_t^\infty\phi^\prime(\epsilon)\mathrm{d}F(y)\mathrm{d}\epsilon = \phi(0) + \int_0^\infty \mathbb{P}(Y\geq\epsilon)\phi^\prime(\epsilon)\mathrm{d}\epsilon.\tag{1.13}
+\end{align*}
+Set $Y=X^2.$ For any $\nu > \rho,$ we have
+\begin{align*}
+\E\left[\exp\left(\frac{X^2}{2\nu^2}\right)\right] &= 1 + \int_0^\infty \frac{1}{2\nu^2}\exp\left(\frac{\epsilon}{2\nu^2}\right)\mathbb{P}(X^2\geq\epsilon)\mathrm{d}\epsilon\\
+&\leq 1 + \frac{1}{\nu^2}\int_0^\infty\exp\left\{\epsilon\left(\frac{1}{2\nu^2} - \frac{1}{2\rho^2}\right)\right\}\mathrm{d}\epsilon = 1 + \frac{2\rho^2}{\nu^2-\rho^2},\tag{1.14}
+\end{align*}
+where the inequality follows from (1.9). Then we can attain (1.10) by setting $\nu=\sqrt{3}\rho$ in (1.14).
+
+\paragraph{} (iii) $\Rightarrow$ (iv): Note that $\mathrm{e}^x \geq 1 + x^k/k!$ for $x\geq 0$ and $k\in\mathbb{N},$ we have
+\begin{align*}
+	2\geq \E\left[\exp\left(\frac{X^2}{2\nu^2}\right)\right] \geq 1 + \frac{\E[X^{2k}]}{2^k \nu^{2k}k!}.\tag{1.15}
+\end{align*}
+Then
+\begin{align*}
+	\E[X^{2k}]\leq (2k)!!\nu^{2k} \leq (2k+1)!!\nu^{2k} = \frac{(2k)!}{2^k k!}(2k+1)\nu^{2k},\tag{1.16}
+\end{align*}
+and (1.11) follows for $\theta=\sqrt{3}\nu.$
+
+\paragraph{} (iv) $\Rightarrow$ (i): Let $X^\prime$ be an independent copy of $X$ and $Y:=X-X^\prime.$ Then $Y$ is symmetric, and the odd moments vanish:
+\begin{align*}
+	\E[\mathrm{e}^{tY}] = \sum_{k=0}^\infty\frac{t^{k}\E[Y^k]}{k!} = \sum_{k=0}^\infty\frac{t^{2k}\E[Y^{2k}]}{(2k)!}.\tag{1.17}
+\end{align*}
+For any $k\in\mathbb{N},$ we have the $c_r$-inequality:
+\begin{align*}
+	&Y^{2k}=(X-X^\prime)^{2k} = 2^{2k}\left(\frac{X}{2} + \frac{-X^\prime}{2}\right)^{2k}\leq 2^{2k}\left(\frac{1}{2}X^{2k} + \frac{1}{2}(-X^\prime)^{2k}\right),\tag{1.18}\\
+	&\E[Y^{2k}] \leq 2^{2k}\left(\frac{1}{2}\E[X^{2k}] + \frac{1}{2}\E[(X^\prime)^{2k}]\right) = 2^{2k}\E[X^{2k}].\tag{1.19}
+\end{align*}
+Plug in to (1.17), we have
+\begin{align*}
+	\E[\mathrm{e}^{tY}] &\leq \sum_{k=0}^\infty\frac{(2t)^{2k}\E[X^{2k}]}{(2k)!}
+	\leq \sum_{k=0}^\infty\frac{2^k(t\theta)^{2k}}{k!}\leq\exp\left(2t^2\theta^2\right).\tag{1.20}
+\end{align*}
+Since $\E X=0$, we have
+\begin{equation*}
+	\E[\mathrm{e}^{tX}] = \E[\mathrm{e}^{tX-t\E X^\prime}]\leq \E[\mathrm{e}^{t(X-X^\prime)}] = \E[\mathrm{e}^{tY}]\leq \exp\left(2t^2\theta^2\right).\tag{1.21}
+\end{equation*}
+Then (1.8) holds for $\sigma=2\theta,$ and we finish the proof.
+\end{proof}
+
+\paragraph{Proposition 1.5} (Sub-Gaussian vector). Suppose $X_1,\cdots,X_n$ are independent sub-Gaussian variables with variance proxy $\sigma^2.$ Then for any $u\in\mathbb{R}^n$ with $\Vert u\Vert_2=1,$ $X^\top u$ is $\sigma^2$-sub-Gaussian, where $X=(X_1,\cdots,X_n)^\top$ is said to be a $\sigma^2$-sub-Gaussian vector.
+\begin{proof} 
+	$\displaystyle \E\left[\mathrm{e}^{tX^\top u}\right] = \prod_{i=1}^n\E\left[\mathrm{e}^{tu_iX_i}\right]\leq \prod_{i=1}^n\exp\left(\frac{t^2u_i^2\sigma^2}{2}\right) = \exp\left(\frac{t^2\sigma^2\Vert u\Vert^2}{2}\right) = \exp\left(\frac{t^2\sigma^2}{2}\right).$
+\end{proof}
+\subsection{Illustrative examples}
+The sub-Gaussian family contains a wide range of random variables, such as Gaussian variables, Rademacher variables and bounded variables.
+\paragraph{Proposition 1.6} (Rademacher variables are sub-Gaussian). Let $X$ be a Rademacher random variable, i.e. $\mathbb{P}(X=1)=\mathbb{P}(X=-1)=1/2.$ Then $X$ is 1-sub-Gaussian.
+\begin{proof} For all $t\in\mathbb{R},$ we have
+$\displaystyle\E[\mathrm{e}^{tX}] = \frac{\mathrm{e}^t + \mathrm{e}^{-t}}{2} = \sum_{k=0}^\infty \frac{t^{2k}}{(2k)!} \leq \sum_{k=0}^\infty \frac{t^{2k}}{2^k k!} = \mathrm{e}^{t^2/2}.$
+\end{proof}
+
+\paragraph{Lemma 1.7} (Hoeffding's lemma). Suppose $X$ is a random variable such that $\mathbb{P}(X\in[a,b])=1.$ Then $X$ is a sub-Gaussian variable with variance proxy $(b-a)^2/4.$
+\begin{proof}
+This proof is adapted from Handel's notes. Without loss of generality, let $\E X=0.$ Use exponential tilting. Fix $t\in\mathbb{R}.$ For any Borel set $B\subseteq\mathcal{B}(\mathbb{R}),$ define $\mathbb{P}_t:\mathcal{B}(\mathbb{R})\to\mathbb{R}$ as
+\begin{equation*}
+	\mathbb{P}_t(B) := \frac{\E\left[\mathrm{e}^{tX}\mathbbm{1}_{\{X\in B\}}\right]}{\E[\mathrm{e}^{tX}]}.\tag{1.22}
+\end{equation*}
+It can be verified that $\mathbb{P}_t$ is a valid probability measure on $\mathbb{R}.$ Let random variable $U_t\sim\mathbb{P}_t.$ Using simple approximation theorem, we have for any measurable function $f$ that
+\begin{equation*}
+	\mathbb{E}[f(U_t)] = \frac{\E[\mathrm{e}^{tX}f(X)]}{\E[\mathrm{e}^{tX}]}.\tag{1.23}
+\end{equation*}
+Now we investigate the logarithmic MGF $\psi_X(t) = \log\E[\mathrm{e}^{tX}].$ Using the interchangeability of derivative and integral (dominated convergence theorem), we have
+\begin{equation*}
+	\psi_X^\prime(t) = \frac{\E[X\mathrm{e}^{tX}]}{\E[\mathrm{e}^{tX}]} = \E[U_t],\ 
+	\psi_X^{\prime\prime}(t) = \frac{\E[X^2\mathrm{e}^{tX}]}{\E[\mathrm{e}^{tX}]} - \left(\frac{\E[X\mathrm{e}^{tX}]}{\E[\mathrm{e}^{tX}]}\right)^2 = \mathrm{Var}(U_t).\tag{1.24}
+\end{equation*}
+By definition, $\mathbb{P}(U_t\in[a,b]) = \mathbb{P}_t([a,b]) = 1,$ hence
+\begin{equation*}
+	\mathrm{Var}(U_t) = \E[(U_t-\mathbb{E}U_t)^2] = \inf_{c\in\mathbb{R}} \E[(U_t - c)^2] \leq \E\left[\left(U_t - \frac{a+b}{2}\right)^2\right]\leq \left(\frac{b-a}{2}\right)^2.\tag{1.25}
+\end{equation*}
+Using (1.24) and (1.25), we can bound $\psi_X$ as follows:
+\begin{align*}
+	\psi_X(t) = \psi_X(0) + \int_0^t\left(\psi_X^\prime(0) +\int_0^s\psi_X^{\prime\prime}(u)\mathrm{d}u\right)\mathrm{d}s \leq \int_0^t\int_0^s\left(\frac{b-a}{2}\right)^2\mathrm{d}u\mathrm{d}s = \frac{t^2(b-a)^2}{8}.\tag{1.26}
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+\paragraph{}
+
+\section{Gaussian concentration}
+\subsection{Entropy and sub-Gaussianity} 
+\paragraph{Definition 2.1} (Entropy). For a non-negative random variable $Y$, the entropy of $Y$ is defined as
+\begin{equation*}
+	 \mathrm{Ent}(Y) = \E[Y\log Y] - \E Y\log(\E Y).\tag{2.1}
+\end{equation*} 
+
+\paragraph{} For a random variable $X$, the following lemma has established the connection between the entropy of $\mathrm{e}^{tX}$ and sub-Gaussianity.
+\paragraph{Lemma 2.2} (Herbst). Suppose that random variable $X$ satisfies
+\begin{align*}
+	\mathrm{Ent}(\mathrm{e}^{tX}) = \E[tX\mathrm{e}^{tX}] - \E[\mathrm{e}^{tX}]\log\E[\mathrm{e}^{tX}] \leq \frac{t^2\sigma^2}{2}\E[\mathrm{e}^{tX}],\ \forall t\in\mathbb{R}.\tag{2.2}
+\end{align*}
+Then $X$ is $\sigma^2$-sub-Gaussian. Conversely, if $X$ is $\frac{\sigma^2}{4}$-sub-Gaussian, then it satisfies (2.2).
+\begin{proof}
+(i) Let $\mu=\E X$, and define function $\varphi:\mathbb{R}\backslash\{0\}\to\mathbb{R},t\mapsto \frac{1}{t}\log\E[\mathrm{e}^{t(X-\mu)}],$ then
+\begin{align*}
+	\frac{\mathrm{d}\varphi}{\mathrm{d}t}(t) &= \frac{1}{t}\frac{\E[(X-\mu)\mathrm{e}^{t(X-\mu)}]}{\E[\mathrm{e}^{t(X-\mu)}]} - \frac{1}{t^2}\log\E[\mathrm{e}^{t(X-\mu)}]
+	= \frac{1}{t}\frac{\E[X\mathrm{e}^{tX}]}{\E[\mathrm{e}^{tX}]} - \frac{1}{t^2}\log\E[\mathrm{e}^{tX}] \leq \frac{\sigma^2}{2}.\tag{2.3}
+\end{align*}
+We can complete $\varphi$ on $\mathbb{R}$ by redefining $\varphi(0)=\lim_{t\to 0}\varphi(t) = 0$. Then $\varphi(t) - {t\sigma^2}/{2}$ is non-increasing on $\mathbb{R},$ and $X$ is $\sigma^2$-sub-Gaussian:
+\begin{equation*}
+	\log\E[\mathrm{e}^{tX}] - \frac{t^2\sigma^2}{2} = t\varphi(t) - \frac{t^2\sigma^2}{2} \leq t\varphi(0) = 0.\tag{2.4}
+\end{equation*}
+(ii) Suppose $X$ is $\frac{\sigma^2}{4}$-sub-Gaussian, and define $Z=\mathrm{e}^{tX} / \E[\mathrm{e}^{tX}].$ To prove (2.2), it suffices to show that 
+\begin{equation*}
+	\E[Z\log Z]\leq \frac{t^2\sigma^2}{2}.\tag{2.5}
+\end{equation*}
+Suppose $Z\sim F.$ Since $Z$ is non-negative and $\E Z=1,$ we can define a new probability measure $G$ such that $\mathrm{d}G(z)=z\mathrm{d}F(z)$. Then by Jensen's inequality, we have
+\begin{equation*}
+	\E[Z\log Z] = \int z\log z\mathrm{d}F(z) = \int \log z\mathrm{d}G(z) \leq \log\left(\int z\mathrm{d}G(z)\right) = \log \E[Z^2].\tag{2.6}
+\end{equation*}
+Furthermore, note that $\E[\mathrm{e}^{t(X-\mu)}]\geq \mathrm{e}^{\E[t(X-\mu)]}=1,$ we have $Z \leq \mathrm{e}^{t(X-\mu)},$ and
+\begin{align*}
+	\E[Z\log Z]\leq \log\E[Z^2] \leq \log\E[\mathrm{e}^{2t(X-\mu)}] \leq \frac{(2t)^2\sigma^2}{8} = \frac{t^2\sigma^2}{2},\tag{2.7}
+\end{align*}
+where the last equality follows from the sub-Gaussianity of $X$. Hence we conclude the proof.
+\end{proof}
+
+\subsection{Lipschitz function of Gaussian variables}
+\paragraph{Lemma 2.3} (Gaussian log-Sobolev inequality). Let $\mathrm{d}\mu(z) = (2\pi)^{-n/2}\exp\left(-\frac{1}{2}\Vert z\Vert^2\right)\mathrm{d}z$ be the standard Gaussian measure on $\mathbb{R}^n.$ Let $f:\mathbb{R}^n\to\mathbb{R}$ be a smooth function such that $\Vert f\Vert_{L^2(\mu)} := \int \vert f\vert^2\mathrm{d}\mu = 1$. Then
+\begin{align*}
+	\int f^2\log f^2\mathrm{d}\mu \leq 2\int\Vert\nabla f\Vert_2^2\mathrm{d}\mu.\tag{2.8}
+\end{align*}
+
+\paragraph{} We do not cover the proof here since it is a bit complicated. Nonetheless, we can understand (2.8) from an information theory perspective. Define $g = f^2$ and $\mathrm{d}\nu=g\mathrm{d}\mu,$ it can be verified that $\nu$ is also a probability measure on $\mathbb{R}^n,$ and $g=\mathrm{d}\nu/\mathrm{d}\mu$ is the Radon-Nikodym derivative of $\nu$ with respect to $\mu.$ Moreover, (2.8) can be written as
+\begin{equation*}
+	\int g\log g\mathrm{d}\mu \leq \frac{1}{2}\int\frac{\Vert\nabla g\Vert_2^2}{g}\mathrm{d}\mu.\tag{2.9}
+\end{equation*}
+The LHS is the Kullback-Leibler divergence (or relative entropy) from $\mu$ to $\nu$, and the RHS is half the relative Fisher information:
+\begin{equation*}
+	D_{\mathrm{KL}}(\nu\Vert\mu) := \int\log\left(\frac{\mathrm{d}\nu}{\mathrm{d}\mu}\right)\mathrm{d}\nu\leq
+	\frac{1}{2}\int\left\Vert\nabla\log g\right\Vert_2^2\mathrm{d}\nu =: \frac{1}{2}\mathcal{I}(\nu\Vert\mu).\tag{2.10}
+\end{equation*}
+Therefore, this lemma gives an upper bound for the Kullback-Leibler divergence between $\nu$ and $\mu$ in terms of their relative entropy.
+
+\paragraph{Theorem 2.4} (Gaussian concentration). Let $X\sim N(0,I_n),$ and let $f:\mathbb{R}^n\to\mathbb{R}$ be an $L$-Lipschitz continuous function. Then $f(X)$ is a sub-Gaussian variable with variance proxy $L^2.$
+\begin{proof}
+Fix a smooth function $h\geq 0$ with $\Vert h\Vert_{L^1(\mu)} = \int\vert h\vert\mathrm{d}\mu > 0.$ Applying Theorem 2.3 to $f=\sqrt{\frac{h}{\Vert h\Vert_{L^1(\mu)}}},$ (2.9) can be written as
+\begin{align*}
+	\int h\log h\mathrm{d}\mu - \Vert h\Vert_{L^1(\mu)}\log\Vert h\Vert_{L^1(\mu)} \leq \frac{1}{2}\int\frac{\left\Vert\nabla h\right\Vert_2^2}{h}\mathrm{d}\mu.\tag{2.11}
+\end{align*}
+Suppose $f\in C^\infty(\mathbb{R}^n)$ and $f$ is $L$-Lipschitz continuous. Fix $t\in\mathbb{R}$ and set $h=\mathrm{e}^{tf}$. By (2.11), we have
+\begin{align*}
+	\mathrm{Ent}\left(\mathrm{e}^{tf(X)}\right)\leq \frac{t^2}{2}\E\left[\Vert\nabla f(X)\Vert_2^2\mathrm{e}^{tf(X)}\right]\leq \frac{t^2L^2}{2}\E\left[\mathrm{e}^{tf(X)}\right],\tag{2.12}
+\end{align*}
+where the last equality holds because $f$ is $L$-Lipschitz continuous. By Lemma 2.2, $f(X)$ is $L^2$-sub-Gaussian.
+
+\paragraph{} Now it remains to show that the conclusion holds for all $L$-Lipschitz $f.$ ($f$ is not necessarily differentiable.) Choose a non-negative $\psi\in C_c^\infty(\mathbb{R}^n)$ such that $\mathrm{supp}(\psi)\subseteq\{x\in\mathbb{R}^n:\Vert x\Vert \leq 1\}$ and $\int\psi(x)\mathrm{d}x=1,$ and define $\psi_\epsilon(x):=\frac{1}{\epsilon}\psi\left(\frac{x}{\epsilon}\right)$ for $\epsilon>0.$ Then $\int\psi_\epsilon(x)\mathrm{d}x=1.$
+
+\paragraph{} Fix $\epsilon > 0,$ and define $f_\epsilon = \psi_\epsilon * f:x\mapsto\int\psi_\epsilon(x-y)f(y)\mathrm{d}y.$ Then $f_\epsilon\in C^\infty(\mathbb{R}^n),$ and $f_\epsilon$ is $L$-Lipschitz:
+\begin{align*}
+	\vert f_\epsilon(x) - f_\epsilon(x^\prime)\vert &\leq \int\psi_\epsilon(y)\bigl\vert f(x-y) - f(x^\prime - y)\bigr\vert\mathrm{d}y\\
+	&\leq \int\psi_\epsilon(y)L\Vert x-x^\prime\Vert_2\mathrm{d}y\leq L\Vert x-x^\prime\Vert_2.\tag{2.13}
+\end{align*}
+Moreover, $f_\epsilon$ converges uniformly to $f$ as $\epsilon\to 0$:
+\begin{align*}
+	\Vert f_\epsilon - f\Vert_\infty := \sup_{x\in\mathbb{R}^n}\vert f_\epsilon(x) - f(x)\vert &= \sup_{x\in\mathbb{R}^n}\left\vert\int\psi_\epsilon(x-y)\left(f(y) - f(x)\right)\mathrm{d}y\right\vert\\
+	&\leq \sup_{x\in\mathbb{R}^n}\int_{\Vert y-x\Vert_2\leq\epsilon}\psi_\epsilon(x-y) L\left\Vert y-x\right\Vert_2\mathrm{d}y\\
+	&\leq \epsilon L\int_{\Vert y\Vert_2\leq\epsilon}\psi_\epsilon(-y) \mathrm{d}y = \epsilon L.\tag{2.14}
+\end{align*}
+
+\paragraph{} Fix $t\in\mathbb{R}.$ For any $\epsilon > 0$ and $x\in\mathbb{R}^n$, we have $\mathrm{e}^{tf(x)}\leq\mathrm{e}^{tf_\epsilon(x) + \vert t\vert\epsilon L}.$ Moreover, $f_\epsilon\in C_c^\infty(\mathbb{R}^n)$ and $f_\epsilon$ is continuous, then $f_\epsilon(X)$ is $L^2$-sub-Gaussian. Therefore
+\begin{align*}
+	\E\left[\mathrm{e}^{tf(X)}\right] \leq \inf_{\epsilon > 0}\E\left[\mathrm{e}^{tf_\epsilon(X)}\right]\mathrm{e}^{\vert t\vert\epsilon L}\leq\inf_{\epsilon > 0}\exp\left(\frac{t^2L^2}{2} + \vert t\vert\epsilon L\right) = \exp\left(\frac{t^2L^2}{2}\right),\tag{2.15}
+\end{align*}
+which concludes the proof.
+\end{proof}
+
+\section{Tail bound for mean and maxima}
+\subsection{Hoeffding bound}
+\paragraph{Proposition 3.1.} Let $X_1,\cdots,X_n$ be independent sub-Gaussian variables with variance proxies $\sigma_1^2,\cdots,\sigma_n^2$. Then
+\begin{equation*}
+	\mathbb{P}\left(\sum_{i=1}^n (X_i-\E X_i)\geq \epsilon\right) \leq \exp\left(-\frac{\epsilon^2}{2\sum_{i=1}^n\sigma_i^2}\right).\tag{3.1}
+\end{equation*}
+\begin{proof}
+	It can be easily verified that $\sum_{i=1}^n(X_i-\E X_i)$ is a sub-Gaussian variable with mean $0$ and variance proxy $\sum_{i=1}^n\sigma_i^2.$ Then (3.1) immediately follows from (1.9) in Theorem 1.4.
+\end{proof}
+
+Combining Lemma 1.7 and Theorem 3.1 gives the following Hoeffding's inequality:
+\paragraph{Theorem 3.2} (Hoeffding). Let $X_1,\cdots,X_n$ be independent random variables such that $\mathbb{P}(X_i\in[a_i,b_i])=1$ for $i=1,\cdots,n$. Then
+\begin{align*}
+	\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^n(X_i - \E X_i)\geq\epsilon\right)\leq \exp\left\{-\frac{2n^2\epsilon^2}{\sum_{i=1}^n(b_i-a_i)^2}\right\}.\tag{3.2}
+\end{align*}
+
+\subsection{Maximum of sub-Gaussian variables}
+Suppose we have $n$ centered independent sub-Gaussian variables with variance proxy $\sigma^2.$ A natural tail bound for the maximum can be attained from the fact that $\left\{\max_{1\leq i\leq n}X_i\geq \epsilon\right\} = \bigcup_{i=1}^n\{X_i\geq\epsilon\}$:
+\begin{equation*}
+	\mathbb{P}\left(\max_{1\leq i\leq n} X_i \geq \epsilon\right) \leq n\exp\left(-\frac{\epsilon^2}{2\sigma^2}\right).\tag{3.3}
+\end{equation*}
+
+We can also bound the expected value as follows.
+
+\paragraph{Theorem 3.3.} Let $X_1,\cdots,X_n$ be independent $\sigma^2$-sub-Gaussian variables with mean zero. Then
+\begin{align*}
+	\E\left[\max_{1\leq i\leq n}X_i\right] \leq \sigma\sqrt{2\log n.}\tag{3.4}
+\end{align*}
+\begin{proof}
+Fix $\epsilon > 0.$ By Jensen's inequality, we have
+\begin{align*}
+	\E\left[\max_{1\leq i\leq n}X_i\right] &\leq \frac{1}{\epsilon}\log \E\left[\exp\left(\epsilon\max_{1\leq i\leq n}X_i\right)\right] \leq \frac{1}{\epsilon}\log\E\left[\sum_{i=1}^n \mathrm{e}^{\epsilon X_i}\right]\\
+	&\leq \frac{1}{\epsilon}\log\left\{\sum_{i=1}^n \exp\left(\frac{\epsilon^2\sigma^2}{2}\right)\right\}
+	= \frac{\log n}{\epsilon}+\frac{\epsilon\sigma^2}{2}.\tag{3.5}
+\end{align*}
+Then we conclude the proof by setting $\epsilon = \sqrt{2\log n}/\sigma$.
+\end{proof}
+
+An immediate corollary of this theorem is the Massart's finite class lemma.
+\paragraph{Lemma 3.4} (Massart). Let $\mathcal{A}$ be a finite subset of $\mathbb{R}^n$ and $\epsilon_1,\cdots,\epsilon_n$ be independent Rademacher variables. Denote by $r_\mathcal{A}=\max_{a\in\mathcal{A}}\Vert a\Vert_2$ the radius of $\mathcal{A}.$ Then we have
+\begin{align*}
+	\E\left[\max_{a\in\mathcal{A}}\frac{1}{n}\sum_{i=1}^m\epsilon_ia_i\right]\leq\frac{r_\mathcal{A}\sqrt{2\log\vert\mathcal{A}\vert}}{n}.\tag{3.6}
+\end{align*}
+
+\section{Tail bound for quadratic forms}
+\subsection{Gaussian quadratic forms}
+\paragraph{Lemma 4.1} (Hsu et al., 2012). Let $Z_1,\cdots,Z_m$ be independent standard Gaussian variables. Fix non-negative vector $\alpha\in\mathbb{R}^m_+$ and vector $\beta\in\mathbb{R}^m.$ If $0\leq t < \frac{1}{2\Vert\alpha\Vert_\infty}$, then
+\begin{equation*}
+	\mathbb{E}\left[\exp\left(t\sum_{i=1}^m\alpha_iZ_i^2 + \sum_{i=1}^m\beta_iZ_i\right)\right]\leq\exp\left(t\Vert\alpha\Vert_1 + \frac{t^2\Vert\alpha\Vert_2^2 + \Vert\beta\Vert_2^2/2}{1-2t\Vert\alpha\Vert_\infty}\right).\tag{4.1}
+\end{equation*}
+\begin{proof}
+Fix $0\leq t < \frac{1}{2\Vert\alpha\Vert_\infty},$ and let $\eta_i = {1}/\sqrt{1-2t\alpha_i} > 0$ for $i=1,\cdots,m$. Then
+\begin{align*}
+	\E\left[\exp\left\{t\alpha_iZ_i^2 + \beta_iZ_i\right\}\right] &= \frac{1}{\sqrt{2\pi}}\int\exp\left\{-\left(\frac{1}{2}-t\alpha_i\right)z^2 + \beta_iz\right\}\mathrm{d}z\\
+	&= \frac{1}{\sqrt{2\pi}}\int\exp\left\{-\frac{1}{2}\left(\frac{z}{\eta_i} - \beta_i\eta_i\right)^2 + \frac{1}{2}\beta_i^2\eta_i^2\right\}\mathrm{d}z\\
+	&= \eta_i\exp\left(\frac{1}{2}\beta_i^2\eta_i^2\right) = \exp\left\{-\frac{1}{2}\log(1-2t\alpha_i) + \frac{\beta_i^2}{2(1-2t\alpha_i)}\right\}.\tag{4.2}
+\end{align*}
+To bound (4.2), note that
+\begin{align*}
+	-\log(1-2t\alpha_i) = \sum_{k=1}^\infty\frac{(2t\alpha_i)^k}{k}\leq 2t\alpha_i + \sum_{k=2}^\infty\frac{(2t\alpha_i)^k}{2} = 2t\alpha + \frac{2t^2\alpha_i^2}{1-2t\alpha_i}.\tag{4.3}
+\end{align*}
+Combining (4.2) and (4.3), we have
+\begin{align*}
+	\E\left[\exp\left(t\alpha_iZ_i^2 + \beta_iZ_i\right)\right]\leq\exp\left(t\alpha_i+\frac{t^2\alpha_i^2 + \beta_i^2/2}{1-2t\alpha_i}\right)\leq\exp\left(t\alpha_i+\frac{t^2\alpha_i^2 + \beta_i^2/2}{1-2t\Vert\alpha\Vert_\infty}\right).\tag{4.4}
+\end{align*}
+Summation of (4.4) from $i=1$ to $m$ immediately yields (4.1).
+\end{proof}
+\subsection{Quadratic forms of sub-Gaussian variables}
+\paragraph{Theorem 4.2} (Tail bound for quadratic form). Let $X_1,\cdots,X_n$ be independent sub-Gaussian variables with mean 0 and variance proxy $\sigma^2.$ Then for any positive definite matrix $\Sigma\in\mathbb{R}^{n\times n}$ and $t > 0,$ we have
+\begin{equation*}
+	\mathbb{P}\left(X^\top\Sigma X\geq \sigma^2\left\{\mathrm{tr}(\Sigma) + 2\Vert\Sigma\Vert_\mathrm{F}\sqrt{t} + 2\Vert\Sigma\Vert_2t\right\}\right)\leq\mathrm{e}^{-t},\tag{4.5}
+\end{equation*}
+where $X=(X_1,\cdots,X_n)^\top$ is the vector of sub-Gaussian variables.
+\begin{proof}
+Since $\Sigma$ is positive definite, it admits a spectral decomposition $\Sigma=Q^\top SQ$ where $Q\in\mathbb{R}^{n\times n}$ is an orthogonal matrix and $S=\mathrm{diag}\{\rho_1,\cdots,\rho_n\}$ with eigenvalues $\rho_1 \geq\cdots\geq \rho_n > 0.$ Let $Z$ be a vector of $n$ independent standard Gaussian variables. Then for any $\alpha\in\mathbb{R}^n$ and $\epsilon >0,$ we have
+\begin{equation*}
+	\E\left[\mathrm{e}^{Z^\top\alpha}\right] = \mathrm{e}^{{\Vert\alpha\Vert_2^2}/{2}}.\tag{4.6}
+\end{equation*}
+Denote $A=Q^\top S^{1/2}Q.$ For any $\epsilon > 0,$ define set $E_\epsilon=\left\{x\in\mathbb{R}^n:x^\top\Sigma x \geq \epsilon\right\}.$ Fix $\lambda > 0,$ we have
+\begin{align*}
+	\E\left[\exp\left(\lambda Z^\top AX\right)\right] &= \int_{\mathbb{R}^n}\E\left[\exp\left(\lambda Z^\top AX\right)|X=x\right]\mathrm{d}F_X(x)\\
+	&\geq \int_{E_\epsilon}\E\left[\exp\left(\lambda Z^\top AX\right)|X=x\right]\mathrm{d}F_X(x)\\
+	&= \int_{E_\epsilon}\exp\left(\frac{1}{2}\lambda^2Z^\top\Sigma Z\right)\mathrm{d}F_X(x)\\
+	&\geq \exp\left(\frac{1}{2}\lambda^2\epsilon\right)\,\mathbb{P}(X^\top\Sigma X\geq \epsilon),\tag{4.7}
+\end{align*}
+where the second equality follows from (4.6). Moreover,
+\begin{equation*}
+	\E\left[\exp\left(\lambda Z^\top AX\right)\right]\leq \E\left[\exp\left(\frac{\lambda^2\sigma^2}{2}Z^\top\Sigma Z\right)\right].\tag{4.8}
+\end{equation*}
+Combining (4.7) and (4.8) yields
+\begin{equation*}
+	\mathbb{P}(X^\top\Sigma X\geq \epsilon) \leq \E\left[\exp\left(\frac{\lambda^2\sigma^2}{2}Z^\top\Sigma Z - \frac{1}{2}\lambda^2\epsilon\right)\right].\tag{4.9}
+\end{equation*}
+Define $Y=QZ,$ the orthogonality of $Q$ implies that $Y$ is also a vector of $n$ independent standard Gaussian variables, and $Z^\top\Sigma Z = Y^\top SY = \sum_{i=1}^n \rho_iY_i^2.$ Let $\rho = (\rho_1,\cdots,\rho_n)^\top$ and $\gamma = \lambda^2\sigma^2/2$. By Lemma 3.1, we have for $0\leq\gamma < \frac{1}{2\Vert\rho\Vert_\infty}$ that
+\begin{equation*}
+	\mathbb{P}(X^\top\Sigma X\geq \epsilon) \leq \exp\left(-\frac{\gamma\epsilon}{\sigma^2} + \gamma\Vert\rho\Vert_1 + \frac{\gamma^2\Vert\rho\Vert_2^2}{1-2\gamma\Vert\rho\Vert_\infty}\right).\tag{4.10}
+\end{equation*}
+Let $\delta = 1-2\gamma\Vert\rho\Vert_\infty$ with $0 < \delta \leq 1.$ Then
+\begin{equation*}
+	\mathbb{P}(X^\top\Sigma X\geq \epsilon) \leq \exp\left\{\frac{1}{2\Vert\rho\Vert_\infty}\left[(1-\delta)\left(\Vert\rho\Vert_1- \frac{\epsilon}{\sigma^2}\right) + \frac{\Vert\rho\Vert_2^2}{2\Vert\rho\Vert_\infty}\left(\delta + \delta^{-1} - 2\right)\right]\right\}.\tag{4.11}
+\end{equation*}
+Let $\frac{\epsilon}{\sigma^2} - \Vert\rho\Vert_1 = \frac{\Vert\rho\Vert_2^2}{2\Vert\rho\Vert_\infty}(\delta^{-2}-1),$ we have
+\begin{equation*}
+	\mathbb{P}\left(X^\top\Sigma X\geq \sigma^2\left\{\Vert\rho\Vert_1 + \frac{\Vert\rho\Vert_2^2}{2\Vert\rho\Vert_\infty}\left(\frac{1}{\delta^2}-1\right)\right\}\right) \leq \exp\left\{-\frac{\Vert\rho\Vert_2^2}{4\Vert\rho\Vert_\infty^2}\left(\frac{1}{\delta}-1\right)^2\right\}.\tag{4.12}
+\end{equation*}
+Now let $t=\frac{\Vert\rho\Vert_2^2}{4\Vert\rho\Vert_\infty^2}\left( \delta^{-1} - 1\right)^{2} \geq 0,$ that is, $\delta^{-1} = 1 + \frac{2\Vert\rho\Vert_\infty}{\Vert\rho\Vert_2}\sqrt{t}$, then
+\begin{align*}
+	\mathbb{P}\left(X^\top\Sigma X\geq \sigma^2\left\{\Vert\rho\Vert_1 + 2\Vert\rho\Vert_2\sqrt{t} + 2\Vert\rho\Vert_\infty t\right\}\right)\leq\mathrm{e}^{-t}.\tag{4.13}
+\end{align*}
+Recall that $\rho_1,\cdots,\rho_n$ are eigenvalues of $\Sigma$, we have $\Vert\rho\Vert_1 = \mathrm{tr}(\Sigma),$ $\Vert\rho\Vert_2 = \Vert\Sigma\Vert_\mathrm{F}$ and $\Vert\rho\Vert_\infty = \Vert\Sigma\Vert_2,$ and the result (4.5) immediately follows from (4.13).
+\end{proof}
+
+The following corollary immediately holds by setting $\Sigma$ in Theorem 4.2 as the $n$-by-$n$ identity matrix.
+\paragraph{Corollary 4.3.} Let $X_1,\cdots,X_n$ be independent sub-Gaussian variables with mean 0 and variance proxy $\sigma^2.$ Then for any $t > 0,$ we have
+\begin{equation*}
+	\mathbb{P}\left(\sum_{i=1}^n X_i^2\geq \sigma^2\left(n + 2\sqrt{nt} + 2t\right)\right)\leq\mathrm{e}^{-t}.\tag{4.14}
+\end{equation*}
+
+\subsection{Application: Ordinary least square with a fixed design}
+We consider a fixed dataset $\mathcal{D}=\{(x_i,y_i)\}_{i=1}^N\subset\mathbb{R}^d\times\mathbb{R}$ from a linear model: $y_i=x_i^\top\beta^* +\epsilon_i,$ where $\beta^*\in\mathbb{R}^d$ and $\{\epsilon_i\}_{i=1}^N$ are independent $\sigma^2$-sub-Gaussian noises with $\E\epsilon_i = 0.$ The solution to the ordinary least square (OLS) problem is
+\begin{equation*}
+	\widehat{\beta} = \underset{\beta\in\mathbb{R}^d}{\mathrm{argmin}}\sum_{i=1}^N(y_i - x_i^\top\beta)^2 = \Sigma^{-1}\left(\sum_{i=1}^N x_iy_i\right),\tag{4.15}
+\end{equation*}
+where $\Sigma = \sum_{i=1}^N x_ix_i^\top\in\mathbb{R}^{d\times d}.$ In many cases, we are interested in the difference between our estimator $\widehat{\beta}$ and the true parameter $\beta^*$.
+
+\paragraph{Proposition 4.4} (OLS with a fixed design). Assume that $\Sigma$ is invertible, and $0<\delta < 1.$ With probability at least $1 - \delta$, we have
+\begin{equation*}
+	\Vert\widehat{\beta} - \beta^*\Vert_\Sigma^2 \leq \sigma^2\left(d + 2\sqrt{d\log(1/\delta)} + 2\log(1/\delta)\right).\tag{4.16}
+\end{equation*}
+\begin{proof}
+Denote by $X=(x_1,\cdots,x_N)^\top\in\mathbb{R}^{N\times d}$ the covariate matrix, $\epsilon=(\epsilon_1,\cdots,\epsilon_N)^\top$ the noise vector, and $Y=(y_1,\cdots,y_N)^\top=X\beta^*+\epsilon$ the response vector. Then we have $\Sigma=X^\top X,$ and
+\begin{align*}
+	\Vert\widehat{\beta}-\beta^*\Vert_\Sigma^2 = (\Sigma^{-1}X^\top Y-\beta^*)^\top\Sigma(\Sigma^{-1}X^\top Y-\beta^*)= \epsilon^\top X\Sigma^{-1} X^\top\epsilon.\tag{4.17}
+\end{align*}
+Note that $\epsilon$ is $\sigma^2$-sub-Gaussian, $\mathrm{tr}(X\Sigma^{-1}X^\top) = d$, $\Vert X\Sigma^{-1}X^\top\Vert_\mathrm{F}^2 = d$ and $\Vert X\Sigma^{-1}X^\top\Vert_2=1,$ we can apply Theorem 4.2 to any $t>0$:
+\begin{equation*}
+	\mathbb{P}\left(\epsilon^\top X\Sigma^{-1} X^\top\epsilon \geq \sigma^2\left(d + 2\sqrt{dt} + 2t\right)\right)\leq\mathrm{e}^{-t}.\tag{4.18}
+\end{equation*}
+Then the result immediately follows from (4.18) by setting $t=\log(1/\delta)$.
+\end{proof}
+
+\section{Application in Empirical process}
+\subsection{Dudley's entropy integral}
+\paragraph{Definition 5.1} (Sub-Gaussian process). Let $\{X_f:f\in\mathcal{F}\}$ be a collection of mean zero random variables indexed by $f\in\mathcal{F}$, and let $d$ be a metric on the index set $\mathcal{F}.$ Then $\{X_f:f\in\mathcal{F}\}$ is said to be a sub-Gaussian process with respect to $d$ if
+\begin{equation*}
+	\E\left[\mathrm{e}^{t(X_f - X_g)}\right] \leq \exp\left\{\frac{t^2d^2(f,g)}{2}\right\},\ \forall f,g\in\mathcal{F}.\tag{5.1}
+\end{equation*}
+That is, $X_f - X_g$ is sub-Gaussian with variance proxy $d^2(f,g).$
+
+\paragraph{Definition 5.2} ($\epsilon$-covering number/metric entropy). Let $(\mathcal{F},d)$ be a metric space. For $\epsilon >0,$ a subset $\mathcal{N}_\epsilon\subseteq\mathcal{F}$ is called a $\epsilon$-net of $\mathcal{F},$ if $\mathcal{F}\subseteq\bigcup_{f\in\mathcal{N}_\epsilon}B(f,\epsilon),$ where $B(f,\epsilon)$ is the open $d$-ball of radius $\epsilon$ centered at $f$. The $\epsilon$-covering number of $\mathcal{F}$ is the cardinality of the minimal $\epsilon$-cover of $\mathcal{F}$, i.e.:
+\begin{equation*}
+	N(\epsilon,\mathcal{F},d) = \min\{\vert\mathcal{N}_\epsilon\vert,\ \mathcal{N}_\epsilon\ \text{is an}\ \epsilon\text{-net of}\ \mathcal{F}\}.\tag{5.2}
+\end{equation*}
+
+The following theorem can be seen as an extension of Theorem 3.3.
+\paragraph{Theorem 5.3} (Dudley). Let $(\mathcal{F},d)$ be a metric space, and suppose that $D := \sup_{f,g\in\mathcal{F}}d(f,g) < \infty$. Let $\{X_f:f\in\mathcal{F}\}$ be a stochastic process such that
+\begin{itemize}
+	\item[(i)] $\{X_f,f\in\mathcal{F}\}$ is sub-Gaussian with respect to $d,$ and
+	\item[(ii)] $\{X_f,f\in\mathcal{F}\}$ is sample-continuous, i.e., for each sequence $\{f_n\}\subset\mathcal{F}$ such that $\lim_{n\to\infty}d(f_n,f) = 0$ for some $f\in\mathcal{F},$ we have $X_{f_n}\to X_f$ almost surely.
+\end{itemize}   
+Then the expected supremum of $\{X_f,f\in\mathcal{F}\}$ can be bounded with Dudley's entropy integral:
+\begin{align*}
+	\E\left[\sup_{f\in\mathcal{F}}X_f\right]\leq 12\int_0^{D/2}\sqrt{\log N(\epsilon,\mathcal{F},d)}\,\mathrm{d}\epsilon.\tag{5.3}
+\end{align*}
+\begin{proof}
+This proof uses Dudley's chaining rule. Choose an arbitrary $f_0\in\mathcal{F}$ and set $\epsilon_0 = D,$ then $\mathcal{N}_{\epsilon_0}=\{f_0\}$ is a $\epsilon_0$-net of $\mathcal{F}.$ Now we choose a sequence of minimal $\epsilon$-nets $\{\mathcal{N}_{\epsilon_j}\}$ by setting $\epsilon_j := 2^{-j}\epsilon_0$ for $j=1,2,\cdots.$ For brevity, write $\mathcal{N}_j=\mathcal{N}_{\epsilon_j}.$ By definition of $\epsilon$-net, $\forall f\in\mathcal{F},$ we can find $f_j\in\mathcal{N}_{j}$ such that $d(f,f_j)\leq \epsilon_j$ for all $j\in\mathbb{N}.$ Fixing $m\in\mathbb{N},$ we have
+\begin{equation*}
+	X_f = (X_f - X_{f_m}) + \sum_{j=1}^m\left(X_{f_j} - X_{f_{j-1}}\right) + X_{f_0}.\tag{5.4}
+\end{equation*}
+
+Note that both $f_j$ and $f_{j-1}$ are close to $f$, we have $d(f_j, f_{j-1}) = d(f_j,f) + d(f,f_{j-1}) \leq 3\epsilon_{j}.$ Define a new class $\mathcal{H}_j = \left\{(g_{j-1},g_j)\in\mathcal{N}_{j-1}\times\mathcal{N}_j: d(g_{j},g_{j-1})\leq 3\epsilon_{j}\right\},\ j\in\mathbb{N}.$ We have $\vert\mathcal{H}_j\vert\leq\vert\mathcal{N}_{j-1}\vert\vert\mathcal{N}_j\vert\leq\vert\mathcal{N}_j\vert^2.$
+
+Revisiting (4.4), we have
+\begin{align*}
+	\E\left[\sup_{f\in\mathcal{F}}X_f\right] &\leq \E\left[\sup_{g,g^\prime\in\mathcal{F},\,d(g,g^\prime)\leq\epsilon_m}(X_g - X_{g^\prime}) + \sum_{j=1}^m\max_{(g_{j-1},g_j)\in\mathcal{H}_j}\left(X_{g_j} - X_{g_{j-1}}\right) + X_{f_0}\right]\\
+	&= \E\left[\sup_{g,g^\prime\in\mathcal{F},\,d(g,g^\prime)\leq\epsilon_m}(X_g - X_{g^\prime})\right] + \sum_{j=1}^m\E\left[\max_{(g_{j-1},g_j)\in\mathcal{H}_j}\left(X_{g_j} - X_{g_{j-1}}\right)\right],\tag{5.5}
+\end{align*}
+where the equality follows from $\E[X_{f_0}]=0.$ Since $\{X_{g_j} - X_{g_{j-1}},\ (g_{j-1},g_j)\in\mathcal{H}_j\}$ are sub-Gaussian with variance proxy $9\epsilon_{j}^2,$ it follows from applying Theorem 3.3 that
+\begin{equation*}
+	\E\left[\max_{(g_{j-1},g_j)\in\mathcal{H}_j}(X_{g_j}-X_{g_{j-1}})\right] \leq 3\epsilon_{j}\sqrt{2\log\vert\mathcal{H}_j\vert} \leq 6\epsilon_{j}\sqrt{\log\vert\mathcal{N}_j\vert} = 12(\epsilon_j - \epsilon_{j+1})\sqrt{\log N(\epsilon_{j},\mathcal{F},d)}.\tag{5.6}
+\end{equation*}
+Plug in (5.6) to (5.5), we have
+\begin{align*}
+	\E\left[\sup_{f\in\mathcal{F}}X_f\right] &\leq   \E\left[\sup_{g,g^\prime\in\mathcal{F},\,d(g,g^\prime)\leq\epsilon_m}(X_g - X_{g^\prime})\right] + 12\sum_{j=1}^m\int_{\epsilon_{j+1}}^{\epsilon_{j}}\sqrt{\log N(\epsilon_j,\mathcal{F},d)}\,\mathrm{d}\epsilon\\
+	&\leq \E\left[\sup_{g,g^\prime\in\mathcal{F},\,d(g,g^\prime)\leq\epsilon_m}(X_g - X_{g^\prime})\right] + 12\sum_{j=1}^m\int_{\epsilon_{j+1}}^{\epsilon_{j}}\sqrt{\log N(\epsilon,\mathcal{F},d)}\,\mathrm{d}\epsilon\\
+	&= \E\left[\sup_{g,g^\prime\in\mathcal{F},\,d(g,g^\prime)\leq\epsilon_m}(X_g - X_{g^\prime})\right] + 12\int_{\epsilon_{m+1}}^{\epsilon_1}\sqrt{\log N(\epsilon,\mathcal{F},d)}\,\mathrm{d}\epsilon.\tag{5.7}
+\end{align*}
+Let $m\to\infty,$ then $\epsilon_m\to 0,$ and the first term in (5.7) converges to $0$ by sample-continuity. Thus we obtain the bound in (5.3) provided that Dudley's entropy integral exists.
+\end{proof}
+
+\paragraph{Remark.} (Absolute values in suprema). In some cases, we may be interested in the supremum of absolute value. Note that
+\begin{align*}
+	\sup_{f\in\mathcal{F}}\vert X_f\vert &= \sup_{f\in\mathcal{F}} X_f +  \sup_{f\in\mathcal{F}} (-X_f) - \sup_{f\in\mathcal{F}} X_f\wedge \sup_{f\in\mathcal{F}} (-X_f)\\
+	&= \sup_{f\in\mathcal{F}} X_f +  \sup_{f\in\mathcal{F}} (-X_f) + \inf_{f\in\mathcal{F}} X_f\vee \inf_{f\in\mathcal{F}} (-X_f)\\
+	&\leq \sup_{f\in\mathcal{F}} X_f +  \sup_{f\in\mathcal{F}} (-X_f) + \inf_{f\in\mathcal{F}} \left(X_f \vee (-X_f)\right) =  \sup_{f\in\mathcal{F}} X_f +  \sup_{f\in\mathcal{F}} (-X_f) + \inf_{f\in\mathcal{F}}\vert X_f\vert,\tag{5.8}
+\end{align*}
+then by applying Theorem 5.3 to both $X_f$ and $-X_f,$ we have
+\begin{align*}
+	\E\left[\sup_{f\in\mathcal{F}}\vert X_f\vert\right]&\leq \E\left[\sup_{f\in\mathcal{F}} X_f\right] + \E\left[\sup_{f\in\mathcal{F}}(-X_f)\right] + \inf_{f\in\mathcal{F}}\E\vert X_f\vert\\
+	&\leq 24\int_0^{D/2}\sqrt{\log N(\epsilon,\mathcal{F},d)}\,\mathrm{d}\epsilon + \inf_{f\in\mathcal{F}}\E\vert X_f\vert.\tag{5.9}
+\end{align*}
+
+We can also use the chaining rule to construct a tail bound for the supremum of a sub-Gaussian process.
+
+\paragraph{Lemma 5.4} (Adapted from Lemma 3.2 of van de Geer 2000). Suppose $(\mathcal{F},d)$ and $\{X_f,f\in\mathcal{F}\}$ are the metric space and the stochastic process proposed in Theorem 5.3, the entropy integral in the RHS of (5.3) exists, and $\exists f_0\in\mathcal{F}$ such that $X_{f_0}=0.$ Then there exist constants $C_0,C_1>0$ depending only on $\mathcal{F}$, such that for all
+$t > C_0D,$ we have
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}} X_f \geq t\right) \leq C_1\exp\left(-\frac{t^2}{C_1^2D^2}\right).\tag{5.10}
+\end{align*}
+\begin{proof}
+We inherit the definition of $\epsilon_j=D2^{-j},\mathcal{N}_j$ and $\mathcal{H}_j$ from Theorem 3, with the crudest $\epsilon_0$-net being $\mathcal{N}_0 = \{f_0\}$. Take $C_0$ sufficiently large such that
+\begin{align*}
+	t\geq \left(12\sum_{j=1}^\infty \epsilon_{j}\sqrt{2\log\vert\mathcal{N}_j\vert}\right)\vee 6D\geq 24D\sqrt{\log\frac{24}{23}}.\tag{5.11}
+\end{align*}
+Inspired by (5.4) and (5.5), we choose a sequence $\{\eta_j\}_{j=1}^\infty$ such that $\sum_{j=1}^\infty\eta_j \leq 1.$ Then
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}} X_f\geq t\right)&\leq \mathbb{P}\left(\sum_{j=1}^\infty\max_{(g_{j-1},g_j)\in\mathcal{H}_j}\left(X_{g_j} - X_{g_{j-1}}\right) \geq t\sum_{j=1}^\infty\eta_j\right)\\
+	&\leq\sum_{j=1}^\infty\mathbb{P}\left(\max_{(g_{j-1},g_j)\in\mathcal{H}_j}\left(X_{g_j} - X_{g_{j-1}}\right) \geq \eta_jt\right)
+	\leq\sum_{j=1}^\infty\exp\left(2\log\vert\mathcal{N}_j\vert - \frac{\eta_j^2t^2}{18\epsilon_{j}^2}\right),\tag{5.12}
+\end{align*}
+where the last inequality follows from (3.3). Now take
+\begin{align*}
+	\eta_j = \frac{6\epsilon_{j}\sqrt{2\log\vert\mathcal{N}_j\vert}}{t}\vee\frac{2^{-j}\sqrt{j}}{4},\tag{5.13}
+\end{align*}
+then by (5.11) we have
+\begin{align*}
+	\sum_{j=1}^\infty\eta_j \leq \frac{6\sqrt{2}}{t}\sum_{j=1}^\infty\epsilon_{j}\sqrt{\log\vert\mathcal{N}_j\vert} + \frac{1}{4}\sum_{j=1}^\infty 2^{-j}\sqrt{j} \leq \frac{1}{2} + \frac{1}{2} = 1.\tag{5.14}
+\end{align*}
+Here we use the bound
+\begin{align*}
+	\sum_{j=1}^\infty 2^{-j}\sqrt{j} \leq \sum_{j=1}^\infty 2^{-j}j = \frac{2^{-1}}{(1-2^{-1})^2} = 2.\tag{5.15}
+\end{align*}
+By (5.13), we have that $\log\vert\mathcal{N}_j\vert \leq \frac{\eta_j^2t^2}{72\epsilon_j}$ and $\eta_j\geq\frac{2^{-j}\sqrt{j}}{4} = \frac{\epsilon_{j}\sqrt{j}}{4D}$, hence
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}} X_f\geq t\right) &= \sum_{j=1}^\infty\exp\left(2\log\vert\mathcal{N}_j\vert - \frac{\eta_j^2t^2}{18\epsilon_{j}^2}\right)
+	\leq\sum_{j=1}^\infty\exp\left(- \frac{\eta_j^2t^2}{36\epsilon_{j}^2}\right)
+	\leq \sum_{j=1}^\infty\exp\left(-\frac{jt^2}{576D^2}\right)\\
+	&= \left[1 - \exp\left(-\frac{t^2}{576D^2}\right)\right]^{-1}\exp\left(-\frac{t^2}{576D^2}\right)\leq 24\exp\left(-\frac{t^2}{576D^2}\right),\tag{5.16}
+\end{align*}
+where the last inequality uses (5.11). Plug in (5.16) to (5.12), then (5.10) holds for $C_1=24$, which concludes the proof.
+\end{proof}
+
+\subsection{Rademacher complexity}
+\paragraph{Definition 5.5} (Empirical Rademacher complexity). The empirical Rademacher complexity of a function class $\mathcal{F}$ based on a sample $\{x_i\}_{i=1}^n$ is defined as the expected supremum of inner product with independent Rademacher variables $\{\epsilon_j\}_{j=1}^n$:
+\begin{equation*}
+	\mathcal{R}(\mathcal{F},x_{1:n}) := \E\left[\sup_{f\in\mathcal{F}}\frac{1}{n}\sum_{i=1}^n\epsilon_i f(x_i)\right].\tag{5.17}
+\end{equation*}
+
+Denote by $P_n$ the empirical distribution of $\{x_1,\cdots,x_n\}.$ Then we can define norm and inner product on $L^2(P_n)$ space:
+\begin{equation*}
+	\Vert f\Vert_{P_n} = \left(\frac{1}{n}\sum_{i=1}^n f(x_i)^2\right)^{1/2},\ \ \langle f,g\rangle_{P_n} = \frac{1}{n}\sum_{i=1}^n f(x_i)g(x_i).\tag{5.18}
+\end{equation*}
+Now we define the process
+\begin{align*}
+	Z_f := \frac{1}{\sqrt{n}}\sum_{i=1}^n\epsilon_i f(x_i),\ f\in\mathcal{F}. \tag{5.19}
+\end{align*}
+By proposition 1.5, $(Z_f - Z_g)$ is sub-Gaussian with variance proxy $\Vert f - g\Vert_{P_n}^2$ for any $f,g\in\mathcal{F},$ namely, $\{Z_f,f\in\mathcal{F}\}$ is sub-Gaussian with respect to $\Vert\cdot\Vert_{P_n}.$ It is worth noting that $\Vert\cdot\Vert_{P_n}$ is possibly a pseudo-metric on $\mathcal{F}$, which means that $\Vert f\Vert_{P_n}=0$ does not necessarily imply $f=0.$ Nonetheless, this slight change does not impact our conclusion, and you can verify that $\{Z_f,f\in\mathcal{F}\}$ is sample-continuous. Using Theorem 5.3, we can establish the connection between Dudley's entropy integral and Rademacher complexity.
+
+\paragraph{Definition 5.6} (Localized empirical Rademacher complexity and critical radius). Suppose we have a function class $\mathcal{F}:\mathcal{X}\to\mathbb{R}$ that is uniformly bounded by $b$, i.e. $\forall f\in\mathcal{F},\Vert f\Vert_\infty \leq b$. The localized empirical Rademacher complexity of a function class $\mathcal{F}$ based on a sample $\{x_i\}_{i=1}^n$ is defined as
+\begin{equation*}
+	\mathcal{R}_{\mathrm{loc}}(\delta,\mathcal{F},x_{1:n}) := \E\left[\sup_{f\in\mathcal{F}:\Vert f\Vert_{P_n}\leq\delta}\frac{1}{n}\sum_{i=1}^n\epsilon_if(x_i)\right] = \mathcal{R}(\mathcal{F}\cap B_n(\delta),x_{1:n}),\tag{5.20}
+\end{equation*}
+where $\{\epsilon_i\}_{i=1}^n$ are independent Rademacher variables and $B_n(\delta)$ is the closed ball in the norm $\Vert\cdot\Vert_{P_n}$ of radius $\delta > 0$ centered at the origin.
+The empirical critical radius of $\mathcal{F}$ on dataset $\{x_i\}_{i=1}^n$ is defined as the minimum solution smallest positive solution to $\mathcal{R}_{\mathrm{loc}}(\delta,\mathcal{F},x_{1:n})\leq\delta^2/b$:
+\begin{equation*}
+	\widehat{\delta}_n = \min\left\{\delta > 0:\mathcal{R}_{\mathrm{loc}}(\delta,\mathcal{F},x_{1:n})\leq\frac{\delta^2}{b}\right\}.\tag{5.21}
+\end{equation*}
+
+\paragraph{Proposition 5.7.} Denote by $B_n(\rho)$ the closed ball in the norm $\Vert\cdot\Vert_{P_n}$ of radius $\rho > 0$ centered at the origin. Then the empirical Rademacher complexity of $\mathcal{F}$ satisfies
+\begin{equation*}
+	\mathcal{R}_{\mathrm{loc}}(\rho,\mathcal{F},x_{1:n})\leq\frac{12}{\sqrt{n}}\int_0^\rho\sqrt{\log N(\epsilon,\mathcal{F},\Vert\cdot\Vert_{P_n})}\,\mathrm{d}\epsilon.\tag{5.22}
+\end{equation*}
+\begin{proof}
+	Applying Theorem 5.3 to $\left\{Z_f:=n^{-1/2}\sum_{i=1}^n\epsilon_if(x_i),f\in\mathcal{F}\right\}$ immediately concludes the proof.
+\end{proof}
+
+\subsection{Sub-Gaussian complexity}
+\paragraph{Motivation.} Let's consider a penalized least square problem. Suppose we have data $\{(x_i,y_i)\}_{i=1}^n\subset\mathcal{X}\times\mathcal{Y}$ collected from
+\begin{equation*}
+	y_i = f^*(x_i) + \epsilon_i,\ i=1,\cdots,n.\tag{5.23}
+\end{equation*}
+Given a vector space $\mathcal{F}$ of mappings from $\mathcal{X}$ to $\mathcal{Y}$ with $f^*\in\mathcal{F},$ and let $J$ be seminorm on $\mathcal{F}.$ We construct an estimator of $f^*$ from this class by minimizing the regularized risk for some tuning parameter $\lambda \geq 0$:
+\begin{equation*}
+	\widehat{f} = \underset{f\in\mathcal{F}}{\mathrm{argmin}}\left\{\frac{1}{n}\sum_{i=1}^n\left(y_i - f(x_i)\right)^2 + \lambda J(f)\right\}.\tag{5.24}
+\end{equation*}
+Recall that we denote by $P_n$ the empirical distribution of $\{x_1,\cdots,x_n\}.$ We also abuse the notation $\langle\cdot,\cdot\rangle_{P_n}$ by defining $\langle\cdot,\cdot\rangle_{P_n}:\mathbb{R}^n\times\mathcal{F}\to\mathbb{R}, (z,f)\mapsto\frac{1}{n}\sum_{i=1}^n z_if(x_i).$ Let $Y=(y_1,\cdots,y_n)^\top,\,\epsilon=(\epsilon_1,\cdots,\epsilon_n)^\top$ be the response and noise vectors. Then (5.15) implies
+\begin{align*}
+	\Vert Y-\widehat{f}\Vert_{P_n}^2 + \lambda J(\widehat{f}) \leq \Vert Y-{f}^*\Vert_{P_n}^2 + \lambda J({f}^*),\tag{5.25}
+\end{align*}
+and we have the basic inequality for $\widehat{f}$:
+\begin{align*}
+	\Vert\widehat{f}-f^*\Vert_{P_n}^2&\leq 2\langle\epsilon,\widehat{f}-f^*\rangle_{P_n} + \lambda\bigl(J(f^*) - J(\widehat{f})\bigr)\\
+	&\leq 2 \bigl(J(f^*) + J(\widehat{f})\bigr)\left\langle\epsilon,\frac{\widehat{f} - f^*}{ J(\widehat{f}) + J(f^*)}\right\rangle_{P_n} + \lambda\bigl(J(f^*) - J(\widehat{f})\bigr)\\
+	&\leq 2 \bigl(J(f^*) + J(\widehat{f})\bigr)\sup_{J(g)\leq 1}\left\langle\epsilon,g\right\rangle_{P_n} + \lambda\bigl(J(f^*) - J(\widehat{f})\bigr).\tag{5.26}
+\end{align*}
+Then we can bound the empirical estimation error by controlling the supremum of an empirical process $\{Z_g:=\langle\epsilon,g\rangle_{P_n}\}$ indexed by $g$. Generally, for a function class $\mathcal{F},$ we call $\sup_{f\in\mathcal{F}}\left\vert\langle\epsilon,f\rangle_{P_n}\right\vert$ the sub-Gaussian complexity associated with $\mathcal{F}.$
+
+\paragraph{Lemma 5.7} (Adapted from Lemma 8.4 of van de Geer 2000). Let $\{\epsilon_i,i=1,\cdots,n\}$ denote independent sub-Gaussian random variables, each having mean zero and variance proxy $\sigma^2$. Assume that there exist constants $0<w<2$ and $C>0$ such that for some fixed $x_1,\cdots, x_n$ (which define the empirical norm $\Vert\cdot\Vert_{P_n}$),\begin{equation*}
+	\log N(\eta,\mathcal{F},\Vert\cdot\Vert_{P_n}) \leq C\eta^{-w}\tag{5.27}
+\end{equation*}
+for sufficiently small $\eta > 0.$ Then for any fixed $\rho >0,$ there exists constants $c,c^\prime > 0$, depending only on $\sigma,\rho,C,w$ such that for all $\gamma > c^\prime,$
+\begin{equation*}
+	\sup_{f\in\mathcal{F}\cap B_n(\rho)}\frac{\langle\epsilon,f\rangle_{P_n}}{\Vert f\Vert_{P_n}^{1-w/2}}\leq\frac{\gamma}{\sqrt{n}}\tag{5.28}
+\end{equation*}
+with probability at least $1-c\exp\left(\frac{\gamma^2}{c^2}\right).$
+
+\begin{proof}
+Note that
+$\frac{\langle\epsilon,f\rangle_{P_n}}{\sqrt{{\sigma^2}/{n}}}$ is a sub-Gaussian process with respect to $\Vert\cdot\Vert_{P_n}$.
+For any $0<\delta <\rho,$ the Dudley's entropy integral satisfies
+\begin{equation*}
+  \int_0^{\delta}\sqrt{\log N(\eta,\mathcal{F},\Vert\cdot\Vert_{P_n})}\,\mathrm{d}\eta\leq c_0\delta^{1-w/2}\tag{5.29}
+\end{equation*}
+for some constant $c_0 > 0,$ hence is bounded. By Lemma 5.4, there exists $c_1,c_2>0$ depending only on $\sigma,\rho,C,w$ such that for all $T\geq \frac{c_1\delta}{\sqrt{n}},$ we have
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}\cap B_n(\delta)}\langle\epsilon,f\rangle_{P_n} \geq T\right)\leq c_2\exp\left(-\frac{nT^2}{c_2^2\sigma^2\delta^2}\right).\tag{5.30}
+\end{align*}
+Then for any $T\geq \frac{c_1}{\sqrt{n}}2^{1-w/2}\rho^{w/2},$ we have
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}\cap B_n(\rho)}\frac{\langle\epsilon,f\rangle_{P_n}}{\Vert f\Vert_{P_n}^{1-w/2}} \geq T\right)
+	&= \mathbb{P}\left(\bigcup_{j=1}^\infty\left\{\sup_{f\in\mathcal{F}\cap (B_n(2^{1-j}\rho)\backslash B_n(2^{-j}\rho) )}\frac{\langle\epsilon,f\rangle_{P_n}}{\Vert f\Vert_{P_n}^{1-w/2}} \geq T\right\}\right)\\
+	&\leq\sum_{j=1}^\infty\mathbb{P}\left(\sup_{f\in\mathcal{F}\cap B_n(2^{1-j}\rho)}\langle\epsilon,f\rangle_{P_n}\geq T(2^{-j}\rho)^{1-w/2}\right)\\
+	&\leq \sum_{j=1}^\infty c_2\exp\left(-\frac{nT^2(2^{-j}\rho)^{2-w}}{c_2^2\sigma^2(2^{1-j}\rho)^2}\right) = \sum_{j=1}^\infty c_2\exp\left(-\frac{nT^2 2^{jw}}{4c_2^2\sigma^2\rho^w}\right)\\
+	&\leq \sum_{j=1}^\infty c_2\exp\left(-\frac{nT^2 (1 + jw\log 2)}{4c_2^2\sigma^2\rho^w}\right)\\ &=c_2\exp\left(-\frac{nT^2}{4c_2^2\sigma^2\rho^w}\right)\frac{\exp\left(-\frac{nT^2w\log 2}{4c_2^2\sigma^2\rho^w}\right)}{1 - \exp\left(-\frac{nT^2w\log 2}{4c_2^2\sigma^2\rho^w}\right)}\\
+	&\leq c_2\exp\left(-\frac{nT^2}{4c_2^2\sigma^2\rho^w}\right)\frac{\exp\left(-\frac{c_1^2 w\log 2}{c_2^2 2^w\sigma^2}\right)}{1-\exp\left(-\frac{c_2^2 w\log 2}{c_1^2 2^w\sigma^2}\right)} \leq c\exp\left(-\frac{nT^2}{c^2}\right)\tag{5.31}
+\end{align*}
+for some $c>0.$ Set $\gamma = \frac{T}{\sqrt{n}},$ then there exists $c^\prime>0$ depending only on $\rho,\sigma,C,w$ such that for any $\gamma \geq c^\prime,$
+\begin{align*}
+	\mathbb{P}\left(\sup_{f\in\mathcal{F}\cap B_n(\rho)}\frac{\langle\epsilon,f\rangle_{P_n}}{\Vert f\Vert_{P_n}^{1-w/2}} \geq \frac{\gamma}{\sqrt{n}}\right) \leq c\exp\left(-\frac{\gamma^2}{c^2}\right).\tag{5.32}
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+
+This Lemma gives a bound of the empirical process $\{\langle\epsilon,f\rangle_{P_n},f\in\mathcal{F}\}.$ Suppose that $\Vert f\Vert_{P_n}$ decays with a rate of $n^{-1/(2+w)},$ then with high probability, the following inequality holds uniformly for all $f\in\mathcal{F}:$
+\begin{equation*}
+	\langle\epsilon,f\rangle_{P_n}\lesssim\mathcal{O}\left(\frac{\Vert f\Vert_{P_n}^{1-w/2}}{\sqrt{n}}\right)\eqsim\mathcal{O}\left(n^{-\frac{2}{2+w}}\right).\tag{5.33}
+\end{equation*}
+
+\paragraph{Lemma 5.8.} Assume that $\mathcal{F}$ satisfies the entropy bound (5.27) for fixed $x_1,\cdots,x_n,$ where $0<w<2$ and $C>0$ are constants. Then the empirical critical radius of $\mathcal{F}$ satisfies $\widehat{\delta}_n\leq c_1n^{-1/(2+w)}$ for a constant $c_1.$
+\begin{proof}
+By (5.22) and (5.29), we have
+\begin{equation*}
+	\mathcal{R}_{\mathrm{loc}}(\delta,\mathcal{F},x_{1:n}) \leq \frac{c_0}{\sqrt{n}}\delta^{1-w/2}\tag{5.34}
+\end{equation*}
+for some constant $c_0>0.$ Then the smallest solution $\widehat{\delta}_n$ to $\mathcal{R}_{\mathrm{loc}}(\delta,\mathcal{F},x_{1:n})\leq\delta^2/b$ can be upper bounded by
+\begin{align*}
+	\delta^2/b = \frac{c_0}{\sqrt{n}}\delta^{1-w/2}\ \Leftrightarrow\ \delta^{1+w/2} = \frac{c_0b}{\sqrt{n}},\tag{5.35}
+\end{align*}
+which gives $\widehat{\delta}_n\leq c_1n^{-1/(2+w)}$ for some constants $c_1.$
+\end{proof} 
+
+
+\begin{thebibliography}{100}
+\bibitem{1} Ryan Tibshirani. \textit{Empirical Process Theory for Nonparametric Analysis.} Notes for Advanced Topics in Statistical Learning, Spring 2023.
+\bibitem{2} Ramon van Handel. \textit{Probability in High Dimension.} APC 550 Lecture Notes, Princeton University. December 21, 2016.
+\bibitem{3} Daniel Hsu, Sham Kakade, and Tong Zhang. A tail inequality for quadratic forms of subgaussian random
+vectors. \textit{Electronic Communications in Probability}, 17(52):1–6, 2012.
+\bibitem{4} John Lafferty, Han Liu, and Larry Wasserman. \textit{Concentration of Measure.} Carnegie Mellon University.
+\bibitem{5} Alekh Agarwal, Nan Jiang, Sham M. Kakade and Wen Sun. \textit{Reinforcement Learning: Theory and Algorithms} (draft of January 31, 2022).
+\bibitem{6} Sara van de Geer. Empirical Processes in M-Estimation. Cambridge University Press, 2000.
+\end{thebibliography}
+\end{document}

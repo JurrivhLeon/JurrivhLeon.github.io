@@ -1,0 +1,2139 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{float} 
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{subfigure} 
+\usepackage{threeparttable}
+\usepackage{ulem}
+\usepackage[many]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\setitemize[1]{itemsep=1pt,partopsep=0.8pt,parsep=\parskip,topsep=0.8pt}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%% Number of equations.
+\numberwithin{equation}{section}
+%% New symbols.
+\newcommand{\rmb}{\mathrm{b}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\perp}
+\newcommand{\bfw}{\mathbf{w}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\scr}{\mathscr}
+\renewcommand{\cal}{\mathcal}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\ol}{\overline}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\DeclareFontFamily{U}{mathx}{}
+\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\gr}{Gr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Le}{Le}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\conv}{Conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\argmin}{argmin}
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\renewcommand{\i}{\mathrm{i}}
+\renewcommand{\proofname}{\textit{Proof}}
+\renewcommand*{\thesubfigure}{(\arabic{subfigure})}
+\renewcommand{\baselinestretch}{1.15}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{remark}{Remark}
+
+\title{\bf Further Topics in Measure Theory}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.80}
+\author{\textsc{Jyunyi Liao}}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+	
+\newpage
+
+\section{Interpolation of $L^p$ spaces}
+\subsection{The Riesz-Thorin Interpolation Theorem}
+We begin from the interpolation of $L^p$ norms. Let $1\leq p<r<q<\infty$. If $f\in L^p(X,\scr{F},\mu)\cap L^q(X,\scr{F},\mu)$, the Hölder's inequality implies
+\begin{align*}
+	\int_X\vert f\vert^r\,d\mu&=\int_X\vert f\vert^\frac{p(q-r)}{q-p}\vert f\vert^\frac{q(r-p)}{q-p}\,d\mu\\
+	&\leq\left(\int_X\vert f\vert^p\,d\mu\right)^{\frac{q-r}{q-p}}\left(\int_X\vert f\vert^q\,d\mu\right)^{\frac{r-p}{q-p}}=\Vert f\Vert_{L^p}^{1-t}\Vert f\Vert_{L^q}^{t},
+\end{align*}
+where $t=\frac{q(r-p)}{q-p}$ satisfies $\frac{1}{r}=\frac{1-t}{p}+\frac{t}{q}$. This estimate holds even when $q=\infty$, since
+\begin{align*}
+	\int_X\vert f\vert^r\,d\mu&=\int_X\vert f\vert^p\vert f\vert^{r-p}\,d\mu
+	\leq\int_X\vert f\vert^p\Vert f\Vert^{r-p}_{L^\infty}\,d\mu=\Vert f\Vert^p_{L^p}\Vert f\Vert^{r-p}_{L^\infty}.
+\end{align*}
+Therefore $f\in L^r(X,\scr{F},\mu)$, and $\Vert f\Vert_{L^r}$ can be bounded by $L^p$ and $L^q$ norms. More generally, we have the following interpolation theorem for linear operators.
+
+\begin{theorem}[Riesz-Thorin interpolation theorem]\label{rieszthorin}
+	Let $p_0,p_1,q_0,q_1\in[1,\infty]$. Let $(X,\scr{F},\mu)$ and $(Y,\scr{G},\nu)$ be measure spaces. If $q_0=q_1=\infty$, we further assume that $\nu$ is semifinite. Let $\,T$ be a linear operator from $L^{p_0}(X,\scr{F},\mu)+L^{p_1}(X,\scr{F},\mu)$ into $L^{q_0}(Y,\scr{G},\nu)+L^{q_1}(Y,\scr{G},\nu)$ such that $\Vert Tf\Vert_{L^{q_0}}\leq M_0\Vert f\Vert_{L^{p_0}}$  for all $f\in L^{p_0}(X,\scr{F},\mu)$, and $\Vert Tg\Vert_{L^{q_1}}\leq M_1\Vert g\Vert_{L^{p_1}}$ for all $g\in L^{p_1}(X,\scr{F},\mu)$. For each $0<t<1$, define
+	\begin{align*}
+		\frac{1}{p}=\frac{1-t}{p_0}+\frac{t}{p_1},\qquad \frac{1}{q}=\frac{1-t}{q_0}+\frac{t}{q_1}.
+	\end{align*}
+	Then $\Vert Tf\Vert_{L^q}\leq M_0^tM_1^{1-t}\Vert f\Vert_{L^p}$ for $f\in L^p(X,\scr{F},\mu)$.
+\end{theorem}
+We begin by introducing an estimate of $L^p$-norms using a dual space argument.
+\begin{lemma}\label{rieszthorinlemma2}
+Let $(X,\scr{F},\mu)$ be a measure space, and $p,q\in[1,\infty]$ conjugate exponents. If $q=\infty$, we further assume that $\mu$ is semifinite. For each $f\in L^q(X,\scr{F},\mu)$,
+\begin{align}
+	\Vert f\Vert_{L^q}=\sup\left\{\left\vert\int_Xfg\,d\mu\right\vert:\Vert g\Vert_{L^p}\leq 1,\ g\ \text{is simple}\right\}\label{Lqest}
+\end{align}
+\end{lemma}
+\begin{proof} Let $M$ be the right-hand side of (\ref{Lqest}). By Hölder's inequality, we have $\Vert f\Vert_{L^q}\Vert g\Vert_{L^p}\geq\left\vert\int_X fg\,d\mu\right\vert$, and $\Vert f\Vert_{L^q}\geq M$. Then it suffices to show the other direction $\Vert f\Vert_{L^q}\leq M$. We discuss two cases.
+\item\textbf{Case I: $1<p,q<\infty$.} Given $f\in L^q(X,\scr{F},\mu)$, we take a sequence $(f_n)$ of simple functions such that $\vert f_n\vert\uparrow\vert f\vert$ and $f_n\to f$ a.e., and define
+\begin{align*}
+	g_n=\frac{\vert f_n\vert^{q-1}\cdot\ol{\mathrm{sgn}f_n}}{\Vert f_n\Vert_{L^q}^{q-1}}.
+\end{align*}
+Then $\Vert g_n\Vert_{L^p}^p=1$, and
+\begin{align*}
+	\vert(f_n-f)g\vert\leq 2\vert f\vert\cdot\frac{\vert f_n\vert^{q-1}}{\Vert f_1\Vert_{L^q}^{q-1}}\leq \frac{2\vert f\vert^q}{\Vert f_1\Vert_{L^q}^{q-1}}\in L^1(X,\scr{F},\mu).
+\end{align*}
+By dominated convergence theorem,
+\begin{align*}
+	\lim_{n\to\infty}\int_X (f_n-f)g_n\,d\mu=0.\label{rieszthorindct}
+\end{align*}
+We then use Fatou's lemma to bound the $L^q$ norm of $f$:
+\begin{align}
+	\Vert f\Vert_{L^q}=\int_X\frac{\vert f\vert^q}{\Vert f\Vert_{L^q}^{q-1}}\,d\mu\leq\liminf_{n\to\infty}\int_X \frac{\vert f_n\vert^q}{\Vert f_n\Vert_{L^q}^{q-1}}\,d\mu=\liminf_{n\to\infty}\left\vert\int_X f_ng_n\,d\mu\right\vert.
+\end{align}
+Passing to a suitable subsequence and applying (\ref{rieszthorindct}), we obtain
+\begin{align*}
+	\Vert f\Vert_{L^q}\leq\lim_{n\to\infty}\left\vert\int_X f_ng_n\,d\mu\right\vert=\lim_{n\to\infty}\left\vert\int_X fg_n\,d\mu\right\vert\leq M.
+\end{align*}
+\item\textbf{Case II: $p=1$ and $q=\infty$.} Argue by contradiction. If $\Vert f\Vert_{L^\infty}>M$, we choose $\epsilon>0$ such that the set $E=\{x\in X:\vert f(x)\vert>M+\epsilon\}$ has positive measure. Since $\mu$ is a semifinite measure, we can choose $F\subset E$ with $0<\mu(F)<\infty$. Let $g=\chi_F\cdot\ol{\mathrm{sgn}f}/\mu(F)$, and take a sequence of simple functions $g_n\to g$ and $\vert g_n\vert\uparrow g$. Then $\Vert g\Vert_{L^1}=1$, $\Vert g_n\Vert_{L^1}\leq 1$, and
+\begin{align*}
+	\vert fg_n\vert =\frac{1}{\mu(F)}\chi_F\vert f\vert\leq\frac{\Vert f\Vert_{L^\infty}}{\mu(F)}\chi_F,
+\end{align*} 
+which is an integrable function. By dominated convergence theorem and definition of $F$,
+\begin{align*}
+	M\geq \int_X fg\,d\mu=\lim_{n\to\infty}\int_X fg_n\,d\mu=\frac{1}{\mu(F)}\int_F\vert f\vert\,d\mu\geq M+\epsilon,
+\end{align*}
+a contradiction! Hence $\Vert f\Vert_{L^\infty}\leq M$.
+\end{proof}
+
+\begin{lemma}[The three lines lemma]\label{rieszthorinlemma1}
+	Let $\phi$ be a bounded continuous function on the strip $0\leq\Re(z)\leq 1$ that is holomorphic in the interior of the strip. If $\vert\phi(z)\vert\leq M_0$ on $\Re(z)=0$ and $\vert\phi(z)\vert\leq M_1$ on $\Re(z)=1$, then $\vert\phi(z)\vert\leq M_0^{1-t}M_1^{t}$ on $\Re(z)=t$, where $0<t<1$.
+\end{lemma}
+\begin{proof}
+	We define the function
+	\begin{align*}
+		\phi_\epsilon(z)=\phi(z)M_0^{-z}M_1^{z-1}e^{-\epsilon z(1-z)},
+	\end{align*}
+	which also satisfies the hypothesis of the lemma with $M_0$ and $M_1$ replaced by $1$, and 
+	\begin{align*}
+		\vert\phi_\epsilon(x+iy)\vert=\vert \phi(x+iy)\vert M_0^{-x}M_1^{x-1}e^{-\epsilon x(1-x)-\epsilon y^2}\leq M_0^{1-x}M_1^{x-1}e^{-\epsilon y^2}.
+	\end{align*}
+	Hence $\phi_\epsilon(z)\to 0$ as $\vert\Im(z)\vert\to\infty$. By our hypothesis, for sufficiently large $A>0$, we have $\vert\phi_\epsilon\vert\leq 1$ on the boundary of the region $D=\{z:0\leq\Re(z)\leq 1,-A\leq\Im(z)\leq A\}$. By the maximum modulus principle, $\max_{z\in\partial D}\vert\phi_\epsilon(z)\vert=\max_{z\in D}\vert\phi_\epsilon(z)\vert$. Hence $\vert\phi_\epsilon\vert\leq 1$ on $D$, and hence on the strip $0\leq\Re(z)\leq 1$. Letting $\epsilon\to 0$, we obtain $\vert\phi(z)\vert M_0^{-t}M_1^{t-1}\leq\lim_{\epsilon\to 0}\vert\phi_\epsilon(z)\vert\leq 1$, where $t=\Re(z)$. 
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{rieszthorin}] The proof has three steps.
+\item\textbf{Step I:} We begin with the case $p_0=p_1=p$. Since the case $q_0=q_1$ is clear, we may assume $q_0<q_1$. Then
+\begin{align*}
+	\Vert Tf\Vert_{L^q}\leq\Vert Tf\Vert_{L^{q_0}}^{\frac{q_0(q_1-q)}{q(q_1-q_0)}}\Vert Tf\Vert_{L^{q_1}}^{\frac{q_1(q-q_0)}{q(q_1-q_0)}}=\Vert Tf\Vert_{L^{q_0}}^{t}\Vert Tf\Vert_{L^{q_1}}^{1-t}\leq M_0^tM_1^{1-t}\Vert f\Vert_{L^p}.
+\end{align*}
+
+\item\textbf{Step II.} Now we assume $p_0<p_1\leq\infty$, and in particular $p<\infty$ for all $0<t<1$. We begin by taking a simple function $f=\sum_{j=1}^n a_j\chi_{E_j}=\sum_{j=1}^n\vert a_j\vert e^{i\theta_j}\chi_{E_j}$ and show that $\Vert Tf\Vert_{L^q}\leq M_0^{1-t}M_1^{t}\Vert f\Vert_{L^p}$. 
+
+By homogeneity of $\Vert\cdot\Vert$ and linearity of $T$, it suffices to show the case $\Vert f\Vert_{L^p}=1$. We estimate $\Vert Tf\Vert_{L^q}$ by taking $g=\sum_{k=1}^m b_j\chi_{F_k}=\sum_{k=1}^m\vert b_j\vert e^{i\xi_k}\chi_{F_k}$ with $\Vert g\Vert_{L^{q^\prime}}=1$ in (\ref{Lqest}). Define functions $\alpha$ and $\beta$ as follows:
+\begin{align*}
+	\alpha(z)=\frac{1-z}{p_0}+\frac{z}{p_1},\quad \beta(z)=\frac{1-z}{q_0}+\frac{z}{q_1},\quad z\in\bbC,\ 0\leq\Re(z)\leq 1.
+\end{align*}
+Then $\alpha(t)=1/p$ and $\beta(t)=1/q$. We let
+\begin{align*}
+	f_z=\sum_{j=1}^n\vert a_j\vert^{\alpha(z)/\alpha(t)} e^{i\theta_j}\chi_{E_j},\qquad g_z=\begin{cases}\sum_{k=1}^m\vert b_k\vert^{(1-\beta(z))/(1-\beta(t))}e^{i\xi_k}\chi_{F_k}, &\beta(t)\neq 1,\\
+	g, &\beta(t)=1.
+	\end{cases}
+\end{align*}
+Finally, we define
+\begin{align*}
+	\Phi(z)=\int_Y (Tf_z)g_z\,d\nu=\begin{cases}
+		\sum_{j=1}^n\sum_{k=1}^m \vert a_j\vert^{\frac{\alpha(z)}{\alpha(t)}}\vert b_k\vert^{\frac{1-\beta(z)}{1-\beta(t)}} e^{i(\theta_j+\xi_k)}\int_Y(T\chi_{E_j})\chi_{F_k}\,d\nu, &\beta(t)\neq 1\\
+		\sum_{j=1}^n\sum_{k=1}^m \vert a_j\vert^{\frac{\alpha(z)}{\alpha(t)}}\vert b_k\vert e^{i(\theta_j+\xi_k)}\int_Y(T\chi_{E_j})\chi_{F_k}\,d\nu, &\beta(t)=1.
+	\end{cases}
+\end{align*}
+Then $\Phi(z)$ is a bounded and continuous function on the strip $0\leq\Re(z)\leq 1$ that is holomorphic in the strip. We claim that $\Phi(z)\leq M_0$ on $\Re(z)=0$ and $\Phi(z)\leq M_1$ on $\Re(z)=1$. We let $z=i\omega$, where $\omega\in\bbR$. Since $E_1,\cdots,E_n$ are disjoint, at most one $\chi_{E_j}$ is nonzero, and
+\begin{align*}
+	\vert f_{i\omega}\vert=\sum_{j=1}^n\vert a_j\vert^{p/p_0}\chi_{E_j}=\vert f\vert^{p/p_0}.
+\end{align*}
+A similar calculation yields
+\begin{align*}
+	\vert g_{i\omega}\vert=\sum_{k=1}^m \vert b_k\vert^{q^\prime/q_0^\prime}\chi_{F_k}=\vert g\vert^{q^\prime/q_0^\prime},
+\end{align*}
+where $q^\prime$ and $q_0^\prime$ are the conjugate exponents of $q$ and $q_0$, respectively, and we set $\frac{\infty}{\infty}=1$. By Hölder's inequality,
+\begin{align*}
+	\vert\Phi(i\omega)\vert\leq\Vert Tf_{i\omega}\Vert_{L^{q_0}}\Vert g_{i\omega}\Vert_{L^{q_0^\prime}}\leq M_0\Vert f_{i\omega}\Vert_{L^{p_0}}\Vert g_{i\omega}\Vert_{L^{q_0^\prime}}=M_0\Vert f\Vert_{L^p}\Vert g\Vert_{L^{q^\prime}}=M_0.
+\end{align*}
+Similarly, we can show $\vert\Phi(1+i\omega)\vert\leq M_1$. By three lines lemma [Lemma \ref{rieszthorinlemma1}] and Lemma \ref{rieszthorinlemma2}, we have
+\begin{align*}
+	\Vert Tf\Vert_{L^q}\leq\vert\Phi(t)\vert\leq M_0^{1-t}M_1^t.
+\end{align*} 
+\item\textbf{Step III.} We have shown that $\Vert Tf\Vert_{L^q}\leq  M_0^{1-t}M_1^t\Vert f\Vert_{L^p}$ for all simple functions. For each $f\in L^p(X,\scr{F},\mu)$ with $f\geq 0$, we choose a sequence of simple functions such that $\vert f_n\vert\uparrow\vert f\vert$ and $f_n\to f$ pointwise. We let $E=\{x\in X:\vert f(x)\vert>1\}$, and define
+\begin{align*}
+	g=f\chi_E,\quad g_n=f_n\chi_E,\quad h=f-g,\quad h_n=f_n-g_n.
+\end{align*}
+Since $p_0<p<p_1$, we have $g\in L^{p_0}(X,\scr{F},\mu)$ and $h\in L^{p_1}(X,\scr{F},\mu)$. By dominated convergence theorem, $\Vert f_n-f\Vert_{L^p}\to 0$, $\Vert g_n-g\Vert_{L^{p_0}}\to 0$ and $\Vert h-h_p\Vert_{L^{p_1}}\to 0$. Hence $\Vert Tg_n-Tg\Vert_{L^{q_0}}\leq M\Vert g_n-g\Vert_{L^{p_0}}\to 0$ and $\Vert Th_n-Th\Vert_{L^{q_1}}\leq M\Vert h_n-h\Vert_{L^{p_1}}\to 0$. By passing to a suitable subsequence we may also assume $Tg_n\to Tg$ a.e. and $Th_n\to Th$ a.e., and then $Tf_n\to Tf$. By Fatou's lemma,
+\begin{align*}
+	\Vert Tf\Vert_{L^q}\leq\liminf_{n\to\infty}\Vert Tf_n\Vert_{L^q}\leq \liminf_{n\to\infty}M_0^{1-t}M_1^t\Vert f_n\Vert_{L^p}=M_0^{1-t}M_1^t\Vert f\Vert_{L^p}.
+\end{align*}
+Then we finish the proof.
+\end{proof}
+
+\newpage
+\subsection{The Marcinkiewicz Interpolation Theorem}
+\paragraph{Distribution function and weak $L^p$ spaces.} Let $(X,\scr{F},\mu)$ be a measure space. For a measurable function $f$ on $(X,\scr{F},\mu)$, define its \textit{distribution function} $\lambda_f:(0,\infty)\to[0,\infty]$ by
+\begin{align*}
+	\lambda_f(\alpha)=\mu\left(\left\{x\in X:\vert f(x)\vert>\alpha\right\}\right).
+\end{align*}
+Some properties of the distribution function is clear:
+\begin{itemize}
+	\item $\lambda_f$ is decreasing on $(0,\infty)$.
+	\item $\lambda_f$ is right-continuous, since $\{\vert f\vert>\alpha\}=\bigcup_{n=1}^\infty\{\vert f\vert>\alpha+\epsilon_n\}$ for all $\epsilon_n>0$ with $\epsilon_n\downarrow 0$.
+	\item $\lambda_{f+g}(2\alpha)\leq\lambda_f(\alpha)+\lambda_g(\alpha)$. In addition, if $\vert f\vert\leq\vert g\vert$, then $\lambda_f\leq\lambda_g$. 
+	\item If the sequence $(f_n)$ satisfies $\vert f_n\vert\uparrow\vert f\vert$, then $\lambda_{f_n}\to\lambda_f$ pointwise, since $\{\vert f\vert>\alpha\}=\bigcup_{n=1}^\infty\{\vert f_n\vert>\alpha\}$.
+\end{itemize}
+Let $1\leq p<\infty$. For a measurable function $f$, define\vspace{-0.15cm}
+\begin{align*}
+	[f]_p=\left(\sup_{\alpha>0}\alpha^p\lambda_{f}(\alpha)\right)^{1/p}.
+\end{align*}
+The \textit{weak $L^p$ space} is then defined to be the set of all measurable functions on $(X.\scr{F},\mu)$ such that $[f]_p<\infty$. Note that $[\cdot]_p$ is not a norm, because it does not satisfy the triangle inequality. By Chebyshev's inequality, $[f]_p\leq\Vert f\Vert_{L^p}$ for all $f\in L^p(X,\scr{F},\mu)$. Therefore the classical $L^p$ is contained in the weak $L^p$ space. 
+
+\begin{lemma}\label{mckwzlemma1}
+	If $f$ is a measurable function on $(X,\scr{F},\mu)$ and $0<p<\infty$, then
+	\begin{align*}
+		\int_X\vert f\vert^p\,d\mu=p\int_0^\infty\alpha^{p-1}\lambda_f(\alpha)\,d\alpha.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	We may assume $\lambda_f(\alpha)<\infty$ for all $\alpha>0$, otherwise both integrals are infinite. We may also assume $f\geq 0$ by replacing $f$ with $\vert f\vert$ if necessary. If $f$ is simple, $\lambda_f$ is a step function with jump discontinuities $0<\alpha_1<\cdots<\alpha_n$. We let $\alpha_0=0$. Then
+	\begin{align*}
+		p\int_0^\infty\alpha^{p-1}\lambda_f(\alpha)\,d\alpha&=\sum_{j=1}^n\int_{\alpha_{j-1}}^{\alpha_j} p\alpha^{p-1}\lambda_f(\alpha)\,d\alpha=\sum_{j=1}^n\left(\vert\alpha_j\vert^p-\vert\alpha_{j-1}\vert^p\right)\lambda_f(\alpha_{j-1})\\
+		&=\sum_{j=1}^n\vert\alpha_j\vert^p\left(\lambda_f(\alpha_{j-1})-\lambda_f(\alpha_j)\right)=\sum_{j=1}^n\vert\alpha_j\vert^p\mu(\{f=\alpha_j\})=\int_X\vert f\vert^p\,d\mu.
+	\end{align*}
+	Since $f_n\uparrow f$ implies the pointwise convergence $\lambda_{f_n}\to\lambda_f$, the general result follows from simple function approximation and monotone convergence theorem.
+\end{proof}
+
+\begin{definition}[Sublinear operators of strong and weak types]
+	Let $T$ be an operator on the some vector space $V$ of measurable functions from $(X,\scr{F},\mu)$ to the space of all measurable functions on $(Y,\scr{G},\nu)$. 
+	\begin{itemize}
+		\item[(i)] $T$ is said to be \textit{sublinear}, if $\vert T(f+g)\vert\leq\vert Tf\vert+\vert Tg\vert$ and $\vert T(cf)\vert=c\vert Tf\vert$ for all $f,g\in V$ and $c>0$.
+		\item[(ii)] Let $1\leq p,q\leq\infty$. The operator $T$ is said to be \textit{of strong type $(p,q)$}, if $L^p(X,\scr{F},\mu)\subset V$ and there exists a constant $C_{p,q}>0$ such that for all $f\in L^p(X,\scr{F},\mu)$, $$\Vert Tf\Vert_{L^q}\leq C_{p,q}\Vert f\Vert_{L^p}.$$
+		\item[(iii)] Let $1\leq p\leq\infty$ and $1\leq q<\infty$. The operator $T$ is said to be \textit{of weak type $(p,q)$}, if $L^p(X,\scr{F},\mu)\subset V$ and there exists a constant $C_{p,q}>0$  such that  for all $f\in L^p(X,\scr{F},\mu)$, 
+		$$[Tf]_q\leq C_{p,q}\Vert f\Vert_{L^p}.$$ 
+		Clearly, a sublinear operator $T$ of strong type $(p,q)$ is also of weak type $(p,q)$. Also, we say $T$ is of weak type $(p,\infty)$ if and only if it is of strong type $(p,\infty)$.
+	\end{itemize}
+\end{definition}
+
+\begin{theorem}[Marcinkiewicz interpolation theorem]\label{mckwz}
+	Let $1\leq p_0\leq q_0\leq\infty$, $1\leq p_1\leq q_1\leq\infty$ and $q_0\neq q_1$. Let $\,T$ be a sublinear operator from $L^{p_0}(X,\scr{F},\mu)+L^{p_1}(X,\scr{F},\mu)$ into the space of measurable functions on $(Y,\scr{G},\nu)$. For each $0<\gamma<1$, define
+	\begin{align*}
+		\frac{1}{p}=\frac{1-\gamma}{p_0}+\frac{\gamma}{p_1},\qquad \frac{1}{q}=\frac{1-\gamma}{q_0}+\frac{\gamma}{q_1}.
+	\end{align*}
+	If $\,T$ is a sublinear operator of weak types $(p_0,q_0)$ and $(p_1,q_1)$, then $T$ is of strong type $(p,q)$.
+\end{theorem}
+The proof Marcinkiewicz interpolation theorem requires the following lemma.
+
+\begin{lemma}[Minkowski's integral inequality]\label{mkwsk}
+Let $(X,\scr{F},\mu)$ and $(Y,\scr{G},\nu)$ be two measure spaces and let $\Phi:X\times Y\to\bbC$ be a measurable function on the produce space. If $p\geq 1$, we have
+\begin{align*}
+	\left(\int_X\left\vert\int_Y\phi(x,y)\,d\nu(y)\right\vert^p d\mu(x)\right)^{\frac{1}{p}}\leq\int_X\left(\int_X\vert\phi(x,y)\vert^{p}\,d\mu(x)\right)^{\frac{1}{p}}\,d\mu(y).
+\end{align*}
+\end{lemma}
+\begin{proof}
+Let $\Phi(x)=\int_Y\phi(x,y)\,d\nu(y)$. Similar to the proof of Minkowski's inequality, we estimate $\Vert\Phi\Vert_{L^p}^p$ by
+\begin{align*}
+	\int_X\vert\Phi\vert^p\,d\mu&\leq\int_X\vert\Phi(x)\vert^{p-1}\int_Y\left\vert\phi(x,y)\right\vert d\nu(y)\,d\mu(x)\\
+	&=\int_Y\int_X\vert\Phi(x)\vert^{p-1}\left\vert\phi(x,y)\right\vert d\mu(x)\,d\nu(y)\\
+	&\leq\int_Y\left(\int_X\vert\Phi(x)\vert^{(p-1)\cdot\frac{p}{p-1}}\,d\mu(x)\right)^{\frac{p-1}{p}}\left(\int_X\vert\phi(x,y)\vert^{p}\,d\mu(x)\right)^{\frac{1}{p}}\,d\mu(y)\\
+	&=\Vert\Phi\Vert_{L^p}^{p-1}\int_X\left(\int_X\vert\phi(x,y)\vert^{p}\,d\mu(x)\right)^{\frac{1}{p}}\,d\mu(y),
+\end{align*}
+where we interchange the integrals by Fubini's theorem and use Hölder's inequality to the inner integral.
+\end{proof}
+
+\begin{lemma}\label{mckwzlemma2}
+	If $f$ is a measurable function and $\alpha>0$, define
+	\begin{align*}
+		h_\alpha=f\chi_{\{\vert f\vert\leq\alpha\}}+\alpha(\mathrm{sgn}\,f)\chi_{\{\vert f\vert>\alpha\}},\quad\text{and}\quad g_\alpha=f-h_\alpha=(\mathrm{sgn}\,f)(\vert f\vert-\alpha)\chi_{\{\vert f\vert>\alpha\}}.
+	\end{align*}
+	Then
+	\begin{align*}
+		\lambda_{g_\alpha}(t)=\lambda_f(t+\alpha),\quad\text{and}\quad\lambda_{h_\alpha}(t)=\begin{cases}
+			\lambda_f(t), &t<\alpha,\\
+			0, &t\geq\alpha.
+		\end{cases}
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	By definition, $h_\alpha$ is in fact the $\alpha$-truncation of $f$, i.e. $h_\alpha=f$ when $\vert f\vert\leq\alpha$, and $h_\alpha=\alpha(\mathrm{sgn}\,f)$ when $\vert f\vert>\alpha$. Hence $\{\vert h\vert>t\}=\{\vert f\vert>t\}$ when $t<\alpha$, and $\{\vert h\vert>t\}=\{\vert f\vert>t\}=\emptyset$ when $t\geq\alpha$. On the other hand, note that $g_\alpha=0$ on $\{\vert f\vert<\alpha\}$. For any $t>0$, we have $\{\vert g_\alpha\vert>t\}=\{\vert f\vert-\alpha>t\}=\{\vert f\vert>t+\alpha\}$.
+\end{proof}
+
+Now we prove the Marcinkiewicz interpolation theorem.
+\begin{proof}[Proof of Theorem \ref{mckwz}]
+For notation simplicity we also write $[\cdot]_\infty=\Vert\cdot\Vert_{L^\infty}$. Since $T$ is of weak types $(p_0,q_0)$ and $(p_1,q_1)$, there exist constants $C_0$ and $C_1$ such that
+\begin{align*}
+	\lambda_{f}(\alpha)\leq \left(\frac{C_0}{\alpha}\right)^{q_0}\Vert f\Vert_{L^{p_0}}^{q_0}\quad\text{and}\quad \lambda_{g}(\alpha)\leq \left(\frac{C_1}{\alpha}\right)^{q_1}\Vert g\Vert_{L^{p_1}}^{q_1}
+\end{align*}
+for all $f\in L^{p_0}(X,\scr{F},\mu)$, $g\in L^{p_1}(X,\scr{F},\mu)$ and all $\alpha>0$. There are several cases to consider. 
+\begin{itemize}
+	\item Case I: $p_0=p_1=p$. We may assume $q_0<q_1$ by switching subscripts $0$ and $1$ when necessary.
+	\item Case II: $p_0\neq p_1$. We may assume $p_0<p_1$ by switching subscripts $0$ and $1$ when necessary.
+\end{itemize}
+
+Now we prove the theorem case by case.
+\item\textbf{Case I\,(1): $p_0=p_1=p$ and $q_0<q_1<\infty$.} If $f\in L^p(X,\scr{F},\mu)$,
+\begin{align*}
+	\Vert Tf\Vert_q^q&=q\int_{0}^\infty\alpha^{q-1}\lambda_{Tf}(\alpha)\,d\alpha\leq q\int_0^{\Vert f\Vert_{L^p}}\alpha^{q-1}\lambda_{Tf}(\alpha)\,d\alpha+q\int_{\Vert f\Vert_{L^p}}^\infty\alpha^{q-1}\lambda_{Tf}(\alpha)\,d\alpha\\
+	&\leq q\int_0^{\Vert f\Vert_{L^p}}\alpha^{q-q_0-1} C_0^{q_0}\Vert f\Vert^{q_0}_{L^p}\,d\alpha+q\int_{\Vert f\Vert_{L^p}}^\infty\alpha^{q-q_1-1}C_1^{q_1}\Vert f\Vert^{q_1}_{L^p}\,d\alpha\\
+	&=\left(\frac{qC_0^{q_0}}{q-q_0}+\frac{qC_1^{q_1}}{q_1-q}\right)\Vert f\Vert^{q}_{L^p}
+\end{align*}
+\item\textbf{Case I\,(2): $p_0=p_1=p$ and $q_0<q_1=\infty$.} If $f\in L^p(X,\scr{F},\mu)$, we have $\Vert Tf\Vert_{L^{q_1}}\leq C_1\Vert f\Vert_{L^p}$. Then $\lambda_{Tf}(\alpha)=0$ when $\alpha> C_1\Vert f\Vert_{L^p}$, and
+\begin{align*}
+	\Vert Tf\Vert_q^q&=q\int_{0}^{C_1\Vert f\Vert_{L^p}}\alpha^{q-1}\lambda_{Tf}(\alpha)\,d\alpha\leq q\int_0^{C_1\Vert f\Vert_{L^p}}\alpha^{q-q_0-1}[Tf]_{q_0}^{q_0}\,d\alpha\\
+	&\leq q\int_0^{C_1\Vert f\Vert_{L^p}}\alpha^{q-q_0-1} C_0^{q_0}\Vert f\Vert^{q_0}_{L^p}\,d\alpha=\frac{qC_0^{q_0}C_1^{q-q_0}}{q-q_0}\Vert f\Vert^{q}_{L^p}.
+\end{align*}
+
+\item\textbf{Case II\,(1): $p_0<p_1<\infty$ and $q_0,q_1<\infty$.} 
+For $f\in L^p(X,\scr{F},\mu)$, we take $g_\alpha$ and $h_\alpha$ as in Lemma \ref{mckwzlemma2}, where $\alpha>0$ is to be determined. Then
+	\begin{align}
+		\lambda_{Tf}(2\beta)&\leq \lambda_{Tg_\alpha}(\beta)+\lambda_{Th_\alpha}(\beta)\leq\left(\frac{C_0}{\beta}\right)^{q_0}\left(\int_X\vert g_\alpha\vert^{p_0}\,d\mu\right)^{\frac{q_0}{p_0}}+\left(\frac{C_1}{\beta}\right)^{q_1}\left(\int_X\vert h_\alpha\vert^{p_1}\,d\mu\right)^{\frac{q_1}{p_1}}.\label{mckwzeq1}
+	\end{align}
+	Here we allow $\alpha$ to depend on $\beta$. By Lemma \ref{mckwzlemma1}, we have
+	\begin{align}
+		\int_X\vert g_\alpha\vert^{p_0}\,d\mu&=p\int_0^\infty t^{p_0-1}\lambda_{g_\alpha}(t)\,dt=p_0\int_0^\infty t^{p_0-1}\lambda_f(t+\alpha)\,dt\notag\\
+		&=p_0\int_\alpha^\infty(t-\alpha)^{p_0-1}\lambda_f(t)\,dt\leq p_0\int_\alpha^\infty t^{p_0-1}\lambda_f(t)\,dt,\label{galphaest}
+	\end{align}
+	and similarly, \vspace{-0.1cm}
+	\begin{align}
+		\int_X\vert h_\alpha\vert^{p_1}\,d\mu&=p_1\int_0^\infty t^{p_1-1}\lambda_{h_\alpha}(t)\,dt=p_1\int_0^\alpha t^{p_1-1}\lambda_f(t)\,dt.\label{halphaest}
+	\end{align}
+	We combine Lemma \ref{mckwzlemma1}, the inequality (\ref{mckwzeq1}) and the estimates (\ref{galphaest})-(\ref{halphaest}):
+	\begin{align}
+	\begin{aligned}
+	\Vert Tf\Vert_{L^q}^q&=q\int_0^\infty (2\beta)^{q-1}\lambda_{Tf}(2\beta)\,d(2\beta)=q2^q\int_0^\infty \beta^{q-1}\lambda_{Tf}(2\beta)\,d\beta\\
+	&\leq q2^q\int_0^\infty\left(C_0^{p_0}\beta^{q-q_0-1}\left(\int_X\vert g_\alpha\vert^{p_0}\,d\mu\right)^{\frac{q_0}{p_0}}+C_1^{p_1} \beta^{q-q_1-1}\left(\int_X\vert h_\alpha\vert^{p_1}\,d\mu\right)^{\frac{q_1}{p_1}}\right)d\beta\\
+	&\leq q2^qC_0^{p_0}p_0^{\frac{q_0}{p_0}}\int_0^\infty\beta^{q-q_0-1}\left(\int_0^\infty\chi_{\{t>\alpha\}} t^{p_0-1}\lambda_f(t)\,dt\right)^{\frac{q_0}{p_0}}d\beta\\
+	&\quad+q2^qC_1^{p_1}p_1^{\frac{q_1}{p_1}}\int_0^\infty\beta^{q-q_1-1}\left(\int_0^\infty\chi_{\{t\leq\alpha\}} t^{p_1-1}\lambda_f(t)\,dt\right)^{\frac{q_1}{p_1}}d\beta.
+	\end{aligned}\label{mckwzest3}
+	\end{align}
+Since this estimate holds for any $\alpha>0$, we choose $\alpha=\beta^\sigma$, where $$\sigma=\frac{p_0(q-q_0)}{q_0(p-p_0)}=\frac{(1-\gamma)\left(\frac{q}{q_0}-1\right)}{(1-\gamma)\left(\frac{p}{p_0}-1\right)}=\frac{\gamma\left(1-\frac{q}{q_1}\right)}{\gamma\left(1-\frac{p}{p_1}\right)}=\frac{p_1(q_1-q)}{q_1(p_1-p)}.$$ 
+We also write $\chi_0=\chi_{\{t>\alpha\}}$, $\chi_1=\chi_{\{t\leq\alpha\}}$, and $$\phi_i(t,\beta)=\beta^{\frac{p_i}{q_i}(q-q_i-1)}\chi_i t^{p_i-1}\lambda_f(t),$$ where $i=0,1$. Then (\ref{mckwzest3}) becomes
+\begin{align}
+\Vert Tf\Vert_{L^q}^q\leq\sum_{i=0}^1q2^qC_i^{p_i}p_i^{\frac{q_i}{p_i}}\int_0^\infty\left(\int_0^\infty\phi_i(t,\beta)\,dt\right)^{\frac{q_i}{p_i}}d\beta.\label{mckwzest4}
+\end{align}
+We write $\Phi(\beta)=\int_0^\infty\phi_i(t,\beta)\,dt$. Since $\frac{q_i}{p_i}\geq 1$, by Minkowski's inequality, in either case $i=0,1$,
+\begin{align}
+\begin{aligned}
+	\int_0^\infty\left(\int_0^\infty\phi_i(t,\beta)\,dt\right)^{\frac{q_i}{p_i}}d\beta&\leq\left(\int_0^\infty\left(\int_0^\infty\vert\phi_i(t,\beta)\vert^{\frac{q_i}{p_i}}\,d\beta\right)^{\frac{p_i}{q_i}}dt\right)^{\frac{q_i}{p_i}}\\
+	&=\left(\int_0^\infty\left(\int_0^\infty\beta^{q-q_i-1}\chi_i\,d\beta\right)^{\frac{p_i}{q_i}}t^{p_i-1}\lambda_f(t)dt\right)^{\frac{q_i}{p_i}}.
+\end{aligned}\label{mkwskest}
+\end{align}
+If $q_1>q_0$, the exponents $q-q_0$ and $\sigma$ are positive, and $\{t>\beta^\sigma\}=\{\beta<t^{1/\sigma}\}$. Then (\ref{mkwskest}) becomes
+\begin{align*}
+	\int_0^\infty\left(\int_0^\infty\phi_0(t,\beta)\,dt\right)^{\frac{q_0}{p_0}}d\beta&\leq\left(\int_0^\infty\left(\int_0^{t^{1/\sigma}}\beta^{q-q_0-1}\,d\beta\right)^{\frac{p_0}{q_0}}t^{p_0-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}\\ &=\frac{1}{q-q_0}\left(\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=\frac{1}{q-q_0}\left(\frac{1}{p}\right)^{\frac{q_0}{p_0}}\Vert f\Vert_{L^p}^{\frac{pq_0}{p_0}}.
+\end{align*}
+On the other hand, $q-q_1<0$, and $\{t\leq\beta^\sigma\}=\{\beta\geq t^{1/\sigma}\}$. Then (\ref{mkwskest}) becomes
+\begin{align*}
+	\int_0^\infty\left(\int_0^\infty\phi_1(t,\beta)\,dt\right)^{\frac{q_1}{p_1}}d\beta &\leq\left(\int_0^\infty\left(\int_{t^{1/\sigma}}^\infty\beta^{q-q_1-1}\,d\beta\right)^{\frac{p_1}{q_1}}t^{p_1-1}\lambda_f(t)dt\right)^{\frac{q_1}{p_1}} \\
+	&=\frac{1}{q_1-q}\left(\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_1}{p_1}}=\frac{1}{q_1-q}\left(\frac{1}{p}\right)^{\frac{q_1}{p_1}}\Vert f\Vert_{L^p}^{\frac{pq_1}{p_1}}.
+\end{align*}
+If $q_1<q_0$, the exponents $q-q_0$ and $\sigma$ are negative, and $\{t>\beta^\sigma\}=\{\beta>t^{1/\sigma}\}$. Then (\ref{mkwskest}) becomes
+\begin{align*}
+	\int_0^\infty\left(\int_0^\infty\phi_0(t,\beta)\,dt\right)^{\frac{q_0}{p_0}}d\beta&\leq\left(\int_0^\infty\left(\int_{t^{1/\sigma}}^\infty\beta^{q-q_0-1}\,d\beta\right)^{\frac{p_0}{q_0}}t^{p_0-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}\\ &=\frac{1}{q_0-q}\left(\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=\frac{1}{q_0-q}\left(\frac{1}{p}\right)^{\frac{q_0}{p_0}}\Vert f\Vert_{L^p}^{\frac{pq_0}{p_0}}.
+\end{align*}
+A similar calculation gives
+\begin{align*}
+	\int_0^\infty\left(\int_0^\infty\phi_1(t,\beta)\,dt\right)^{\frac{q_1}{p_1}}d\beta &\leq\frac{1}{q-q_1}\left(\frac{1}{p}\right)^{\frac{q_1}{p_1}}\Vert f\Vert_{L^p}^{\frac{pq_1}{p_1}}.
+\end{align*}
+In either case, we plug in (\ref{mkwskest}) to (\ref{mckwzest4}) to get
+\begin{align*}
+\Vert Tf\Vert_{L_q}^q\leq\sum_{i=0}^1\frac{q2^qC_i^{p_i}}{\vert q-q_i\vert}\left(\frac{p_i}{p}\right)^{\frac{q_i}{p_i}}\Vert f\Vert_{L^p}^{\frac{pq_i}{p_i}}
+\end{align*}
+Therefore
+\begin{align*}
+	\sup\left\{\Vert Tf\Vert_{L^q}:\Vert f\Vert_{L^p}=1\right\}\leq B_{p,q}:= 2q^{1/q}\left[\sum_{i=0}^1\frac{C_i^{p_i}}{\vert q-q_i\vert}\left(\frac{p_i}{p}\right)^{\frac{q_i}{p_i}}\right]^{1/q}.
+\end{align*}
+By homogeneity of norms and sublinearity of $T$, we have $\Vert Tf\Vert_{L^q}\Vert\leq B_{p,q}\Vert f\Vert_{L^p}$ for all $f\in L^p(X,\scr{F},\mu)$. The remaining cases follow by modifying this procedure.
+
+\item\textbf{Case II\,(2): $p_0<p_1=\infty$ and $q_0<q_1=\infty$.} We have $p_0=pt$ and $q_0=qt$. We take $\alpha=\beta/C_1$, so $\Vert Th_\alpha\Vert\leq C_1\Vert h_\alpha\Vert\leq\beta$, and $\lambda_{Th_\alpha}(\beta)=0$. Then the second term in the estimate (\ref{mckwzeq1}) vanishes, and $\phi_1=0$ in the estimate (\ref{mckwzest4}). We then apply an analogue of (\ref{mkwskest}) to get
+\begin{align*}
+	&\Vert Tf\Vert_{L^q}^q\lesssim\int_0^\infty\left(\int_0^\infty\phi_0(t,\beta)\,dt\right)^{\frac{q_0}{p_0}}\,d\beta\leq\left(\int_0^\infty\left(\int_0^\infty\vert\phi_0(t,\beta)\vert^{\frac{q_0}{p_0}}\,d\beta\right)^{\frac{p_0}{q_0}}dt\right)^{\frac{q_0}{p_0}}\\
+	&\quad=\left(\int_0^\infty\left(\int_0^{C_1t}\beta^{q-q_0-1}\,d\beta\right)^{\frac{p_0}{q_0}}t^{p_0-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=\frac{1}{\vert q-q_0\vert}\left(C_1^{q-q_0}\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=\frac{C_1^{q-q_0}}{\vert q-q_0\vert}\Vert f\Vert_{L^p}^q.
+\end{align*}
+
+\item\textbf{Case II\,(3): $p_0<p_1<\infty$ and $q_0<q_1=\infty$.} Since $\Vert Th_\alpha\Vert_{L^\infty}\leq C_1\Vert h_\alpha\Vert_{L^{p_1}}$, 
+\begin{align}
+\Vert Th_\alpha\Vert_{L^\infty}^{p_1}&\leq C_1^{p_1}\Vert h_\alpha\Vert_{L^{p_1}}^{p_1}=C_1^{p_1}p_1\int_0^\alpha t^{p_1-1}\lambda_f(t)\,dt\notag\\
+&\leq C_1^{p_1}p_1\alpha^{p_1-p}\int_0^\alpha t^{p-1}\lambda_f(t)\,dt\leq C_1^{p_1}\frac{p_1}{p}\alpha^{p_1-p}\Vert f\Vert_{L^p}^p.\label{mckwzest5}
+\end{align}
+We take $\alpha=(\frac{\beta}{\kappa})^\sigma$,
+where $\kappa=C_1(\frac{p_1}{p}\Vert f\Vert_{L^p}^p)^{1/p_1}$ and $\sigma=\frac{p_1}{p_1-p}=\frac{p_0(q-q_0)}{q_0(p-p_0)}>0$. The the estimate (\ref{mckwzest5}) is $\beta^{p_1}$. Since $\Vert Th_\alpha\Vert_{L^\infty}\leq\beta$, the second term in the estimate (\ref{mckwzeq1}) vanishes, and $\phi_1=0$ in the estimate (\ref{mckwzest4}). Then $\chi_0=\chi_{\{t>(\beta/\kappa)^{\sigma}\}}=\chi_{\{\beta<\kappa t^{1/\sigma}\}}$, and we apply an analogue of (\ref{mkwskest}) to get
+\begin{align*}
+	&\Vert Tf\Vert_{L^q}^q\lesssim\int_0^\infty\left(\int_0^\infty\phi_0(t,\beta)\,dt\right)^{\frac{q_0}{p_0}}\,d\beta\leq\left(\int_0^\infty\left(\int_0^\infty\vert\phi_0(t,\beta)\vert^{\frac{q_0}{p_0}}\,d\beta\right)^{\frac{p_0}{q_0}}dt\right)^{\frac{q_0}{p_0}}\\
+	&\quad=\left(\int_0^\infty\left(\int_0^{\kappa t^{1/\sigma}}\beta^{q-q_0-1}\,d\beta\right)^{\frac{p_0}{q_0}}t^{p_0-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=\frac{1}{q-q_0}\left(\kappa^{q-q_0}\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_0}{p_0}}=B_{p,q}\Vert f\Vert^{\frac{pq_0}{p_0}}.
+\end{align*}
+
+\item\textbf{Case II\,(4): $p_0<p_1<\infty$ and $q_1<q_0=\infty$.} Since $\Vert Tg_\alpha\Vert_{L^\infty}\leq C_0\Vert g_\alpha\Vert_{L^{p_0}}$, 
+\begin{align}
+\Vert Tg_\alpha\Vert_{L^\infty}^{p_0}&\leq C_0^{p_0}\Vert g_\alpha\Vert_{L^{p_0}}^{p_0}\leq C_0^{p_0}p_0\alpha^{p_0-p}\int_0^\alpha t^{p-1}\lambda_f(t)\,dt\leq C_0^{p_0}\frac{p_0}{p}\alpha^{p_0-p}\Vert f\Vert_{L^p}^p.\label{mckwzest6}
+\end{align}
+We take $\alpha=(\frac{\beta}{\kappa})^\sigma$,
+where $\kappa=C_0(\frac{p_0}{p}\Vert f\Vert_{L^p}^p)^{1/p_0}$ and $\sigma=\frac{p_0}{p_0-p}=\frac{p_1(q_1-q)}{q_1(p_1-p)}<0$, so the estimate (\ref{mckwzest6}) is $\beta^{p_0}$. Since $\Vert Tg_\alpha\Vert_{L^\infty}\leq\beta$, the first term in the estimate (\ref{mckwzeq1}) vanishes, and $\phi_0=0$ in the estimate (\ref{mckwzest4}). Then $\chi_1=\chi_{\{t\leq(\beta/\kappa)^{\sigma}\}}=\chi_{\{\beta\leq\kappa t^{1/\sigma}\}}$, and we apply an analogue of (\ref{mkwskest}) to get
+\begin{align*}
+	&\Vert Tf\Vert_{L^q}^q\lesssim\frac{1}{q-q_1}\left(\kappa^{q-q_1}\int_0^\infty t^{p-1}\lambda_f(t)dt\right)^{\frac{q_1}{p_1}}=B_{p,q}\Vert f\Vert^{\frac{pq_0}{p_0}}.
+\end{align*}
+Then we complete the whole proof.
+\end{proof}
+
+\begin{corollary}[Marcinkiewicz interpolation theorem]\label{mckwz2}
+	Let $1\leq p_0<p_1\leq \infty$. If $\,T$ is a sublinear operator of weak types $(p_0,p_0)$ and $(p_1,p_1)$, then $T$ is of strong type $(p,p)$ for each $p\in(p_0,p_1)$.
+\end{corollary}
+
+\section{Radon Measures}
+\subsection{Locally Compact Hausdorff (LCH) Spaces}
+\paragraph{Topology review.} Throughout this section, we are mainly concerned with the \textit{Locally Compact Hausdorff (LCH)} space. To be specific, the topological space $X$ of our interest has the following topological properties:
+\begin{itemize}
+	\item $X$ is \textit{Hausdorff}, i.e. for each pair of distinct points $x$ and $y$ in $X$, there exists a neighborhood $U_x$ of $x$ and a neighborhood $U_y$ of $y$ such that $U$ and $V$ are disjoint.
+	\item $X$ is \textit{locally compact}, i.e. every point in $X$ has a compact neighborhood.
+\end{itemize}
+The following proposition describes that, for any set $K$ compactly included in an open set $U$, we can always find a set $V$ between them in sense of compact inclusion.
+\begin{proposition}\label{precpbetween}
+	If $X$ is an LCH space and  $K\subset U\subset X$, where $K$ is compact and $U$ is open, there exists a precompact open set $V$ such that $K\subset V\subset\ol{V}\subset U$.
+\end{proposition}
+\begin{proof} Our proof are divided into three steps.
+	
+	\item\textbf{Step I.} We first show that, in a Hausdorff space $X$, we can separate a compact set $K$ and a single point $x\notin K$ outside the set with disjoint neighborhoods. Formally, we find two disjoint open sets $U\supset K$ and $V\ni x$. 
+	
+	For each $y\in K$, by Hausdorff property, we can find two disjoint neighborhoods $U_y$ of $y$ and $V_y$ of $x$. By compactness of $K$, it is possible to cover $K$ by finitely many such neighborhoods $U_{y_1},\cdots,U_{y_n}$. We then set $U=\bigcap_{j=1}^n U_{y_j}$ and $V=\bigcap_{j=1}^n V_{y_j}$, which has the desired properties.
+	
+	\item\textbf{Step II.} Next, we assume $X$ is LCH and show that \emph{any open neighborhood $U$ of a point $x$ contains a compact neighborhood of $x$}. We may assume that $\ol{U}$ is compact, otherwise we may replace $U$ by its intersection with the interior of a compact neighborhood of $x$. Then $\partial U$ is also a compact set, and we can separate $x$ and $\partial U$ by two disjoint open sets $V\ni x$ and $W\supset\partial U$ in $U$. Hence $V$ satisfies $\ol{V}\subset(W^c\cap\ol{U})\subset U$, and since $U$ is precompact, $\ol{V}$ is a compact subset of $U$. Therefore $\ol{V}$ is a compact neighborhood of $x$.
+	
+	\item\textbf{Step III.} Finally we come to the original proposition. By Step II, we find a precompact open neighborhood $V_x$ for each $x\in K$ such that $x\subset V_x\subset\ol{V}_x\subset U$. By compactness of $K$, we take finitely many such neighborhoods $V_{x_1},\cdots,V_{x_n}$ to cover $K$. Setting $V=\bigcup_{j=1}^n V_{x_j}$, we have $K\subset V\subset\ol{V}\subset U$, and $\ol{V}$ is compact.
+\end{proof}
+
+Now we discuss the generalized version of Urysohn's lemma and Tietze extension theorem in LCH spaces. Recall that \textit{every compact Hausdorff is normal}, to which the original version of these theorems applies.
+
+\begin{theorem}[Urysohn's lemma in LCH spaces]\label{urysohnlch}
+	Let $X$ be an LCH space and $K\subset U\subset X$, where $K$ is compact and $U$ is open. There exists $f\in C(X,[0,1])$ such that $f=1$ on $K$ and $f=0$ outside a compact subset of $U$.
+\end{theorem}
+\begin{proof}
+	We take a precompact open set $V$ such that $K\subset V\subset\ol{V}\subset U$, as in Proposition \ref{precpbetween}, so $\ol{V}$ is normal. By Urysohn's lemma for normal spaces, there exists $f\in C(\ol{V},[0,1])$ such that $f=1$ on $K$ and $f=0$ on $\partial V$. We extend $f$ to $X$ by setting $f=0$ on $\ol{V}^c$. It remains to show that $f\in C(X)$.
+	
+	Let $E$ be a closed subset of $[0,1]$. If $0\notin E$, we have $f^{-1}(E)=(f|_{\ol{V}})^{-1}(E)$, and if $0\in E$, we have $f^{-1}(E)=(f|_{\ol{V}})^{-1}(E)\cup\ol{V}^c=(f|_{\ol{V}})^{-1}(E)\cup V^c$ since $(f|_{\ol{V}})^{-1}(E)\supset\partial V$. In either case, $f^{-1}(E)$ is closed. Therefore $f$ is continuous.
+\end{proof}
+
+The following theorem can be proved in a similar approach.
+\begin{theorem}[Tietze extension theorem in LCH spaces]
+	Let $X$ be an LCH space and $K\subset X$, where $K$ is compact. If $f\in C(K)$, there exists $F\in C(X)$ such that $F|_K=f$. Moreover, $F$ may be taken to vanish outside a compact set, i.e. $F\in C_c(X)$.
+\end{theorem}
+\begin{proof}
+	We take a precompact set $V$ such that $K\subset V\subset\ol{V}\subset X$, so $\ol{V}$ is normal. By Tietze extension theorem for normal spaces, we can extend $f$ to a function $g\in C(\ol{V})$ with $g|_K=f$. We also take a function $\phi\in C(\ol{V},[0,1])$ such that $\phi=1$ on $K$ and $\phi=0$ on $\partial V$ by Urysohn's lemma. Then $g\phi\in C(\ol{V})$ agrees with $f$ on $K$. We take $F=g\phi$ on $\ol{V}$ and $F=0$ in $\ol{V}^c$. Then $F\in C_c(X)$ and $F|_K=f$. 
+\end{proof}
+
+\paragraph{Alexandroff compactification.} 
+If $X$ is a noncompact LCH space, it is possible to make $X$ into a compact Hausdorff space by adding a single point at the ``infinity''. Let us take some object that is not a point of $X$, denoted by the symbol $\infty$ for convenience, and adjoin it to $X$, forming the set $X^*=X\cup\{\infty\}$. We topologize $X^*$ by defining the collection $\mathscr{T}^*$ of open sets of $X^*$ to consist of 
+\begin{itemize}
+	\item[(i)] all sets $U$ that are open in $X$, and
+	\item[(ii)] all sets of the form $X^*\backslash K$, where $K$ is a compact subset of $X$.
+\end{itemize}
+We first check that such collection is indeed a topology on $X^*$. 
+\begin{itemize}
+	\item The empty set $\emptyset$ and $X^*$ are open sets of type (i) and (ii), respectively.
+	\item Let $U_1$ and $U_2$ be open sets in $X$, and let $K_1$ and $K_2$ be compact sets in $X$. Then \vspace{-0.05cm}
+	\begin{itemize}
+		\item $U_1\cap U_2$ is of type (i), \vspace{-0.05cm}
+		\item $(X^*\backslash K_1)\cap (X^*\backslash K_2) = X^*\backslash(K_1\cup K_2)$ is of type (ii), and \vspace{-0.05cm}
+		\item $U\cap (X^*\backslash K) = U\cap (X\backslash K)$ is of type (i).\vspace{-0.05cm}
+	\end{itemize}
+	Hence $\mathscr{T}^*$ is closed under the finite intersection operation.
+	\item Let $\{U_\alpha\}$ be a collection of open sets of $X$, and let $\{K_\beta\}$ be a collection of compact sets in $X$. Then \vspace{-0.05cm}
+	\begin{itemize}
+		\item $\bigcup_{\alpha}U_\alpha = U$ is of type (i),\vspace{-0.05cm}
+		\item $\bigcup_{\beta}(X^*\backslash K_\beta) = X^*\backslash\bigcap_\beta K_\beta = X^*\backslash K$ is of type (ii), and \vspace{-0.05cm}
+		\item $U \cup (X^*\backslash K) = X^*\backslash (K\backslash U)$ is of type (ii) since $K\backslash U$ is a compact subset of $X$.\vspace{-0.05cm}
+	\end{itemize}
+	Hence $\mathscr{T}^*$ is closed under the union operation.
+\end{itemize} 
+Then we need to verify that $X$ is a subspace of $X^*$:
+\begin{itemize}
+	\item Given any open set in $X^*$, its intersection with $X$ is open in $X$. If the open set is of type (i), it is clearly open in $X$. If it is of type (ii), then $(X^*\backslash K)\cap X = X\backslash K$ is open in Hausdorff space $X$.
+	\item Conversely, given any open set in $X$, it is a type (i) open set in $X^*$.
+\end{itemize}
+Next we verify that $X^*$ is a compact topological space. 
+\begin{itemize}
+	\item If $\mathscr{A}$ is an open cover of $X^*$, it must contain at least one open set $X^*\backslash K$ of type (ii), to contain $\infty$. 
+	\item Taking all members in $\mathscr{A}$ but $X^*\backslash K$ and intersect them with $X$, we obtain a cover of $X$. Since $K$ is a compact subset of $X$, finitely many of them cover $K$. Then the corresponding finite collection of elements of $\mathscr{A}$ along with $X^*\backslash K$ form a cover of $X^*$.
+\end{itemize}
+Finally we verify that $X^*$ is a Hausdorff space. Let $x$ and $y$ be two distinct points of $X^*$:
+\begin{itemize}
+	\item The case that both $x$ and $y$ lies in $X$ is clear since $X$ is Hausdorff.
+	\item If $y=\infty$, we choose a compact set $K$ in $X$ that contains a neighborhood $U$ of $x$, then $U$ and $X^*\backslash K$ are disjoint neighborhoods of $x$ and $\infty$, respectively, in $X^*$.
+\end{itemize}
+The comapact Hausdorff space $X^*$ is called the \textit{one point compactification/Alexandroff compactification of $X$}.
+
+\paragraph{Functions vanishing at infinity.} Let $X$ be a topological space. A continuous function $f\in C(X)$ is said to \textit{vanish at infinity} if the set $\{x\in X:\vert f(x)\vert\geq\epsilon\}$ is compact for every $\epsilon>0$. We define $C_0(X)$ to be the space of functions vanishing at infinity.
+\begin{proposition}
+	Let $X$ be an LCH space, and $f\in C(X)$. The function $f$ extends continuously to the Alexandroff compactification $X^*$ of $X$ if and only if there exists function $g\in C_0(X)$ and $z\in\bbC$ such that $f=g+c$, in which case the continuous extension is given by $f(\infty)=c$.
+\end{proposition}
+\begin{proof}
+	Assume $f=g+c$, where $g\in C_0(X)$ and $c\in\bbC$. Replacing $f$ by $f-c$, we may further assume $c=0$. We extend $f$ to $X^*$ by setting $f(\infty)=0$, and show that $f$ is continuous. Let $U$ be an open subset of $\bbC$. 
+	\begin{itemize}
+		\item If $0\notin U$, then $f^{-1}(U)=(f|_X)^{-1}(U)$, which is open by continuity of $f|_X$. 
+		\item If $0\in U$, there exists $\epsilon>0$ such that $\vert z\vert\geq\epsilon$ for all $z\in U^c$. Since $f|_X\in C_0(X)$, $(f|_X)^{-1}(U^c)$ is a closed subset of the compact set $\{x\in X:\vert f(x)\vert\geq\epsilon\}$ in $X$. Hence $f^{-1}(U)=X^*\backslash (f|_X)^{-1}(U^c)$ is open.
+	\end{itemize}
+	
+	Conversely, if $f\in C(X)$ extends continuously to $X^*$, we let $c=f(\infty)$ and $g=f-c$. For each $\epsilon>0$, the set $g^{-1}(B(0,\epsilon))=\{x\in X^*:\vert g(x)\vert<\epsilon\}$ is open in $X^*$ and contains $\infty$. Consequently, the complement $\{x\in X^*:\vert g(x)\vert\geq\epsilon\}$ is a compact set in $X$. Therefore $g\in C_0(X)$.
+\end{proof}
+\paragraph{Topologies on $\bbC^X$.} Let $X$ be a topological space. There are various ways to topologize the space $\bbC^X$ of all complex-valued functions on $X$:
+\begin{itemize}
+	\item\textit{The topology of pointwise convergence/the product topology} is generated by the sets
+	\begin{align*}
+		U_{x_1,\cdots,x_m}^\epsilon(f)=\left\{g\in\bbC^X:\vert f(x_j)-g(x_j)\vert<\epsilon,\ j=1,2,\cdots,m\right\},
+	\end{align*}
+	where $f\in\bbC^X$, $\epsilon>0$ and $x_1,\cdots,x_m\in X$. In this topology, a sequence $(f_n)$ of functions converges to $f$ when $f_n\to f$ pointwise.
+	\item\textit{The topology of compact convergence} is generated by the sets
+	\begin{align*}
+		U_K^\epsilon(f)=\left\{g\in\bbC^X:\sup_{x\in K}\vert f(x)-g(x)\vert<\epsilon\right\},
+	\end{align*}
+	where $f\in\bbC^X$, $\epsilon>0$ and $K$ is a compact subset of $X$. In this topology, a sequence $(f_n)$ of functions converges to $f$ when $f_n\to f$ uniformly on every compact subset $K$ of $X$.
+	\item\textit{The topology of uniform convergence} is generated by the sets
+	\begin{align*}
+		U_\infty^\epsilon(f)=\left\{g\in\bbC^X:\sup_{x\in X}\vert f(x)-g(x)\vert<\epsilon\right\},
+	\end{align*}
+	where $f\in\bbC^X$ and $\epsilon>0$. In this topology, a sequence $(f_n)$ of functions converges to $f$ when $f_n\to f$ uniformly on $X$.
+\end{itemize}
+
+Basic analysis shows that the space $C(X)$ of continuous functions on $X$ is not a closed subspace of $\bbC^X$ in the topology of pointwise convergence, but when we switch to the uniform topology, it is. The following theorem asserts that $C(X)$ is also closed in the topology of compact convergence when $X$ is an LCH space.
+
+\begin{proposition}
+	If $X$ is an LCH space, $C(X)$ is closed in $\bbC^X$ in the topology of compact convergence. 
+\end{proposition}
+\begin{proof}
+	We claim that, \textit{a subset $E$ of $X$ is closed if and only if $E\cap K$ is closed for each compact set $K\subset X$}. In fact, if $E$ is closed, $E\cap K$ must be closed since it is the intersection of two closed sets. On the other hand, if $E$ is not closed, we choose a point $x\in\ol{E}\backslash E$ and let $K$ be a compact neighborhood of $x$. Then $x$ is a limit point of $E\cap K$, however it is not in $E\cap K$.
+	
+	Now we prove the desired result. If $f$ is in the closure of $C(X)$, then for each compact subset $K$ of $X$, the restriction $f|_K$, being a uniform limit of continuous functions on $K$, is continuous. Then for any closed set $E\subset X$, the intersection $f^{-1}(E)\cap K=(f|_K)^{-1}(E)$ is closed for all compact subset $K$ of $X$, and hence $f^{-1}(E)$ is closed. Therefore $f$ is also in $C(X)$.
+\end{proof}
+
+\begin{proposition}\label{c0closecc}
+	If $X$ is an LCH space, $C_0(X)=\ol{C_c(X)}$ in the uniform topology.
+\end{proposition}
+\begin{proof}
+	If $f$ is in the closure of $C_c(X)$, for every $\epsilon>0$, we can take some $g\in C_c(X)$ such that $\Vert f-g\Vert_\infty<\epsilon$. Then $\{x\in X:\vert f(x)\vert\geq\epsilon\}\subset\supp g$, which are compact sets. 
+	
+	Conversely, if $f\in C_0(X)$, we show how to find a function $g\in C_c(X)$ with $\Vert f-g\Vert_\infty<\epsilon$ for any $\epsilon>0$. We take the compact set $K=\{x\in X:\vert f(x)\vert>\epsilon\}$, and take $\phi\in C_c(X,[0,1])$ such that $\phi=1$ on $K$ by Urysohn's lemma [Theorem \ref{urysohnlch}]. Setting $g=f\phi$ completes the proof.
+\end{proof}
+
+\begin{proposition}[Partition of unity]\label{partunity}
+	Let $X$ be an LCH space, $K$ a compact subset of $X$, and $(U_j)_{j=1}^n$ an open cover of $K$. There exists a family of functions $\phi_j\in C_c(U_j,[0,1])$ such that $\sum_{j=1}^n \phi_j(x)=1$ for all $x\in K$. 
+\end{proposition}
+\begin{proof}
+	By Proposition \ref{precpbetween}, for each $x\in X$, we take a precompact open neighborhood $V_x$ of $x$ contained in some $U_j$. Then by compactness of $K$, there exist finitely many $V_{x_1},\cdots,V_{x_m}$ that form a cover of $K$. We denote by $K_j$ the union of neighborhoods $V_{x_k}$ contained in $U_j$. By Urysohn's lemma, for each $j=1,2,\cdots,n$ we can find a function $g_j\in C_c(U_j,[0,1])$ such that $g_j=1$ on $K_j$. Furthermore, there also exists a function $f\in C_c(X,[0,1])$ such that $f=1$ on $K$ and $\supp(f)\subset\{x\in X:\sum_{j=1}^n g_k(x)>0\}$. Let $g_{n+1}=1-f$, so that $\sum_{j=1}^{n+1}g_j>0$ everywhere. Taking $\phi_j=g_j/\sum_{k=1}^{n+1}g_k$, we have $\phi_j\in C_c(U_j,[0,1])$ and $\sum_{j=1}^n\phi_j=1$ on $K$.
+\end{proof}
+
+\paragraph{$\sigma$-compactness.} A topological space is said to be \textit{$\sigma$-compact} if it is a countable union of compact sets. Formally, if $X$ is $\sigma$-compact, there exists compact subsets $K_n\subset X$ such that $X=\bigcup_{n=1}^\infty K_n$. Replacing $K_n$ by the union of itself and all preceding members, we may assume that $(K_n)$ is an increasing sequence.
+
+A second countable LCH space is $\sigma$-compact. To see this, we take a precompact open neighborhood $U_x$ for each $x\in X$. Consequently, we can find a base set $B_x\in\mathscr{B}$ such that $x\in B_x\subset U_x$, and $\overline{B}_x$ is compact. We choose $\mathscr{B}_c\subset\mathscr{B}$ to be the collection of all precompact base sets. Then $B_x\in\mathscr{B}_c$ for all $x\in X$, and $X=\bigcup_{B\in\mathscr{B}_c}\overline{B}$ is a countable union of compact sets. Therefore, $X$ is a $\sigma$-compact topological space.
+
+\begin{proposition}\label{sigmacompactinc}
+	Let $X$ be a $\sigma$-compact LCH space. There exists a sequence $(U_n)_{n=1}^\infty$ of precompact open sets such that $U_1\subset\ol{U}_1\subset U_2\subset\ol{U}_2\subset U_3\subset\cdots U_n\subset\ol{U}_n\subset U_{n+1}\subset\cdots$ and $X=\bigcup_{n=1}^\infty U_n$. Furthermore, for all compact set $K\subset X$, there exists $n\in\bbN$ such that $U_n\supset K$.
+\end{proposition}
+\begin{proof}
+	By $\sigma$-compactness of $X$, there exists a sequence $(K_n)_{n=1}^\infty$ of compact sets increasing to $X$. We start by taking a precompact open neighborhood $U_x$ for each $x\in X$ and setting $U_0=\emptyset$. With $U_{n-1}$ constructed, the union $\ol{U}_{n-1}\cup K_n$ is compact, and there exists finitely many $x_1,\cdots,x_k\in X$ such that $(\ol{U}_{n-1}\cup K_n)\subset\bigcup_{j=1}^k U_{x_j}$. We construct $U_n=\bigcup_{j=1}^k U_{x_j}$, which is also precompact open. Then we have $\ol{U}_{n-1}\subset U_n$. Moreover,
+	\begin{align*}
+		\bigcup_{n=1}^\infty U_n\supset\bigcup_{n=1}^\infty K_n=X.
+	\end{align*} 
+	Hence the sequence $(U_n)$ has the desired property. Moreover, for any compact subset $K$ of $X$, $\{U_n\}_{n=1}^\infty$ is an open cover of $K$, hence there exists $U_n$ such that $K\subset U_n$.
+\end{proof}
+
+\begin{proposition}
+	Let $X$ be a $\sigma$-compact LCH space, and let $(U_n)_{n=1}^\infty$ be a sequence of precompact sets as in Proposition \ref{sigmacompactinc}. Then for each $f\in\bbC^X$, the sets
+	\begin{align}
+		\left\{g\in\bbC^X:\sup_{x\in\ol{U}_n}\vert g(x)-f(x)\vert< \frac{1}{m}\right\},\quad m,n\in\bbN\label{cmpcvgnb}
+	\end{align}
+	form a neighborhood base for $f$ in the topology of compact convergence. Hence this topology is first countable, and $f_k\to f$ uniformly on compact sets if and only if $f_n\to f$ uniformly on each $\ol{U}_n$.
+\end{proposition}
+\begin{proof}
+	For $f\in\bbC^X$, any neighborhood of $f$ in the topology of compact convergence contains a set of the form
+	\begin{align*}
+		U_K^\epsilon(f)=\left\{g\in\bbC^X:\sup_{x\in K}\vert g(x)-f(x)\vert<\epsilon\right\},
+	\end{align*}
+	where $K$ is a compact subset of $X$ and $\epsilon>0$. We choose $n,m\in\bbN$ such that $K\subset U_n$ and $\frac{1}{m}<\epsilon$. Then
+	\begin{align*}
+		U_K^\epsilon(f)\supset\left\{g\in\bbC^X:\sup_{x\in\ol{U}_n}\vert g(x)-f(x)\vert< \frac{1}{m}\right\}.
+	\end{align*}
+	Therefore the sets of the form (\ref{cmpcvgnb}) form a neighborhood base for $f$.
+\end{proof}
+
+\newpage
+\subsection{Positive Linear Functionals on $C_c(X)$ and Radon Measures}
+Throughout this section, we assume that $X$ is an LCH space. One of the vector spaces we are interested in is the space $C_c(X)$ of continuous functions on $X$ with compact support.
+\begin{definition}[Positive linear functionals]
+	Let $X$ be an LCH space. A \textit{positive linear functional on $C_c(X)$} is a linear functional $T:C_c(X)\to\bbC$ such that $Tf\geq 0$ for all $f\in C_c(X)$ with $f\geq 0$.
+\end{definition}
+
+The positivity condition implies a continuity property of $T$.
+\begin{proposition}\label{plfcont}
+	If $\,T$ is a positive linear functional on $C_c(X)$, for each compact set $K\subset X$, there exists a constant $C_K>0$ such that $\vert Tf\vert\leq C_K\Vert f\Vert_\infty$ for all $f\in C_c(X)$ with $\supp(f)\subset K$.
+\end{proposition}
+\begin{proof}
+	By dividing $f\in C_c(X)$ into real and imaginary parts, it suffices to consider real-valued functions $f$. By Urysohn's lemma, for any compact $K\subset X$, there is a function $\phi\in C_c(U,[0,1])$ such that $\phi=1$ on $K$. Then if $\supp(f)\subset K$, we have $\vert f\vert\leq\Vert f\Vert_\infty\phi$. Hence both $\Vert f\Vert_\infty\phi-f$ and $\Vert f\Vert_\infty\phi+f$ are nonnegative, and
+	\begin{align*}
+		T\phi\Vert f\Vert_\infty-Tf\geq 0,\quad T\phi\Vert f\Vert_\infty+Tf\geq 0
+	\end{align*}
+	Therefore $\vert Tf\vert\leq T\phi\Vert f\Vert_\infty$, which concludes the proof by setting $C_K=T\phi$.
+\end{proof}
+\begin{remark}
+If we replace $C_c(X)$ by $C^\infty(X)$, this proposition still holds, because we can make $\phi\in C_c^\infty(U,[0,1])$ in our proof by $C^\infty$-Urysohn Lemma.
+\end{remark}
+The positive linear functionals on $C_c(X)$ is closely related to a family of Borel measures on $X$ with some regular properties. Intuitively, we let $\mu$ be a Borel measure on $X$ such that $\mu(K)<\infty$ for all compact $K\subset U$. Then the map $f\mapsto\int_X f\,d\mu$ is a positive linear functional on $C_c(X)$, since $f\in C_c(X)\subset L^1(\mu)$.
+
+\begin{definition}[Radon measures]
+	Let $X$ be a topological space, $\scr{B}$ the Borel $\sigma$-algebra on $X$, and $\mu$ a measure on $(X,\mathscr{B})$. Let $E$ be a Borel subset of $X$.
+	\begin{itemize}
+		\item[(i)] $\mu$ is said to be \textit{outer regular on $E$}, if
+		\begin{align*}
+			\mu(E)=\inf\left\{\mu(U):U\supset E,\ U\ \text{is open}\right\}.
+		\end{align*}
+		\item[(ii)] $\mu$ is said to be \textit{inner regular on $E$}, if
+		\begin{align*}
+			\mu(E)=\inf\left\{\mu(K):K\subset E,\ K\ \text{is compact}\right\}.
+		\end{align*}
+		\item[(iii)] $\mu$ is said to be \textit{regular}, if it is outer and inner regular on all Borel sets.
+		\item[(iv)] $\mu$ is called a \textit{Radon measure}, if it is finite on all compact sets, outer regular on all Borel sets, and inner regular on all open sets.
+	\end{itemize}
+\end{definition}
+
+The following theorem relates every positive linear functional on $C_c(X)$ with a Radon measure on $X$.
+\begin{theorem}[Riesz representation theorem]\label{rieszcc}
+	Let $X$ be a LCH space. If $\,T$ is a positive linear functional on $C_c(X)$, there exists a unique Radon measure $\mu$ on $X$ such that
+	\begin{align*}
+		Tf=\int_X f\,d\mu,\quad\forall f\in C_c(X).
+	\end{align*}
+	Furthermore, for all open sets $U\subset X$, $\mu$ satisfies
+	\begin{align*}
+		\mu(U)=\sup\left\{Tf:f\in C_c(U),\ 0\leq f\leq 1\right\},
+	\end{align*}
+	and for all compact sets $K\subset X$,
+	\begin{align*}
+		\mu(K)=\inf\left\{Tf:f\in C_c(X),\ f\geq\chi_K\right\}.
+	\end{align*}
+\end{theorem}
+
+We begin by constructing a Radon measure from a positive linear functional on $C_c(X)$.
+\begin{lemma}\label{radonrieszlemma1}
+	Let $T$ be a positive linear functional on $C_c(X)$. For each open $U\subset X$, define
+	\begin{align*}
+		\mu(U)=\sup\left\{Tf:f\in C_c(U,[0,1])\right\},
+	\end{align*}
+	and for each subset $E\in 2^X$, define
+	\begin{align}
+		\mu^*(E)=\inf\left\{\mu(U):U\supset E,\ U\ \text{\rm is open}\right\}.\label{radonouterreg}
+	\end{align}
+	Then $\mu^*$ is an outer measure on $X$, and every open set $U\subset X$ is $\mu^*$-measurable, i.e.
+	\begin{align}
+		\mu^*(E)=\mu^*(E\cap U)+\mu^*(E\backslash U)\quad\text{\rm for all}\ E\in 2^X.\label{caratheodory}
+	\end{align}
+\end{lemma}
+\begin{proof}
+	By definition of $\mu$, we have $\mu(\emptyset)=0$, and $\mu(U)\leq\mu(V)$ for any open sets $U\subset V$. Hence $\mu^*(E)\leq\mu^*(F)$ for all $E\subset F\subset X$, and $\mu^*(U)=\mu(U)$ for all open $U$. We then show that for a sequence of open sets $(U_n)_{n=1}^\infty$ and $U=\bigcup_{n=1}^\infty U_n$, it holds $\mu(U)\leq\sum_{n=1}^\infty\mu(U_n)$. For any $f\in C_c(U,[0,1])$, let $K=\supp(f)$. By compactness of $K$, we have $K\subset\bigcup_{j=1}^n\mu(U_j)$ for some finite $n\in\bbN$. By Proposition \ref{partunity}, there exists a family of functions $g_j\in C_c(U_j,[0,1])$ such that $\sum_{j=1}^n g_n=1$ on $K$. Then $f=\sum_{j=1}^n fg_j$, and
+	\begin{align*}
+		Tf=\sum_{j=1}^n T(fg_j)\leq\sum_{j=1}^n\mu(U_j)\leq \sum_{n=1}^\infty \mu(U_n).
+	\end{align*}
+	By taking the supremum over $f\in C_c(U,[0,1])$, we have $\mu(U)\leq\sum_{n=1}^\infty \mu(U_n)$. More generally, if $(E_n)_{n=1}^\infty$ is a sequence of subsets of $X$ and $E=\bigcup_{n=1}^\infty E_n$, we take an open set $U_n\supset E_n$ for each $E_n$ and get
+	\begin{align*}
+		\sum_{n=1}^\infty\mu(U_n)\geq\mu\left(\bigcup_{n=1}^\infty U_n\right)\geq \mu(E).
+	\end{align*}
+	By taking the infimum over $(U_n)_{n=1}^\infty$, we have $\sum_{n=1}^\infty\mu(E_n)\geq \mu(E)$. Hence $\mu^*$ is an outer measure on $X$.
+	
+	Now we verify the condition \ref{caratheodory}. We first assume that $E$ is open, so that $E\cap U$ is open. For any $\epsilon>0$, we can find $f\in C_c(E\cap U,[0,1])$ such that $Tf>\mu(E\cap U)-\epsilon$. Similarly, we can find $g\in C_c(E\backslash\supp(f),[0,1])$ such that $Tg>\mu(E\backslash\supp(f))-\epsilon$. Then $f+g\in C_c(E,[0,1])$, and
+	\begin{align*}
+		\mu(E)\geq Tf+Tg\geq\mu(E\cap U)+\mu(E\backslash\supp(f))-2\epsilon \geq \mu^*(E\cap U)+\mu^*(E\backslash U)-2\epsilon.
+	\end{align*}
+	Letting $\epsilon\to 0$, we obtain the desired inequality. For the general case $E\in 2^X$, we may assume $\mu^*(E)<\infty$ and find an open $V\supset E$ such that $\mu^*(V)<\mu^*(E)+\epsilon$, and hence
+	\begin{align*}
+		\mu^*(E)+\epsilon>\mu^*(V)\geq\mu^*(V\cap U)+\mu^*(V\backslash U)\geq\mu^*(E\cap U)+\mu^*(E\backslash U).
+	\end{align*}
+	Letting $\epsilon\to 0$, we are done.
+\end{proof}
+
+\begin{remark} By Carathéodory's extension theorem, the family of $\mu^*$-measurable sets is a $\sigma$-algebra on $X$, which contains the Borel $\sigma$-algebra $\mathscr{B}$. By taking the restriction $\mu=\mu^*|_{\mathscr{B}}$, we obtain a Borel measure on $X$.
+\begin{lemma}\label{radonrieszlemma2}
+	The restriction $\mu=\mu^*|_{\mathscr{B}}$ of the outer measure $\mu^*$ in Lemma \ref{radonrieszlemma1} on the Borel algebra $\scr{B}$ defines a Radon measure on $X$. Furthermore, for each compact set $K\subset X$,
+	\begin{align}
+		\mu(K)=\inf\left\{Tf:f\in C_c(X),\ f\geq\chi_K\right\}.\label{radoncmpapprox}
+	\end{align}
+\end{lemma}
+\end{remark}
+\begin{proof}
+	By (\ref{radonouterreg}), the Borel measure $\mu$ is outer regular on all Borel sets in $X$. If $K$ is compact, $f\in C_c(X)$ and $f\geq\chi_K$, we define $U_\epsilon=\left\{x\in X:f(x)\geq 1-\epsilon\right\}$, which is an open set. If $g\in C_c(U_\epsilon,[0,1])$, we have $f-(1-\epsilon)g\geq 0$, and $Tf\geq(1-\epsilon)Tg$. Hence
+	\begin{align*}
+		\mu(K)\leq\mu(U_\epsilon)=\inf\{Tg:g\in C_c(U_\epsilon,[0,1])\}\leq\frac{Tf}{1-\epsilon}.
+	\end{align*}
+	Letting $\epsilon\to 0$, we have $\mu(K)\leq Tf$, and hence $\mu(K)<\infty$. On the other hand, for any open $U\supset K$, by Urysohn's lemma, there exists $f\in C_c(U,[0,1])$ such that $f\geq\chi_K$, and we have $Tf\leq\mu(U)$ by definition of $\mu$ in Lemma \ref{radonrieszlemma1}. Since $\mu$ is outer regular, the result (\ref{radoncmpapprox}) follows.
+	
+	To verify that $\mu$ is a Radon measure, it remains to show that it is inner regular on all open sets. If $U$ is open and $\epsilon>0$, we choose $f\in C_c(U,[0,1])$ such that $Tf>\mu(U)-\epsilon$ and let $K=\supp(f)$. If $g\in C_c(X)$ and $g\geq\chi_K$, we have $g-f\geq 0$ and $Tg\geq Tf>\mu(U)-\epsilon$.  Then $\mu(K)>\mu(U)-\epsilon$, and $\mu$ is inner regular on $U$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{rieszcc}]
+	We start by establishing the uniqueness. Assume $\mu$ is a Radon measure such that $\int_X f\,d\mu=Tf$ for all $f\in C_c(X)$. If $U\subset X$ is open, we have $Tf=\int_X f\,d\mu\leq\mu(U)$ for all $f\in C_c(U,[0,1])$. On the other hand, if $K\subset U$ is a compact set, we take $f\in C_c(U,[0,1])$ such that $f=1$ on $K$ by Urysohn's lemma, so that $\mu(K)\leq \int_X f\,d\mu=Tf$. Since $\mu$ is inner regular on $U$, we have $$\mu(U)=\sup\left\{Tf:f\in C_c(U,[0,1])\right\}.$$ Thus $\mu$ is determined by $T$ on all open sets, hence on all Borel sets by outer regularity.
+	
+	To prove the existence, we take the Radon measure constructed in Lemmata \ref{radonrieszlemma1} and \ref{radonrieszlemma2}. It remains to show that $Tf=\int_X f\,d\mu$ for all $f\in C_c(X)$. We may assume $0\leq f\leq 1$, since $f$ is a linear combination of functions in $C_c(X,[0,1])$. Fix $N\in\bbN$. We define $K_j=\left\{x\in X:f(x)\geq\frac{j}{N}\right\}$ for each $j=1,2,\cdots,N$ and $K_0=\supp(f)$. Also, we divide $f$ by $f=\sum_{j=1}^Nf_j$, where $f_1,\cdots,f_N\in C_c(X)$ are defined as the truncation of $f$ on the interval $\left[\frac{j-1}{N},\frac{j}{N}\right]$:\vspace{-0.1cm}
+	\begin{align*}
+		f_j=\min\left\{\max\left\{f-\frac{j-1}{N},0\right\},\frac{1}{N}\right\}.
+	\end{align*}
+	Then $N^{-1}\chi_{K_j}\leq f_j\leq N^{-1}\chi_{j-1}$, and\vspace{-0.1cm}
+	\begin{align*}
+		\frac{\mu(K_j)}{N}\leq \int_X f_j\,d\mu\leq\frac{\mu(K_{j-1})}{N}.
+	\end{align*}
+	If $U\supset K_{j-1}$ is an open set, we have $Nf_j\in C_c(U,[0,1])$, and
+	$Tf_j\leq\frac{\mu(U)}{N}$. Hence by (\ref{radoncmpapprox}) and outer regularity,\vspace{-0.1cm}
+	\begin{align*}
+		\frac{\mu(K_j)}{N}\overset{(\ref{radoncmpapprox})}{\leq} Tf_j\leq\frac{1}{N}\inf\left\{\mu(U):U\supset K_{j-1},\ U\ \text{is open}\right\}=\frac{\mu(K_{j-1})}{N}.
+	\end{align*}
+	Using $f=\sum_{j=1}^Nf_j$, we have\vspace{-0.1cm}
+	\begin{align*}
+		\frac{1}{N}\sum_{j=1}^N\mu(K_j)\leq \int_X f\,d\mu\leq \frac{1}{N}\sum_{j=0}^{N-1}\mu(K_j),\quad\text{and}\quad \frac{1}{N}\sum_{j=1}^N\mu(K_j)\leq Tf\leq \frac{1}{N}\sum_{j=0}^{N-1}\mu(K_j).
+	\end{align*}
+	Hence\vspace{-0.1cm}
+	\begin{align*}
+		\left\vert Tf-\int_X f\,d\mu\right\vert\leq\frac{\mu(K_0)-\mu(K_N)}{N}\leq\frac{\mu(\supp(f))}{N}.
+	\end{align*}
+	Since $\mu(\supp(f))<\infty$, we let $N\to\infty$ and conclude that $Tf=\int_X f\,d\mu$.
+\end{proof}
+\begin{remark} 
+For any $f\in C_c(X)$ supported on $K$, we can take a mollification sequence $f^\epsilon=\phi_\epsilon*f\in C_c^\infty(X)$ that converges to $f$ uniformly.
+Therefore, if $T$ is a positive linear functional on $C_c^\infty(X)$, by the remark under Proposition \ref{plfcont}, we can extend $T$ to a linear functional on $C_c(X)$. Through this procedure, we can also relate each positive linear functional on a subspace of $C_c(X)$ containing $C_c^\infty(X)$ to a unique Radon measure on $X$.
+\end{remark}
+
+\newpage
+\subsection{Regularity and Approximation of Radon Measures}
+In this section we discuss more properties of Radon measures. 
+\begin{proposition}\label{radonreg}
+	Every Radon measure is inner regular on all of its $\sigma$-finite sets.
+\end{proposition}
+\begin{proof}
+	Let $\mu$ be a Radon measure on $X$ and $E\subset X$ a $\sigma$-finite set. If $\mu(E)<\infty$, for any $\epsilon>0$, we take an open set $U\supset E$ with $\mu(U)<\mu(E)+\epsilon$ and a compact set $F\subset U$ such that $\mu(F)>\mu(U)-\epsilon$. Since $\mu(U\backslash E)<\epsilon$, we can also take an open set $V\supset U\backslash E$ such that $\mu(V)<\epsilon$. Let $K=F\backslash V$, which is compact. Then $K\subset U\backslash V\subset E$, and
+	\begin{align*}
+		\mu(K)=\mu(F)-\mu(F\cap V)>\mu(U)-\epsilon-\mu(V)>\mu(E)-2\epsilon.
+	\end{align*}
+	Hence $\mu$ is inner regular on $E$. On the other hand, if $\mu(E)=\infty$, $E$ is the limit of an increasing sequence $(E_n)_{n=1}^\infty$ of $\mu$-finite sets such that $\mu(E_n)\to\infty$. Hence for any $N>0$ there exists $n\in\bbN$ such that $\mu(E_n)>N$. By the preceding argument, one can take a compact $K\subset E_n$ with $\mu(K)>N$. Hence the supremum of $\mu(K)$ over compact $K\subset E$ is $\infty$, and $\mu$ is inner regular on $E$.
+\end{proof}
+
+We have some immediate corollaries of this proposition.
+\begin{corollary}
+	Every $\sigma$-finite Radon measure is regular. Particularly, if $X$ is a $\sigma$-compact space, every Radon measure on $X$ is regular.
+\end{corollary}
+\begin{proposition}\label{sandwichapprox}
+	Let $\mu$ be a $\sigma$-finite Radon measure on $X$ and $E$ a Borel set in $X$.
+	\begin{itemize}
+		\item[(i)] For every $\epsilon>0$, there exists an open $U$ and a closed $F$ with $F\subset E\subset U$ and $\mu(U\backslash F)<\epsilon$.
+		\item[(ii)] There exists an $F_\sigma$ set $A$ and a $G_\delta$ set $B$ such that $A\subset E\subset B$ and $\mu(B\backslash A)=0$.
+	\end{itemize}
+\end{proposition}
+\begin{proof}
+	We write $E=\bigcup_{n=1}^\infty E_n$ where the $E_j$'s are disjoint and have finite measure. For each $E_n$, choose an open $U_n\supset E_n$ with $\mu(U_n)<\mu(E_n)+2^{-1-n}\epsilon$ and let $U=\bigcup_{n=1}^\infty U_n$. Then $U$ is an open set containing $E$ and $\mu(U\backslash E)\leq\sum_{n=1}^\infty\mu(U_n\backslash E_n)<\epsilon/2$. Applying the same approach to $E^c$, we get an open $V\supset E^c$ with $\mu(V\backslash E^c)<\epsilon/2$. Let $F=V^c$. Then $F$ is a closed set contained in $E$, and
+	\begin{align*}
+		\mu(U\backslash F)=\mu(U\backslash E)+\mu(E\backslash F)=\mu(U\backslash E)+\mu(V\backslash E^c)<\epsilon.
+	\end{align*}
+	
+	Now for each $k\in\bbN$, by the preceding argument, we choose an open $U_k$ and a closed $F_k$ with $F_k\subset E\subset U_k$ and $\mu(U_k\backslash F_k)<1/k$. We may also assume $U_k\subset U_{k-1}$ by taking $U_k\cap U_{k-1}$ if necessary. Similarly we assume $F_k\supset F_{k-1}$. Let $B=\bigcap_{k=1}^\infty U_k$, which is a $G_\delta$ set, and $A=\bigcup_{k=1}^\infty F_k$, which is an $F_\sigma$ set. Then
+	\begin{align*}
+		\mu(B\backslash A)=\mu\left(\bigcap_{k=1}^\infty(U_k\backslash F_k)\right)=\lim_{k\to\infty}\mu(U_k\backslash F_k)=0,
+	\end{align*}
+	and $A\subset E\subset B$, which concludes the proof.
+\end{proof}
+
+The following theorem discusses the regularity of Borel measures in LCH spaces.
+\begin{theorem}\label{borelisradon}
+	Let $\mu$ be a Borel measure on an LCH space $X$ in which every open set is $\sigma$-compact (which is the case, for example, if $X$ is second countable). If $\mu$ is finite on compact sets, it is regular.
+\end{theorem}
+\begin{proof}
+	Since $\mu$ is finite on compact sets, we have $\int_X f\,d\mu<\infty$ for all $f\in C_c(X)$, and $T_\mu f=\int_X f\,d\mu$ defines a positive linear functional $T_\mu$ on $C_c(X)$. Let $\nu$ be the associated Radon measure according to Theorem \ref{rieszcc}. If $U\subset X$ is open, let $(K_n)_{n=1}^\infty$ be a sequence of compact sets increasing to $U$. We take $f_1\in C_c(U,[0,1])$ such that $f=1$ on $K_1$, and inductively take $f_n\in C_c(U,[0,1])$ such that $f=1$ on $K_n\cup\supp(f_{n-1})$. Then $f_n\uparrow \chi_U$ pointwise, and by monotone convergence theorem,
+	\begin{align*}
+		\mu(U)=\lim_{n\to\infty}\int_X f_n\,d\mu=\lim_{n\to\infty}\int_X f_n\,d\nu=\nu(U).
+	\end{align*}
+	
+	Next, if $E$ is any Borel set and $\epsilon>0$, by Proposition \ref{sandwichapprox}, there exists open $U\supset E$ and closed $V\subset E$ with $\nu(U\backslash F)<\epsilon$. Since $U\backslash F$ is open, $\mu(U\backslash F)=\nu(U\backslash F)<\epsilon$. In particular, $\mu(U)<\mu(E)+\epsilon$, and $\mu$ is outer regular. Also, we have $\mu(F)>\mu(E)-\epsilon$. Since $X$ is $\sigma$-compact, there exist compact sets $K_n\subset F$ with $\mu(K_n)\to\mu(F)$, and $\mu$ is inner regular. Therefore $\mu$ is regular on $X$.
+\end{proof}
+\begin{remark} By the uniqueness part of Theorem \ref{rieszcc}, since $\mu$ is Radon, we have $\mu=\nu$.
+\end{remark}
+
+\begin{proposition}\label{ccdenseinlp}
+	If $\mu$ a Radon measure on an LCH space $X$, $C_c(X)$ is dense in $L^p(\mu)$ for $1\leq p<\infty$. 
+\end{proposition}
+\begin{proof}
+	Since the simple functions are dense in $L^p(\mu)$, it suffices to approximate each simple function $\chi_E$ in $L^p$-norm, where $E\subset X$ is a Borel set with $\mu(E)<\infty$. For any $\epsilon>0$, we pick an open set $U$ and a compact set $K$ such that $K\subset E\subset U$ and $\mu(U\backslash K)<\epsilon$. By Urysohn's lemma, there exists $f\in C_c(X)$ such that $\chi_K\leq f\leq\chi_U$. Then $\Vert\chi_E-f\Vert_p^p\leq\mu(U\backslash K)\leq\epsilon$, and we are done.
+\end{proof}
+
+\begin{theorem}[Lusin]\label{lusin}
+	Let $\mu$ be a Radon measure on an LCH space $X$, and $f:X\to\bbC$ a measurable function that vanishes outside a $\mu$-finite set. Then for any $\epsilon>0$, there exists $\phi\in C_c(X)$ such that $\mu(\{\phi\neq f\})<\epsilon$. Moreover, if $f$ is bounded, we may take $\Vert\phi\Vert_\infty\leq\Vert f\Vert_\infty$.
+\end{theorem}
+\begin{proof}
+	We assume first that $f$ is bounded, so $f\in L^1(\mu)$. Let $E=\{x\in X:f(x)\neq 0\}$. By Proposition \ref{ccdenseinlp}, there exists a sequence $(g_n)$ in $C_c$ that converges to $f$ in $L^1$. We take a subsequence that converges to $f$ a.e. and still denote it by $(g_n)$ for simplicity. By Egoroff's theorem, there exists $A\subset E$ with $\mu(E\backslash A)<\epsilon/3$ and $g_n\to f$ uniformly on $A$, and there exists a compact $B\subset A$ and an open $U\supset E$ such that $\mu(A\backslash B)<\epsilon/3$ and $\mu(U\backslash E)<\epsilon/3$. Since $g_n\to f$ uniformly on $B$, $f|_B$ is continuous, and by Tietze extension theorem, there exists $\phi\in C_c(U)$ such that $\phi=f$ on $B$. Since $\{\phi\neq f\}\subset U\backslash B$ and $\mu(U\backslash B)<\epsilon$, we have $\mu(\{\phi\neq f\})<\epsilon$. Furthermore, if $\vert\phi(x)\vert>\Vert f\Vert_\infty$, we may truncate $\phi(x)$ to $\Vert f\Vert_\infty\frac{\phi(x)}{\vert\phi(x)\vert}$, which does not change $\phi|_B$ and does not impact the continuity of $\phi$. Therefore we mat take $\Vert\phi\Vert_\infty<\Vert f\Vert_\infty$.
+	
+	On the other hand, if $f$ is unbounded, we make $A_n=\{0\leq\vert f\vert\leq n\}$, which increases to $E=\{f\neq 0\}$ as $n\to\infty$. Then there exists sufficient large $n$ such that $\mu(E\backslash A_n)<\epsilon/2$. By the preceding argument, there exists $\phi\in C_c(X)$ such that $\phi=f\chi_{A_n}$ except on a set of measure less than $\epsilon/2$. Hence $\mu(\{\phi\neq f\})<\epsilon$. 
+\end{proof}
+
+Finally we discuss how to construct a Radon measure from another one.
+
+\begin{proposition}\label{l1induceradon}
+	Let $\mu$ be a Radon measure on a topological space $X$. If $\phi\in L^1(\mu)$ and $\phi\geq 0$, we define
+	\begin{align*}
+		\nu(E)=\int_E\phi\,d\mu,\quad E\in\mathscr{B}.
+	\end{align*}
+	Then $\nu$ is also a Radon measure on $X$.
+\end{proposition}
+\begin{proof}
+	One can easily verify that $\nu$ is a Borel measure on $X$, and $\nu\ll\mu$. Then for each $\epsilon>0$, there exists $\delta>0$ such that $\nu(E)<\epsilon$ for all $\mu(E)<\delta$. Now we verify that $\nu$ is a Radon measure on $X$.
+	\begin{itemize}
+		\item If $K\subset X$ is a compact set, $\nu(K)=\int_K\phi\,d\mu\leq\int_X\phi\,d\mu<\infty$. 
+		\item For any Borel set $E\subset X$ and any $\epsilon>0$, there exists an open $U\supset E$ such that $\mu(U\backslash E)<\delta$, and $\nu(U\backslash E)<\epsilon$. Hence $\nu$ is outer regular on $E$.
+		\item For any open set $U\subset X$ and any $\epsilon>0$, there exists a compact $K\subset U$ such that $\mu(U\backslash K)<\delta$, and $\nu(U\backslash K)<\epsilon$. Hence $\nu$ is inner regular on $U$.
+	\end{itemize}
+	To summarize, $\nu$ is a Radon measure on $X$.
+\end{proof}
+
+\newpage
+\subsection{Riesz-Markov-Kakutani Representation of $C_0(X)^*$}
+\paragraph{Positive bounded linear functionals on $C_0(X)$.} Let $X$ be an LCH space. Proposition \ref{c0closecc} states that $C_0(X)$ is the uniform closure of $C_c(X)$. If $\mu$ is a Radon measure on $X$, the functional $T_\mu f=\int_X f\,d\mu$ extends continuously to $C_0(X)$ if and only if it is bounded with respect to the uniform norm $\Vert\cdot\Vert_\infty$, i.e. there exists a constant $\gamma>0$ such that $\vert T_\mu f\vert\leq\gamma\Vert f\Vert_\infty$ for all $f\in C_c(X)$. In view of the equality
+\begin{align*}
+	\mu(X)=\sup\left\{\int_X f\,d\mu:f\in C_c(X),\ 0\leq f\leq 1\right\}=\sup\left\{T_\mu f:f\in C_c(X),\ 0\leq f\leq 1\right\},
+\end{align*}
+we know that $T_\mu:C_c(X)\to\bbC$ is bounded with respect to $\Vert\cdot\Vert_\infty$ if and only if $\mu(X)<\infty$, in which case $\mu(X)$ is the operator norm of $T_\mu$. Therefore, we have identified the positive bounded linear functionals on $C_0(X)$, which are given by integration against finite Radon measures.
+
+In this section, we identify the dual space of $C_0(X)$, denoted by $C_0(X)^*$, which consists of all bounded linear functionals on $C_0(X)$. 
+
+\begin{definition}[Signed Radon measures and complex Radon measures] Let $X$ be a topological space.
+	\begin{itemize}
+		\item[(i)] A \textit{signed Radon measure on $X$} is a signed Borel measure on $X$ whose positive and negative variations are Radon measures.
+		\item[(ii)] A \textit{complex Radon measure on $X$} is a complex Borel measure on $X$ whose real and imaginary parts are signed Radon measures. We denote the space of complex Radon measures on $X$ by $M(X)$, and define $\Vert\mu\Vert=\vert\mu\vert(X)$, where $\vert\mu\vert$ is the total variation of $\mu$.
+	\end{itemize}
+\end{definition}
+\begin{remark}
+Since a complex measure is always finite, every complex Radon measure is regular. Furthermore, every complex Borel measure is Radon in an LCH space in which every open set is $\sigma$-compact (for example, a second countable LCH space).
+\end{remark} 
+
+\begin{theorem}
+	If $\mu$ is a complex Borel measure on $X$, then $\mu$ is Radon if and only in $\vert\mu\vert$ is Radon. Furthermore, $M(X)$ is a vector space and $\mu\mapsto\Vert\mu\Vert$ is a norm on it.
+\end{theorem}
+\begin{proof}
+	By Proposition \ref{radonreg}, we note that a finite positive Borel measure $\mu$ is Radon if and only if for every Borel set $E$ and every $\epsilon>0$, there exists compact $K\subset E$ and open $U\supset E$ such that $\mu(U\backslash K)<\epsilon$. 
+	
+	If $\mu=(\mu_1-\mu_2)+i(\mu_3-\mu_4)$ and $\vert\mu\vert(U\backslash K)<\epsilon$, we have $\mu_j(U\backslash K)<\epsilon$ for $j=1,2,3,4$. Conversely, if $\mu_j(U_j\backslash K_j)<\epsilon/4$ for all $j$, we have $\vert\mu\vert(U\backslash K)<\epsilon$ for $U=\bigcap_{j=1}^4 U_j$ and $K_j=\bigcup_{j=1}^4 K_j$. Hence $\mu$ is Radon if and only if its total variation $\vert\mu\vert$ is Radon. 
+	
+	For the second assertion, a similar argument shows that $M(X)$ is closed under addition and scalar multiplication. Finally, to show $\mu\to\Vert\mu\Vert$ is a norm on $X$, let $\mu_1,\mu_2\in M(X)$ and $\nu=\vert\mu_1+\mu_2\vert$, and take the Radon Nikodym derivative $f_1=d\mu_1/d\nu$ and $f_2=\mu_2/d\nu$. Then $$\vert\mu+\nu\vert(X)\leq \int_X\vert f_1+f_2\vert d\nu\leq \int_X\vert f_1\vert d\nu+ \int_X\vert f_2\vert d\nu\leq\vert\mu_1\vert(X)+\vert\mu_2\vert(X).$$
+	Hence the triangle inequality holds, and $\Vert\mu\Vert=\vert\mu\vert(X)$ is a norm.
+\end{proof}
+
+We now discuss how to identify each $T\in C(X)^*$ with a complex Radon measure on $X$.
+
+\begin{theorem}[Riesz-Markov-Kakutani]\label{rmk}
+	Let $X$ be an LCH space. For each $\mu\in M(X)$, define
+	\begin{align*}
+		T_\mu f=\int_X f\,d\mu,\quad f\in C_0(X).
+	\end{align*}
+	Then the map $\mu\mapsto T_\mu$ defines an isometric isomorphism of $M(X)$ onto the dual space $C_0(X)^*$.
+\end{theorem}
+
+We begin from the real case. While studying a possibly non-positive linear functional on $C_0(X,\bbR)$, the following decomposition is extremely useful.
+
+\begin{theorem}[Jordan decomposition]
+	If $\,T\in C_0(X,\bbR)^*$, there exists positive bounded linear functionals $T^\pm\in C_0(X,\bbR)^*$ such that $T=T^+-T^-$.
+\end{theorem}
+
+\begin{proof}
+	For $f\in C_0(X,\bbR)$ with $f\geq 0$, we define
+	\begin{align*}
+		T^+f=\sup\left\{Tg:g\in C_0(X,\bbR),\ 0\leq g\leq f\right\}
+	\end{align*}
+	We claim that $T^+$ is the restriction to $C_0(X,[0,\infty))$ of a positive bounded linear functional on $C_0(X,\bbR)$. 
+	\begin{itemize}
+		\item For $\lambda\geq 0$, we have $$T(\lambda f)=\sup\left\{Th:h\in C_0(X,\bbR),\ 0\leq h\leq\lambda f\right\}=\sup\left\{\lambda Tg:g\in C_0(X,\bbR),\ 0\leq g\leq f\right\}=\lambda Tf.$$
+		\item If $0\leq g_1\leq f_1$ and $0\leq g_2\leq f_2$, we have $0\leq g_1+g_2\leq f_1+f_2$, so that $T^+(f_1+f_2)\geq Tg_1+Tg_2$, and hence $T^+(f_1+f_2)\geq T^+f_1+T^+f_2$. On the other hand, if $0\leq g\leq f_1+f_2$, let $g_1=\min\{f_1,g\}$ and $g_2=g-g_1=\max\{0,g-f_1\}$, so that $0\leq g_1\leq f_1$ and $0\leq g_2\leq f_2$. Then
+		\begin{align*}
+			Tg=Tg_1+Tg_2\leq T^+f_1+T^+f_2,
+		\end{align*}
+		and $T^+(f_1+f_2)\leq T^+f_1+T^+f_2$. Therefore $T^+(f_1+f_2)=T^+f_1+T^+f_2$.
+		\item Since $\vert Tg\vert\leq\Vert T\Vert\left\Vert g\right\Vert_\infty\leq\Vert T\Vert\left\Vert f\right\Vert_\infty$ for $0\leq g\leq f$ and $T0=0$, we have $0\leq T^+f\leq\Vert T\Vert\left\Vert f\right\Vert_\infty$
+	\end{itemize}
+	
+	Now for any $f\in C_0(X,\bbR)$, both its positive $f^+=\max\{f,0\}$ and negative parts $f^-=\max\{-f,0\}$ are in $C_0(X,[0,\infty))$, and we define
+	$T^+f=T^+f^+-T^+f^-$. If $f=g-h$, where $g,h\geq 0$, we have $f^++h=g+f^-$, and $Tf=Tf^+-Tf^-=Tg-Th$. It follows easily that $T^+$ is a linear functional in $C_0(X,\bbR)$, and 
+	\begin{align*}
+		\vert T^+f\vert\leq\max\left\{T^+f^+,T^+f^-\right\}\leq\Vert T\Vert\max\left\{\Vert f^+\Vert_\infty,\Vert f^-\Vert_\infty\right\}=\Vert T\Vert\left\Vert f\right\Vert_\infty.
+	\end{align*}
+	Hence $T^+$ is bounded, and $\Vert T^+\Vert\leq\Vert T\Vert$.
+	
+	Finally, we define $T^-=T^+-T\in C_0(X,\bbR)^*$. By definition of $T^+$, we have $T^+f\geq Tf$ for $f\in C_0(X,\bbR)$ with $f\geq 0$, hence $T^-$ is a positive linear functional. Thus we concludes the proof.
+\end{proof}
+\paragraph{Remark.} For any $T\in C_0(X)^*$, consider its restriction $T_R=U+iV$ to $C_0(X,\bbR)$, where $U,V\in C_0(X,\bbR)^*$. If $f=u+iv\in C_0(X)$, where $u,v\in C_0(X,\bbR)$, by $\bbC$-linearity,
+\begin{align*}
+	Tf &= Tu+iTv= T_R u+iT_R v=(U+iV)u+i(U+iV)v=(Uu-Vv)+i(Uv+Vu).
+\end{align*}
+It is seen $T$ is uniquely determined by $T_R$. We then decompose $U=U^+-U^-$ and $V=V^+-V^-$, where $U^\pm,V^\pm\in C_0(X,\bbR)^*$ are positive. By Riesz representation theorem, we can find finite positive Radon measures $\mu_R^{\pm}$ and $\mu_I^{\pm}$ associated with $U^\pm$ and $V^\pm$, respectively. We define the complex Radon measure
+\begin{align*}
+	\mu=\left(\mu_R^+-\mu_R^-\right)+i\left(\mu_I^+-\mu_I^-\right).
+\end{align*}
+Then
+\begin{align*}
+	&\int_X f\,d\mu=\left(\int_X f\,d\mu_R^+-\int_X f\,d\mu_R^-\right)+i\left(\int_X f\,d\mu_I^+-\int_X f\,d\mu_I^-\right)\\
+	&\quad=\left(\int_X u\,d\mu_R^+-\int_X u\,d\mu_R^--\int_X v\,d\mu_I^++\int_X v\,d\mu_I^-\right)+i\left(\int_X v\,d\mu_R^+-\int_X v\,d\mu_R^-+\int_X u\,d\mu_I^+-\int_X u\,d\mu_I^-\right)\\
+	&\quad=\left(U^+ u-U^-u-V^+v+V^-v\right)+i\left(U^+v-U^-v+V^+u-V^-u\right)\\
+	&\quad =(Uu-Vv)+i(Uv+Vu)=Tf.
+\end{align*}
+Therefore, every $T\in C_0(X)^*$ is associated with a complex Radon measure $\mu\in M(X)$ such that $Tf=\int_X f\,d\mu$. Furthermore, since $\mu_R^+,\, \mu_R^-,\,\mu_I^+,\,\mu_I^-$ are unique determined by $T$, the complex Radon measure $\mu$ is unique.
+\begin{proof}[Proof of Theorem \ref{rmk}]
+	We have already shown that every $T\in C_0(X)^*$ is of the form $T_\mu$. On the other hand, if $\mu\in M(X)$, we have
+	\begin{align*}
+		\left\vert\int_X f\,d\mu\right\vert\leq\int_X\vert f\vert\,d\vert\mu\vert\leq\Vert f\Vert_\infty\Vert\mu\Vert,\quad f\in C_0(X).
+	\end{align*}
+	Hence $T_\mu\in C_0(X)^*$, and $\Vert T_\mu\Vert\leq\Vert \mu\Vert$. Furthermore, we take $h=d\mu/d\vert\mu\vert$, so that $\vert h\vert=1$ $\vert\mu\vert$-a.e.. By Lusin's theorem [Theorem \ref{lusin}], for each $\epsilon>0$, there exists $\phi\in C_c(X)$ such that $\Vert\phi\Vert_\infty=1$ and $\phi=\ol{h}$ except on a set $E$ with $\vert\mu\vert(E)<\epsilon/2$. Then
+	\begin{align*}
+		\Vert\mu\Vert&=\int_X\vert h\vert^2\,d\vert\mu\vert=\int_X\ol{h}\,d\mu\leq\left\vert\int_X \phi\,d\mu\right\vert+\left\vert\int_X(\phi-\ol{h})\,d\mu\right\vert\\
+		&=\left\vert\int_X \phi\,d\mu\right\vert+\left\vert\int_E(\phi-\ol{h})\,d\mu\right\vert\leq\Vert T_\mu\Vert\left\Vert\phi\right\Vert_\infty+\Vert\phi-\ol{h}\Vert_\infty\vert\mu\vert(E)\leq\Vert T_\mu\Vert+\epsilon.
+	\end{align*}
+	Letting $\epsilon\to 0$, we have $\Vert\mu\Vert\leq\Vert T_\mu\Vert$. Hence $\Vert\mu\Vert=\Vert T_\mu\Vert$, and the proof is complete.
+\end{proof}
+\begin{remark}
+If we consider the real case, the mapping $\mu\mapsto T_\mu$ is an isometric isomorphism from the space of finite signed Radon measures to $C_0(X,\bbR)^*$.
+\end{remark} 
+
+\begin{corollary}\label{chsradon}
+	Let $X$ be a compact Hausdorff space, $C(X)^*$ is isometrically isomorphic to the space $M(X)$ of complex Radon measures on $X$.
+\end{corollary}
+\begin{remark}
+	If in addition, $X$ is metrizable, then $X$ is second countable, and we know that every finite Borel measure on $X$ is Radon by Theorem \ref{borelisradon}. Since complex measures are always finite, $M(X)$ is indeed the space of complex Borel measures on $X$, and $C(X)^*\simeq M(X)$.
+\end{remark}
+\begin{corollary}
+	Let $\mu$ be a Radon measure on an LCH space $X$. For each $f\in L^1(\mu)$, define
+	\begin{align*}
+		\nu_f(E)=\int_E f\,d\mu,\quad E\in\mathscr{B}.
+	\end{align*} 
+	The mapping $f\mapsto\nu_f$ is an isometric embedding of $L^1(\mu)$ into $M(X)$ whose range consists precisely of those $\nu\in M(X)$ such that $\nu\ll\mu$.
+\end{corollary}
+\begin{proof}
+	By Proposition \ref{l1induceradon}, the complex measure $\nu_f$ on $X$ is Radon and satisfies $\nu_f\ll\mu$. Moreover, $$\Vert\nu_f\Vert=\vert\nu\vert(X)=\int_X\vert f\vert\,d\mu=\Vert f\Vert_{L^1}.$$
+	Finally, if $\nu\in M(X)$ and $\nu\ll\mu$, taking $f$ to be the Radon-Nikodym derivative $d\nu/d\mu$ yields $\nu_f=\nu$.
+\end{proof}
+
+\newpage
+\subsection{Lebesgue Decomposition for Radon Measures on $\bbR^n$}
+In this section, we work in the Euclidean space $(\bbR^n,m)$, which is a locally compact, Hausdorff and second countable space. According to Theorem \ref{borelisradon}, if a Borel measure $\mu$ on $\bbR^n$ is finite on compact sets, it is a Radon measure. By Lebesgue decomposition theorem, $\mu$ has a unique decomposition
+\begin{align*}
+	\mu=\rho+\nu,
+\end{align*}
+where
+\begin{itemize}
+	\item $\rho$ is \textit{absolutely continuous} with respect to the Lebesgue measure $m$, written $\rho\ll m$, i.e. $\rho(E)=0$ for all Borel sets $E$ with $m(E)=0$.
+	\item $\nu$ and the Lebesgue measure $m$ are \textit{mutually singular}, written $\nu\perp m$, i.e. there is a Borel set $A$ such that $m(\bbR^n\backslash A)=\nu(A)=0$.
+\end{itemize}
+Clearly, both $\rho$ and $\nu$ are Radon measures on $\bbR^n$. The following theorem gives a further decomposition of $\mu$.
+
+\begin{theorem}[Lebesgue decomposition for Radon measure on $\bbR^n$]\label{lebradondecomp}
+	If $\mu$ is a Radon measure on $\bbR^n$, there exists a locally integrable function $f\in L_\loc^1(\bbR^n)$ and a Radon measure $\nu\perp m$ such that
+	\begin{align}
+		\mu(E)=\int_E f\,dm+\nu(E),\quad E\in\mathscr{B}(\bbR^n).\label{lebdecomp}
+	\end{align}
+	Furthermore, for almost every $x\in\bbR^n$,
+	\begin{align}
+		\lim_{r\to 0^+}\frac{\mu(B(x,r))}{m(B(x,r))}=f(x).\label{lebradondiff}
+	\end{align}
+\end{theorem}
+
+The proof of this theorem requires a finite version of Vitali covering theorem.
+
+\begin{lemma}[Vitali covering lemma]\label{vitalicover}
+	For any finite collection $\cal{F}$ of open balls $B_1,B_2,\cdots,B_N$ in an arbitrary metric space $X$, there exists a subcollection $\cal{G}\subset\cal{F}$ of disjoint balls such that
+	\begin{align*}
+		\bigcup_{j=1}^NB_j\subset \bigcup_{B\in\cal{G}}3B,
+	\end{align*}
+	where $3B$ denotes the ball with the same center as $B$ but with 3 times the radius.
+\end{lemma}
+\begin{proof}
+	We choose balls in $\cal{G}$ by the greedy algorithm. First take $B_1^\prime$ to be the largest ball among $\cal{F}$. Having chosen $\{B_1^\prime,B_2^\prime,\cdots,B_k^\prime\}$, repeat the inductive step:
+	\begin{itemize}
+		\item if the remaining balls each have nonempty intersection with $\bigcup_{i=1}^k B_i^\prime$, stop;
+		\item otherwise, take $B_{k+1}^\prime$ to be the largest among $\cal{F}\backslash\{B_1^\prime,B_2^\prime,\cdots,B_k^\prime\}$ that are disjoint from $\bigcup_{i=1}^k B_i^\prime$.
+	\end{itemize}
+	This algorithm must stop after less than $N$ rounds, with the chosen balls $B_1^\prime,B_2^\prime,\cdots,B_n^\prime$ disjoint. Then it remains to show that $B_i\subset E:=\bigcup_{j=1}^n 3B_j^\prime$ for every $i=1,\cdots,N$. We claim $B_i\cap E\neq\emptyset$, otherwise the algorithm would not have stopped at $B_1^\prime,B_2^\prime,\cdots,B_n^\prime$. We let $j_0$ be the minimal $j$ such that $B_j^\prime\cap B_i\neq\emptyset$. Then $B_i$ does not intersect $\bigcup_{i=1}^{j_0-1}B_j^\prime$, and the radius of $B_i$ is no greater than $B_{j_0}$, since $B_{j_0}$ is maximal at step $j_0$. Recalling that $B_{j_0}^\prime\cap B_i\neq\emptyset$, by triangle inequality, $3B_{j_0}^\prime \supset B_i$.
+\end{proof}
+
+\begin{lemma}\label{radonsingdifflemma}
+If $\nu$ is a Radon measure on $\bbR^n$, and $\nu\perp m$, then for almost every $x\in\bbR^n$,
+\begin{align}
+	\lim_{r\to 0^+}\frac{\nu(B(x,r))}{m(B(x,r))}=0.\label{radonsingdiff}
+\end{align}
+\end{lemma}
+\begin{proof}
+We take the Borel set $A$ such that $m(\bbR^n\backslash A)=\nu(A)=0$, and define
+\begin{align*}
+E_k=\left\{x\in A:\limsup_{r\to 0^+}\frac{\nu(B(x,r))}{m(B(x,r))}>\frac{1}{k}\right\},\quad k=1,2,\cdots.
+\end{align*}
+By outer regularity of $\nu$, for any $\epsilon>0$, we can find an open set $U\supset A$ with $\nu(U)<\epsilon$. By definition of $E_k$, for each $x\in E_k$, we can take a ball $B(x,r_x)\subset$ such that
+\begin{align}
+	\frac{\nu(B(x,r_x))}{m(B(x,r_x))}>\frac{1}{k}.\label{ballvolratioest}
+\end{align}
+We take a compact subset $K\subset E_k$, then $K$ is covered by finitely many such balls. By Vitali covering lemma [Lemma \ref{vitalicover}], we can further take finitely many disjoint balls $B(x_1,r_1),\cdots,B(x_N,r_N)$ such that
+\begin{align*}
+	K\subset\bigcup_{j=1}^N B(x_j,3r_j).
+\end{align*}
+Applying the estimate (\ref{ballvolratioest}), we have
+\begin{align*}
+	m(K)\leq \sum_{j=1}^Nm(B(x_j,3r_j))=3^n\sum_{j=1}^Nm(B(x_j,r_j))< 3^nk\sum_{j=1}^N\nu(B(x_j,r_j))\leq 3^nk\nu(U)\leq 3^nk\epsilon.
+\end{align*}
+Since the compact $K\subset E_k$ is arbitrary, by inner regularity of the Lebesgue measure, $m(F_k)\leq 3^nk\epsilon$. Also, since $\epsilon>0$ is arbitrary, $m(F_k)=0$ for all $k\in\bbN$. Hence
+\begin{align*}
+\left\{x\in A:\limsup_{r\to 0^+}\frac{\nu(B(x,r))}{m(B(x,r))}>0\right\}=\bigcup_{k=1}^\infty E_k
+\end{align*}
+has Lebesgue measure zero. Since $m(\bbR^n\backslash A)=0$, the limit (\ref{radonsingdiff}) holds for $m$-a.e. $x\in\bbR^n$.
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{lebradondecomp}]
+We take the Lebesgue decomposition $\mu=\rho+\nu$, where $\rho\ll m$ and $\nu\perp m$. By Radon Nikodym theorem, there exists $f\in L_\loc^1(\bbR^n)$ such that
+\begin{align*}
+	\rho(E)=\int_E f\,dm,\quad\forall E\in\scr{B}(\bbR^n).
+\end{align*}
+Then $f$ satisfies the identity (\ref{lebdecomp}). The second result (\ref{lebradondiff}) is an immediate consequence of the Lebesgue differentiation theorem [Theorem \ref{lebdiffthm}] and Lemma \ref{radonsingdifflemma}.
+\end{proof}
+\begin{remark}
+The locally integrable function $f$ satisfying (\ref{lebradondiff}) is also called the \text{derivative} or \textit{density} of the Radon measure $\mu$ with respect to the Lebesgue measure $m$.
+\end{remark}
+
+\newpage
+\section{The Hardy-Littlewood Maximal Inequality and Differentiation}
+\subsection{The Hardy-Littlewood Maximal Inequality}
+In this section, we work in the Euclidean space $\bbR^n$ with the Lebesgue measure $m$. For a locally integrable function $f\in L^1_\loc(\bbR^n)$, we define the local average
+\begin{align*}
+	(A_rf)(x)=\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\,dy,\quad x\in\bbR^n.
+\end{align*}
+To obtain a uniform estimate for $A_rf$, we define the \textit{Hardy-Littlewood maximal operator} by
+\begin{align*}
+	(Mf)(x)=\sup_{r>0}\,(A_r\vert f\vert)(x)=\sup_{r>0}\frac{1}{m(B(x,r))}\int_{B(x,r)}\vert f(y)\vert\,dy,\quad x\in\bbR^n.
+\end{align*}
+Clearly $M$ is sublinear. The function $Mf$ is also called the \textit{Hardy-Littlewood maximal function of $f$}.
+
+\begin{theorem}[Hardy-Littlewood maximal inequality, weak type]\label{hdmiw}
+The Hardy-Littlewood operator $M$ is of weak type $(1,1)$. In other words, there exists a constant $C_n>0$ such that for all $f\in L^1(\bbR^n)$ and all $\lambda>0$,
+\begin{align}
+	m\left(\{Mf\geq\lambda\}\right)\leq\frac{C_n}{\lambda}\Vert f\Vert_{L^1}.\label{hdmi1}
+\end{align}
+\end{theorem}
+\begin{remark}
+The inequality (\ref{hdmi1}) may look a bit stricter than the condition $[Mf]_1\leq C_n\Vert Mf\Vert_{L^1(\bbR^n)}$ of weak type $(1,1)$. But, as we will see, the two assertions are indeed equivalent.
+\end{remark}
+
+
+\textit{\hspace{-2em} Proof of Hardy-Littlewood maximal inequality [Theorem \ref{hdmiw}].}
+We will show that for all $f\in L^1(\bbR^n)$, $$m(\{Mf>\lambda\})\leq\frac{3^n}{\lambda}\Vert f\Vert_{L^1},\quad\lambda>0.$$
+Noticing that $m(\{Mf\geq\lambda\})\leq m(\{Mf>\lambda-\epsilon\})\leq 3^n(\lambda-\epsilon)^{-1}\Vert f\Vert_{L^1}$ for sufficiently small $\epsilon>0$, the desired inequality (\ref{hdmi1}) follows by perturbing $\epsilon\downarrow 0$. 
+
+Using the inner regularity of the Lebesgue measure, it suffices to show that $m(K)\leq 3^n\lambda^{-1}\Vert f\Vert_{L^1}$ for each compact subset $K\subset\{Mf>\lambda\}$. For each $x\in K$, we take $r_x>0$ such that $$\frac{1}{m(B(x,r_x))}\int_{B(x,r_x)}\vert f\vert\,dm>\lambda.$$
+The collection of balls $B(x,r_x)$ forms an open cover of $K$, and we may take by compactness of $K$ a finite subcollection that covers $K$. By Vitali covering lemma [Lemma \ref{vitalicover}], we take a further collection of disjoint balls $B_1,B_2,\cdots,B_k$ such that $K\subset\bigcup_{j=1}^k B_j$. Consequently,
+\begin{align*}
+	m(K)\leq 3^n\sum_{j=1}^k m(B_j)\leq\frac{3^n}{\lambda}\sum_{j=1}^k\int_{B_j}\vert f\vert\,dm=\frac{3^n}{\lambda}\int_{\bigcup_{j=1}^k B_j}\vert f\vert\,dm\leq\frac{3^n}{\lambda}\Vert f\Vert_{L^1}.\tag*{\qed}
+\end{align*}
+
+Using the Marcinkiewicz interpolation theorem, we immediately obtain the following result.
+\begin{theorem}[Hardy-Littlewood maximal inequality, strong type]
+Let $1<p\leq\infty$. The Hardy-Littlewood operator $M$ is of strong type $p$. That is, there exists a constant $C_{n,n}>0$ such that for all $f\in L^p(\bbR^n)$,
+\begin{align*}
+	\Vert Mf\Vert_{L^p}\leq C_{p,n}\Vert f\Vert_{L^p}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+The Hardy-Littlewood operator $M$ is sublinear and of weak type $1$. By definition of $Mf$, we also have $\Vert Mf\Vert_{L^\infty}\leq\Vert f\Vert_{L^\infty}$ when $f$ is a.e. bounded. Hence $M$ is of strong type $\infty$, and is of strong type $(p,p)$ for each $1<p\leq\infty$ by Marcinkiewicz interpolation theorem [Corollary \ref{mckwz2}] 
+\end{proof}
+
+\newpage
+\subsection{The Lebesgue Differentiation Theorem and a.e. Differentiability}
+In this section we apply the Hardy-Littlewood maximal inequality to prove some differentiation theorems. 
+\begin{theorem}[Lebesgue differentiation theorem]\label{lebdiffthm}
+Let $f\in L^1_\loc(\bbR^n)$. For almost every $x\in\bbR^n$,
+\begin{align}
+	\lim_{r\to 0^+}\frac{1}{m(B(x,r))}\int_{B(x,r)}\vert f(y)-f(x)\vert\,dy=0.\label{lebdiff}
+\end{align}
+Consequently, the local average function $A_rf$ converges almost everywhere to $f$, i.e.
+\begin{align}
+	\lim_{r\to 0^+}(A_rf)(x)=\lim_{r\to 0^+}\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\,dy=f(x)\label{lebdiffavg}
+\end{align}
+for almost every $x\in\bbR^n$.
+\end{theorem}
+\begin{remark}
+Let $f$ be a measurable function on $\bbR^n$. A point $x\in\bbR^n$ is said to be a \textit{Lebesgue point of $f$} if the identity (\ref{lebdiff}) holds. The Lebesgue differentiation theorem implies that if $f\in L^1_\loc(\bbR^n)$, then almost every point in $\bbR^n$ is a Lebesgue point of $f$.
+\end{remark}
+\begin{proof}
+We first prove the result for $g\in C_c(\bbR^n)$. If $x\in\bbR^n$ and $\epsilon>0$, by uniform continuity of $g$, there exists $\delta>0$ such that $\vert g(y)-g(x)\vert<\epsilon$ for all $y\in B(x,\delta)$. Then for all $r<\delta$,
+\begin{align*}
+	\frac{1}{m(B(x,r))}\int_{B(x,r)}\vert g(y)-g(x)\vert\,dy<\epsilon.
+\end{align*}
+Hence (\ref{lebdiff}) holds for all continuous functions with compact support.
+
+Now we prove the general case. Since differentiation is a local property, we may assume that $f\in L^1(\bbR^n)$. For $\epsilon>0$, choose $g\in C_c(\bbR^n)$ such that $\Vert f-g\Vert_{L^1}\leq\epsilon$. We put $h=f-g$. By the triangle inequality,
+\begin{align*}
+	\vert(A_rf)(x)-f(x)\vert\leq \vert (A_rg)(x)-g(x)\vert+\vert (A_rh)(x)-h(x)\vert\leq \vert (A_rg)(x)-g(x)\vert+(A_r\vert h\vert)(x)+\vert h(x)\vert.
+\end{align*}
+Let $\lambda>0$. Then
+\begin{align*}
+&m\left(\left\{x\in\bbR^n:\limsup_{r\to 0^+}\vert A_rf-f\vert(x)\geq\lambda\right\}\right)\\
+&\quad\leq m\left(\left\{x\in\bbR^n:\limsup_{r\to 0^+}\vert A_rg-g\vert(x)\geq\frac{\lambda}{3}\right\}\right)+ m\left(\left\{x\in\bbR^n:\limsup_{r\to 0^+}\,(A_r\vert h\vert)(x)\geq\frac{\lambda}{3}\right\}\right)+m\left(\vert h\vert\geq\frac{\lambda}{3}\right)\\
+&\quad\leq m\left(\left\{x\in\bbR^n:\sup_{r>0}\,(A_r\vert h\vert)(x)\geq\frac{\lambda}{3}\right\}\right)+m\left(\vert h\vert\geq\frac{\lambda}{3}\right).
+\end{align*}
+By weak $L^1$ Hardy-Littlewood maximal inequality [Theorem \ref{hdmi1}] and Markov inequality,
+\begin{align*}
+	m\left(\left\{x\in\bbR^n:\limsup_{r\to 0^+}\vert A_rf-f\vert(x)\geq\lambda\right\}\right)\leq\frac{3C_n}{\lambda}\Vert h\Vert_{L^1}+\frac{3}{\lambda}\Vert h\Vert_{L^1}\leq\frac{3(C_n+1)\epsilon}{\lambda}.
+\end{align*}
+Since $\epsilon>0$ is arbitrary, the left-hand side of the last display is zero. The result then follows by taking the union on the sequence $\lambda_n=\frac{1}{n}\downarrow 0$.
+\end{proof}
+
+Following is a particular case of Lebesgue differentiation theorem.
+\begin{theorem}[Lebesgue density theorem]
+Let $E\subset\bbR^n$ be a Lebesgue measurable set. For almost every point $x\in \bbR^n$, the density
+\begin{align}
+	\lim_{r\to 0^+}\frac{m(E\cap B(x,r))}{m(B(x,r))}=\begin{cases}
+		1, &\text{if $x\in E$},\\
+		0, &\text{if $x\notin E$}.
+	\end{cases}.\label{densitypoint}
+\end{align}
+\end{theorem}
+\begin{remark}
+Let $E\subset\bbR^n$. A point $x\in\bbR^n$ is said to be a \textit{density point of $E$} if the $$\lim_{r\to 0^+}\frac{m(E\cap B(x,r))}{m(B(x,r))}=1.$$ The Lebesgue density theorem implies that almost every point of a measurable set is a density point, and almost every point outside the measurable set is not a density point.
+\end{remark}
+\begin{proof}
+The identity (\ref{densitypoint}) is a special case of (\ref{lebdiffavg}) when $f=\chi_E$.
+\end{proof}
+
+We can employ the Lebesgue differentiation theorem to prove the Fundamental theorem of calculus.
+
+\begin{theorem}[Fundamental Theorem of Calculus]
+Let $F:\bbR\to\bbC$ be an absolutely continuous function. Then $F$ is almost everywhere differentiable, and the derivative $f=F^\prime$ satisfies $f\in L^1_\loc(\bbR)$, and
+\begin{align*}
+	F(x)=F(a)+\int_a^x f(t)\,dt,\quad -\infty<a<x<\infty.
+\end{align*}
+\end{theorem}
+\begin{proof}
+Since the differentiability is a local property, it suffices to deal with the restriction of $F$ on a compact interval $[a,b]$. Let $\mu_F$ be the Lebesgue-Stieltjes measure generated by $f$ on $[a,b]$.
+
+\item\textbf{Step I.} We claim that $\mu_F$ is absolutely continuous with respect to the Lebesgue measure $m$.
+
+We fix $\epsilon>0$, and choose $\delta>0$ such that $\sum_{j=1}^N\vert F(b_j)-F(a_j)\vert<\epsilon$ for all disjoint intervals $\{(a_j,b_j)\}_{j=1}^N$ with total length less than $\delta$. If $E$ is a Borel set with $m(E)=0$, by outer regularity of $m$, we take an open $U\supset E$ with $m(U)<\delta$. Then $U$ is a disjoint union of at most countably many intervals $\{(a_j,b_j)\}_{j=1}^\infty$, and
+\begin{align*}
+	\sum_{j=1}^N\mu_F((a_j,b_j))\leq\sum_{j=1}^N\left(F(b_j)-F(a_j)\right)\leq\epsilon.
+\end{align*}
+Letting $N\to\infty$, we have $\mu_F(U)<\epsilon$, and $\mu_F(E)<\epsilon$. Since $\epsilon>0$ is arbitrary, $\mu_F(E)=0$.
+
+\item\textbf{Step II.} By Radon-Nikodym theorem, we take $f\in L^1([a,b])$ such that $\mu_F(E)=\int_E f\,dm$. We may further globalize this result and assert that there exists a locally integrable function $f\in L^1_\loc(\bbR)$ such that
+\begin{align*}
+	\mu_F((x,y])=F(y)-F(x)=\int_x^y f(t)\,dt\quad\text{for all}\ -\infty<x<y<\infty.
+\end{align*}
+
+\item\textbf{Step III.} If $x\in\bbR$ is a Lebesgue point of $f$, by Lebesgue differentiation theorem,
+\begin{align*}
+	\lim_{r\to 0^+}\frac{1}{2r}\int_{x-r}^{x+r}\vert f(y)-f(x)\vert\,dy=0.
+\end{align*}
+We split the integral to $[x-r,x]$ and $[x,x+r]$ to get
+\begin{align*}
+	\lim_{r\to 0^+}\frac{1}{r}\int_{x}^{x+r}\vert f(y)-f(x)\vert\,dy=\lim_{r\to 0^+}\frac{1}{r}\int_{x-r}^{x}\vert f(y)-f(x)\vert\,dy=0.
+\end{align*}
+Hence the right derivative of $F$ at $x$ is
+\begin{align*}
+	\lim_{r\to 0^+}\frac{F(x+r)-F(x)}{r}=\lim_{r\to 0^+}\frac{1}{r}\int_{x}^{x+r}\vert f(y)-f(x)\vert\,dy=f(x),
+\end{align*}
+and the same for the left derivative. Therefore $F$ is differentiable almost everywhere, and $F^\prime=f$.
+\end{proof}
+\begin{remark}
+A special case of this theorem is the one-dimensional Rademacher's theorem. If we further assume that $F:\bbR\to\bbC$ is Lipschitz continuous, then $F$ is almost everywhere differentiable and $F^\prime\in L^\infty(\bbR)$. Indeed, the essential supremum of $F^\prime$ is bounded by the Lipschitz constant. 
+\end{remark}
+\begin{theorem}[Rademacher's Theorem]\label{rademacher}
+If $f:\bbR^n\to\bbC$ is a locally Lipschitz continuous function, then $f$ is almost everywhere differentiable.
+\end{theorem}
+\begin{proof}
+Since the differentiability is a local property, we may assume that $f$ is Lipschitz continuous on $\bbR^n$. From the one-dimensional case, we know that for each unit vector $\vert v\vert=1$, the directional derivative $f_v=\frac{\partial f}{\partial v}$ exists almost everywhere. In particular, the partial derivatives $(\frac{\partial f}{\partial x_j})_{j=1}^n$ exist almost everywhere. We write $G=\bigl(\frac{\partial f}{\partial x_1},\frac{\partial f}{\partial x_2},\cdots,\frac{\partial f}{\partial x_n}\bigr)$. We show that for almost every $x\in\bbR^n$,
+\begin{align*}
+	\lim_{\vert h\vert\to 0}\frac{f(x+h)-f(x)-G\cdot h}{\vert h\vert}=0.
+\end{align*}
+This implies that $f$ is almost everywhere differentiable, and the gradient $\nabla f=G$.
+
+\item\textbf{Step I.} For each $\vert v\vert=1$, we claim that $f_v=G\cdot v$ almost everywhere. We take a test function $\phi\in C_c^\infty(\bbR^n)$. Since $f$ is Lipschitz, by Lebesgue dominated convergence theorem,
+\begin{align*}
+	\lim_{t\to 0}\int_{\bbR^n}\frac{f(x+tv)-f(x)}{t}\phi(x)\,dx=\int_{\bbR^n}f_v(x)\phi(x)\,dx.
+\end{align*}
+Since $\phi$ is smooth, $\phi_v=\nabla\phi\cdot v$. Applying integration by parts, we have
+\begin{align*}
+	\int_{\bbR^n}f_v(x)\phi(x)\,dx&=\lim_{t\to 0}\int_{\bbR^n}\frac{f(x+tv)-f(x)}{t}\phi(x)\,dx=\lim_{t\to 0}\int_{\bbR^n}f(x)\frac{\phi(x-tv)-\phi(x)}{t}\,dx\\
+	&=-\int_{\bbR^n}f(x)\phi_v(x)\,dx=-\int_{\bbR^n}\sum_{j=1}^nf(x)v_j\frac{\partial\phi}{\partial x_j}(x)\,dx=\int_{\bbR^n}\sum_{j=1}^nv_j\frac{\partial f}{\partial x_j}(x)\phi(x)\,dx.
+\end{align*}
+Therefore $\int_{\bbR^n}(f_v-G\cdot v)\phi\,dm=0$ for all $\phi\in C_c^\infty(\bbR^n)$, and $f_v=G\cdot v$ a.e.. For each $\vert v\vert=1$, we write
+$$A_v=\left\{x\in\bbR^n:G(x)\ \text{and}\ f_v(x)\ \text{exists, and}\ f_v(x)=G(x)\cdot v\right\}.$$
+
+\item\textbf{Step II.} We take a countable dense subset $(v_k)$ of the unit sphere $\{\vert v\vert=1\}$. By Step I, $\mu(A_{v_k}^c)=0$ for all $k\in\bbN$, and $\mu(A^c)=0$, where we take $A=\bigcap_{k=1}^\infty A_{v_k}$. We claim that $f$ is differentiable at all $x\in A$. Since $f$ is Lipschitz continuous, there exists a constant $K>0$ such that $\vert f(x)-f(y)\vert\leq K\vert x-y\vert$, and all partial derivatives are bounded by $K$. We take $h\neq 0$ in $\bbR^n$. Then for all $k\in\bbN$,
+\begin{align*}
+	&\frac{\vert f(x+h)-f(x)-G\cdot h\vert}{\vert h\vert}\\
+	&\qquad=\frac{\vert f(x+\vert h\vert v)-f(x+\vert h\vert v_k)\vert}{\vert h\vert}+\frac{\vert f(x+\vert h\vert v_k)-f(x)-G\cdot \vert h\vert v_k\vert}{\vert h\vert}+\frac{\vert G\cdot\vert h\vert(v_k-v)\vert}{\vert h\vert}\\
+	&\qquad=\frac{\vert f(x+\vert h\vert v)-f(x+\vert h\vert v_k)\vert}{\vert h\vert}+\left\vert\frac{f(x+\vert h\vert v_k)-f(x)}{\vert h\vert}-G\cdot v_k\right\vert+\left\vert G\cdot (v_k-v)\right\vert\\
+	&\qquad\leq K\vert v-v_k\vert+\left\vert\frac{f(x+\vert h\vert v_k)-f(x)}{\vert h\vert}-G\cdot v_k\right\vert+ K\sqrt{n}\cdot\vert v_k-v\vert
+\end{align*}
+where $v=h/\vert h\vert$ is a unit vector. By density of $(v_k)$ in the unit sphere, for each $\epsilon>0$, we take $v_k$ such that $\vert v_k-v\vert<\epsilon$. Then for all $x\in A$, 
+\begin{align*}
+	\lim_{\vert h\vert\to 0}\frac{\vert f(x+h)-f(x)-G\cdot h\vert}{\vert h\vert}&\leq K\vert v-v_k\vert+\left\vert f_v-G\cdot v_k\right\vert+K\sqrt{n}\cdot\vert v_k-v\vert\leq K(1+\sqrt{n})\epsilon,
+\end{align*}
+where the last inequality follows from $x\in A_{v_k}$. Since $\epsilon>0$ is arbitrary, the above limit is zero. Therefore $f$ is differentiable at $x$, and the gradient $\nabla f=G$. 
+\end{proof}
+\begin{remark}
+Since each component of $\nabla f$ is the limit of bounded measurable functions, $\vert\nabla f\vert\in L^1_\loc(\bbR^n)$.
+\end{remark}
+\newpage
+\subsection{Second Differentiability of Convex Functions}
+In this section, we discuss the differentiation of convex functions on Euclidean spaces. Recall that a function $f:\bbR^n\to\bbR$ is called \textit{convex} if for all $x,y\in\bbR^n$ and $0\leq\lambda\leq 1$,
+\begin{align*}
+	f(\lambda x+(1-\lambda)y)\leq \lambda f(x)+(1-\lambda)f(y).
+\end{align*}
+\begin{proposition}\label{convexloclip}
+Every convex function on $\bbR^n$ is locally Lipschitz continuous.
+\end{proposition}
+\begin{proof}
+Let $f:\bbR^n\to\bbR$ be a convex function.
+\item\textbf{Step I.} We first prove that $f$ is locally bounded. We consider the compact hypercube $Q=[-N,N]^n$, with vertices $(x_k)_{k=1}^{2^n}$. Then every $x\in Q$ is a convex combination $x=\sum_{k=1}^{2^n}\lambda_kx_k$ of the vertices, and
+\begin{align*}
+	f(x)\leq\sum_{k=1}^{2^n}\lambda_kf(x_k)\leq M:=\max_{1\leq k\leq 2^n}f(x_k)<\infty.
+\end{align*}
+Then $\sup_{x\in Q}f(x)\leq M$. To derive a lower bound, note that for every $x\in Q$,
+\begin{align*}
+	f(0)\leq\frac{1}{2}f(x)+\frac{1}{2}f(-x)\leq\frac{1}{2}f(x)+\frac{1}{2}M.
+\end{align*}
+Hence $\inf_{x\in Q}f(x)\geq 2f(0)-M$.
+
+\item\textbf{Step II.} Now we prove the local Lipschitz continuity of $f$. Fix $x,y\in\ol{B(0,N)}$ with $x\neq y$, where $N>0$ and $\ol{B(0,N)}$ is the closed ball of radius $N$ centered at $0$. We choose $\mu>0$ such that $z=x+\mu(y-x)$ satisfies $\vert z\vert=3N$. Then $\mu=\frac{\vert z-x\vert}{\vert y-x\vert}\geq 1$, and
+\begin{align*}
+	f(y)&=f\left(\frac{1}{\mu}z+\left(1-\frac{1}{\mu}\right)x\right)\leq f(x)+\frac{f(z)-f(x)}{\mu}\leq f(x)+\frac{2}{\mu}\sup_{\xi\in B(0,3N)}\vert f(\xi)\vert.
+\end{align*}
+Since $\vert z-x\vert\geq 2N$, we obtain
+\begin{align*}
+	f(y)-f(x)\leq\frac{2}{\mu}\sup_{\xi\in B(0,3N)}\vert f(\xi)\vert=\frac{\vert y-x\vert}{N}\sup_{\xi\in B(0,3N)}\vert f(\xi)\vert.
+\end{align*}
+Interchanging $x$ and $y$, the same estimate holds for $f(x)-f(y)$. Hence $f$ is locally Lipschitz continuous.
+\end{proof}
+
+\begin{remark}
+According to Proposition \ref{convexloclip} and Rademacher's theorem [Theorem \ref{rademacher}], every convex function is almost everywhere differentiable. In this section, we step further and deal with the second differentiability. We begin by discussing some properties of derivatives of convex functions.
+\end{remark}
+
+\begin{lemma}
+Let $f:\bbR^n\to\bbR$ be a convex function.
+\begin{itemize}
+	\item[(i)] If $f$ is differentiable at $x$, then
+	\begin{align}
+		f(y)\geq f(x)+\nabla f(x)\cdot (y-x).\label{convex1est}
+	\end{align}
+	\item[(ii)] If, in addition, $f\in C^2(\bbR^n)$, then $\nabla^2 f\succeq 0$ on $\bbR^n$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(i) For each $y\in\bbR^n$ and $0<\lambda<1$, by convexity of $f$, we have
+\begin{align*}
+	\frac{f(x+\lambda(y-x))-f(x)}{\lambda}\leq f(y)-f(x).
+\end{align*}
+Letting $\lambda\to 0$, we have
+\begin{align*}
+	f(y)\geq f(x)+\nabla f(x)\cdot (y-x).
+\end{align*}
+(ii) By Taylor's theorem,
+\begin{align*}
+	f(y)=f(x)+\nabla f(x)\cdot (y-x)+(y-x)^\top\int_0^1(1-t)\nabla^2 f(x+t(y-x))\,dt\cdot (y-x)
+\end{align*}
+Then the estimate \ref{convex1est} implies
+\begin{align*}
+(y-x)^\top\int_0^1(1-t)\nabla^2 f(x+t(y-x))\,dt\cdot (y-x)\geq 0.
+\end{align*}
+Hence given any $\xi\in\bbR^n$, we set $y=x+s\xi$ with $s>0$. Then the above inequality becomes
+\begin{align*}
+	\xi^\top\int_0^1(1-t)\nabla^2 f(x+st\xi)\,dt\cdot\xi\geq 0.
+\end{align*}
+Letting $s\to 0$, we have
+\begin{align*}
+	\xi^\top\nabla^2 f(x)\cdot\xi\geq 0.
+\end{align*}
+This proves assertion (ii). 
+\end{proof}
+
+Indeed, for any convex function, we can find its second derivatives in the distributional sense.
+\begin{theorem}[Second derivatives of convex functions as measures]
+	Let $f:\bbR^n\to\bbR$ to a convex function. Then there exist signed Radon measures $\mu^{ij}=\mu^{ji}$ such that for all functions $\phi\in C_c^2(\bbR^n)$,
+	\begin{align*}
+		\int_{\bbR^n}f\phi_{x_ix_j}\,dx=\int_{\bbR^n}\phi\,d\mu^{ij},\quad i,j=1,2,\cdots,n.
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	We define $f^\epsilon=\eta_\epsilon\cdot f\in C^\infty(\bbR^n)$, where $\eta_\epsilon$ is the standard mollifier. For any $v\in\bbR^n$ with $\vert v\vert=1$,
+	\begin{align*}
+		\sum_{i,j=1}^n\int_{\bbR^n}f^\epsilon\phi_{x_ix_j}v_iv_j\,dx=\int_{\bbR^n}\phi\sum_{i,j=1}^nf^\epsilon_{x_ix_j} v_iv_j\,dx\geq 0,\quad \phi\in C^2_c(\bbR^n)\ \text{and}\ \phi\geq 0.
+	\end{align*}
+	Letting $\epsilon\downarrow 0$, we have \vspace{-0.1cm}
+	\begin{align*}
+		T_v\phi:=\sum_{i,j=1}^n\int_{\bbR^n}f\phi_{x_ix_j}v_iv_j\,dx.
+	\end{align*}
+	Thus we define a positive linear functional $T_v$ on $C^2_c(\bbR^n)$. According to the Remark under the Theorem \ref{rieszcc}, there exists a Radon measure $\mu^v$ on $\bbR^n$ such that
+	\begin{align*}
+		T_v\phi=\int_{\bbR^n}\phi\,d\mu^v,\quad\text{for all}\ \phi\in C^2(\bbR^n).
+	\end{align*}
+	For each $i=1,2,\cdots,n$, we define $\mu^{ii}=\mu^{e_i}$. If $i\neq j$, we set $v=\frac{e_i+e_j}{\sqrt{2}}$. Then
+	\begin{align*}
+		\int_{\bbR^n}f\phi_{x_ix_j}\,dx&=\int_{\bbR^n}f\left(\frac{\phi_{ii}+\phi_{jj}}{2}+\phi_{ij}\right)dx-\frac{1}{2}\int_{\bbR^n}f\phi_{x_ix_i}\,dx-\frac{1}{2}\int_{\bbR^n}f\phi_{x_jx_j}\,dx\\
+		&=\sum_{k,l=1}^n\int_{\bbR^n}f\phi_{kl}v_kv_l\,dx-\frac{1}{2}\int_{\bbR^n}f\phi_{x_ix_i}\,dx-\frac{1}{2}\int_{\bbR^n}f\phi_{x_jx_j}\,dx\\
+		&=\int_{\bbR^n}\phi\,d\mu^v-\frac{1}{2}\int_{\bbR^n}\phi\,d\mu^{ii}-\frac{1}{2}\int_{\bbR^n}\phi\,d\mu^{jj}=\int_{\bbR^n}\phi\,d\mu^{ij},
+	\end{align*}
+	where we set $\mu^{ij}=\mu^v-\frac{1}{2}\mu^{ii}-\frac{1}{2}\mu^{ij}$. Then we complete the proof.
+\end{proof}
+\begin{remark} 
+	According to the Lebesgue decomposition theorem, every signed Radon measure $\mu^{ij}$ has a unique decomposition $\mu^{ij}=\mu^{ij}_\mathrm{ac}+\mu^{ij}_\mathrm{s}$, where $\mu_\mathrm{ac}^{ij}\ll m$ and $\mu_{\rm s}^{ij}\perp m$. We write
+	\begin{align*}
+		M=(\mu^{ij})_{i,j=1}^n,\quad M_\mathrm{ac}=(\mu^{ij}_\mathrm{ac})_{i,j=1}^n,\quad M_{\rm s}=(\mu^{ij}_{\rm s})_{i,j=1}^n.
+	\end{align*}
+	By Radon-Nikodym theorem, we define $f^{ij}=d\mu_{\rm ac}^{ij}/dm$ to be the density of the absolute continuous part of $\mu^{ij}$ with respect to the Lebesgue measure $m$. Then
+	\begin{align*}
+		D^2f=\begin{pmatrix}
+			f^{11} & f^{12} & \cdots & f^{1n}\\
+			f^{21} & f^{22} & \cdots & f^{2n}\\
+			\vdots & \vdots & \ddots & \vdots\\
+			f^{n1} & f^{n2} & \cdots & f^{nn}
+		\end{pmatrix}
+	\end{align*}
+	is a matrix valued function, and every element $f^{ij}$ is locally integrable. According to the Theorem \ref{lebradondecomp}, we have the decomposition
+	\begin{align*}
+		M(E)=\int_E D^2f\,dm+M_\mathrm{s}(E).
+	\end{align*}
+In fact, a convex function has not only distributional second derivatives as Radon measures, but also classical derivatives almost everywhere.  The main result of this section is presented below.
+\end{remark}
+\begin{theorem}[Alexandrov Theorem]\label{alexandrov}
+	Let $f:\bbR^n\to\bbR$ to a convex function. Then $f$ is almost everywhere twice differentiable. More precisely, there exists $\nabla^2f:\bbR^n\to\bbR^{n\times n}$ such that for almost every $x\in\bbR^n$,
+	\begin{align}
+		\lim_{y\to x}\frac{1}{\vert y-x\vert^2}\left(f(y)-f(x)-\nabla f(x)\cdot (y-x)-\frac{1}{2}(y-x)^\top\nabla f(x)(y-x)\right)=0.\label{alexandrovapprox}
+	\end{align}
+\end{theorem}
+
+To prove this theorem, we need some maximal inequalities concerning convex functions in a ball.
+\begin{lemma}
+If $f:\bbR^n\to\bbR$ is convex, there exists a constant $C_n>0$ such that for each ball $B(x,r)\subset\bbR^n$,
+	\begin{align}
+		\sup_{y\in B(x,\frac{r}{2})}\vert f(y)\vert\leq\frac{C_n}{m(B(x,r))}\int_{B(x,r)}\vert f(y)\vert\,dy,\label{convexlebdiff1}
+	\end{align}
+	and 
+	\begin{align}
+		\underset{y\in B(x,\frac{r}{2})}{\esssup}\vert \nabla f(y)\vert\leq\frac{C_n}{r\cdot m(B(x,r))}\int_{B(x,r)}\vert f(y)\vert\,dy.\label{convexlebdiff2}
+	\end{align}
+\end{lemma}
+\begin{proof}
+\textbf{Step I.} We first prove (\ref{convexlebdiff1}) for $f\in C^2(\bbR^n)$. Given $B(x,r)\subset\bbR^n$, we fix $z\in B(x,\frac{r}{2})$. Then
+\begin{align*}
+	f(y)\geq f(z)+\nabla f(z)\cdot (y-z).
+\end{align*}
+We integrate this inequality with respect to $y$ over $B(z,\frac{r}{2})$ to obtain
+\begin{align}
+f(z)\leq\frac{1}{m(B(z,\frac{r}{2}))}\int_{B(z,\frac{r}{2})}f(y)\,dy\leq\frac{2^n}{m(B(x,r))}\int_{B(x,r)}\vert f(y)\vert\,dy.\label{convexhlest1}
+\end{align}
+Next, we choose $\phi\in C_c^\infty(\bbR^n)$ such that $0\leq\phi\leq 1$ on $\bbR^n$, $\phi=1$ on $B(0,\frac{1}{2})$ and $\phi=0$ outside $B(0,1)$, and write $M_1=\sup_{\vert y\vert\leq1}\vert\nabla\phi(y)\vert$. Then the function $\phi_{x,r}(y)=\phi(\frac{y-x}{r})$ satisfies
+\begin{align*}
+\begin{cases}
+0\leq\phi_{x,r}\leq 1,\ \ \vert\nabla\phi_{x,r}\vert\leq\frac{M_1}{r},\\
+\phi=1\ \text{on}\ B(x,\frac{r}{2}),\ \ \phi=0\ \text{on}\ \bbR^n\backslash B(x,r).
+\end{cases}
+\end{align*}
+We multiply by $\phi_{x,r}(y)$ the estimate $f(z)\geq f(y)+\nabla f(y)\cdot (z-y)$ and integrate with respect to $y$ on $B(x,r)$:
+\begin{align*}
+	f(z)\int_{B(x,r)}\phi_{x,r}(y)\,dy&\geq \int_{B(x,r)}f(y)\phi_{x,r}(y)\,dy+\int_{B(x,r)}\phi_{x,r}(y)\nabla f(y)\cdot(z-y)\,dy\\
+	&=\int_{B(x,r)}f(y)\left(\phi_{x,r}(y)-\nabla\cdot\phi_{x,r}(y)(z-y)\right)\,dy\geq -M_1\int_{B(x,r)}\vert f(y)\vert\,dy.
+\end{align*}
+This inequality implies
+\begin{align}
+	f(z)\geq -\frac{M_1}{m(B(x,r))}\int_{B(x,r)}\vert f(y)\vert\,dy.\label{convexhlest2}
+\end{align}
+Since $z\in B(x,\frac{r}{2})$ is arbitrary, we combine (\ref{convexhlest1}) and (\ref{convexhlest2}) to obtain the estimate (\ref{convexlebdiff1}).
+
+\item\textbf{Step II.} More generally, for a convex function $f:\bbR^n\to\bbR$, we define $f^\epsilon=\eta_\epsilon*f$, where $\epsilon>0$ and $\eta_\epsilon(y)=\epsilon^{-n}\eta(\epsilon^{-1}y)$ is the standard mollifier. Clearly $f^\epsilon\in C^\infty(\bbR^n)$, and $f^\epsilon$ is convex, since
+\begin{align*}
+	f^\epsilon(\lambda x+(1-\lambda)y)&\leq\int_{\bbR^n}f(\lambda x+(1-\lambda)y-z)\eta_\epsilon(z)\,dz\\
+	&\leq\lambda\int_{\bbR^n}f(x-z)\eta_\epsilon(z)\,dz+(1-\lambda)\int_{\bbR^n}f(y-z)\eta_\epsilon(z)\,dz\leq\lambda f^\epsilon(x)+(1-\lambda)f^\epsilon(y).
+\end{align*}
+Applying the assertion (i) for $C^2$ functions, we have
+\begin{align*}
+	\sup_{z\in B(x,\frac{r}{2})}\vert f^\epsilon(z)\vert\leq\frac{C_n}{m(B(x,r))}\int_{B(x,r)}\vert f^\epsilon(y)\vert\,dy
+\end{align*}
+for each ball $B(x,r)\subset\bbR^n$. Since $f$ is locally Lipschitz continuous, $f^\epsilon\to f$ uniformly on $B(x,r)$ as $\epsilon\to 0$, which gives the same estimate (\ref{convexlebdiff1}) for $f$.
+
+\item\textbf{Step III.} For each $z\in B(x,\frac{r}{2})$ such that $\nabla f(z)$ exists, define
+\begin{align*}
+	S_z=\left\{y\in\bbR^n:\frac{r}{4}\leq\vert y-z\vert\leq\frac{r}{2},\ \nabla f(z)\cdot(y-z)\geq\frac{1}{2}\vert\nabla f(z)\vert\left\vert y-z\right\vert\right\}.
+\end{align*}
+Then $m(S_z)\geq Ar^n$, where $A>0$ is a constant only depending on $n$. Using the estimate (\ref{convex1est}), we have
+\begin{align*}
+	f(y)\geq f(z)+\frac{r}{8}\vert\nabla f(z)\vert.
+\end{align*}
+Integrating with respect to $y$ over $S(z)$ gives
+\begin{align*}
+	\vert\nabla f(z)\vert\leq\frac{8}{r}\cdot\frac{1}{m(S_z)}\int_{S_z}\vert f(y)-f(z)\vert\,dy\leq\frac{8}{Ar^{n+1}}\int_{B(x,r)}\vert f(y)-f(z)\vert\,dy.
+\end{align*}
+This estimate and (\ref{convexlebdiff1}) complete the proof of assertion (i) for convex functions $f$.
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{alexandrov}]
+The proof has four steps.
+\item\textbf{Step I.} According to the Lebesgue differentiation theorem [Theorem \ref{lebdiffthm}] and Rademacher's theorem [Theorem \ref{rademacher}], for almost every $x\in\bbR^n$, the gradient $\nabla f(x)$ exists and satisfies
+\begin{align}
+&\lim_{r\to 0^+}\frac{1}{m(B(x,r))}\int_{B(x,r)}\vert\nabla f(y)-\nabla f(x)\vert\,dy=0,\label{alexandrovgradest}\\
+&\hspace{-4.30cm}\text{and}\notag\\
+&\lim_{r\to 0^+}\frac{1}{m(B(x,r))}\int_{B(x,r)}\Vert D^2f(y)-D^2f(x)\Vert_\mathrm{F}\,dy=0.\label{alexandrovhessest}
+\end{align}
+By singularity of $\mu_\mathrm{s}^{ij}$ and Lemma \ref{radonsingdifflemma}, for almost every $x\in\bbR^n$, the measures $(\mu_s^{ij})$ satisfy
+\begin{align}
+\lim_{r\to 0^+}\frac{\vert\mu_\mathrm{s}^{ij}\vert(B(x,r))}{m(B(x,r))}=0,\quad i,j=1,2,\cdots,n.\label{alexandrovsingest}
+\end{align}
+We fix such a point $x$, and we also assume $x=0$ for simplicity, since our proof is adapted to the convex function $(\tau_xf)(y)=f(y-x)$. We choose $r>0$ and let $f^\epsilon=\eta_\epsilon*f$. For $y\in B(0,r)$, by Taylor's theorem,
+\begin{align*}
+	f^\epsilon(y)&=f^\epsilon(0)+\nabla f^\epsilon(0)\cdot y+\int_0^1(1-t)y^\top \nabla^2f^\epsilon(ty)y\,dt\\
+	&=f^\epsilon(0)+\nabla f^\epsilon(0)\cdot y+\frac{1}{2}y^\top D^2f(0)y+\int_0^1(1-t)y^\top[\nabla^2f^\epsilon(ty)-D^2f(0)]\,y\,dt.
+\end{align*}
+\textbf{Step II.} For any function $\phi\in C_c^2(B(0,r))$ with $\vert\phi\vert\leq 1$, we multiply the equation above by $\phi$ and take the average over $B(0,r)$. Then
+\begin{align}\label{convextaylor2est}
+	&\frac{1}{m(B(0,r))}\int_{B(0,r)}\phi(y)\left(f^\epsilon(y)-f^\epsilon(0)-\nabla f^\epsilon(0)\cdot y-\frac{1}{2}y^\top D^2f(0)y\right)dy\notag\\
+	&\quad=\frac{1}{m(B(0,r))}\int_{B(0,r)}\phi(y)\left(\int_0^1(1-t)y^\top[\nabla^2f^\epsilon(ty)-D^2f(0)]\,y\,dt\right)dy\\
+	&\quad=\int_0^1(1-t)\left(\frac{1}{m(B(0,r))}\int_{B(0,r)}\phi(y)y^\top[\nabla^2f^\epsilon(ty)-D^2f(0)]\,y\,dy\right)dt\tag{By Fubini's theorem}\\
+	&\quad=\int_0^1\frac{1-t}{t^2}\left(\frac{1}{m(B(0,tr))}\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z^\top[\nabla^2f^\epsilon(z)-D^2f(0)]\,z\,dz\right)dt.\tag{Change the vairable $z=ty$}
+\end{align}
+To estimate the inner integral, we use integration by parts:
+\begin{align*}
+	g_\epsilon(t)&=\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z^\top \nabla^2f^\epsilon(z)z\,dz=\int_{B(0,tr)}f^\epsilon(z)\sum_{i,j=1}^n\frac{\partial^2}{\partial z_i\partial z_j}\left(\phi\left(\frac{z}{t}\right)z_iz_j\right)dz.
+\end{align*}
+Letting $\epsilon\to 0^+$, we obtain
+\begin{align}
+	\begin{aligned}
+	\lim_{\epsilon\to 0^+}g_\epsilon(t)&=\int_{B(0,tr)}f(z)\sum_{i,j=1}^n\frac{\partial^2}{\partial z_i\partial z_j}\left(\phi\left(\frac{z}{t}\right)z_iz_j\right)dz\\
+	&=\sum_{i,j=1}^n\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z_iz_j\,d\mu^{ij}\\
+	&=\sum_{i,j=1}^n\int_{B(0,tr)}f^{ij}\phi\left(\frac{z}{t}\right)z_iz_j\,dz+\sum_{i,j=1}^n\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z_iz_j\,d\mu^{ij}_{\rm s}.
+\end{aligned}\label{convexgibpest}
+\end{align}
+Furthermore, we have the following estimate:
+\begin{align*}
+\frac{g_\epsilon(t)}{t^2}&\leq r^2\int_{B(0,tr)}\Vert\nabla^2f(z)\Vert_\mathrm{F}\,dz=r^2\int_{B(0,tr)}\left\Vert\int_{\bbR^n}\nabla^2\eta_\epsilon(z-y)f(y)\,dy\right\Vert_\mathrm{F}\,dz\\
+&=r^2\int_{B(0,tr)}\left\Vert\int_{B(z,\epsilon)}\eta_\epsilon(z-y)\,dM(y)\right\Vert_\mathrm{F}\,dz\\
+&\leq r^2\int_{B(0,tr)}\sum_{i,j=1}^n\int_{B(z,\epsilon)}\vert\eta_\epsilon(z-y)\vert\, d\vert\mu^{ij}\vert(y)\,dz.
+\end{align*}
+By Fubini's theorem, we have
+\begin{align*}
+\frac{g_\epsilon(t)}{t^2}&\leq r^2\sum_{i,j=1}^n\int_{B(0,tr+\epsilon)}\left(\int_{B(y,\epsilon)\cap B(0,tr)}\vert\eta_\epsilon(z-y)\vert\,dz\right)d\vert\mu^{ij}\vert(y)\\
+&\leq\frac{r^2}{\epsilon^n}\sum_{i,j=1}^n\int_{B(0,tr+\epsilon)}\left(\int_{B(y,\epsilon)\cap B(0,tr)}dz\right)d\vert\mu^{ij}\vert(y).
+\end{align*}
+Since $(\mu^{ij})$ are Radon measures, we have $\sum_{i,j=1}^n\vert\mu^{ij}\vert(B(0,r+1))<\infty$
+\begin{align*}
+	\frac{g_\epsilon(t)}{t^2}&\leq\frac{r^2\min\{\epsilon^n,t^nr^n\}}{\epsilon^n}\sum_{i,j=1}^n\vert\mu^{ij}\vert(B(0,tr+\epsilon))\leq Cr^2\min\left\{1,\frac{t^nr^n}{\epsilon^n}\right\}\leq Cr^2,
+\end{align*}
+where $C$ is a constant only depending on $f$, $r$ and $n$. Hence we applying dominated convergence theorem to let $\epsilon\to 0^+$ in (\ref{convextaylor2est}), and plug-in (\ref{convexgibpest}):
+\begin{align*}
+	&\frac{1}{m(B(0,r))}\int_{B(0,r)}\phi(y)\left(f(y)-f(0)-\nabla f(0)\cdot y-\frac{1}{2}y^\top D^2f(0)y\right)dy\notag\\
+	&\quad=\int_0^1\frac{1-t}{t^2}\left(\frac{1}{m(B(0,tr))}\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z^\top[D^2f(z)-D^2f(0)]\,z\,dz\right)dt\\
+	&\quad\quad+\sum_{i,j=1}^n\int_0^1\frac{1-t}{t^2}\left(\frac{1}{m(B(0,tr))}\int_{B(0,tr)}\phi\left(\frac{z}{t}\right)z_iz_j\,d\mu^{ij}_{\rm s}\right)\,dt\\
+	&\quad\leq Cr^2\int_0^1\left(\frac{1}{m(B(0,tr))}\int_{B(0,tr)}\Vert D^2f(z)-D^2f(0)\Vert_\mathrm{F}\,dz\right)\,dt+Cr^2\max_{1\leq i,j\leq n}\int_0^1\frac{\vert M_\mathrm{s}\vert(B(0,tr))}{(tr)^n}\,dt,
+\end{align*}
+where $C$ is a constant depending on $f,r$ and $n$ only. According to the properties (\ref{alexandrovhessest}) and (\ref{alexandrovsingest}), and taking the supremum over all $\phi\in C_c^2(B(0,r))$ with $\vert\phi\vert\leq 1$, we have
+\begin{align}
+	\frac{1}{m(B(0,r))}\int_{B(0,r)}\vert h(y)\vert dy=o(r^2),\label{hlebdifforsq}
+\end{align}
+where
+\begin{align}
+	h(y)=f(y)-f(0)-\nabla f(0)\cdot y-\frac{1}{2}y^\top D^2f(0)y.\label{convextaylor2remainder}
+\end{align}
+\item\textbf{Step III.} We claim that there exists a constant $C$ depending on $f$ and $n$ only, such that
+\begin{align}
+	\underset{x\in B(0,\frac{r}{2})}{\esssup}\vert\nabla h(x)\vert\leq\frac{C}{r\cdot m(B(0,r))}\int_{B(0,r)}\vert h(y)\vert\,dy+Cr\label{alexandrovgradest2}
+\end{align}
+for all $r>0$. This estimate follows by applying (\ref{convexlebdiff2}) on the convex function $g(y)=h(y)+\frac{1}{2}\Vert D^2f(0)\Vert_2\vert y\vert^2$.
+
+\item\textbf{Step IV.} We fix $0<\epsilon,\eta<1$. By (\ref{hlebdifforsq}), for some $r_0>0$ depending on $\eta$ and $\epsilon$, we have
+\begin{align*}
+	m(\{z\in B(0,r):\vert h(z)\vert\geq\epsilon r^2\})\leq\frac{1}{\epsilon r^2}\int_{B(0,r)}\vert h(z)\vert\,dz\leq\eta\cdot m(B(0,r))
+\end{align*}
+for all $0<r<r_0$. Thus for each point $y\in B(0,\frac{r}{2})$, there exists $z\in B(0,r)$ with $\vert y-z\vert\leq\eta^{1/n}r$ such that $\vert h(z)\vert<\epsilon r^2$. If not, a contradiction arises from
+\begin{align*}
+	m(\{z\in B(0,r):\vert h(z)\vert\geq\epsilon r^2\})\geq m(B(y,\eta^{1/n}r))=\eta\cdot m(B(0,r)).
+\end{align*}
+By the estimate (\ref{alexandrovgradest2}), for all $0<r<r_0$ and all $y\in B(0,\frac{r}{2})$,
+\begin{align*}
+	\frac{\vert h(y)\vert}{r^2}&\leq\frac{\vert h(z)\vert+\vert h(y)-h(z)\vert}{r^2}\leq \epsilon+\frac{\eta^{1/n}}{r}\underset{B(0,r)}{\esssup}\,\vert\nabla h\vert\\
+	&\leq\epsilon+C\eta^{1/n}\left(\frac{1}{r^2\cdot m(B(0,r))}\int_{B(0,r)}\vert h(\xi)\vert\,d\xi+1\right)\leq\epsilon+C\eta^{1/n}\left(\eta\epsilon+1\right)
+\end{align*}
+Since $0<\epsilon,\eta<1$ are arbitrary, we have
+\begin{align*}
+	\lim_{r\to 0^+}\frac{1}{r^2}\sup_{y\in B(0,\frac{r}{2})}\vert h(y)\vert=0.
+\end{align*}
+Recalling the definition (\ref{convextaylor2remainder}) of $h$, we have
+\begin{align*}
+\lim_{r\to 0^+}\frac{1}{r^2}\sup_{y\in B(0,\frac{r}{2})}\left\vert f(y)-f(0)-\nabla f(0)\cdot y-\frac{1}{2}y^\top D^2f(0)y\right\vert=0,
+\end{align*}
+which implies (\ref{alexandrovapprox}) for $x=0$. The same estimate holds for every $x\in\bbR^n$ satisfying (\ref{alexandrovgradest}), (\ref{alexandrovhessest}) and (\ref{alexandrovsingest}), which concludes the proof.
+\end{proof}
+
+
+\newpage
+\section{Ergodic Theory}
+\paragraph{Setting.} Let $(X,\scr{F},\mu)$ be a $\sigma$-finite measure space. We consider a mapping $T:X\to X$ such that
+\begin{itemize}
+	\item[(i)] $T$ is \textit{measurable}, i.e. $T^{-1}(E)\in\scr{F}$ for each $E\in\scr{F}$;
+	\item[(ii)] $T$ is \textit{measure-preserving}, i.e. $\mu(T^{-1}(E))=\mu(E)$ for each $E\in\scr{F}$.
+	\item[(iii)] We call the quadruple $(X,\scr{F},\mu,T)$ a \textit{measure-preserving system}.
+\end{itemize}
+If in addition for such a transformation $T$ we have that $T$ is a bijection and $T^{-1}$ is also a measure-preserving transformation, then $T$ is called a \textit{measure-preserving isomorphism}.
+
+If $f:X\to\bbC$ is a measurable function and $T$ is a measure-preserving transformation, the composition $f\circ T$ is measurable. Furthermore, if $f$ is integrable, so is $f\circ T$, and
+\begin{align*}
+	\int_X f\,d\mu=\int_X f\circ T\,d\mu.
+\end{align*}
+
+The setting described above is of interest, in part, because it
+abstracts the idea of a dynamical system, one whose totality of states is
+represented by the space $X$, with each point $x\in X$ giving a particular
+state of the system. The mapping $T:X\to X$ describes the transformation of the system after a unit of time has elapsed. The iterates, $T^n=T\circ T\circ\cdots\circ T$ ($n$ times) describe the evolution of the system after $n$ units of time. In many scenarios, we are interested in the average behavior of the system as the time $n\to\infty$. To be specific, given a measurable function $f$ on $(X,\scr{F},\mu)$, we aim to study the \textit{ergodic averages}
+\begin{align*}
+	(A_nf)(x)=\frac{1}{n}\sum_{k=0}^{n-1} f(T^kx)
+\end{align*}
+and their limit as $n\to\infty$.
+
+\subsection{The Mean Ergodic Theorem}
+We first discuss a general ergodic result for Banach spaces. 
+\begin{theorem}[Mean ergodic theorem]\label{meanerg}
+Let $T:X\to X$ be a bounded linear operator on a Banach space $X$, and assume that $\sup_{n\in\bbN}\Vert T^n\Vert<\infty$. For $n\in\bbN$, define the ergodic average
+\begin{align*}
+	A_n=\frac{1}{n}\sum_{k=0}^{n-1}T^k.
+\end{align*}
+\begin{itemize}
+\item[(i)] If $x\in X$, the sequence $(A_n x)_{n=1}^\infty$ converges if and only if it has a weakly convergent subsequence;
+\item[(ii)] The set 
+\begin{align*}
+	L=\left\{x\in X:\textit{the sequence $(A_nx)_{n=1}^\infty$ converges}\right\}
+\end{align*}
+is a closed $T$-invariant subspace of $X$, and $L=\ker(\id-T)\oplus\ol{\mathfrak{R}(\id-T)}$. 
+\item[(iii)] If $X$ reflexive, then $L=X$.
+\item[(iv)] Define the operator $A:L\to L$ by $A(x_0+x_1)=x_0$ for $x_0\in\ker(\id-T)$ and $x_1\in\ol{\mathfrak{R}(\id-T)}$. Then
+\begin{align*}
+	\lim_{n\to\infty} A_n x=Ax
+\end{align*}
+for all $x\in L$, and $A$ satisfies
+\begin{align*}
+	AT=TA=A^2=A,\quad and\quad \Vert A\Vert\leq\sup_{n\in\bbN}\Vert T^n\Vert.
+\end{align*}
+\end{itemize}
+\end{theorem}
+The proof of this theorem requires some lemmata.
+\begin{lemma}\label{meanerglemma1}
+Assume $c=\sup_{n\in\bbN}\Vert T^n\Vert<\infty$.
+\begin{itemize}
+	\item[(i)] For each $n\in\bbN$, $\Vert A_n\Vert\leq c$ and $\Vert A_n(\id-T)\Vert\leq\frac{1+c}{n}$.
+	\item[(ii)] If $x\in\ker(\id-T)$, then for each $n\in\bbN$, we have $A_nx=x$ and $\Vert x\Vert\leq c\Vert x+(\id-T)\xi\Vert$ for all $\xi\in X$.
+	\item[(iii)] If $x\in\ker(\id - T)$ and $y\in\ol{\mathfrak{R}(\id-T)}$, then $\Vert x\Vert\leq c\Vert x+y\Vert$.
+	\item[(iv)] $\ker(\id-T)\cap\ol{\mathfrak{R}(\id-T)}=0$, and $L:=\ker(\id-T)\oplus\ol{\mathfrak{R}(\id-T)}$ is a closed subspace of $X$.
+	\item[(v)] $T(L)\subset L$.
+	\item[(vi)] If $y\in\ol{\mathfrak{R}(\id-T)}$, then $\lim_{n\to\infty} A_ny=0$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(i) Since $A_n=\frac{1}{n}(\id+T+T^2+\cdots+T^n)$, we have
+\begin{align*}
+	\Vert A_n\Vert\leq\frac{1}{n}\sum_{k=0}^{n-1}\Vert T^k\Vert\leq\sup_{n\in\bbN}\Vert T^n\Vert=c,\quad\text{and}\quad
+	\Vert A_n(\id-T)\Vert=\frac{1}{n}\left\Vert\id-T^n\right\Vert\leq\frac{1+\Vert T^n\Vert}{n}\leq\frac{1+c}{n}.
+\end{align*}
+\item (ii) If $x\in\ker(\id-T)$, we have $Tx=x$ and by induction $T^nx=x$ for all $n\in\bbN$ and hence $A_nx=x$. Moreover, by (i) we have $A_n(\id-T)\xi\to 0$ as $n\to\infty$ for all $\xi\in X$, and
+\begin{align*}
+	\Vert x\Vert=\lim_{n\to\infty}\Vert x+A_n(\id-T)\xi\Vert=\lim_{n\to\infty}\Vert A_n(x+(\id-T)\xi)\Vert\leq c\Vert x+(\id-T)\xi\Vert.
+\end{align*}
+\item (iii) If $y\in\ol{\mathfrak{R}(\id-T)}$, there exists a sequence $\xi_n\in X$ such that $(\id-T)\xi_n\to y$. We take $\xi=\xi_n$ in (ii) and take the limit $n\to\infty$ to obtain $\Vert x\Vert\leq c\Vert x+y\Vert$.
+
+\item (iv) We let $x\in\ker(\id-T)\cap\ol{\mathfrak{R}(\id-T)}$. Then $-x\in\ol{\mathfrak{R}(\id-T)}$, and by (iii) we have $\Vert x\Vert\leq c\Vert x+(-x)\Vert=0$. Next we show that $\ker(\id-T)\oplus\ol{\mathfrak{R}(\id-T)}$ is closed. Let $x_n\in\ker(\id-T)$ and $y_n\in\ol{\mathfrak{R}(\id-T)}$ be sequences whose sum $z_n=y_n+z_n$ converges to some element $z\in X$. Then $(z_n)$ is a Cauchy sequence in $X$, and by (iii) the sequence $(x_n)$ is also Cauchy, and hence $y_n=z_n-x_n$ is also Cauchy. Since $\ker(\id-T)$ and $\ol{\frak{R}(\id-T)}$ are closed subspaces of $X$, the Cauchy sequences $(x_n)$ and $(y_n)$ converge to $x\in\ker(\id-T)$ and $y\in\ol{\frak{R}(\id-T)}$, respectively, and $z=x+y\in\ker(\id-T)\oplus\ol{\mathfrak{R}(\id-T)}$.
+
+\item (v) We take $x\in\ker(\id-T)$ and $y\in\ol{\mathfrak{R}(\id-T)}$, and take a sequence $\xi_n\in X$ such that $(\id-T)\xi_n\to y$. Then $$T(x+y)=x+Ty=x+\lim_{n\to\infty}T(\id-T)\xi_n=x+\lim_{n\to\infty}(\id-T)(T\xi_n)\in\ker(\id-T)\oplus\ol{\mathfrak{R}(\id-T)}.$$
+\item (vi) For any $\epsilon>0$, we take $\xi\in X$ such that $c\Vert y-(\id-T)\xi\Vert<\frac{\epsilon}{3}$. By (i), we have $\Vert A_n(\id-T)\xi\Vert\leq\frac{1+c}{n}\Vert\xi\Vert$, which tends to $0$ as $n\to\infty$. Then there exists $N$ such that $\Vert (A_n-A_m)(\id-T)\xi\Vert\leq\frac{\epsilon}{3}$ for all $n,m\geq N$, and
+\begin{align*}
+	\Vert A_n y-A_m y\Vert&\leq\Vert A_n y-A_n(\id-T)\xi\Vert+\Vert (A_n-A_m)(\id-T)\xi\Vert+\Vert A_m(\id-T)\xi-A_m y\Vert\\
+	&\leq\Vert A_n\Vert\,\Vert y-(\id-T)\xi\Vert+\Vert (A_n-A_m)(\id-T)\xi\Vert+\Vert A_m\Vert\,\Vert(\id-T)\xi-y\Vert\\
+	&\leq 2c\Vert y-(\id-T)\xi\Vert+\frac{\epsilon}{3}\leq\epsilon.
+\end{align*}
+Hence $(A_ny)$ is a Cauchy sequence, and
+\begin{align*}
+	\lim_{n\to\infty}\Vert A_ny\Vert = \lim_{n\to\infty}\Vert A_n(y-(\id-T)\xi)\Vert+\lim_{n\to\infty}\Vert A_n(\id-T)\xi\Vert<\frac{\epsilon}{3},
+\end{align*}
+which implies $A_ny\to 0$ as $n\to\infty$.
+\end{proof}
+\begin{lemma}\label{meanerglemma2}
+Let $x,x_0\in X$. The following are equivalent:
+\begin{itemize}
+\item[(a)] $x_0\in\ker(\id-T)$ and $x-x_0\in\ol{\frak{R}(\id-T)}$.
+\item[(b)] $\lim_{n\to\infty}\Vert A_nx-x_0\Vert =0$.
+\item[(c)] There exists a subsequence $n_k$ such that for all $f\in X^*$,
+\begin{align*}
+	\lim_{k\to\infty} f(A_{n_k}x)=f(x_0).
+\end{align*}
+\end{itemize}
+\end{lemma}
+\begin{proof}
+The Lemma \ref{meanerglemma1} (vi) implies (a) $\Rightarrow$ (b), and obviously (a) $\Rightarrow$ (c). Then it remains to prove (c) $\Rightarrow$ (a). If (c) holds, we take $f\in X^*$. Then $T^*f=f\circ T:X\to\bbC$ is a bounded linear functional, and
+\begin{align*}
+	f(x_0-Tx_0)=(f-T^*f)(x_0)=\lim_{k\to\infty}(f-T^*f)(A_{n_k}x)=\lim_{k\to\infty}f((\id-T)A_{n_k}x)=0,
+\end{align*}
+where the last equality follows from Lemma \ref{meanerglemma1} (i), and we have $Tx_0=x_0$ by Hahn-Banach theorem. 
+
+Now we assume that $x-x_0\in\ol{\frak{R}(\id-T)}$. By Hahn-Banach theorem, there exists $f\in X^*$ such that $f(x-x_0)=1$ and $f(\xi-T\xi)=0$ for all $\xi\in X$. This implies that $f(T^{k+1}\xi-T^k\xi)=0$ for all $\xi\in X$ and all $k\in\bbN_0$. By induction, we have $f(T^k\xi)=f(\xi)$. Hence
+\begin{align*}
+	f(A_nx)=\frac{1}{n}\sum_{k=0}^{n-1}f(T^kx_0)=f(x_0)
+\end{align*}
+for all $n\in\bbN_0$. According to (c), we have $f(x)=f(x_0)$, and $f(x-x_0)=0$, which is a contradiction. Therefore $x-x_0\in\ol{\frak{R}(\id-T)}$, and we complete the proof. 
+\end{proof}
+
+Now we prove the main theorem.
+\begin{proof}[Proof of Theorem \ref{meanerg}] 
+By Lemma \ref{meanerglemma2}, the sequence $(A_n x)_{n=1}^\infty$ converges in norm if and only if it has a weakly convergent subsequence, if and only if $x\in L=\ker(\id-T)\oplus\ol{\frak{R}(\id-T)}$. By Lemma \ref{meanerglemma1} (iv) and (v), the subspace $L$ is closed and $T$-invariant. Furthermore, since $\Vert A_n\Vert\leq c$ for all $n\in\bbN$, for every $x\in X$, the sequence $(A_nx)$ is bounded. If $X$ is reflexive, by Banach-Alaoglu theorem, every $(A_n x)$ has a weakly convergent subsequence $(A_{n_k}x)$, which implies $x\in L$, and hence $L=X$.
+
+Finally we consider the operator $A$ defined in (iv). Then $A^2=A$ by definition. By Lemma \ref{meanerglemma1} (iii), we have $\Vert A\Vert\leq c$, and by Lemma \ref{meanerglemma1} (vi), $\lim_{n\to\infty} A(x_0+x_1)=Ax_0$. Since $A$ commutes with $T|_L$, and $A$ vanishes on the range of operator $\id-T$, we have $TA=AT=A$.
+\end{proof}
+
+Since Hilbert spaces are reflexive, we have the following mean ergodic theorem for Hilbert spaces.
+\begin{corollary}[Mean ergodic theorem]
+Let $T$ be a bounded linear operator on the Hilbert space $H$ such that $\sup_{n\in\bbN}\Vert T^n\Vert<\infty$, and let $P_T$ be the projection operator onto the subspace
+\begin{align*}
+	\ker(\id-T)=\{x\in H:Tx=x\}.
+\end{align*}
+Then for every $x\in H$, the ergodic average
+\begin{align*}
+	A_nx:=\frac{1}{n}\sum_{k=0}^{n-1}T^kx\to P_Tx\quad\text{in norm as $n\to\infty$}.
+\end{align*}
+\end{corollary}
+
+In particular, we take the Hilbert space to be $L^2(X,\scr{F},\mu)$. If $T$ is a measure-preserving operator on $X$, we regard $T$ as a linear operator on $L^2(X,\scr{F},\mu)$ by writing $Tf=f\circ T$. Then $T$ is an isometry on $L^2(X,\scr{F},\mu)$, i.e. $\Vert Tf\Vert_{L^2}=\Vert f\Vert_{L^2}$ for all $f\in L^2(X,\scr{F},\mu)$, and $\Vert T\Vert=1$. Consequently, we have $\Vert T^n\Vert\leq 1$ for all $n\in\bbN$, and we can apply the mean ergodic theorem on this system.
+\begin{corollary}[Mean ergodic theorem]\label{meanergl2}
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system, and let $P_T$ be the projection operator onto the subspace
+	\begin{align*}
+		G=\left\{g\in L^2(X,\scr{F},\mu):g\circ T=g\right\}
+	\end{align*}
+	Then for every $f\in L^2(X,\scr{F},\mu)$, the ergodic average
+	\begin{align*}
+		A_nf:=\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k\to P_Tf\quad\text{in $L^2(X,\scr{F},\mu)$ as $n\to\infty$}.
+	\end{align*}
+\end{corollary}
+
+In finite measure spaces, the ergodic average $A_nf$ also converges in $L^1$. This conclusion follows from the convergence result in $L^2$ and the density of $L^2$ in $L^1$.
+\begin{corollary}\label{meanergl1}
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system such that $\mu$ is finite. For each $f\in L^1(X,\scr{F},\mu)$, the ergodic average $A_nf=\sum_{k=0}^{n-1}f\circ T^k$ converges in $L^1$ to a $T$-invariant function $\bar{f}\in L^1(X,\scr{F},\mu)$.
+\end{corollary}
+\begin{proof}
+Since $\mu$ is finite, we know by Cauchy-Schwartz inequality that $L^2(X,\scr{F},\mu)\subset L^1(X,\scr{F},\mu)$. For any $g\in L^2(X,\scr{F},\mu)$, by Cauchy's inequality and Corollary \ref{meanergl2}, 
+\begin{align*}
+	\Vert A_n g-P_Tg\Vert_{L^1}\leq\sqrt{\Vert A_n g-P_Tg\Vert_{L^2}\left\Vert\mathbf{1}\right\Vert_{L^2}}=\sqrt{\mu(X)\Vert A_n g-P_Tg\Vert_{L^2}}\to 0.
+\end{align*}
+Hence $(A_ng)$ is a Cauchy sequence in $L^1$. If $f\in L^1(X,\scr{F},\mu)$ and $\epsilon>0$, we choose $g\in L^2(X,\scr{F},\mu)$ such that $\Vert f-g\Vert_{L^1}<\epsilon/3$. Since $\Vert T(f-g)\Vert_{L^1}=\Vert f-g\Vert_{L^1}$, we have $\Vert A_n(f-g)\Vert\leq\Vert f-g\Vert_{L^1}<\epsilon/3$ for all $n\in\bbN$. Furthermore, there exists $N$ such that $\Vert A_ng-A_mg\Vert_{L^1}<\epsilon/3$ for all $n,m>N$, and
+\begin{align*}
+	\Vert A_n f-A_m f\Vert_{L^1}\leq\Vert A_n f-A_n g\Vert_{L^1}+\Vert A_n g-A_m g\Vert_{L^1}+\Vert A_m g-A_m f\Vert_{L^1}<\epsilon.
+\end{align*}
+Hence $(A_nf)$ is also a Cauchy sequence in $L^1$, which converges to a function $\bar{f}\in L^1(X,\scr{F},\mu)$ by $L^1$-completeness. To show that $\bar{f}$ is $T$-invariant, note that
+\begin{align*}
+	\Vert A_nf\circ T-A_nf\Vert_{L^1}=\left\Vert\frac{1}{n}\left(f\circ T^n-f\right)\right\Vert_{L^1}\leq\frac{2}{n}\Vert f\Vert_{L^1},
+\end{align*}
+which converges to $0$ as $n\to\infty$. Hence $\bar{f}\circ T=\bar{f}$ a.e., and $\bar{f}$ is $T$-invariant.
+\end{proof}
+\subsection{The Maximal Ergodic Theorem}
+We now turn to the question of almost everywhere convergence of the
+ergodic averages. As in the case of the averages that occur in the Lebesgue differentiation theorem, the key to dealing with such pointwise
+limits lies in estimate for the corresponding maximal function:
+\begin{align*}
+	f^*=\sup_{1\leq n<\infty}A_nf=\sup_{1\leq n<\infty}\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k.
+\end{align*}
+We first state our main result below.
+\begin{theorem}[Maximal ergodic theorem]\label{maxerg}
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system, and fix $\alpha\in\bbR$. For each $f\in L^1(X,\scr{F},\mu)$, define
+\begin{align*}
+	E_\alpha^f=\left\{x\in X:\sup_{1\leq n<\infty}\frac{1}{n}\sum_{k=0}^{n-1}f(T^k x)>\alpha\right\}.
+\end{align*}
+Then
+\begin{align*}
+	\alpha\mu(E_\alpha^f)\leq\int_{E_\alpha} f\,d\mu\leq\Vert f\Vert_{L^1}.
+\end{align*}
+\end{theorem}
+\paragraph{Remark.} If $\alpha>0$, the result can be written as
+\begin{align}
+	\mu(E_\alpha^f)\leq\frac{1}{\alpha}\int_{E_\alpha} f\,d\mu\leq\frac{1}{\alpha}\Vert f\Vert_{L^1}.\label{maxergineq}
+\end{align}
+This result is a corollary of the following maximal inequality.
+\begin{proposition}[Maximal inequality]\label{maxerglemma}
+Let $U:L^1(X,\scr{F},\mu)\to L^1(X,\scr{F},\mu)$ be a positive linear operator such that $\Vert U\Vert\leq 1$. For $g\in L^1(X,\scr{F},\mu)$, define the functions
+\begin{align*}
+	g_n=g+Ug+U^2g+\cdots U^{n-1}g
+\end{align*}
+for $n\in\bbN$, with $g_0=0$. Let $G_N(x)=\max_{0\leq n\leq N} g_n(x)$ for all $x\in X$. Then for every $N\geq 1$,
+\begin{align*}
+	\int_{\{G_N>0\}}g\,d\mu\geq 0.
+\end{align*}
+\end{proposition}
+\begin{proof}
+Since $U$ is a positive linear operator, for $0\leq n\leq N$, we have $UG_N+g\geq Ug_n+g=g_{n+1}$. Hence
+\begin{align*}
+	UG_N+g\geq\max_{1\leq n\leq N+1}g_n\geq \max_{1\leq n\leq N}g_n.
+\end{align*}
+Since $g_0=0$, on the set $E=\{G_N>0\}$, we have $$UG_N+g\geq \max_{1\leq n\leq N}g_n=\max_{0\leq n\leq N}g_n=G_N.$$
+Therefore $g\geq G_N-UG_N$ on $E$. Since $G_N\geq 0$, we have $UG_N\geq 0$, and
+\begin{align*}
+	\int_E g\,d\mu&\geq\int_E G_N\,d\mu-\int_E UG_N\,d\mu=\int_X G_N\,d\mu-\int_E UG_N\,d\mu\\
+	&\geq\int_X G_N\,d\mu-\int_X UG_N\,d\mu=\Vert G_N\Vert_{L^1}-\Vert UG_N\Vert_{L^1}\geq 0,
+\end{align*}
+where the last inequality follows from $\Vert U\Vert\leq 1$. Then we complete the proof.
+\end{proof}
+
+Now we prove the main theorem.
+\begin{proof}[Proof of Theorem \ref{maxerg}]
+Define $g=f-\alpha$ and $Ug=g\circ T$ in Proposition \ref{maxerglemma}. Then
+\begin{align*}
+	E_\alpha^f=\left\{x\in X:\sup_{n\in\bbN}\frac{1}{n}\sum_{k=0}^{n-1}f(T^k x)>\alpha\right\}=\bigcup_{N=0}^\infty\left\{x\in X:G_N(x)>0\right\}.
+\end{align*}
+By Proposition \ref{maxerglemma} and Lebesgue dominated convergence theorem,
+\begin{align*}
+	\int_{E_\alpha^f} f\,d\mu-\alpha\mu(E_\alpha^f)=\int_{E_\alpha^f} g\,d\mu\geq 0.
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+\begin{remark}
+When $\alpha>0$, we apply the same result on the negation $-f\in L^1(X,\scr{F},\mu)$, we have
+\begin{align*}
+	\mu\left(\inf_{1\leq n<\infty}\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k<-\alpha\right)\leq\frac{1}{\alpha}\Vert f\Vert_{L^1}.
+\end{align*}
+Combining this with (\ref{maxergineq}), we get the two-sided bound:
+\begin{align*}
+	\mu\left(\sup_{1\leq n<\infty}\vert A_nf \vert>\alpha\right)=\mu\left(\sup_{1\leq n<\infty}\left\vert\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k\right\vert>\alpha\right)\leq\frac{2}{\alpha}\Vert f\Vert_{L^1}.
+\end{align*}
+We later use this conclusion in the proof of pointwise convergence result.
+\end{remark}
+
+\subsection{The Birkhoff Ergodic Theorem}
+In this section, we focus on the pointwise convergence theorem of ergodic averages. Our result is established on finite measure spaces, and it is convenient to assume that the measure-preserving system $(X,\scr{F},\mu,T)$ is on a probability space. Before we proceed, we first introduce the definition of ergodicity.
+\begin{definition}[Ergodic transformation]
+A measure-preserving transformation $T:X\to X$ on a measure space $(X,\scr{F},\mu)$ is said to be \textit{$\mu$-ergodic} if every $T$-invariant subset of $X$ is trivial, i.e. for any $E\in\scr{F}$, $$T^{-1}(E)=E\quad\Rightarrow\quad\mu(E)=0\ \ \text{or}\ \ \mu(X\backslash E)=0.$$
+\end{definition}
+Following are some alternate characterizations of ergodicity.
+\begin{proposition}\label{ergodicfunc}
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system. The following are equivalent:
+\begin{itemize}
+	\item[(i)] $T$ is $\mu$-ergodic;
+	\item[(ii)] For any $E\in\scr{F}$, if $T^{-1}(E)$ and $E$ only differ by a $\mu$-null set, i.e. $\mu(T^{-1}(E)\backslash E)+\mu(E\backslash T^{-1}(E))=0$, then $\mu(E)=0$ or $\mu(X\backslash E)=0$;
+	\item[(iii)] For any measurable function $f:X\to\bbC$, if $f\circ T=f\ a.e.$, then $f$ is constant a.e..
+\end{itemize}
+\begin{proof}
+(i) $\Rightarrow$ (ii). Let $E$ be a set such that $\mu(T^{-1}(E)\backslash E)+\mu(E\backslash T^{-1}(E))=0$. Then
+\begin{align*}
+	T^{-n}(E)\backslash E\subset\bigcup_{k=0}^{n-1} T^{-k-1}(E)\backslash T^{-k}(E)=\bigcup_{k=0}^{n-1} T^{-k}(T^{-1}(E)\backslash E),\\ 
+	E\backslash T^{-n}(E)\subset\bigcup_{k=0}^{n-1} T^{-k}(E)\backslash T^{-k-1}(E)=\bigcup_{k=0}^{n-1} T^{-k}(E\backslash T^{-1}(E)).
+\end{align*}
+Since $T$ is measure-preserving, we have $\mu(T^{-n}(E)\backslash E)+\mu(E\backslash T^{-n}(E))=0$. We define
+\begin{align*}
+	F=\bigcap_{N=1}^\infty\bigcup_{n=N}^\infty T^{-n}(E).
+\end{align*}
+Then $T^{-1}(F)=F$, and we have either $\mu(F)=0$ or $\mu(X\backslash F)=0$ by ergodicity of $\mu$. Moreover,
+\begin{align*}
+	F\backslash E&=\bigcap_{N=1}^\infty\left(\bigcup_{n=N}^\infty T^{-n}(E)\right)\backslash E=\bigcap_{N=1}^\infty\bigcup_{n=N}^\infty T^{-n}(E)\backslash E,\\
+	E\backslash F&=\bigcup_{N=1}^\infty E\backslash\left(\bigcup_{n=N}^\infty T^{-n}(E)\right)=\bigcup_{N=1}^\infty\bigcap_{n=N}^\infty E\backslash T^{-n}(E).
+\end{align*}
+Hence $\mu(E\backslash F)=\mu(F\backslash E)=0$, and we have either $\mu(E)=0$ or $\mu(X\backslash E)=0$.
+
+\item (ii) $\Rightarrow$ (iii). For $f$ given in (iii), by considering $\Re f$ and $\Im f$ separately, we may assume $f:X\to\bbR$ and $f\circ T=f$ a.e.. For any $t\in\bbR$, the sets $E_t=\{f\leq t\}$ and $T^{-1}(E_t)=\{f\circ T\leq t\}$ only differ by a $\mu$-null set. By (ii), we have $\mu(\{f\leq t\})=0$ or $\mu(\{f>t\})=0$. We take $$c=\sup\{t\in\bbR:\mu(\{f\leq t\})=0\}=\inf\{t\in\bbR:\mu(\{f>t\})=0\}.$$
+Since $\{f>c\}=\bigcup_{n\in\bbN}\{f>c+n^{-1}\}$ and $\{f<c\}=\bigcup_{n\in\bbN}\{f<c+n^{-1}\}$, we have $\mu(\{f>c\})=\mu(\{f<c\})=0$. Hence $f=c$ a.e..
+
+\item (iii) $\Rightarrow$ (i). If $E$ is a $T$-invariant set, i.e. $E=T^{-1}(E)$, we take $f=\chi_E$ in (iii). Then $\chi_E\circ T=\chi_{T^{-1}(E)}$, which equals $\chi_E$ a.e.. By (iii), $\chi_E=c$ a.e., where $c\in\{0,1\}$. Hence either $\mu(E)=0$ or $\mu(X\backslash E)=0$.
+\end{proof}
+\end{proposition}
+Now we are ready to introduce the main result.
+\begin{theorem}[Birkhoff's theorem]
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system on a probability space. \begin{itemize}
+	\item[(i)] For each $f\in L^1(X,\scr{F},\mu)$, the ergodic average
+	\begin{align*}
+		A_nf=\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k
+	\end{align*}
+	converges almost everywhere to a $T$-invariant function $\bar{f}\in L^1(X,\scr{F},\mu)$, where $\int_X f\,d\mu=\int_X\bar{f}\,d\mu$. 
+	\item[(ii)] In addition, if $T$ is $\mu$-ergodic, $\bar{f}=\int_X f\,d\mu$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+We first assume that $g\in L^\infty(X,\scr{F},\mu)$. By Corollary \ref{meanergl1}, there is a $T$-invariant function $\bar{g}\in L^1(X,\scr{F},\mu)$ such that $A_ng\to\bar{g}$ in $L^1$. For any $\epsilon>0$, we choose $n$ sufficiently large so that $\Vert\bar{g}-A_ng\Vert_{L^1}<\epsilon^2$. Applying maximal ergodic theorem [Theorem \ref{maxerg}] to the function $h=\bar{g}-A_ng$, we have
+\begin{align*}
+	\mu\left(\left\{x\in X:\sup_{m\in\bbN}\left\vert A_m(\bar{g}-A_ng)\right\vert>\epsilon\right\}\right)\leq\frac{2}{\epsilon}\Vert\bar{g}-A_ng\Vert_{L^1}<2\epsilon.
+\end{align*}
+Since $\bar{g}$ is $T$-invariant, $A_m\bar{g}=\bar{g}$. Also,
+\begin{align*}
+	A_m(A_ng)&=\frac{1}{mn}\sum_{j=0}^{m-1}\sum_{k=0}^{n-1}g\circ T^{j+k}=\frac{1}{mn}\sum_{j=0}^{m-1}\sum_{k=0}^{n-1}\left(g\circ T^j+g\circ T^{j+k}-g\circ T^j\right)\\
+	&=A_mg+\frac{1}{mn}\sum_{k=0}^{n-1}\sum_{j=0}^{m-1}\left(g\circ T^{j+k}-g\circ T^j\right)= A_mg+\frac{1}{mn}\sum_{k=1}^{n-1}\sum_{j=0}^{k-1}\left(g\circ T^{m+j}-g\circ T^j\right),
+\end{align*}
+and
+\begin{align*}
+	\vert A_m(A_ng)-A_mg\vert&\leq\frac{1}{mn}\sum_{k=1}^{n-1}\sum_{j=0}^{k-1}\left\vert g\circ T^{m+j}-g\circ T^j\right\vert\leq\frac{1}{mn}\frac{n(n-1)}{2} 2\Vert g\Vert_\infty=\frac{n-1}{m}\Vert g\Vert_\infty,
+\end{align*}
+which converges to $0$ as $m\to\infty$. Then $\limsup_{m\to\infty}\vert\bar{g}-A_mg\vert=\limsup_{m\to\infty}\vert\bar{g}-A_m(A_ng)\vert$, and
+\begin{align*}
+\mu\left(\limsup_{m\to\infty}\vert\bar{g}-A_mg\vert>\epsilon\right)&=\mu\left(\limsup_{m\to\infty}\vert\bar{g}-A_m(A_ng)\vert>\epsilon\right)=\mu\left(\limsup_{m\to\infty}\vert A_m(\bar{g}-A_ng)\vert>\epsilon\right)<2\epsilon.
+\end{align*}
+Thus $\limsup_{m\to\infty}\vert\bar{g}-A_mg\vert=0$, and $A_mg\to\bar{g}$ a.e. as $m\to\infty$. To generalize the result to $f\in L^1(X,\scr{F},\mu)$, we take $g\in L^\infty(X,\scr{F},\mu)$ such that $\Vert f-g\Vert_{L^1}<\epsilon^2$. By Corollary \ref{meanergl1}, we take a $T$-invariant $\bar{f}\in L^1(X,\scr{F},\mu)$ such that $\Vert A_nf-\bar{f}\Vert_{L^1}\to 0$. Since $\Vert A_nf-A_ng\Vert_{L^1}\leq\Vert f-g\Vert_{L^1}<\epsilon^2$, we have $\Vert\bar{f}-\bar{g}\Vert_{L^1}<\epsilon^2$. Thus
+\begin{align*}
+	\mu\left(\limsup_{n\to\infty}\vert\bar{f}-A_nf\vert>2\epsilon\right)&\leq\mu\left(\vert\bar{f}-\bar{g}\vert+\limsup_{n\to\infty}\vert\bar{g}-A_ng\vert+\sup_{n\in\bbN}\vert A_nf-A_ng\vert>2\epsilon\right)\\
+	&\leq\mu\left(\vert\bar{f}-\bar{g}\vert>\epsilon\right)+\mu\left(\sup_{n\in\bbN}\vert A_n(f-g)\vert>\epsilon\right)\\
+	&\leq\frac{\Vert\bar{f}-\bar{g}\Vert_{L^1}}{\epsilon}+\frac{2\Vert f-g\Vert_{L^1}}{\epsilon}<3\epsilon,
+\end{align*}
+where the third inequality follows from Markov's inequality and the maximal ergodic theorem. Hence $A_nf\to\bar{f}$ a.e. and in $L^1$. Since $T$ is measure preserving,
+\begin{align*}
+	\int_X\bar{f}\,d\mu=\int_XA_nf\,d\mu=\int_X f\,d\mu.
+\end{align*}
+In addition, if $T$ is a $\mu$-ergodic transformation, by Proposition \ref{ergodicfunc} the $T$-invariant function $\bar{f}$ is constant a.e.. Since $\mu(X)=1$, we have $\bar{f}=\int_X f\,d\mu$ a.e..
+\end{proof}
+
+\begin{remark}
+For a measure-preserving system $(X,\scr{F},\mu,T)$ on a probability space and a function $f\in L^1(X,\scr{F},\mu)$, we define the \textit{time average at $x\in X$} to be $(A_nf)(x)=\frac{1}{n}\sum_{k=0}^{n-1} f(T^k x)$ and the \textit{space average} $\int_X f\,d\mu$. 
+
+A brief interpretation for Birkhoff theorem is that, if $T$ is $\mu$-ergodic, then for almost every $x\in X$, the time average converges to the space average as the time $n$ goes to infinity.
+\end{remark}
+
+We can obtain a stronger mean ergodic theorem as a consequence of Birkhoff's theorem.
+\begin{theorem}[Mean ergodic theorem]\label{meanerglp}
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system on a probability space, and let $1\leq p<\infty$. If $f\in L^p(X,\scr{F},\mu)$, the ergodic average $A_nf=\sum_{k=0}^{n-1}f\circ T^k$ converges in $L^p$ to a $T$-invariant function $\bar{f}\in L^p(X,\scr{F},\mu)$, i.e.
+\begin{align*}
+	\lim_{n\to\infty}\left\Vert\,\sum_{k=0}^{n-1}f\circ T^k-\bar{f}\,\right\Vert_{L^p} = 0.
+\end{align*}
+\end{theorem}
+\begin{proof}
+We first take a bounded function $g\in L^\infty(X,\scr{F},\mu)$, so that $g\in L^1(X,\scr{F},\mu)$. By Birkhoff's theorem, there exists a $T$-invariant $\bar{g}\in L^1(X,\scr{F},\mu)$ such that $A_ng\to\bar{g}$ a.e.. Then for almost all $x\in X$,
+\begin{align*}
+	\lim_{n\to\infty}\left\vert (A_ng)(x)-\bar{g}(x)\right\vert^p=0.
+\end{align*}
+Since $g$ is bounded, so is $A_ng$ and $\bar{g}$, and $\bar{g}\in L^\infty(X,\scr{F},\mu)$. By Lebesgue dominated convergence theorem, 
+\begin{align*}
+	\lim_{n\to\infty}\left\Vert A_ng-\bar{g}\right\Vert_{L^p}^p=0.
+\end{align*}
+We now consider the general case $f\in L^p(X,\scr{F},\mu)$. Since $T$ is measure-preserving, we have $\Vert f\circ T^n\Vert_{L^p}=\Vert f\Vert_{L^p}$ for all $n\in\bbN$, and $\Vert A_nf\Vert_{L^p}\leq\Vert f\Vert_{L^p}$ by the triangle inequality. Given any $\epsilon>0$, we take a bounded $g\in L^\infty(X,\scr{F},\mu)$ such that $\Vert f-g\Vert_{L^p}<\epsilon/3$. Since $(A_ng)$ is a Cauchy sequence in $L^p$, we take $N>0$ such that $\Vert A_ng-A_mg\Vert_{L^p}<\epsilon/3$ for all $m,n\geq N$, and hence
+\begin{align*}
+	\Vert A_nf-A_mf\Vert_{L^p}&\leq\Vert A_nf-A_ng\Vert_{L^p}+\Vert A_ng-A_mg\Vert_{L^p} + \Vert A_mg-A_mf\Vert_{L^p}\\
+	&\leq 2\Vert f-g\Vert_{L^p}+\Vert A_ng-A_mg\Vert_{L^p}<\epsilon.
+\end{align*}
+Thus $(A_nf)$ is Cauchy in $L^p$, and there exists $\bar{f}\in L^p(X,\scr{F},\mu)$ such that $\Vert A_nf-\bar{f}\Vert_{L^p}\to 0$. By Birkhoff's theorem, $(A_nf)$ also admits a pointwise limit, which coincides the $L^p$ limit $\bar{f}$. Hence $\bar{f}$ is $T$-invariant.
+\end{proof}
+\begin{remark}
+To summarize, if $1\leq p<\infty$ and $f\in L^p(X,\scr{F},\mu)$, the ergodic average sequence $(A_nf)$ admits a limit $\bar{f}\in L^p(X,\scr{F},\mu)$ such that
+\begin{align*}
+	\lim_{n\to\infty}\Vert A_nf-\bar{f}\Vert_{L^p}=0,\quad\text{and}\quad \lim_{n\to\infty}(A_nf)(x)=\bar{f}(x)\ \ \text{for a.e.}\ x\in X.
+\end{align*} In a nutshell, $A_nf\to\bar{f}$ both a.e. and in $L^p$.
+\end{remark}
+
+\subsection{The Krein-Milman Theorem}
+In this section we introduce a general result about compact
+convex subsets of a locally convex Hausdorff topological vector space, which is used in the proof of unique ergodicity. 
+\begin{definition}[Extreme point and face]
+	Let $X$ be a vector space and $K\subset X$ a nonempty convex subset. 
+	\begin{itemize}
+		\item[(i)] A point $x$ of $K$ is called an \textit{extreme point} of $K$ if there do not exist $y,z\in K$ and $0<\lambda<1$ such that $\lambda y+(1-\lambda)z=x$. We denote by $\mathrm{ext}(K)$ the set of extreme points of $K$.
+		\item[(ii)] A nonempty convex subset $F\subset K$ is called a \textit{face} of $K$ if for all $x,y\in K$ and $0<\lambda<1$ such that $\lambda x+(1-\lambda)y\in F$, we have $x,y\in F$.
+	\end{itemize} 
+	\begin{remark}
+		A point $x\in K$ is an extreme point of $K$ if and only if the singleton $\{x\}$ is a face of $K$.
+	\end{remark}
+\end{definition}
+
+\begin{lemma}\label{kmlemma1}
+	Let $X$ be a vector space, and let $A,B,C$ be convex subsets of $K$. If $B$ is a face of $A$ and $C$ is a face of $B$, then $C$ is a face of $A$.
+\end{lemma}
+\begin{proof}
+	Let $x,y\in A$ and $0<\lambda<1$. If $\lambda x+(1-\lambda)y\in C$, since $C\subset B$ and $B$ is a face of $A$, we have $x,y\in B$. Again, since $C$ is a face of $B$, we have $x,y\in C$. Therefore $C$ is a face of $A$.
+\end{proof}
+
+\begin{lemma}\label{kmlemma3}
+	Let $X$ be a locally convex Hausdorff topological space. If $K\in\scr{K}$ is a compact convex set and $\ell:X\to\bbR$ is a continuous linear functional, the set
+	\begin{align*}
+		F_\ell:=\left\{x\in K:\ell(x)=\sup_{y\in K}\ell(y)\right\}
+	\end{align*}
+	is a nonempty compact convex subset of $K$, and $F_\ell$ is a face of $K$.
+\end{lemma}
+\begin{proof}
+	We abbreviate $c=\sup_{y\in K} \ell(y)$. 
+	\begin{itemize}
+		\item Since $K$ is compact and $\ell$ is continuous, there exists $x\in K$ such that $\ell(x)=c$, and $F$ is nonempty. 
+		\item Since $X$ is Hausdorff and $\ell$ is continuous, both $K$ and $\ell^{-1}(\{c\})$ is closed. Hence $F_\ell$ is closed and compact.
+		\item Since $K$ is convex and $f$ is linear, $\ell^{-1}(\{c\})$ is convex, and so is $F$.
+	\end{itemize}
+	To summarize, $F$ is nonempty, compact and convex. To prove that $F$ is a face of $K$, we fix $x,y\in K$ and $0<\lambda<1$ such that $\lambda x+(1-\lambda)y\in F$. Then $\lambda \ell(x)+(1-\lambda)\ell(y)=\ell(\lambda x+(1-\lambda)y)=c$. Since both $\ell(x)$ and $\ell(y)$ are no greater than $c$, we have $\ell(x)=\ell(y)=c$, and $x,y\in F$. Hence $F_\ell$ is a face of $K$.
+\end{proof}
+
+
+\begin{lemma}[Existence]\label{kmlemma2}
+	Let $X$ be a locally convex Hausdorff topological vector space, and let $K\subset X$ be a nonempty compact convex set. Then the set of extreme points of $K$ is nonempty.
+\end{lemma}
+\begin{proof}
+	The proof is divided to three steps.
+	\item \textbf{Step I.} Let $\scr{K}$ be the set of all nonempty compact convex subset of $X$, and define the relation $\preceq$ on $\scr{K}$ by $F\preceq K$ if and only if $F$ is a face of $K$. By Lemma \ref{kmlemma1}, $(K,\preceq)$ is a partially ordered set. Since $X$ is Hausdorff, every nonempty chain $\scr{C}\subset\scr{K}$ has a infimum $C_0=\bigcap_{C\in\scr{C}}C\in\mathscr{K}$.
+	\item \textbf{Step II.} We claim that every minimal element of $\scr{K}$ is a singleton. 
+	
+	If $K\subset\scr{K}$ is not a singleton, we take $x,y\in K$ such that $x\neq y$ and take a convex open neighborhood $U$ of $x$ that does not contain $y$. Using the hyperplane separation theorem, there exists a continuous linear functional $\ell:X\to\bbR$ such that $\ell(y)<\ell(z)$ for all $z\in U$. By Lemma \ref{kmlemma3}, the set $F_\ell\in\scr{K}$ is a face of $K$ and $y\in K\backslash F$. Hence $K$ is not a minimal element of $\scr{K}$.
+	
+	\item \textbf{Step IV.} By Step I and Zorn's lemma, there exists a minimal element $E\subset\scr{K}$. By Step III, the minimal element $E$ is a singleton $\{x\}$. Then $x\in\mathrm{ext}(K)$.
+\end{proof}
+
+Now we introduce the Krein-Milman theorem.
+\begin{theorem}[Krein-Milman theorem]
+	Let $X$ be a locally convex Hausdorff topological vector space, and let $K\subset X$ be a nonempty compact convex set. Then $K$ is the closed convex hull of its extreme points, i.e. $$K=\ol{\mathrm{conv}}(\mathrm{ext}(K)).$$
+\end{theorem}
+\begin{proof}
+	Following the proof of Lemma \ref{kmlemma2}, we have $K\in\scr{K}$. To prove the desired result, it suffices to show $K\subset\ol{\mathrm{conv}}(\mathrm{ext}(K))$. We argue by contradiction. If  $x\in K\backslash\ol{\mathrm{conv}}(\mathrm{ext}(K))$, there exists an open convex neighborhood $U\subset X$ of $x$ such that $U\cap \ol{\mathrm{conv}}(\mathrm{ext}(K))=\emptyset$. Since $\mathrm{ext}(K)$ is nonempty by Lemma \ref{kmlemma2}, there exists a continuous linear functional $\ell$ such that $\ell(x)>\sup_{y\in\ol{\mathrm{conv}}(\mathrm{ext}(K))} \ell(y)$.  By Lemma \ref{kmlemma3}, the set $F_\ell=\left\{x\in K:f(x)=\sup f(K)\right\}$ is a face of $K$ and $F_\ell\cap\mathrm{ext}(K)=\emptyset$. On the other hand, by Lemma \ref{kmlemma2}, the compact convex set $F_\ell$ has an extreme point $x$, which is also an extreme point of $K$ by Lemma \ref{kmlemma1}. This contradicts the fact that $F_\ell\cap\mathrm{ext}(K)=\emptyset$. Thus we complete the proof.
+\end{proof}
+
+\subsection{Ergodic Measures and Unique Ergodicity}
+\paragraph{Invariant measures.} For convenience, we focus on a compact metrizable space $X$ equipped with the Borel $\sigma$-algebra $\scr{B}$. Then $X$ is a second countable space, and the space $C(X)$ of all continuous functions $f:X\to\bbC$ with the supremum norm $\Vert\cdot\Vert_\infty$ is a separable Banach space. Furthermore, by Corollary \ref{chsradon}, the dual space of $C(X)$ is isomorphic to the space $M(X)$ of complex Borel measures on $X$. Let $T:X\to X$ is a homeomorphism on $X$. A Borel probability measure $\mu$ on $X$ is said to be \textit{$T$-invariant} if 
+\begin{align*}
+	\int_X f\circ T\,d\mu=\int_X f\,d\mu,\quad\text{for all}\ f\in C(X).
+\end{align*}
+We denote by $M_T(X)$ the set of all $T$-invariant Borel probability measures on $X$.
+
+\begin{lemma}\label{invariantspace}
+Let $X$ be a compact metrizable space, and $T:X\to X$ a homeomorphism.
+\begin{itemize}
+	\item[(i)] $M_T(X)$ is a weak* compact convex subset of the unit sphere in $M(X)$.
+	\item[(ii)] $M_T(X)$ is nonempty.
+	\item[(iii)] If $\mu\in M_T(X)$, then $(X,\scr{B},\mu, T)$ is a measure-preserving system, i.e. $\mu(E)=\mu(T^{-1}(E))$ for all $E\in\scr{B}$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+(i) By definition $M_T(X)$ is a convex subset of the unit sphere in $M(X)$. By Banach-Alaoglu theorem, the closed unit ball is compact in the weak* topology on $M(X)$. Then it suffices to show that $M_T(X)$ is weak* closed. We note that a sequence of complex Borel measures $\mu_n\to\mu$ in the weak* topology on $M(X)$ if and only if $\int_X f\,d\mu_n\to\int_X f\,d\mu$ for all $f\in C(X)$. If $\mu_n\in M_T(X)$, by setting $f=1$ we know that $\mu(X)=\lim_{n\to\infty}\mu_n(X)=1$. Furthermore,
+\begin{align*}
+	\int_X f\circ T\,d\mu=\lim_{n\to\infty} f\circ T\,d\mu_n=\lim_{n\to\infty} f\,d\mu_n=\int_X f\,d\mu,\quad\forall f\in C(X).
+\end{align*}
+Therefore $\mu\in M_T(X)$, and $M_T(X)$ is closed and hence compact in the weak* topology on $M(X)$.
+
+\item (ii) Fix $x_0\in X$. For each $n\in\bbN$, define the Borel probability measure $\mu_n:\scr{B}\to[0,1]$ by
+\begin{align*}
+	\int_X f\,d\mu=\frac{1}{n}\sum_{k=0}^{n-1} f(T^kx_0),\quad f\in C(X).
+\end{align*}
+By Banach-Alaoglu theorem, the sequence has a weak* convergent subsequence $(\mu_{n_j})$. We denote by $\mu$ its weak* limit in $M(X)$. Then $\mu(X)=\int_X 1\,d\mu=\lim_{n\to\infty}\int_X1\,d\mu_n=1$, and for all $f\in C(X)$,
+\begin{align*}
+	\int_X f\circ T\,d\mu=\lim_{j\to\infty}\frac{1}{n_j}\sum_{k=1}^{n_j}f(T^kx_0)=\lim_{j\to\infty}\frac{1}{n_j}\sum_{k=0}^{n_j-1}f(T^kx_0)=\int_X f\,d\mu.
+\end{align*}
+Therefore $\mu\in M_T(X)$, and $M_T(X)$ is nonempty.
+
+\item (iii) We defined by $\nu(E)=(T_*\mu)(E)=\mu(T^{-1}(E))$ the pushforward of $\mu$, which is also a measure on $\scr{B}$ by continuity of $T$. By the change-of-variable formula, it suffices to show that $\nu=\mu$ on $\scr{B}$.
+
+For a closed subset $F\subset X$, define $f_n(x)=\max\{1-nd(x,F),0\}$. Then $f_n\in C(X)$ and $f_n\downarrow\chi_F$ as $n\to\infty$. By monotone convergence theorem,
+\begin{align*}
+	\nu(F)=\lim_{n\to\infty} \int_Xf_n\,d\nu=\lim_{n\to\infty} \int_X f_n\circ T\,d\mu=\lim_{n\to\infty}\int_Xf_n\,d\mu=\mu(F).
+\end{align*}
+Thus $\nu(F)=\mu(F)$ for all closed subset $F\subset X$, and $\mu(U)=\nu(U)$ for all open subset $U\subset X$. By outer-regularity of $\mu$, we have $\mu=\nu$ everywhere on $\scr{B}$.
+\end{proof}
+\paragraph{Remark.} Since $T:X\to X$ is an homeomorphism, both $T$ and $T^{-1}$ are measurable. For all $E\in\scr{B}$, we have $\mu(E)=\mu(T^{-1}(T(E)))=\mu(T(E))$. Hence the inverse $T^{-1}$ is also a measure-preserving transformation.
+
+\paragraph{Ergodic measures.} A $T$-invariant probability measure $\mu$ is said to be \textit{$T$-ergodic} if $T$ is $\mu$-ergodic, i.e.
+\begin{align*}
+	T^{-1}(E)=E\quad\Rightarrow\quad\mu(E)\in\{0,1\}.
+\end{align*}
+We have the following characterization of $T$-ergodic measures.
+
+\begin{theorem}[Ergodicity and Extremity]\label{ergext}
+Let $X$ be a compact metrizable space, and let $T:X\to X$ be a homeomorphism. If $\mu\in M_T(X)$, the following are equivalent:
+\begin{itemize}
+	\item[(i)] $\mu$ is $T$-ergodic;
+	\item[(ii)] $\mu$ is an extreme point of $M_T(X)$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+The proof has three steps.
+\item\textbf{Step I.} Let $\mu_1,\mu_2$ be $T$-ergodic measures such that $\mu_1(E)=\mu_2(E)$ for every $T$-invariant Borel set $E\subset X$. We claim that $\int_X f\,d\mu_1=\int_X f\,d\mu_2$ for each $f\in C(X)$, hence $\mu_1=\mu_2$ by Riesz representation theorem.
+
+By Corollary \ref{meanergl1}, the sequence $A_n f$ converges to $\int_X f\,d\mu_j$ in $L^1$, and hence a subsequence $A_{n_i}f$ converges a.e. to $\int_X f\,d\mu_j$, where $j=1,2$. Hence there exists $A_j\subset X$ such that $\mu(A_j)=1$ and
+\begin{align*}
+	\int_X f\,d\mu_j=\lim_{i\to\infty}\frac{1}{n_i}\sum_{k=0}^{n_i-1}f(T^kx)\quad\text{for all $x\in A_j$}.
+\end{align*}
+For $j=1,2$, define $E_j=\bigcap_{n\in\bbZ}T^n(A_j)$, so that $E_j$ is a $T$-invariant set with $\mu_j(E_j)=1$. By assumption, $\mu_1(E_1)=\mu_2(E_1)=\mu_1(E_2)=\mu_2(E_2)=1$. Then the $T$-invariant set $E:=E_1\cap E_2$ is nonempty, because $\mu(E)=\mu(E_1)+\mu(E_2)-\mu(E_1\cup E_2)=1$. Since $E\subset A_1\cap A_2$, we fix $x\in E$ and obtain
+\begin{align*}
+	\int_X f\,d\mu_1=\lim_{i\to\infty}\frac{1}{n_i}\sum_{k=0}^{n_i-1}f(T^kx)=\int_X f\,d\mu_2.
+\end{align*}
+\item\textbf{Step II.} If $\mu\in M_T(X)$ is ergodic, we claim that $\mu$ is an extreme point of $M_T(X)$. Take $\mu_1,\mu_2\in M_T(X)$ and $0<\lambda<1$ such that $\mu=(1-\lambda)\mu_1+\lambda\mu_2$. If $E\in\scr{B}$ is a $T$-invariant set, we have $\mu(E)\in\{0,1\}$. Then
+\begin{itemize}
+	\item If $\mu(E)=0$, we have $(1-\lambda)\mu_1(E)+\lambda\mu_2(E)=0$ and $\mu_1(E)=\mu_2(E)=0$. \item Similarly, if $\mu(E)=1$, we have $\mu_1(F)=\mu_2(F)=1$.
+\end{itemize}
+In either case, we have $\mu_1(E)=\mu_2(E)=\mu(E)\in\{0,1\}$. Hence $\mu_1$ and $\mu_2$ are $T$-ergodic measures that agree on all $T$-invariant Borel sets. By Step I, we have $\mu_1=\mu_2=\mu$, and hence $\mu$ is an extreme point of $M_T(X)$.
+
+\item\textbf{Step III.} Conversely, if $\mu\in M_T(X)$ is not ergodic, we can find two probability measures $\mu_1,\mu_2\in M_T(X)$ with $\mu_1\neq\mu_2$ and $0<\lambda<1$ such that $(1-\lambda)\mu_1+\lambda\mu_2=\mu$, and hence $\mu$ is not an extreme point of $M_Y(X)$.
+
+By non-ergodicity of $(\mu,T)$, there exists a Borel set $B\subset X$ such that $T^{-1}(B)=B$ and $0<\mu(B)<1$. We then define Borel probability measures
+\begin{align*}
+	\mu_1(E):=\frac{\mu(E\backslash B)}{\mu(X\backslash B)}\quad\text{and}\quad\mu_2(E):=\frac{\mu(E\cap B)}{\mu(B)},\quad E\in\scr{B},
+\end{align*}
+and take $\lambda=\mu(B)$. For each $E\in\scr{B}$,
+\begin{align*}
+\mu_2(T^{-1}(E))=\frac{\mu(T^{-1}(E)\cap B)}{\mu(B)}=\frac{\mu(T^{-1}(E\cap B))}{\mu(B)}=\frac{\mu(E\cap B)}{\mu(B)}=\mu_2(E).
+\end{align*}
+Hence $\mu_2$ is $T$-invariant, and similarly $\mu_1$ is $T$-invariant. Furthermore, $(1-\lambda)\mu_1+\lambda\mu_2=\mu$, as desired.
+\end{proof}
+\begin{corollary}
+Every homeomorphism of a compact metrizable space admits an ergodic measure.
+\end{corollary}
+\begin{proof}
+Since $M_T(X)$ is a nonempty compact convex subset of $M(X)$ by Lemma \ref{invariantspace}, it has an extreme point $\mu$ by Krein-Milman theorem. According to Theorem \ref{ergext}, $\mu$ is a $T$-ergodic measure.
+\end{proof}
+
+Aside from existence, we also wonder whether the ergodic measure of a homeomorphism $T$ is unique.
+\begin{definition}[Unique ergodicity]
+A homeomorphism $T$ of a compact metrizable space $X$ is said to be \textit{uniquely ergodic}, if there is only one Borel probability measure $\mu$ that is $T$-invariant, i.e. $\vert M_T(X)\vert=1$.
+\end{definition}
+\begin{remark}
+Since $M_T(X)$ is the closed convex hull of the $T$-ergodic measures (extreme points), $T$ is uniquely ergodic if and only if there is only one Borel probability measure $\mu$ that is $T$-ergodic.
+\end{remark}
+\begin{theorem}[Birkhoff's theorem]
+Let $T:X\to X$ be a homeomorphism of a compact metrizable space $X$. The following are equivalent.
+\begin{itemize}
+	\item[(i)] $T$ is uniquely ergodic.
+	\item[(ii)] There exists $\mu\in M_T(X)$ such that for all $f\in C(X)$,
+	\begin{align}
+		\lim_{n\to\infty}\frac{1}{n}\sum_{k=0}^{n-1}f(T^kx)=\int_X f\,d\mu\quad\text{for all $x\in X$.}\label{ergcontpwlimit}
+	\end{align}
+\item[(iii)] For all $f\in C(X)$, the sequence of functions $A_nf=\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k$ converges pointwise to a constant.
+\item[(iv)] For all $f\in C(X)$, the sequence of functions $A_nf=\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k$ converges uniformly to a constant.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+(i) $\Rightarrow$ (iv): If $T$ is uniquely ergodic, we take for each $x\in X$ the sequence $$\mu_n=\frac{1}{n}\sum_{k=0}^{n-1}\delta_{T^kx},\quad n=1,2,\cdots.$$
+By Banach-Alaoglu theorem, and since $\vert M_T(X)\vert=1$, every subsequence of $(\mu_n)$ has a further subsequence converging in the weak* topology to the unique element $\mu\in M_T(X)$, which is ergodic. We claim that $(\mu_n)$ converges to $\mu$ in the weak* topology. If there exists a neighborhood $U$ of $\mu$ in the weak* topology such that for each $k\in\bbN$, there exists $n_k>k$ with $\mu_{n_k}\notin U$, which gives a subsequence $(\mu_{n_k})$ outside $U$. Therefore,
+\begin{align*}
+\lim_{n\to\infty}\frac{1}{n}\sum_{k=0}^{n-1}\delta_{T^kx}\overset{w^*}{=}\mu.
+\end{align*}
+Integrating both sides with $f\in C(X)$ gives (\ref{ergcontpwlimit}). Argue (iv) by contradiction. If $(A_nf)$ does not converge uniformly to $\int_X f\,d\mu$, there exists $\epsilon>0$ such that for each $m\geq 1$, there exists $n_m\geq m$ and $x_m\in X$ such that
+\begin{align}
+	\left\vert\frac{1}{n_m}\sum_{k=0}^{n_m-1}f(T^kx_m)-\int f\,d\mu\right\vert\geq\epsilon.\label{birkcontra}
+\end{align}
+We consider the sequence $\nu_m=\frac{1}{n_m}\sum_{k=0}^{n_m-1}\delta_{T^k x_m}$, which also converges to $\mu\in M_T(X)$ in weak* topology, by passing to a subsequence if necessary. Then the left-hand side of (\ref{birkcontra}) goes to $0$ as $m\to\infty$, a contradiction.
+\item (iv) $\Rightarrow$ (iii) is clear.
+\item (iii) $\Rightarrow$ (ii): Define the positive linear functional $Af=\lim_{n\to\infty}\frac{1}{n}\sum_{k=0}^{n-1}f\circ T^k$. Then $\vert Af\vert\leq\Vert f\Vert_\infty$, and $A:C(X)\to\bbC$ is continuous. By Riesz representation theorem, there is a Borel measure $\mu\in M(X)$ such that $Af=\int_X f\,d\mu$. Since $\mu(X)=A1=1$ and $A(f\circ T)=Af$, the measure $\mu\in M_T(X)$.
+\item (ii) $\Rightarrow$ (i): Let $\mu,\nu\in M_T(X)$, where $\mu$ is the measure such that the hypothesis holds. For any $f\in C(X)$, by $T$-invariance of $\nu$ and dominated convergence theorem, 
+\begin{align}
+	\int_X f\,d\nu=\lim_{n\to\infty}\int_X A_nf\,d\nu=\int_X\lim_{n\to\infty} A_nf\,d\nu=\int_X\left(\int_X f\,d\mu\right)d\nu=\int_X f\,d\mu.\label{birkchange}
+\end{align}
+By Riesz representation theorem, we have $\mu=\nu$, and $\vert M_T(X)\vert=1$.
+\end{proof}
+
+
+\subsection{The Recurrence Theorems}
+In many scenarios, we are also interested in the recurrence property of a dynamical system $(X,\scr{F},\mu,T)$. Beginning from a state $x_0\in X$, we wonder if the system will return to a state arbitrarily closed to, or exactly the same as, the initial state $x_0$.
+\begin{definition}[Recurrence]
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system. For a subset $A\subset X$, the \textit{first return time} of $A$ is the map defined for almost every $x\in A$ by
+\begin{align*}
+	n_A(x)=\inf\left\{n\geq 1:T^nx\in A\right\}.
+\end{align*}
+We write $n_A=n_A^1$. For each integer $k\geq 2$, we define the \textit{$k^\text{th}$ return time} by
+\begin{align*}
+	n_A^k(x)=\inf\{n>n_A^{k-1}(x):T^nx\in A\}.
+\end{align*}
+We say that a point $x\in A$ is \textit{infinitely recurrent to $A$}, or \textit{returns infinitely to $A$}, if $(T^nx)_{n=1}^\infty$ contains a subsequence $(T^{n_k}x)_{k=1}^\infty\subset A$, or equivalently, $n_A^k(x)<\infty$ for every $k\in\bbN$.
+\end{definition}
+
+\begin{theorem}[Poincaré recurrence theorem]
+Let $(X,\scr{F},\mu,T)$ be a measure-preserving system where $\mu$ is a probability measure. For each set $A\subset\scr{F}$, almost every $x\in A$ is infinitely recurrent to $A$. That is,
+\begin{align*}
+	\mu\left(\left\{x\in A:T^nx\in A\ \text{for infinitely many $n\in\bbN$}\right\}\right)=\mu(A).
+\end{align*}
+\end{theorem}
+\begin{proof}
+We let $B=\left\{x\in A:T^nx\in A\ \text{for infinitely many}\  n\in\bbN\right\}$. Then
+\begin{align*}
+	B&=\left\{x\in A:T^nx\in A\ \text{for infinitely many}\  n\in\bbN\right\}\\
+	&=\left\{x\in A:\text{for every $n\in\bbN$, there exists $k\geq n$ such that}\ T^kx\in A\right\}\\
+	&=\bigcap_{n=1}^\infty\bigcup_{k=n}^\infty A\cap T^{-k}(A)=A\cap \bigcap_{n=1}^\infty\bigcup_{k=n}^\infty T^{-k}(A).
+\end{align*}
+For every $n\in\bbN_0$, let $A_n=\bigcup_{k=n}^\infty T^{-k}(A)$. Then $T^{-n}(A_0)=A_n\subset A_0$. Since $A\backslash A_n\subset A_0\backslash A_n=A_0\backslash T^{-n}(A_0)$,
+\begin{align*}
+	0\leq\mu(A\backslash A_n)\leq\mu(A_0\backslash T^{-n}(A_0))=\mu(A_0)-\mu(T^{-n}(A_0))=0,
+\end{align*}
+where the last inequality follows from the facts that $T$ is measure-preserving and $\mu$ is finite. Then
+\begin{align*}
+	\mu(B)=\mu\left(A\cap\bigcap_{n=1}^\infty A_n\right)=\mu\left(A\backslash \bigcup_{n=1}^\infty(A\backslash A_n)\right)=\mu(A)-\mu\left(\bigcup_{n=1}^\infty(A\backslash A_n)\right)=\mu(A).
+\end{align*}
+Then we complete the proof.
+\end{proof}
+
+\paragraph{Asymptotic relative frequency.}  The Poincaré recurrence theorem implies that, for almost every $x\in A$, the trajectory $(T^nx)_{n=0}^\infty$ hits $A$ infinitely many times. However, it does
+not predict the frequency of the visits that $x$ makes to the set $A$. The relative number of elements of $\{x,Tx,T^2x,\cdots,T^{n-1}x\}$ in $A$ is
+\begin{align*}
+	\frac{1}{n}\left\vert\left\{T^kx\in A:k=0,1,\cdots,n-1\right\}\right\vert=\frac{1}{n}\sum_{k=0}^{n-1}\chi_A(T^k x).
+\end{align*}
+By Birkhoff's theorem, if $T$ is $\mu$-ergodic, for almost all $x\in X$, the asymptotic relative frequency is
+\begin{align*}
+	\lim_{n\to\infty}\sum_{k=0}^{n-1}\chi_A(T^k x)=\int_X\chi_A\,d\mu=\mu(A).
+\end{align*}
+
+The Poincaré recurrence theorem asserts that almost every point in a positive measure set returns to the set after a sufficiently long but finite time, but does not give an estimate of the return time. The Kac's lemma states that, in an ergodic system, the points in a positive measure set return to the set within an average time inversely proportional to the measure of the set.
+\begin{theorem}[Kac's lemma]
+Let $(X,\scr{F},\mu,T)$ be an ergodic system on a probability space. For each set $A\in\scr{F}$ with $\mu(A)>0$, the first return time $n_A$ satisfies
+\begin{align*}
+	\int_A n_A\,d\mu=1.
+\end{align*}
+\end{theorem}
+\begin{proof}
+Let $A_n=\{x\in A:n_A(x)=n\}$ be the set of points in $A$ that return to $A$ after exactly $n$ times. Then
+\begin{align*}
+	A_n&=\left\{x\in A:T^nx\in A\ \text{and}\ Tx\notin A,\ T^2x\notin A,\cdots,T^{n-1}x\notin A\right\}=A\cap T^{-n}(A)\cap \bigcap_{k=1}^{n-1}T^{-k}(X\backslash A).
+\end{align*}
+Similarly, we define $$B_n=\{x\notin A: x\ \text{enters $A$ at time $n$}\}=T^{-n}(A)\cap \bigcap_{k=0}^{n-1}T^{-k}(X\backslash A).$$
+Since $T$ is $\mu$-ergodic, and $\mu(A)>0$, almost every $x\in X$ enters $A$ after a sufficiently long time, and the set $\bigcap_{n=0}^\infty T^{-n}(X\backslash A)$ has measure zero. Hence both $\mu(A_n)$ and $\mu(B_n)$ goes to zero as $n\to\infty$. Furthermore, $(A_n,B_n)_{n=1}^\infty$ are disjoint sets that almost cover $X$. Also note that
+\begin{align*}
+	T^{-1}(B_n)=T^{-n-1}(A)\cap \bigcap_{k=1}^{n}T^{-k}(X\backslash A)=A_{n+1}\cup B_{n+1}.
+\end{align*}
+Since $T$ is measure preserving, $\mu(B_n)=\mu(T^{-1}(B_n))=\mu(A_{n+1})+\mu(B_{n+1})$, and by induction we have
+\begin{align*}
+	\mu(B_n)=\sum_{k=n+1}^\infty\mu(A_k)+\lim_{k\to\infty}\mu(B_k)=\sum_{k=n+1}^\infty\mu(A_k),\quad n\in\bbN.
+\end{align*}
+By Poincaré recurrence theorem, $A=\bigcup_{n=1}^\infty A_n$. Therefore
+\begin{align*}
+	1&=\mu(X)=\sum_{n=1}^\infty\left[\mu(A_n)+\mu(B_n)\right]=\sum_{n=1}^\infty\sum_{k=n}^{\infty}\mu(A_k)=\sum_{k=1}^\infty\sum_{n=1}^{k}\mu(A_k)\\
+	&=\sum_{k=1}^\infty k\mu(A_k)=\sum_{k=1}^\infty\int_{A_k}n_A\,d\mu=\int_An_A\,d\mu.
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+\begin{remark}
+The Kac's lemma can also be stated as
+\begin{align*}
+	\frac{1}{\mu(A)}\int_A n_A\,d\mu=\frac{1}{\mu(A)},
+\end{align*}
+where the left-hand side of the equation is the \textit{mean return time} to $A$.
+\end{remark}
+
+
+\end{document}

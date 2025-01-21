@@ -1,0 +1,272 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{float} 
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{subfigure} 
+\usepackage{threeparttable}
+\usepackage{ulem}
+\usepackage[dvipsnames]{xcolor}
+\setitemize[1]{itemsep=0.8pt,partopsep=0.8pt,parsep=\parskip,topsep=0.8pt}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%% Number of equations.
+\numberwithin{equation}{section}
+%% New symbols.
+\newcommand{\rmb}{\mathrm{b}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\perp}
+\newcommand{\bfw}{\mathbf{w}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\scr}{\mathscr}
+\renewcommand{\cal}{\mathcal}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\ol}{\overline}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\gr}{Gr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\renewcommand{\i}{\mathrm{i}}
+\renewcommand{\proofname}{\textit{Proof}}
+\renewcommand*{\thesubfigure}{(\arabic{subfigure})}
+\renewcommand{\baselinestretch}{1.18}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{remark}{Remark}
+
+\title{\bf On Minimax Theorems}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.80}
+\author{\textsc{Jyunyi Liao}}
+\date{}
+\begin{document}
+\maketitle
+In this article, we study the minimax theorems, which provide conditions ensuring that the max-min inequality is also an equality. For any function $f:X\times Y\to\bbR$, the \textit{max-min inequality} asserts
+\begin{align*}
+	\sup_{x\in X}\inf_{y\in Y} f(x,y)\leq\inf_{y\in Y}\sup_{x\in X} f(x,y)
+\end{align*}
+This is also called \textit{weak duality} in optimization. We wonder if the equality holds under certain conditions.
+
+\section{Quasi-convex Functions}
+\begin{definition}[Quasi-convexity]
+Let $V$ be a vector space. A function $\varphi:V\to\bbR$ is said to be \textbf{quasi-convex}, if for each $x,y\in V$ and each $0\leq\lambda\leq 1$,
+\begin{align*}
+	\varphi(\lambda x+(1-\lambda)y)\leq\max\left\{\varphi(x),\varphi(y)\right\}.
+\end{align*}
+A function $\varphi:V\to\bbR$ is said to be \textbf{quasi-concave} if its negative is quasi-convex. In other words, $\varphi$ is quasi-concave if for each $x,y\in V$ and each $0\leq\lambda\leq 1$,
+\begin{align*}
+	\varphi(\lambda x+(1-\lambda)y)\geq\min\left\{\varphi(x),\varphi(y)\right\}.
+\end{align*}
+\end{definition}
+We have the following level-set characterization of quasi-convex functions.
+\begin{theorem}
+Let $V$ be a vector space. A function $\varphi:V\to\bbR$ is quasi-convex if and only if each sublevel set $$\varphi^{-1}((-\infty,\alpha])=\left\{x\in V:\varphi(x)\leq\alpha\right\},\quad\alpha\in\bbR$$ is a convex set in $V$.
+\end{theorem}
+\begin{proof}
+Assume $\varphi:V\to\bbR$ is quasi-convex, and fix $\alpha\in\bbR$. For any pair $x,y\in\varphi^{-1}((-\infty,\alpha])$, 
+\begin{align*}
+	\varphi(\lambda x+(1-\lambda)y)\leq\max\left\{\varphi(x),\varphi(y)\right\}\leq\alpha,\quad\forall 0\leq\lambda\leq 1.
+\end{align*}
+Hence $\varphi^{-1}((-\infty,\alpha])$ is convex. Conversely, assume each sublevel sets of $\varphi$ is convex. Fix $x,y\in V$, and take $\alpha=\max\{\varphi(x),\varphi(y)\}$. Then $x,y\in\varphi^{-1}((-\infty,\alpha])$, and by convexity
+\begin{align*}
+	\lambda x+(1-\lambda)y\in\varphi^{-1}((-\infty,\alpha])\quad\Rightarrow\quad \varphi(\lambda x+(1-\lambda)y)\leq\alpha=\max\{\varphi(x),\varphi(y)\},\quad\forall 0\leq\lambda\leq 1.
+\end{align*}
+Hence $\varphi$ is quasi-convex.
+\end{proof}
+\paragraph{Remark.} Similarly, a function $\varphi:V\to\bbR$ is quasi-concave if and only if the each superlevel set $$\varphi^{-1}([\alpha,\infty))=\left\{x\in V:\varphi(x)\geq\alpha\right\},\quad\alpha\in\bbR$$ is a convex set in $V$.
+
+\section{Von-Neumann Minimax Theorem}
+We first introduce an intersection property of convex sets.
+\begin{lemma}\label{kleeconvcover}
+Let $C_1,\cdots,C_n$ and $C$ be compact convex sets in a Euclidean space such that
+\begin{itemize}
+	\item[(i)] $C\cap\bigcap_{i=1,i\neq j}^n C_i\neq\emptyset$ for each $j=1,\cdots,n$; and
+	\item[(ii)] $C\cap\bigcap_{i=1}^n C_i=\emptyset$.
+\end{itemize}
+Then $C$ is not contained in $\bigcup_{i=1}^n C_i$.
+\end{lemma}
+\begin{proof}
+We proceed by induction on $n$. If $n=1$, then (i) implies that $C$ is nonempty, and (ii) implies that $C$ and $C_1$ are disjoint. The result $C\not\subset C_1$ is then clear.
+
+Suppose our assertion holds for $n-1$, and consider the case $n$. According to (ii), $C\cap C_n$ and $\bigcap_{i=1}^{n-1} C_i$ are disjoint compact convex sets, which can be strictly separated by a hyperplane $H$. Let $D=C\cap H$, and $D_i=C_i\cap H$ for $i=1,\cdots,n$. We verify that the sets $D_1,\cdots,D_{n-1}$ and $D$ satisfies conditions (i) and (ii).  
+
+\begin{itemize}
+	\item[(i)] Given any $j\in\{1,\cdots,n-1\}$, we can take $x_j\in C\cap\bigcap_{i=1,i\neq j}^n C_i$, and take $x_k\in C\cap\bigcap_{i=1}^{n-1}C_i$ by (i). Since $x_j\in C\cap C_n$ and $x_k\in\bigcap_{i=1}^{n-1}C_i$, they are separated by hyperplane $H$. We take $y_j$ to be the intersection of the line segment $[x_j,x_k]$ and the hyperplane $H$. Clearly, $[x_j,x_k]$ lies in the convex set $C\cap\bigcap_{i=1,i\neq j}^{n-1} C_i$. Hence $y_j\in D\cap\bigcap_{i=1,i\neq j}^{n-1}D_i\neq\emptyset$. 
+	\item[(ii)] Since $\bigcap_{i=1}^{n-1} C_i$ and $C\cap C_n$ are strictly separated by $H$, we have $D\cap\bigcap_{i=1}^{n-1}D_i=\emptyset$.
+\end{itemize}
+By the induction hypothesis, there exists $x_0\in D$ such that $x_0\notin\bigcup_{i=1}^{n-1} D_i$. Since $D\cap C_n=(C\cap H)\cap C_n=\emptyset$, it follows $x_0\notin C_n$. Hence $C\ni x_0\notin \bigcup_{i=1}^{n}C_k$, which completes the proof.
+\end{proof}
+\paragraph{Remark.} This proof is due to \cite{Klee}. In fact, one can assume that $C_1,\cdots,C_n$ and $C$ to be closed convex sets. 
+
+\begin{theorem}[Von Neumann Minimax theorem]\label{vonneummanminimax}
+Let $U$ and $V$ be topological vector spaces, and let $X$ and $Y$ be compact convex subsets of $U$ and $V$, respectively. Let $f:X\times Y\to\bbR$ be a function such that
+\begin{itemize}
+\item[(i)] $f$ is continuous on $X\times Y$;
+\item[(ii)] $f(x,y)$ is quasi-concave in variable $x$; and
+\item[(iii)] $f(x,y)$ is quasi-convex in variable $y$.
+\end{itemize}
+Then there exists a saddle point $(x_0,y_0)\in X\times Y$ such that
+\begin{align*}
+	f(x,y_0)\leq f(x_0,y_0)\leq f(x_0,y),\quad\forall x\in X,y\in Y.
+\end{align*}
+Moreover, the max-min inequality for $f$ is also an equality:
+\begin{align*}
+	f(x_0,y_0)=\max_{x\in X}\min_{y\in Y}f(x,y)=\min_{y\in Y}\max_{x\in X}f(x,y).
+\end{align*}
+\end{theorem}
+
+The proof of this result needs some technical lemmata.
+
+\begin{lemma}\label{nonempty}
+Define the sets
+\begin{align*}
+	E_\lambda=\left\{x\in X:f(x,y)\geq\lambda\ for\ all\ y\in Y\right\},\\
+	F_\mu=\left\{x\in X:f(x,y)\leq\mu\ for\ all\ x\in X\right\},
+\end{align*}
+where $\lambda$ and $\mu$ are arbitrary real numbers. Define
+\begin{align*}
+	\lambda_0=\sup\left\{\lambda:E_\lambda\neq\emptyset\right\},\quad and\quad \mu_0=\inf\left\{\mu:F_\mu\neq\emptyset\right\}.
+\end{align*}
+Then
+\begin{align*}
+	\lambda<\infty,\ \ \mu>-\infty,\quad and\quad E_{\lambda_0}\neq\emptyset,\ \ F_{\mu_0}\neq\emptyset.
+\end{align*}
+\end{lemma}
+\begin{proof}
+We define $g(x)=\inf_{y\in Y}f(x,y)$. Then $g(x)\geq\lambda$ if and only if $f(x,y)\geq\lambda$ for each $y\in Y$. Hence
+\begin{align*}
+	E_\lambda=\left\{x\in X:g(x)\geq\lambda\right\}=\bigcap_{y\in Y}\left\{x\in X:f(x,y)\geq\lambda\right\}
+\end{align*}
+is a superlevel set of function $g$, and it is convex. Furthermore,
+\begin{align*}
+	\inf_{y\in Y}\left[f(x,y)-f(x^\prime,y)\right]\leq g(x)-g(x^\prime)\leq\sup_{y\in Y}\left[f(x,y)-f(x^\prime,y)\right].
+\end{align*}
+By uniform continuity of $f$ on the compact set $X\times Y$, the function $g$ is also (uniformly) continuous on $X$. Then $g$ is bounded, and $\lambda<\infty$. Also, the level set $E_\lambda=g^{-1}([\lambda,\infty))$ is closed in $X$. Furthermore,
+\begin{align*}
+	E_{\lambda_0}=g^{-1}([\lambda_0,\infty))=g^{-1}\left(\bigcap_{\lambda<\lambda_0}[\lambda,\infty)\right)=\bigcap_{\lambda<\lambda_0}g^{-1}([\lambda,\infty))=\bigcap_{\lambda<\lambda_0} E_\lambda.
+\end{align*}
+Since the closed sets $E_\lambda$ are nonempty for all $\lambda<\lambda_0$, by compactness of $X$, their intersection $E_{\lambda_0}$ is also nonempty. A similar assertion also holds for $F_{\mu_0}$. 
+\end{proof}
+
+\begin{lemma}\label{strongdual}
+	$\lambda_0\geq\mu_0$.
+\end{lemma}
+\begin{proof}
+Fix arbitrarily $\epsilon>0$. By definition of $\lambda_0$, we have $E_{\lambda_0+\epsilon}=\emptyset$. Hence for every $x\in X$, there exists $y\in Y$ such that $f(x,y)<\lambda_0+\epsilon$. We define
+\begin{align*}
+	U_y^\epsilon=\left\{x\in X:f(x,y)<\lambda_0+\epsilon\right\}.
+\end{align*}
+Since $f$ is continuous, $U_y^\epsilon$ is an open set. Furthermore, $\bigcup_{y\in Y}U_y^\epsilon$ is an open cover of $X$. By compactness of $X$, there exists finitely many $y_1,\cdots,y_n\in Y$ such that
+\begin{align*}
+	X\subset\bigcup_{i=1}^n U_{y_i}^\epsilon.
+\end{align*}
+Similarly, we can find finitely many $x_1,\cdots,x_m\in X$ that form an open cover $\bigcup_{i=1}^n V_{x_i}^\epsilon$ of $Y$, where $V_x^\epsilon$ is
+\begin{align*}
+	V_x^\epsilon=\left\{x\in X:f(x,y)>\mu_0-\epsilon\right\}.
+\end{align*}
+	
+Let $C=\mathrm{conv}(x_1,\cdots,x_m)$, and let $L=x_1+\mathrm{span}\{x_2-x_1,\cdots,x_m-x_1\}$. Clearly, $C$ is compact, and $L$ is the minimal affine subspace containing $C$, which is homeomorphic to an Euclidean space. Then, $X\cap L$ is covered by $\{U_i=U_{y_i}^\epsilon\cap L,i=1,\cdots,n\}$. By dropping possibly redundant elements, one may assume the cover $\{U_i,i=1,\cdots,n\}$ is minimal, in the sense that $C\subset\cap_{i=1}^n U_i$ and $C\not\subset\cap_{i=1,i\neq j}^n U_i$ for each $j=1,\cdots,n$. Define
+\begin{align*}
+	C_i = L\backslash U_i =\left\{x\in X\cap L:f(x,y_i)\geq\lambda_0+\epsilon\right\},\quad i=1,\cdots,n.
+\end{align*}
+By continuity and quasi-concavity of $f(\cdot,y_i)$, this is a compact convex set. Since the cover $\{U_i,i=1,\cdots,n\}$ is minimal, the two conditions in Lemma \ref{kleeconvcover} are satisfied. Hence there exists $x_0\in C$ such that
+\begin{align*}
+	f(x_0,y_i)<\lambda_0+\epsilon,\quad\forall i=1,\cdots,n.
+\end{align*}
+By quasi-convexity of $f(x_0,\cdot)$, we have
+\begin{align*}
+	f(x_0,y)<\lambda_0+\epsilon,\quad y\in D:=\mathrm{conv}(y_1,\cdots,y_n).
+\end{align*}
+Similarly, there exists $y_0\in D$ such that
+\begin{align*}
+	f(x,y_0)>\mu_0-\epsilon,\quad x\in C:=\mathrm{conv}(x_1,\cdots,x_m).
+\end{align*}
+Therefore,
+\begin{align*}
+	\mu_0-\epsilon<f(x_0,y_0)<\lambda_0+\epsilon.
+\end{align*}
+Since $\epsilon>0$ is arbitrary, we have $\mu_0\leq\lambda_0$.
+\end{proof}
+
+Now we are prepared to prove the von Neumann Minimax theorem.
+
+\begin{proof}[Proof of Theorem \ref{vonneummanminimax}]
+By Lemma \ref{nonempty}, we take $x_0\in E_{\lambda_0}$ and $y_0\in F_{\mu_0}$. Then
+\begin{align*}
+	\lambda_0\leq f(x_0,y_0)\leq\mu_0.
+\end{align*}
+By Lemma \ref{strongdual}, $\lambda_0=\mu_0$. Then for all $x\in X$ and $y\in Y$,
+\begin{align*}
+	f(x,y_0)\leq \mu_0= f(x_0,y_0)=\lambda_0\leq f(x_0,y)
+\end{align*}
+Hence $(x_0,y_0)$ is a saddle point. Furthermore,
+\begin{align*}
+	\lambda_0=\sup\left\{\lambda:\exists x\in X\ such\ that\ \inf_{y\in Y}f(x,y)\geq\lambda\right\}=\sup_{x\in X}\inf_{y\in Y} f(x,y),\\
+	\mu_0=\inf\left\{\lambda:\exists y\in Y\ such\ that\ \sup_{x\in X}f(x,y)\geq\mu\right\}=\inf_{y\in Y}\sup_{x\in X}f(x,y).
+\end{align*}
+Since both $X$ and $Y$ are compact, and both the mappings $x\mapsto\inf_{y\in Y}f(x,y)$ and $y\mapsto\sup_{x\in X}f(x,y)$ are continuous, we have
+\begin{align*}
+	\max_{x\in X}\min_{y\in Y} f(x,y)=\lambda_0=f(x_0,y_0)=\mu_0=\min_{y\in Y}\max_{x\in X} f(x,y).
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+
+\paragraph{Application: Matrix Game.} Consider a two-player zero-sum matrix game, which is defined by a triplet $(\mathcal{A}, \mathcal{B}, F)$.
+where $\mathcal{A} = \{1,2,\cdots,m\}$ is a finite set of actions that the max player can take, $\mathcal{B} = \{1,2,\cdots,n\}$ is the set of actions that the max player can take, and $F:\cal{A}\times\cal{B}\to\bbR$ is utility function. The zero-sum game can be formulated as the following max-min problem
+$$\max_{\xi\in\Delta(\mathcal{A})}\min_{\eta\in\Delta(\mathcal{B})}\xi^\top F\eta,$$
+where $\xi\in\Delta(\mathcal{A})$ and $\eta\in\Delta(\mathcal{B})$ are strategies for each player:
+\begin{align*}
+	&\Delta(\cal{A})=\left\{\xi=(\xi_1,\cdots,\xi_m):\xi_1,\cdots,\xi_m\geq 0,\ \xi_1+\cdots+\xi_m=1\right\},\\
+	&\Delta(\cal{B})=\left\{\eta=(\eta_1,\cdots,\eta_n):\eta_1,\cdots,\eta_n\geq 0,\ \eta_1+\cdots+\eta_n=1\right\}
+\end{align*}
+and $F = (F(a,b))_{a\in\mathcal{A},b\in\mathcal{B}}\in\mathcal{R}^{m\times n}$ is the utility matrix. Clearly, the simplexes $\Delta(\cal{A})$ and $\Delta(\cal{B})$ are compact convex subsets of Euclidean spaces. By von Neumann minimax theorem, there exists strategies $\xi^0\in\Delta(\cal{A})$ and $\eta^0\in\Delta(\cal{B})$ such that
+\begin{align*}
+	\xi^{0\top} F\eta^0 = \max_{\xi\in\Delta(\cal{A})}\xi^\top F\eta^0=\min_{\eta\in\Delta(\cal{B})}\xi^{0\top} F\eta.
+\end{align*}
+In fact, the last display implies
+\begin{align*}
+	\xi^{0\top} F\eta^0 = \max_{i\in\{1,\cdots,m\}}\sum_{j=1}^n \eta^0_jF(i,j)=\min_{j\in\{1,\cdots,n\}}\sum_{i=1}^m\xi^0_i F(i,j).
+\end{align*}
+\begin{thebibliography}{100}
+\bibitem{Klee} Klee, V.L. (1951) ‘On Certain Intersection Properties of Convex Sets’, \textit{Canadian Journal of Mathematics}, 3, pp. 272–275. 
+\bibitem{Ben} Ben-El-Mechaiekh, H. and Dimand, R. W. (2011) ‘A Simpler Proof of the Von Neumann Minimax Theorem’, \textit{The American Mathematical Monthly}, 118(7), pp. 636–641. 
+\bibitem{Kyfan} Fan, Ky. (1953) `Minimax Theorems', \textit{Proceedings of the National Academy of Sciences of the United States of America}, 39(1), pp. 42–47.
+\end{thebibliography}
+\end{document}

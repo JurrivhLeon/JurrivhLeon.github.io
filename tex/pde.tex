@@ -1,0 +1,2207 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{float} 
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{subfigure} 
+\usepackage{threeparttable}
+\usepackage{ulem}
+\usepackage[dvipsnames]{xcolor}
+\setitemize[1]{itemsep=0.8pt,partopsep=0.8pt,parsep=\parskip,topsep=0.8pt}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%% Number of equations.
+\numberwithin{equation}{section}
+%% New symbols.
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\perp}
+\newcommand{\bfw}{\mathbf{w}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\scr}{\mathscr}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\ol}{\overline}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\gr}{Gr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\renewcommand{\i}{\mathrm{i}}
+\renewcommand{\proofname}{\textit{Proof}}
+\renewcommand*{\thesubfigure}{(\arabic{subfigure})}
+\renewcommand{\baselinestretch}{1.18}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{remark}{Remark}
+
+\title{\bf Partial Differential Equations}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.80}
+\author{\textsc{Jyunyi Liao}}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\setcounter{section}{-1}
+\section{Notations}
+Throughout this book, we assume that $U$ is an open subset of $\mathbb{R}^n$. Given a function $u:U\to\mathbb{R}$, we write $u(x)=u(x_1,\cdots,x_n)$ for $x\in U$. For $i\in[n]$, we write
+\begin{align*}
+	\partial_{x_i}u(x)=\frac{\partial u}{\partial x_i}(x)=u_{x_i}(x)=\lim_{h\to 0}\frac{u(x+he_i)-u(x)}{h},\quad x\in U
+\end{align*}
+for the partial derivative with respect to variable $x_i$, provided the limit exists. Partial derivatives of higher orders are similarly defined. If $u:U\to\mathbb{R}$ is twice differentiable, we write $\nabla u:\mathbb{R}^n\to\mathbb{R}^n$ and $\nabla^2 u:\mathbb{R}^n\to\mathbb{R}^{n\times n}$ for its \textit{gradient} and \textit{Hessian matrix}, respectively:
+\begin{align*}
+	\nabla u(x)=\left(\frac{\partial u}{\partial x_1}(x),\cdots,\frac{\partial u}{\partial x_n}(x)\right),\qquad \nabla^2 u(x)=\begin{pmatrix}
+		u_{x_1x_1}(x) & u_{x_1x_2}(x) & \cdots & u_{x_1x_n}(x)\\
+		u_{x_2x_1}(x) & u_{x_2x_2}(x) & \cdots & u_{x_2x_n}(x)\\
+		\vdots & \vdots & \ddots & \vdots \\
+		u_{x_nx_1}(x) & u_{x_nx_2}(x) & \cdots & u_{x_nx_n}(x)
+	\end{pmatrix}.
+\end{align*}
+The Laplacian $\Delta u$ of $u$ is defined as the trace of Hessian matrix:
+\begin{align*}
+	\Delta u(x) = \mathrm{tr}(\nabla^2 u(x))=\frac{\partial^2 u}{\partial x_1^2}(x)+\cdots + \frac{\partial^2 u}{\partial x_n^2}(x).
+\end{align*}
+Now we introduce the multi-index notation. A vector $\alpha=(\alpha_1,\cdots,\alpha_n)$ consists of nonnegative integers is called a \textit{multi-index of order} $\vert\alpha\vert=\alpha_1+\cdots+\alpha_n$, Given this multi-index $\alpha$, we define
+\begin{align*}
+	\partial^\alpha u(x) = \frac{\partial^{\vert\alpha\vert}u(x)}{\partial x_1^{\alpha_1}\cdots\partial x_n^{\alpha^n}}=\partial_{x_1}^{\alpha_1}\cdots\partial_{x_n}^{\alpha^n} u(x).
+\end{align*}
+If $K$ is a nonnegative integer, we write
+\begin{align*}
+	\partial^k u(x) := \left\{\partial^\alpha u(x):\vert\alpha\vert =k\right\}
+\end{align*}
+for the set of all partial derivatives of order $k$, and define
+\begin{align*}
+	\Vert \partial^k u\Vert_{L^p(U)} = \left(\sum_{\alpha:\vert\alpha\vert=k}\Vert \partial^\alpha u\Vert^p_{L^p(U)}\right)^{1/p},\quad\vert \partial^k u\vert =\Vert \partial^k u\Vert_{L^2(U)} = \left(\sum_{\alpha:\vert\alpha\vert=k}\vert \partial^\alpha u\vert^2\right)^{1/2}.
+\end{align*}
+Furthermore, we replace the symbol $\partial$ by $D$ when we refer to weak derivatives:
+\begin{align*}
+	&\int_U u\partial^\alpha\phi\,dm=(-1)^{\vert\alpha\vert}\int_U (D^\alpha u)\phi\,dm,\quad\forall\phi\in C_c^\infty(U),\\
+	&D^k u(x) := \left\{D^\alpha u(x):\vert\alpha\vert =k\right\},\ \Vert D^k u\Vert_{L^p(U)} = \left(\sum_{\alpha:\vert\alpha\vert=k}\Vert D^\alpha u\Vert^p_{L^p(U)}\right)^{1/p},\ \vert D^k u\vert= \left(\sum_{\alpha:\vert\alpha\vert=k}\vert D^\alpha u\vert^2\right)^{1/2}.
+\end{align*}
+We use $D$ and $D^2$ to denote the gradient and Hessian matrix in weak sense:
+\begin{align*}
+	Du(x)=\left(D_{x_1}(x),\cdots,D_{x_n}(x)\right),\qquad D^2 u(x)=\begin{pmatrix}
+	u_{x_1x_1}(x) & u_{x_1x_2}(x) & \cdots & u_{x_1x_n}(x)\\
+	u_{x_2x_1}(x) & u_{x_2x_2}(x) & \cdots & u_{x_2x_n}(x)\\
+	\vdots & \vdots & \ddots & \vdots \\
+	u_{x_nx_1}(x) & u_{x_nx_2}(x) & \cdots & u_{x_nx_n}(x)
+\end{pmatrix}.
+\end{align*}
+
+% In the sequel, we frequently use the following function spaces. \begin{itemize} \item[(i)]  \end{itemize}
+
+\newpage
+\section{Convolution and Smoothing}
+\subsection{Convolution}
+In this section we first deal with functions on $\bbR^n$. If a function $f$ is defined on $U\subset\bbR^n$, we can replace it by its natural zero extension $f:\bbR^n\to\bbR$ which assigns $f(x)=0$ for $x\notin U$.
+\begin{definition}[Convolution]
+\label{def:1.1} Let $f,g:\bbR^n\to\mathbb{R}$ be Lebesgue measurable functions. Define the bad set as
+\begin{align*}
+	E(f,g) := \left\{x\in\bbR^n:\int_{\bbR^n}\left\vert f(x-y)g(y)\right\vert dy = \infty\right\}.
+\end{align*}
+The \textit{convolution} of $f$ and $g$ is the function $f * g:\mathbb{R}^n\to\mathbb{R}$ defined by
+\begin{align*}
+	(f*g)(x) = \begin{cases}
+		\int_{\bbR^n} f(x-y)g(y)\,dy,\ &x\notin E(f,g),\\
+		0,\ &x\in E(f,g).
+	\end{cases}
+\end{align*}
+\end{definition}
+\paragraph{Remark.} Define $F:\bbR^{2n}\to\mathbb{R},(x,y)\mapsto f(x)$ and $G:\bbR^{2n}\to\mathbb{R},(x,y)\mapsto g(y)$. Then both $F$ and $G$ are measurable functions on $\mathbb{R}^{2n}$, as well as their product $F\cdot G:(x,y)\mapsto f(x)g(y)$. Given linear transformation $T(x,y)=(x-y,y)$, the composition $H=(F\cdot G)\circ T: (x,y)\mapsto f(x-y)g(y)$ is measurable. By Tonelli's theorem, the function $x\mapsto\int_{\bbR^n}\vert H(x,y)\vert\,dy$ is measurable, and $E(f,g)$ is a Lebesgue measurable set.
+
+Clearly, the convolution operation is both commutative and associative, i.e. $f*g=g*f$, and $(f*g)*h = f*(g*h)$. Furthermore, the distributivity of convolution with respect to functional addition immediately follows, i.e. $f*(g+h)=f*g+f*h$.
+
+\begin{proposition}[Properties of convolution]\label{prop:1.2}
+Let $f,g:\mathbb{R}^n\to\mathbb{R}$ be Lebesgue measurable functions.
+\begin{itemize}
+	\item[(i)] If $f,g\in L^1(\mathbb{R}^n)$, then the bad set $E(f,g)$ is of measure zero. Moreover, $f*g\in L^1(\mathbb{R}^n)$, and
+	\begin{align}
+		\int_{\bbR^m} (f*g)\,dm = \int_{\bbR^n}f\,dm\int_{\bbR^n}g\,dm.\label{convl1b}
+	\end{align}
+	\item[(ii)] If $f\in C_0(\mathbb{R}^n)$ and $g\in L^1(\mathbb{R}^n)$, then $f*g\in C_0(\mathbb{R}^n)$.
+	\item[(iii)] If $f\in L^p(\bbR^n)$ and $g\in L^1(\bbR^n)$, then $f*g\in L^p(\bbR^n)$, and $$\Vert f*g\Vert_p\leq\Vert f\Vert_p\Vert g\Vert_1.$$
+\end{itemize}
+\end{proposition}
+\begin{proof}
+	(i) Define the measurable function $H(x,y)\mapsto f(x-y)g(y)$ on $\mathbb{R}^{2n}$. By Tonelli's theorem, 
+	\begin{align*}
+		\int_{\mathbb{R}^{2n}}\vert H\vert\,dm = \int_{\bbR^n}\left(\int_{\bbR^n} \left\vert f(x-y)\right\vert\left\vert g(y)\right\vert dx\right)dy = \Vert f\Vert_1\Vert g\Vert_1.
+	\end{align*}
+	Hence $H:\mathbb{R}^{2n}\to\mathbb{R}$ is integrable. By Fubini's theorem, for a.e. $x\in\mathbb{R}^n$, $y\mapsto H(x,y)$ is integrable, hence $m(E(f,g))=0$. Furthermore, the function $f*g:x\mapsto \int_{\bbR^n}H(x,y)\,dy$ is also integrable, that is, $f*g\in L^1(\mathbb{R}^n)$. The equation (\ref{convl1b}) follows from Fubini's theorem.
+	\vspace{0.1cm}
+	
+	(ii) Given $\epsilon>0$. By uniform continuity of $f$, there exists $\eta > 0$ such that $\vert f(x) - f(x^\prime)\vert < \epsilon/\Vert g\Vert_1$ for all $\vert x-x^\prime\vert < \eta$, . As a result, for all $x,x^\prime\in\mathbb{R}^n$ such that $\vert x-x^\prime\vert < \eta$, we have
+	\begin{align*}
+		\vert(f*g)(x) - (f*g)(x^\prime)\vert
+		&\leq \int_{\bbR^n} \left\vert f(x-y) - f(x^\prime-y)\right\vert \left\vert g(y)\right\vert dy < \epsilon.
+	\end{align*}
+
+(iii) is a special case of the following proposition.
+\end{proof}
+
+\begin{proposition}[Young's convolution inequality]\label{prop:1.3}
+Given $r\in[1,\infty]$ and Hölder $r$-conjugates $p,q\in[1,\infty]$, i.e. $\frac{1}{p}+\frac{1}{q}=1+\frac{1}{r}$. If $f\in L^p(\bbR^n)$ and $g\in L^q(\bbR^n)$, then the bad set $E(f,g)$ is of measure zero, and we have
+\begin{align*}
+	\Vert f*g\Vert_r\leq\Vert f\Vert_p\Vert g\Vert_q.
+\end{align*}
+\end{proposition}
+\paragraph{Remark.} Note that $r=\frac{pq}{p+q-pq}\geq 1\ \Leftrightarrow\ \frac{pq}{p+q}\geq\frac{1}{2}\ \Leftrightarrow\  p\geq\frac{q}{2q-1}\ \Leftrightarrow\ q\geq\frac{p}{2p-1}$,\\
+and $r<\infty\ \Leftrightarrow\ p+q>pq\ \Leftrightarrow\  p<\frac{q}{q-1}\ \Leftrightarrow\ q<\frac{p}{p-1}$.
+\begin{proof}
+	We first bound $f*g$. By applying generalized Hölder's inequality on $\frac{1}{r}+\frac{r-p}{pr}+\frac{r-q}{qr}=1$, we have
+	\begin{align*}
+		\vert (f*g)(x)\vert&\leq\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert\,dy\\
+		&= \int_{\bbR^n}\left(\vert f(x-y)\vert^p\vert g(y)\vert^q\right)^{1/r}\vert f(x-y)\vert^{\frac{r-p}{r}}\vert g(y)\vert^{\frac{r-q}{r}}\,dy\\
+		&\leq\left(\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\right)^{1/r}\left(\int_{\bbR^n}\vert f(x-y)\vert^p\,dy\right)^{\frac{r-p}{pr}}\left(\int_{\bbR^n}\vert g(y)\vert^q\,dy\right)^{\frac{r-q}{qr}}\\
+		&=\left(\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\right)^{1/r}\left\Vert f\right\Vert_p^{\frac{r-p}{r}}\left\Vert g\right\Vert_q^{\frac{r-q}{r}}.
+	\end{align*}
+Consequently, we have
+\begin{align*}
+	\int_{\bbR^n}\left(\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert\,dy\right)^r\,dx&\leq \left(\int_{\bbR^n}\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\,dx\right)\left\Vert f\right\Vert_p^{r-p}\left\Vert g\right\Vert_q^{r-q}\\
+	&\leq \left\Vert f\right\Vert_p^{r-p}\left\Vert g\right\Vert_q^{r-q}\int_{\bbR^n}\left(\int_{\bbR^n}\vert f(x-y)\vert^p\,dx\right)\vert g(y)\vert^q\,dy=\left\Vert f\right\Vert_p^r\left\Vert g\right\Vert_q^r,
+\end{align*}
+where we use Fubini's theorem in the second inequality. From the last display, we have $m(E(f,g))=0$, and $\Vert f*g\Vert_r\leq\Vert f\Vert_p\Vert g\Vert_q$.
+\end{proof}
+\paragraph{Remark.} If $f\in L^p_\loc(\bbR^n)$, and $g\in L^q(\bbR^n)$ is compactly supported, then $f*g\in L^r_\loc(\bbR^n)$.
+\paragraph{Review: Compact supported functions.} Let $X$ be a topological space. The support of function $f:X\to\mathbb{R}$ is defined as the closure of the set of all points in $X$ not mapped to zero by $f$:
+\begin{align*}
+	\supp f = \overline{\{x\in X: f(x)\neq 0\}} = \overline{\{f\neq 0\}}.
+\end{align*}
+If the support of $f$ is compact in $X$, $f$ is said to be \textit{compactly supported}. Following this definition, any function defined on a closed interval $[a,b]$ can be extended to a compactly supported function on $\mathbb{R}$.
+
+The set of all continuous compactly supported functions on $X$ is denoted by $C_c(X)$. If $f\in C_c(X)$, then $f$ is uniformly continuous on $\supp f$. Note that $f=0$ outside $\supp f$, we have that $f$ is uniformly continuous on $X$, which implies $C_c(X)\subset C_0(X)$. Furthermore, by extreme value theorem, $f$ has maximum and minimum on $\supp f$, which implies that $f$ is uniformly bounded on $X$, i.e. $\max_{x\in X}\vert f(x)\vert < \infty$.
+
+Let $(X,\mathscr{A},\mu)$ be a measure space where $X$ is a topological space. Following the discussion above, we have $C_c^\infty(X)\subset L^\infty(X,\mathscr{A},\mu)$ since every $f\in C_c^\infty(X)$ satisfies $\Vert f\Vert_\infty =\max_{x\in X}\vert f(x)\vert \leq \infty$. Furthermore, if every compact set in $X$ has finite measure, i.e. $\mu(K)<\infty$ for all compact $K\subset X$, then the compactly supported function are always $p$-integrable:
+\begin{align*}
+	\Vert f\Vert_p = \left(\int_X\vert f\vert^p d\mu\right)^{1/p} = \left(\int_{\supp f} \vert f\vert^p dm\right)^{1/p} \leq \mu(\supp f)^{1/p}\Vert f\Vert_\infty <\infty.
+\end{align*}
+
+\begin{proposition}[Convolution of compactly supported functions]\label{prop:1.4}
+Let $f,g:\mathbb{R}^n\to\mathbb{R}$.
+\begin{itemize}
+	\item[(i)] If $f,g\in L^1(\mathbb{R}^n)$, then $\supp(f*g)\subset\overline{\supp f + \supp g} := \overline{\left\{x+y:x\in\supp f,y\in\supp g\right\}}$. Furthermore, if both $f$ and $g$ are compactly supported on $\mathbb{R}$, then $f*g$ is also compactly supported. In this case, $\supp(f*g)\subset\supp f + \supp g$.
+	\vspace{0.1cm}
+	\item[(ii)] Let $1\leq p\leq \infty$, and let $k\in\mathbb{N}_0$. If $f\in C_c^k(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C_0^k(\mathbb{R}^n)$. Furthermore, differentiation commutes with convolution, i.e.,
+	\begin{align*}
+		\partial^\alpha(f*g)=\partial^\alpha f * g,\qquad\forall\vert\alpha\vert\leq k,
+	\end{align*}
+	\item[(iii)] Let $1\leq p\leq \infty$. If $f\in C_c^\infty(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C_0^\infty(\mathbb{R}^n)$. Similarly, differentiation commutes with convolution, i.e., $\partial^\alpha(f * g)=\partial^\alpha f * g$ for multi-indices $\alpha$.
+\end{itemize}
+\end{proposition}
+\paragraph{Remark.} Combining (i) and (ii)/(iii), we obtain a useful conclusion. Let $k\in\mathbb{N}_0\cup\{\infty\}$. If $f\in C_c^k(\mathbb{R}^n)$ and $g\in L^1(\mathbb{R}^n)$ is compactly supported, then $f*g\in C_c^k(\mathbb{R}^n)$.
+\begin{proof}
+	(i) Let $f,g\in L^1(\mathbb{R}^n)$, and take any $x\in\mathbb{R}^n$. Then
+	\begin{align*}
+		(f*g)(x) = \int_{\bbR^n} f(x-y)g(y)\,dy = \int_{(x-\supp f)\cap \supp g}f(x-y)g(y)\,dy.
+	\end{align*}
+	For $x\notin \supp f + \supp g$, we have $(x-\supp f)\cap \supp g=\emptyset$, which implies $(f*g)(x) = 0$. Hence
+	\begin{align*}
+		(f*g)(x)\neq 0\ \Rightarrow x\in \supp f + \supp g\ \Rightarrow\ \supp(f*g)\subset\overline{\supp f + \supp g}.
+	\end{align*}
+	If $f,g\in C_c(\mathbb{R}^n)$, then $\supp f$ and $\supp g$ are compact in $\mathbb{R}^n$. Define $\phi(x,y)=x+y$, which is a continuous map on $\mathbb{R}^{2n}$. Then $\supp f + \supp g = \phi(\supp f\times\supp g)$ is also compact. Consequently, $\supp f + \supp g$ is closed, and its closed subset $\supp (f*g)$ is also compact. which implies $f*g\in C_c(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	(ii) \textit{Step I:} We first show the case $k=0$. Let $q=p/(p-1)$. Note that $f$ is continuous and compact supported, then $m(\supp f) < \infty$, $f$ is uniformly continuous, and $\Vert f\Vert_\infty = \max_{x\in\supp f}\vert f(x)\vert < \infty$. By Hölder's inequality, for all $x\in\mathbb{R}^n$, we have
+	\begin{align*}
+		\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert dy \leq \Vert f\Vert_q\Vert g\Vert_p \leq m\bigl(\supp f\bigr)^{1/q}\Vert f\Vert_\infty\Vert g\Vert_p < \infty.
+	\end{align*}
+	Then $f*g$ is well-defined on $\mathbb{R}^n$. To show uniform continuity of $f*g$, we fix $\epsilon>0$ and let $\eta$ be such that $\vert x-x^\prime\vert<\eta$ implies $\vert f(x)-f(x^\prime)\vert < \epsilon$. Then
+	\begin{align*}
+		\vert(f*g)(x) - (f*g)(x^\prime)\vert &= \left\vert\int_{\bbR^n} \left[f(x-y) - f(x^\prime-y)\right]g(y)\,dy\right\vert\\
+		&\leq 2m\bigl(\supp f\bigr)^{1/q}\left\Vert g\right\Vert_p\epsilon.
+	\end{align*}
+	
+	\textit{Step II:} We prove the case $k=1$. It suffices to show the interchangeability of derivative and integral. Given any quantity $h>0$, we have
+	\begin{align}
+		\frac{(f*g)(x+he_i) - (f*g)(x)}{h} = \int_{\bbR^n} \frac{f(x+he_i - y) - f(x-y)}{h}g(y)\,dy.\label{eq:1.2}
+	\end{align}
+	Since $f\in C^1_c(\mathbb{R}^n)$, by Lagrange's mean value theorem, there exists $\xi\in[0,1]$ such that
+	\begin{align}
+		\left\vert\frac{f(x+h e_i - y) - f(x-y)}{h}\right\vert = \left\vert \partial_{x_i}f(x+\xi h e_i - y)\right\vert,\label{eq:1.3}
+	\end{align}
+	Note that $\partial_{x_i}f$ is also continuous and compactly supported on $\mathbb{R}^n$, the RHS of (\ref{eq:1.3}) is bounded by $\Vert\partial_{x_i}f\Vert_\infty$, and the integrand in (\ref{eq:1.2}) is dominated by an integrable function $\Vert \partial_{x_i}f\Vert_\infty g$. Using Lebesgue's dominate convergence theorem, we have
+	\begin{align*}
+		\lim_{h\to 0}\int_{\bbR^n}\frac{f(x+h e_i - y) - f(x-y)}{h}g(y)\,dy = \int_{\bbR^n} \frac{\partial f}{\partial x_i}(x-y)g(y)\,dy.
+	\end{align*}
+	Therefore $\partial_{x_i}(f*g) = \partial_{x_i}f * g$. Since $\partial_{x_i}f\in C_c(\mathbb{R}^n)$, we have $\partial_{x_i}(f*g)\in C_0(\mathbb{R}^n)$, and $f*g\in C_0^1(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	\textit{Step III:} Use induction. Suppose our conclusion holds for $C_c^{k-1}(\mathbb{R}^n)$. For each $f\in C^k_c(\mathbb{R}^n)\subset C^{k-1}_c(\mathbb{R}^n)$, $\partial^{k-1} f\subset C^1_c(\mathbb{R}^n)$. By Step II, for any $\vert\alpha\vert=k-1$,
+	\begin{align*}
+		\partial^{\alpha+e_i}(f*g) = \partial_{x_i}(\partial^\alpha(f*g)) = \partial_{x_i}(\partial^\alpha f*g) = (\partial^{\alpha+e_i} f)* g,
+	\end{align*} 
+	which is uniformly continuous on $\mathbb{R}^n$. Hence $f*g\in C_0^k(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	(iii) Note that $C_c^\infty(\mathbb{R}^n) = \bigcap_{k=0}^\infty C_c^k(\mathbb{R}^n)$, we have $\partial^\alpha(f*g) = \partial^\alpha f * g$ for all $\alpha\in\mathbb{N}_0^n$. Following Step II, $\partial^\alpha f\in C_c(\mathbb{R}^n)$ implies $\partial^\alpha(f*g)\in C_0(\mathbb{R}^n)$ for all $\alpha\in\mathbb{N}_0^n$. Hence $f*g\in\bigcap_{k=0}^\infty C_0^k(\mathbb{R}^n) = C_0^\infty(\mathbb{R}^n)$.
+\end{proof}
+
+\paragraph{Review: Translation operators.} Let $X$ be a vector space, let $Y^X$ be the set of functions $f:X\to Y$, and let $s$ be a vector in $X$. The \textit{translation operator} $\tau_s:Y^X\to Y^X$ is defined as
+\begin{align*}
+	(\tau_s f)(x) = f(x-s),\ \forall f\in Y^X.
+\end{align*}
+
+\begin{proposition}\label{prop:1.5}
+Let $1\leq p < \infty$. For any $f\in C_c(\mathbb{R}^n)$, 
+\begin{align}
+	\lim_{s\to 0} \Vert\tau_s f-f\Vert_p = 0.\label{eq:1.4}
+\end{align}
+\end{proposition}
+\begin{proof}
+	Let $f\in C_c(\mathbb{R}^n)$, and let $B_1$ be the closed unit ball in $\bbR^n$. The collection of functions $\{\tau_s f: \vert s\vert\leq 1\}$ has a common support
+	\begin{align*}
+		K = \bigcup_{\vert s\vert\leq 1}\supp(\tau_s f) = \supp f + B_1 = \{x+y:x\in\supp f, y\in B_1\} = \phi(\supp f\times B_1),
+	\end{align*}
+	which is compact as the image of a compact set under a continuous map $\phi:\mathbb{R}^{2n}\to\mathbb{R}^n,(x,y)\mapsto x+y$.
+
+	By uniform continuity of $f$, given $\epsilon>0$, there exists $\delta > 0$ such that $\vert f(x) - f(y)\vert < \epsilon$ for all $\vert x-y\vert < \delta$. Then for any $s$ with $\vert s\vert<\left\vert\min(\delta,1)\right\vert$, we have
+	\begin{align*}
+		\Vert\tau_s f-f\Vert_p^p = \int_K \vert f(x-s) - f(x)\vert^p dx \leq \mu(K)\,\epsilon^p.
+	\end{align*}
+	Since $\mu(K)<\infty$, and $\epsilon$ is arbitrary, we conclude that $\Vert\tau_s f-f\Vert_p\to 0$ as $s\to 0$.
+\end{proof}
+
+\paragraph{Review: Mollifier.} A \textit{mollifier} on $\bbR^n$ is a symmetric function $\eta\in C_c^\infty(\bbR^n)$ supported on the closed unit ball $B_1=\{x\in\bbR^n:\vert x\vert\leq 1\}$ with $\int_{\bbR^n}\eta\,dm=1$. For example, the \textit{standard mollifier} is defined as
+\begin{align*}
+	\eta(x) = \frac{1}{Z}\exp\left(\frac{1}{\vert x\vert^2-1}\right)\chi_{B_1}(x),\quad\textit{where}\ \ Z=\int_{\vert t\vert\leq 1}\exp\left(\frac{1}{\vert t\vert^2-1}\right)\,dt.
+\end{align*}
+For each $\epsilon>0$, we set
+\begin{align*}
+	\eta_\epsilon(x)=\frac{1}{\epsilon^n}\eta\left(\frac{x}{\epsilon}\right)\quad\Rightarrow\quad \int_{\bbR^n}\eta_\epsilon(x)\,dx=1,\ \supp(\eta_\epsilon)\subset B(0,\epsilon).
+\end{align*}
+
+Now we provide an important approximation result using compactly supported smooth functions.
+\begin{proposition}\label{prop:1.6}
+For $1\leq p <\infty$, $C_c^\infty(\mathbb{R}^n)$ is dense in $L^p(\mathbb{R}^n)$.
+\end{proposition}
+\begin{proof}
+	Let $f\in C_c(\mathbb{R}^n)$. We choose a mollifier $\eta\in C_c^\infty(\bbR^n)$, and define $\eta_\epsilon(x) = \frac{1}{\epsilon^n}\eta\left(\frac{x}{\epsilon}\right)$ for $\epsilon > 0$. By \hyperref[prop:1.4]{Proposition 1.4}, $f*\eta_\epsilon\in C^\infty_c(\mathbb{R}^n)$, and
+	\begin{align*}
+		\int_{\bbR^n} \vert(f *\eta_\epsilon)(x) - f(x)\vert^p\,dx &= \int_{\bbR^n}\left\vert\int_{\vert y\vert\leq\epsilon} (f(x-y)-f(x))\eta_\epsilon(y)\,dy\right\vert^p dx\\
+		&\leq \int_{\bbR^n}\int_{\vert y\vert\leq\epsilon} \tag{By Jensen's inequality} \left\vert f(x-y)-f(x)\right\vert^p\eta_\epsilon(y)\,dydx\\
+		& = \int_{\vert y\vert\leq\epsilon}\eta_\epsilon(y)\Vert\tau_y f -f\Vert_p^p\,dy\\
+		&\leq\sup_{y:\vert y\vert\leq\epsilon}\Vert\tau_y f - f\Vert_p^p.
+	\end{align*}
+	which converges to $0$ as $\epsilon\to 0$ by \hyperref[prop:1.5]{Proposition 1.5}. Since $C_c(\bbR^n)$ is dense in $L^p(\bbR^n)$, the result follows.
+\end{proof}
+
+\paragraph{Application I: continuity of translation operators in $L^p$-spaces.} The limit (\ref{eq:1.4}) in \hyperref[prop:1.5]{Proposition 1.5} remains zero for all $f\in L^p(\mathbb{R})$. We fix $\epsilon > 0$, so there exists $g\in C^\infty_c(\mathbb{R})$ such that $\Vert f-g\Vert_\infty < \epsilon/3$ by \hyperref[prop:1.6]{Proposition 1.6}. Choose $\delta$ such that $\Vert\tau_s g -g\Vert_p<\epsilon/3$ for all $\vert s\vert<\delta$. Then for all $\vert s\vert<\delta$,
+\begin{align*}
+	\Vert \tau_s f - f\Vert_p &\leq \Vert \tau_s f - \tau_s g\Vert_p + \Vert \tau_s g - g\Vert_p + \Vert g - f\Vert_p = 2\Vert f - g\Vert + \Vert\tau_s g -g\Vert_p < \epsilon.
+\end{align*}
+
+\paragraph{Application II: uniform continuity of convolution.} Let $\frac{1}{p}+\frac{1}{q}=1$ be Hölder conjugates. If $f\in L^p(\bbR^n)$ and $g\in L^q(\bbR^n)$, then $f*g\in C_0(\bbR^n)$. Given $\epsilon>0$, we choose $\delta>0$ such that $\Vert\tau_s f-f\Vert_p<\epsilon/\Vert g\Vert_q$ for all $\vert s\vert\leq\delta$. Then one have
+\begin{align*}
+	\vert(f*g)(x-s) - (f*g)(x)\vert
+	&\leq \int_{\bbR^n} \left\vert f(x-s-y) - f(x-y)\right\vert \left\vert g(y)\right\vert dy\leq\Vert\tau_sf-f\Vert_p\Vert g\Vert_q<\epsilon
+\end{align*}
+for all $x\in\bbR^n$ and all $\vert s\vert<\delta$. Clearly, $f*g$ is uniformly continuous on $\bbR^n$.
+
+\paragraph{Application III: uniform continuity of convolution on bounded sets.} If $f\in L^p(\bbR^n)$ is compactly supported, and $g\in L^q_\loc(\bbR^n)$, we have $f*g\in C(\ol{\bbR}^n)$. We fix $\epsilon>0$ and $R>0$, choose $r>0$ such that $\supp f\subset B(0,r)$, and choose $\delta>0$ such that $\Vert\tau_s f-f\Vert_p<\epsilon/\Vert g\chi_{B(0,R+r)}\Vert_q$ for all $\vert s\vert<\delta$. Then
+\begin{align*}
+	\vert(f*g)(x) - (f*g)(x^\prime)\vert
+	&\leq \int_{B(0,R+r)} \left\vert f(x-y) - f(x^\prime-y)\right\vert \left\vert g(y)\right\vert dy\leq\Vert\tau_{x-x^\prime}f-f\Vert_p\Vert g\chi_{B(0,R+r)}\Vert_q<\epsilon
+\end{align*}
+for all $\vert x\vert,\vert x^\prime\vert<R$ with $\vert x-x^\prime\vert<\delta$. Hence $f*g$ is uniformly continuous on the open ball $O(0,R)$.
+
+In addition, if $f\in C_c^\infty(\bbR^n)$ and $g\in L^1_\loc(\bbR^n)$, we have $f*g\in C^\infty(\ol{\bbR}^n)$. This result can be shown by adapting the proof of \hyperref[prop:1.4]{Proposition 1.4}.
+
+\subsection{Local Mollification}
+In this section we study the approximation of locally integrable functions. Our discussion is based on an open region $U\subset\bbR^n$. Given any $\epsilon>0$, we define
+\begin{align*}
+	U^\epsilon=\left\{x\in U:d(x,\partial U)>\epsilon\right\}.
+\end{align*}
+
+Since $U$ is open, $U^\epsilon$ is nonempty for sufficiently small $\epsilon>0$. In addition, the continuity of $d(\cdot,\partial U)$ implies that $U^\epsilon$ is also an open region. Using this notation, we can extend a locally integrable function on $U$ to $\bbR^n$: given a function $u\in L^1_\loc(U)$, define the \textit{zero $\epsilon$-extension} $\overline{u}^{(\epsilon)}:\bbR^n\to\bbR$ of $u:U\to\bbR$ for $\epsilon>0$ as follows:
+\begin{align*}
+	\overline{u}^{(\epsilon)}:=u\chi_{\overline{U}^\epsilon}\quad\Rightarrow\quad \overline{u}^{(\epsilon)}\in L^1_\loc(\bbR^n).
+\end{align*}
+
+\begin{definition}[Mollification]\label{def:1.7}
+Given $u\in L^1_\loc(U)$, define its \textit{mollification} by
+\begin{align*}
+	u^\epsilon := \eta_\epsilon * \overline{u}^{(\epsilon)}\subset C^\infty(\bbR^n)\subset C^\infty(U).
+\end{align*}
+Clearly, $u^\epsilon=0$ outside $U$, and the bad set $E:=E(\eta_\epsilon,\overline{u}^{(\epsilon)})$ is of measure zero by Proposition \ref{prop:1.2}. Furthermore, the value of this mollification inside $\overline{U}^{2\epsilon}$ is given by
+\begin{align}
+	u^\epsilon(x)=\begin{cases}
+		\int_{B(x,\epsilon)}\eta_\epsilon(x-y)u(y)\,dy=\int_{B(0,1)}\eta(z)u(x+\epsilon z)\,dz,\ & x\in \overline{U}^{2\epsilon}\backslash E,\\
+		0, & x\in \overline{U}^{2\epsilon}\cap E.
+	\end{cases}\label{eq:1.6}
+\end{align}
+\end{definition}
+\begin{proposition}[Properties of mollification]\label{prop:1.8}
+Let $u\in L^1_\loc(U)$.
+\begin{itemize}
+	\item[(i)] $u^\epsilon\to u\ a.e.$ on $U$ as $\epsilon\to 0$.
+	\item[(ii)] If $u\in C(U)$, then $u^\epsilon\to u$ uniformly on compact subsets $K\subset U$.
+	\item[(iii)] If $1\leq p < \infty$ and $u\in L_\loc^p(U)$, then $u^\epsilon\to u$ in $L_\loc^p(U)$.
+\end{itemize}	
+\end{proposition}
+\begin{proof}
+(i) According to Lebesgue's differentiation theorem, we have
+\begin{align*}
+	\lim_{r\to 0}\frac{1}{r^n}\int_{B(x,r)}\vert u(y)-u(x)\vert\,dy=0
+\end{align*}
+for $a.e.\ x\in U$. Since $x\in\overline{U}^{2\epsilon}$ for sufficiently small $\epsilon>0$, we have
+\begin{align*}
+	\lim_{\epsilon\to 0}\vert u^\epsilon(x)-u(x)\vert&\leq \lim_{\epsilon\to 0}\int_{B(x,\epsilon)}\eta_\epsilon(x-y)\vert u(y)-u(x)\vert\,dy\\
+	&\leq\lim_{\epsilon\to 0}\frac{1}{\epsilon^n}\int_{B(x,\epsilon)}\Vert\eta\Vert_\infty\vert u(y)-u(x)\vert\,dy = 0,\quad for\ a.e.\ x\in U.
+\end{align*}
+Consequently, we have $u^\epsilon\to u\ a.e.$ on $U$ as $\epsilon\to 0$.
+
+(ii) Given $K\subset U$, choose $\delta>0$ sufficiently small such that $K\subset\overline{U}^{2\delta}$. Since $u$ is a continuous function, the bad set $E(\eta_\epsilon,\overline{u}^{(\epsilon)})$ is empty. Then for all $\epsilon\in(0,\delta]$, one have
+\begin{align*}
+	\sup_{x\in K}\vert u^\epsilon(x)-u(x)\vert&=\sup_{x\in K}\left\vert\int_{B(0,1)}\eta(z)\left(u(x+\epsilon z)-u(x)\right)dz\right\vert\\
+	&\leq\sup_{x\in K}\sup_{z\in B(0,1)}\left\vert u(x+\epsilon z)-u(x)\right\vert
+\end{align*}
+Since $x,x+\epsilon z\in\overline{U}^\delta$, we have $\left\vert u(x+\epsilon z)-u(x)\right\vert\rightrightarrows 0$ by uniform continuity of $u$ on $\overline{U}^\delta$.
+
+(iii) Given any pre-compact set $V\Subset U$, we first choose a pre-compact subset $W$ of $U$ such that $V\Subset W\Subset U$. We claim that, for sufficiently small $\epsilon>0$, we have $\Vert u^\epsilon\Vert_{L^p(V)}\leq\Vert u\Vert_{L^p(W)}$. To this end, we note that
+\begin{align*}
+	\vert u^\epsilon(x)\vert=\left\vert\int_{B(x,\epsilon)}\eta_\epsilon(x-y)u(y)\,dy\right\vert&\leq\int_{B(x,\epsilon)}\eta_\epsilon(x-y)^{1-1/p}\eta_\epsilon(x-y)^{1/p}\vert u(y)\vert\,dy\\
+	&\leq\biggl(\underbrace{\int_{B(x,\epsilon)}\eta_\epsilon(x-y)\,dy}_{=1}\biggr)^{1-1/p}\left(\int_{B(x,\epsilon)}\eta_\epsilon(x-y)\vert u(y)\vert^p\,dy\right)^{1/p}.
+\end{align*}
+We choose $\epsilon>0$ such that $V\subset\overline{W}^{\epsilon}$. Then
+\begin{align*}
+	\Vert u^\epsilon\Vert_{L^p(V)}^p\leq\int_V\left(\int_{B(x,\epsilon)}\eta_\epsilon(x-y)\vert u(y)\vert^p\,dy\right)dx\leq \int_W\left(\int_{B(y,\epsilon)}\eta_\epsilon(x-y)\,dx\right)\vert u(y)\vert^p\,dy=\Vert u\Vert_{L^p(W)}^p.
+\end{align*}
+Now we fix $\delta>0$, and choose $g\in C(W)$ such that $\Vert f-g\Vert_{L^p(W)}<\delta/2$. Then
+\begin{align*}
+	\Vert f^\epsilon-f\Vert_{L^p(V)}&\leq\Vert f^\epsilon-g^\epsilon\Vert_{L^p(V)}+\Vert g^\epsilon-g\Vert_{L^p(V)}+\Vert g-f\Vert_{L^p(V)}\\
+	&\leq\Vert g^\epsilon-g\Vert_{L^p(V)}+2\Vert g-f\Vert_{L^p(W)}\leq\Vert g^\epsilon-g\Vert_{L^p(V)}+\delta.
+\end{align*}
+By (ii), $g^\epsilon\rightrightarrows g$ on $V$ as $\epsilon\to 0$, hence $\limsup_{\epsilon\to 0}\Vert f^\epsilon-f\Vert_{L^p(V)}\leq\delta$.
+\end{proof}
+
+Now we provide an application of mollification.
+\begin{lemma}\label{lemma:1.9}
+If $v\in L^1_\loc(U)$, and
+\begin{align}
+	\int_U v\phi\,dm=0\quad\forall \phi\in C_c^\infty(U),\label{eq:1.5}
+\end{align}
+then $v=0\ a.e.$.
+\end{lemma}
+\begin{proof}
+Let $K$ be a compact subset of $U$, and choose $\varphi\in C_c^\infty(U)$ such that $0\leq\varphi\leq 1$, and $\varphi\equiv 1$ on $K$. [We will show the existence of such function in Lemma \ref{lemma:1.10}.] By assumption (\ref{eq:1.6}), we have
+\begin{align*}
+	(\eta_\epsilon *v_\varphi)(x)=\int_{\bbR^n}\eta_\epsilon(x-y)\varphi(y)v(y)\,dy=\int_U\underbrace{\eta_\epsilon(x-y)\varphi(y)}_{\phi_{\epsilon,x}(y)}v(y)\,dy=0,
+\end{align*}
+since $\phi_{\epsilon,x}(\cdot)=\eta_\epsilon(x-\cdot)\varphi(\cdot)\in C_c^\infty(U)$. By letting $\epsilon\to 0$, we obtain the limit $\eta_\epsilon *v_\varphi\overset{L_1}{\to}\varphi v=0\ a.e.$. Consequently, we have $v=0\ a.e.$ on all compact subsets $K$ of $U$.
+
+Define $K_r=\left\{x\in\bbR^n:d(x,U^c)\geq 2/r\ and\ \vert x\vert\leq r\right\}$. Then $K_r\subset U$ is compact, and $U=\bigcup_{r=1}^\infty K_r$. Since $v=0\ a.e.$ on all $K_r$, we have
+\begin{align*}
+	m(\{v=0\})=m\left(\bigcup_{r=1}^\infty K_r\cap\{v=0\}\right)=\lim_{r\to\infty}m(K_r\cap\{v=0\})=0.
+\end{align*}
+Hence $v=0\ a.e.$ on $U$.
+\end{proof}
+\paragraph{Remark.} Due to the property (\ref{eq:1.6}), the functions in the class $C_c^\infty(U)$ of compactly supported smooth functions are also called \textit{test functions}.
+
+\subsection{Application: Smooth Partition of Unity}
+In this, section we employ the mollification approach to construct partitions of unity. These technical results are later used to obtain global properties from local ones.
+\begin{lemma}\label{lemma:1.10}
+Let $U$ be an open subset of $\bbR^n$, and let $K$ be a compact subset of $U$. Then there exists a function $\varphi\in C_c^\infty(\bbR^n)$ such that $0\leq\varphi\leq 1$, $\varphi\equiv 1$ on $K$, and $\supp\varphi\subset U$.
+\end{lemma}
+\begin{proof}
+Given $\epsilon>0$, we define $$K_\epsilon:=\{x\in\bbR^n:d(x,K)\leq\epsilon\}.$$ Choose $\epsilon>0$ so small that $K_{3\epsilon}\subset U$, and let $\varphi=\eta_\epsilon*\chi_{K_{2\epsilon}}$. By properties of convolution, $\varphi\in C_c^\infty(\bbR^n)$, $0\leq\varphi\leq 1$, $\varphi\equiv 1$ on $K$, and $\supp\varphi\subset\ol{\supp\eta_\epsilon+K_{2\epsilon}}\subset K_{3\epsilon}\subset U$, 
+\end{proof}
+
+Next we introduce a technical lemma in topology, which asserts that we are able to ``shrink'' a finite open cover of a closed subset of $\bbR^n$.
+\begin{lemma}\label{lemma:1.11}
+Let $U\subset\bbR^n$, and let $\{U_i\}_{i=1}^N$ be a collection of open subsets of $\bbR^n$ such that $\ol{U}\subset\bigcup_{i=1}^N U_i$. Then there exists a collection $\{V_i\}_{i=1}^N$ of open subsets of $\bbR^n$ such that $\ol{V_i}\subset U_i,\ i=1,\cdots,N$ and $\ol{U}\subset\bigcup_{i=1}^N V_i$.
+\end{lemma}
+\begin{proof}
+We proceed by substituting the elements of the cover of $\ol{U}$ one by one. Let $A_1=\ol{U}\backslash(U_2\cup\cdots\cup U_N)$. Then $A_1$ is a closed set contained in $U_1$. By normality of $\bbR^n$, we can choose an open set $V_1$ containing $A_1$ such that $\ol{V}_1\subset U_1$. Then we obtain a cover $\{V_1,U_2,\cdots,U_N\}$ of $\ol{U}$.
+
+At the $k^{\mathrm{th}}$ step, we are given open sets $V_1,\cdots,V_{k-1}$ such that $\{V_1,\cdots,V_{k-1},U_k,\cdots,U_N\}$ covers $U$. We let $A_k=\ol{U}\backslash(V_1\cup\cdots\cup V_{k-1}\cup U_{k+1}\cup\cdots\cup U_N)$, and choose an open set $V_k$ such that $A_k\subset V_k\subset\ol{V}_k\subset U_k$. Then $\{V_1,\cdots,V_k,U_{k+1},\cdots,U_N\}$ is also an open cover of $\ol{U}$. At the $n^{\mathrm{th}}$ step, our result is proved.
+\end{proof}
+
+\paragraph{Remark.} In addition, if $U$ is bounded, we may assume that each $U_i$ is bounded. As a result, we can obtain a shrunk open cover $\{V_i\}_{i=1}^N$ of $\ol{U}$ such that $V_i\Subset U_i$. In other words, each $\ol{V}_i$ is a compact set.
+
+\begin{theorem}[Partition of unity]\label{thm:1.12}
+Let $U$ be a bounded, open subset of $\bbR^n$, and let $(V_i)_{i=1}^N$ be a collection of open sets in $\bbR^n$ such that $U\Subset\bigcup_{i=1}^N V_i$. Then there exists a family of smooth functions $(\psi_i)_{i=1}^N:\bbR^n\to[0,1]$ such that $\psi_i\in C_c^\infty(V_i)$ for all $i=1,\cdots, N$, and $\sum_{i=1}^N\psi_i\equiv 1$ on $U$.
+\end{theorem}
+
+\paragraph{Remark.} The family $(\psi_i)_{i=1}^N$ is called a \textit{smooth partition of unity subordinate to the open sets $(V_i)_{i=1}^N$}.
+\begin{proof}
+By Lemma \ref{lemma:1.11}, we take a collection $(K_i)_{i=1}^N$ of compact subsets of $\bbR^n$ such that $K_i\subset V_i,\ i=1,\cdots,N$ and $\ol{U}\subset\bigcup_{i=1}^N K_i$. By Lemma \ref{lemma:1.10}, for each $i=1,\cdots,N$, there exists a smooth function $\varphi_i:\bbR^n\to[0,1]$ such that $\varphi\equiv 1$ on $K_i$, and $\supp\varphi_i\subset V_i$. We then define
+\begin{align*}
+	\psi_1 = \varphi_1,\ \psi_2=(1-\varphi_1)\varphi_2,\ \cdots,\ \psi_N=(1-\varphi_N)\cdots(1-\varphi_{N-1})\varphi_N.
+\end{align*}
+Then $0\leq\psi_i\leq 1$, and $\psi_i\in C_c^\infty(V_i)$ for all $i=1,\cdots,N$. Furthermore,
+\begin{align*}
+	1-\sum_{i=1}^N\psi_i = (1-\varphi_1)(1-\varphi_2)\cdots(1-\varphi_N).
+\end{align*}
+For each point $x\in U\subset\bigcup_{i=1}^NK_i$, at least one factor $(1-\varphi_i)$ vanishes, and we have $\sum_{i=1}^N\psi_i\equiv 1$ on $U$.
+\end{proof}
+
+\newpage
+\section{Sobolev Spaces}
+\subsection{Hölder Spaces}
+Assume that $U\subset\bbR^n$ is open and $\gamma\in(0,1]$. A function $u:U\to\bbR$ is said to be \textit{Hölder continuous with exponent} $\gamma$, if there exists some constant $C>0$ such that
+\begin{align*}
+	\vert u(x)-u(y)\vert\leq C\vert x-y\vert^\gamma,\quad\forall x,y\in U.
+\end{align*}
+In this section, we first discuss the Hölder spaces, which contain functions with some nice properties.
+\begin{definition}[Hölder spaces]\label{def:2.1}
+Let $U\subset\bbR^n$ be open, and $0<\gamma\leq 1$. If $u:U\to\bbR$ is a bounded and Hölder continuous function, we define 
+\begin{align*}
+	\Vert u\Vert_{C(\overline{U})}:=\sup_{x\in U}\vert u(x)\vert,\quad [u]_{C^{0,\gamma}(\overline{U})}=\sup_{x,y\in U:x\neq y}\frac{\vert u(x)-u(y)\vert}{\vert x-y\vert^\gamma},
+\end{align*}
+where $[\cdot]_{C^{0,\gamma}(\overline{U})}$ is the \textit{$\gamma^{th}$-Hölder seminorm}. The \textit{$\gamma^{th}$-Hölder norm} is defined as
+\begin{align*}
+	\Vert u\Vert_{C^{0,\gamma}(\overline{U})}=	\Vert u\Vert_{C(\overline{U})}+[u]_{C^{0,\gamma}(\overline{U})}.
+\end{align*}
+Let $k\in\mathbb{N}_0$. The \textit{Hölder space} $C^{k,\gamma}(\overline{U})$ consists of all functions $u\in C^k(\ol{U})$ for which the norm
+\begin{align*}
+	\Vert u\Vert_{C^{k,\gamma}(\ol{U})}:=\sum_{\alpha:\vert\alpha\vert\leq k}\Vert \partial^\alpha u\Vert_{C(\ol{U})}+\sum_{\alpha:\vert\alpha\vert= k}[\partial^\alpha u]_{C^{0,\gamma}(\ol{U})}
+\end{align*}
+is finite. In other words, $C^{k,\gamma}(\overline{U})$ contains all $k$-times continuously differentiable functions whose $k^\textit{th}$-partial derivatives are bounded and Hölder continuous with exponent $\gamma$.
+\end{definition}
+\paragraph{Remark.} One can easily check that $C^{k,\gamma}(\overline{U})$ is a vector space, and $\Vert\cdot\Vert_{C^{k,\gamma}(\overline{U})}$ is a norm on $C^{k,\gamma}(\overline{U})$.
+
+\begin{theorem}\label{thm:2.2}
+The Hölder space $C^{k,\gamma}(\overline{U})$ is a Banach space.
+\end{theorem}
+\begin{proof}
+It suffices to show completeness of $C^{k,\gamma}(\overline{U})$ under the norm $\Vert\cdot\Vert=\Vert\cdot\Vert_{C^{k,\gamma}(\overline{U})}$. Let $(u_l)$ be a Cauchy sequence in $C^{k,\gamma}(\overline{U})$, i.e. $\Vert u_l-u_m\Vert\to 0$ as $i,j\to\infty$. By completeness of $C(\ol{U})$, $(u_l)$ converges uniformly to some $u\in C(\ol{U})$, and for each $\vert\alpha\vert\leq k$, the sequence $(\partial^\alpha u_l)$ converges uniformly to some function $u^{(\alpha)}\in C(\ol{U})$. Consequently, we have $\partial^\alpha u_l\to \partial^\alpha u=u^{(\alpha)}$ for all $\vert\alpha\vert\leq k$, and $u\in C^k(\ol{U})$.
+
+Now it remains to discuss Hölder continuity. Since $(u_l)$ is a Cauchy sequence, there exists $M>0$ such that $\sup_{l\in\bbN}\Vert u_l\Vert\leq M$. For all $\vert\alpha\vert=k$,
+\begin{align*}
+	\frac{\vert \partial^\alpha u(x)-\partial^\alpha u(y)\vert}{\vert x-y\vert^\gamma}\leq\frac{\vert \partial^\alpha u(x)-\partial^\alpha u_l(x)\vert}{\vert x-y\vert^\gamma}+\underbrace{\frac{\vert \partial^\alpha u_l(x)-\partial^\alpha u_l(y)\vert}{\vert x-y\vert^\gamma}}_{\leq M}+\frac{\vert \partial^\alpha u_l(y)-\partial^\alpha u(y)\vert}{\vert x-y\vert^\gamma}.
+\end{align*}
+Since $\partial^\alpha u_l\rightrightarrows \partial^\alpha u$, the first and third terms in the last display converges to zero for all $x,y\in U$. Hence $\partial^\alpha u$ is Hölder continuous with exponent $\gamma$. Furthermore,
+\begin{align*}
+	\frac{\vert \partial^\alpha(u_l-u)(x)-\partial^\alpha(u_l-u)(y)\vert}{\vert x-y\vert^\gamma}=\lim_{m\to\infty}\frac{\vert \partial^\alpha(u_l-u_m)(x)-\partial^\alpha(u_l-u_m)(y)\vert}{\vert x-y\vert^\gamma}\leq\lim_{m\to\infty}[\partial^\alpha(u_l-u_m)]_{C^{0,\gamma}(\ol{U})}
+\end{align*}
+Since the last bound does not depend on $x,y\in U$, we can obtain $[\partial^\alpha(u_l-u)]_{C^{0,\gamma}(\ol{U})}\to 0$ by letting $l\to\infty$. Hence $\Vert u_l-u\Vert\to 0$ as $l\to\infty$.
+\end{proof}
+
+\subsection{Weak Derivatives}
+\paragraph{Review: Integration by Parts.} Let $U\subset\bbR^n$ be a open and bounded region with $C^1$ boundary. According to the divergence theorem, for each vector field $\mathbf{u}\in C^1(\ol{U},\bbR^n)$, we have
+\begin{align*}
+	\int_U(\nabla\cdot\mathbf{u})\,dx=\int_{\partial U}\mathbf{u}\cdot\nu\,dS,
+\end{align*}
+where $\nu:\partial\Omega\to\bbR^n$ is the outward pointing normal vector field. For $u\in C^1(\overline{U})$, we set $\mathbf{u}=ue_i$. Then
+\begin{align*}
+	\int_U \frac{\partial u}{\partial x_i}\,dx = \int_{\partial U} u\nu^i\,dS,\quad i=1,\cdots,n.
+\end{align*}
+Now assume we are given a function $u\in C^1(U)$. If $\phi\in C^\infty(U)$, we apply the above formula to $u\phi$:
+\begin{align*}
+	\int_U u\frac{\partial\phi}{\partial x_i}\,dx = -\int_U \frac{\partial u}{\partial x_i}\phi\,dx,\quad i=1,\cdots,n.
+\end{align*}
+More generally, if $k\in\mathbb{N}$, $u\in C^k(U)$, and $\alpha$ is a multi-index with $\vert\alpha\vert=k$, then
+\begin{align*}
+	\int_U u(\partial^\alpha\phi)\,dx=(-1)^{\vert\alpha\vert}\int_U(\partial^\alpha u)\phi\,dx.
+\end{align*}
+This formula gives rise to the definition of weak derivatives.
+\begin{definition}[Weak derivatives]\label{def:2.3}
+Assume that  $u,v\in L^1_\loc(U)$ and $\alpha$ is a multi-index. Then $v$ is said to be the \textit{$\alpha^{th}$-weak partial derivative of $u$}, written $\partial^\alpha u=v$, if
+\begin{align*}
+	\int_U u \partial^\alpha\phi\,dx=(-1)^{\vert\alpha\vert}\int_Uv\phi\,dx.
+\end{align*}
+for all test functions $\phi\in C_c^\infty(U)$.
+\end{definition}
+
+\paragraph{Remark.} Suppose both $v$ and $\wt{v}$ are $\alpha^\text{th}$-weak partial derivatives of $u$. By applying Lemma \ref{lemma:1.9} on $v-\wt{v}$, one can show that the $\alpha^\text{th}$-weak partial derivative of $u$ is uniquely defined up to a set of measure zero. 
+
+\paragraph{Example.} Consider the function $u(x)=\vert x\vert$, which is in $L^1_\loc(\bbR)$. Then the weak derivative of $u$ on $\bbR$ is
+\begin{align*}
+	v(x)=\begin{cases}
+		1, &x\geq 0, \\ -1, &x<0.
+	\end{cases}
+\end{align*}
+This is easy to verify. Given any test functions $\phi\in C^c_\infty(\bbR)$, let $\supp\phi\subset[-M,M]$. Then we have
+\begin{align*}
+	\int_{\bbR}u(x)\phi^\prime(x)\,dx&=\int_0^M x\,d\phi(x)-\int_{-M}^0 x\,d\phi(x)\\
+	&=-\int_0^M\phi(x)\,dx+\int_{-M}^0\phi(x)\,dx=-\int_{\bbR}v(x)\phi(x)\,dx.
+\end{align*}
+
+However, the function $v\in L^1_\loc(\bbR)$ has no weak derivative. We argue by contradiction, and assume that there exists $w\in L^1_\loc(\bbR)$ such that
+\begin{align*}
+	\int_\bbR v(x)\phi^\prime(x)\,dx=-\int_\bbR w(x)\phi(x)\,dx,\quad\forall\phi\in C_c^\prime(\bbR).
+\end{align*}
+Then we have
+\begin{align*}
+	\int_\bbR w(x)\phi(x)\,dx=-\int_\bbR v(x)\phi^\prime(x)\,dx=-\int_0^\infty\phi^\prime(x)\,dx+\int_{-\infty}^0\phi^\prime(x)\,dx=2\phi(0).
+\end{align*}
+Now we choose a sequence $\phi_m(x)=\exp\left(\frac{1}{\vert mx\vert^2-1}\right)\chi_{(-\frac{1}{m},\frac{1}{m})}$ in $C_c^\prime(\bbR)$, which satisfies $\phi_m\to\e^{-1}\chi_{\{0\}}$. If we replace $\phi$ by $\phi_m$ in the last display and let $m\to\infty$, the LHS and RHS converges to different values, a contradiction! Hence $v$ is not weakly differentiable.
+
+\paragraph{} Now we discuss the equivalence of weak and partial derivatives of differentiable functions.
+\begin{lemma}\label{lemma:2.4}
+Suppose a continuous function $u:U\to\bbR$ is weakly differentiable, and the weak derivatives $D^{e_1}u, \cdots, D^{e_n}u$ are also continuous (thus unique). Then $u\in C^1(U)$,
+and the weak derivatives coincide with the partial ones, in symbols $(\partial^{e_1}u,\cdots,\partial^{e_n}u)=(D^{e_1}u, \cdots, D^{e_n}u)$.
+\end{lemma}
+\begin{proof}
+Since differentiation is a local problem, we fix any pre-compact set $V\Subset U$ and choose $\epsilon>0$ such that $V\subset\overline{U}^{2\epsilon}$. Then the value of the mollification $u^\epsilon$ inside $\ol{U}^{2\epsilon}$ is given by (\ref{eq:1.5}). For each $x\in U^{2\epsilon}$, we have
+\begin{align*}
+	(\partial^{e_i}u^\epsilon)(x)=(\partial^{e_i}\eta_\epsilon*u)(x)&=\int_{B(x,\epsilon)}(\partial^{e_i}_x\eta_\epsilon)(x-y)u(y)\,dy\\
+	&=-\int_{B(x,\epsilon)}(\partial^{e_i}_y\eta_\epsilon)(x-y)u(y)\,dy\\
+	&=\int_{B(x,\epsilon)}\eta_\epsilon(x-y)(D^{e_i}u)(y)\,dy=\left(\eta_\epsilon*D^{e_i}u\right)(x).
+\end{align*}
+
+By Proposition \ref{prop:1.8}, $\epsilon\to 0$ gives uniform convergences $u^\epsilon\rightrightarrows u$ and $\partial^{e_i}u^\delta=\eta_\epsilon*D^{e_i}u\rightrightarrows D^{e_i}u$ on the compact set $\overline{V}$. Moreover, for any $x\in V$ and any $\vert h\vert>0$ such that $x+he_i\in V$,
+\begin{align*}
+	u(x+he_i)-u(x)=\lim_{\epsilon\to 0}\left(u^\epsilon(x+he_i)-u^\epsilon(x)\right)=\lim_{\epsilon\to 0}\int_0^h(\partial^{e_i}u^\epsilon)(x+te_i)\,dt=\int_0^h (D^{e_i}u)(x+te_i)\,dt.
+\end{align*}
+By continuity of $D^{e_i}u$, we have $\partial_{e_i}u(x)=D^{e_i}u(x)$ for all $x\in V$. Hence $u\in C^1(V)$. Since the pre-compact set $V$ is arbitrary, we have $u\in C^1(U)$.
+\end{proof}
+\paragraph{Remark.} In fact, this proof also provide an approximation approach of weak derivatives. If a function $u:U\to\bbR$ has weak derivative $D^\alpha u$, we choose any $V\Subset W\Subset U^{2\epsilon}$. Then for each $x\in U^{2\epsilon}$,
+\begin{align*}
+	(\partial^\alpha u^\epsilon)(x)=(\partial^\alpha\eta_\epsilon * u)(x)&=\int_{B(x,\epsilon)}(\partial^\alpha_x\eta_\epsilon)(x-y)u(y)\,dy=(-1)^{\vert\alpha\vert}\int_{B(x,\epsilon)}(\partial^\alpha_y\eta_\epsilon)(x-y)u(y)\,dy\\
+	&=\int_{B(x,\epsilon)}\eta_\epsilon(x-y)(D^{\alpha}u)(y)\,dy=\left(\eta_\epsilon*D^{\alpha}u\right)(x).
+\end{align*}
+Hence $\partial^\alpha u^\epsilon=\eta_\epsilon*D^\alpha u=(D^\alpha u)^\epsilon$ on $W\subset U^{2\epsilon}$. Since $D^\alpha u\in L_\loc^1(U)\subset L_\loc^1(W)$, by Proposition \ref{prop:1.8}, $\partial^\alpha u^\epsilon\to D^\alpha u$ in $L^1(V)$ as $\epsilon\to 0$. Furthermore, since $V\Subset U$ is arbitrary, we have 
+$$\partial^\alpha u^\epsilon\to D^\alpha u\ \ \textit{in}\ \ L^1_\loc(U)\ \ as\ \ \epsilon\to 0.$$
+This gives rise to the following approximation theorem.
+
+\begin{theorem}\label{thm:2.5}
+A function $u\in L^1_\loc(U)$ is weakly differentiable in $U$ if and only if there is a sequence of functions $u_m\in C^\infty(U)$ such that $u_m\to u$ and $\partial^\alpha u_m\to v$ in $L^1_\loc(U)$. In that case the weak derivative of $u$ is given by $v=D^\alpha u\in L^1_\loc(U)$.
+\end{theorem}
+\begin{proof}
+If $u$ is weakly differentiable in $U$, we can construct a desired sequence by mollification, as is discussed in the preceding Remark. Conversely, given such a sequence $(u_m)$, we have
+\begin{align*}
+\left\vert\int_Uu_m\phi\,dm-\int_Uu\phi\,dm\right\vert=\left\vert\int_{\supp\phi}(u_m-u)\phi\,dm\right\vert\leq\Vert\phi\Vert_\infty\int_{\supp\phi}\vert u_m-u\vert\,dm\to 0,\quad\forall\phi\in C_c^\infty(U).
+\end{align*}
+Consequently, the $L^1_\loc$-convergence of $u_m$ and $\partial^\alpha u_m$ implies
+\begin{align*}
+\int_U u\partial^\alpha\phi\,dm=\lim_{n\to\infty} \int_U u_m\partial^\alpha\phi\,dm=\lim_{n\to\infty}(-1)^{\vert\alpha\vert}\int_U (\partial^\alpha u_m)\phi\,dm=(-1)^{\vert\alpha\vert}\int_U v\phi\,dm.
+\end{align*}
+Therefore, $u$ is weakly differentiable, and $v=D^\alpha u$.
+\end{proof}
+
+\paragraph{} Next we introduce some properties of weak derivatives. 
+\begin{proposition}\label{prop:2.6}
+Let $U$ be an open subset of $\bbR^n$, and $u\in L^1_\loc(U)$.
+\begin{itemize}
+	\item[(i)] (Higher order derivatives). Assume that the weak derivatives $D^\alpha u$ and $D^\beta u$ exist for multi-indices $\alpha,\beta\in\bbN_0^n$. Then if any one of the weak derivatives $D^\alpha(D^\beta u), D^\beta(D^\alpha u), D^{\alpha+\beta}u$ exists, all three weak derivatives exist and are equal.
+	\item[(ii)] (Leibniz product rule). Assume that $\psi\in C^\infty(U)$. If $u\in L^1_\loc(U)$ is weakly differentiable, so is $u\psi$, and 
+	\begin{align}
+		D^{e_i}(u\psi)=u\partial^{e_i}\psi+(D^{e_i}u)\psi,\quad i=1,\cdots,n.\label{eq:2.1}
+	\end{align}
+    More generally, if the weak derivative $D^\alpha u$ exists for $\alpha\in\bbN_0^n$, then
+    \begin{align}
+    	D^\alpha(u\psi)=\sum_{\beta\leq\alpha}{\alpha\choose\beta}D^\beta u\,\partial^{\alpha-\beta}\psi.\label{eq:2.2}
+    \end{align}
+	\item[(iii)] (Chain rule). Assume that $F\in C^1(\bbR)$, and its derivative $F^\prime\in L^\infty(\bbR)$ is bounded. If $u\in L^1_\loc(U)$ is weakly differentiable, so is $F\circ u$, and
+	\begin{align*}
+		D^{e_i}(F\circ u)= F^\prime(u)D^{e_i}u,\quad i=1,\cdots,n.
+	\end{align*}
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(i) Using the existence of $D^\alpha u$ and the fact that $\partial^\beta\phi\in C_c^\infty(U)$ for all $\phi\in C_c^\infty(U)$, one have
+\begin{align*}
+	\int_U D^\alpha u\,\partial^\beta\phi\,dm=(-1)^{\vert\alpha\vert}\int_U u\partial^{\alpha+\beta}\phi\,dm.
+\end{align*}
+Hence $D^{\alpha+\beta}u$ exists if and only if $D^\beta(D^\alpha u)$ exists, and $D^\beta(D^\alpha u)=D^{\alpha+\beta}u$ in the weak sense. A symmetric argument holds with $\alpha$ and $\beta$ exchanged.
+
+(ii) For any $\phi\in C_c^\infty(U)$, the function $\psi\phi\in C_c^\infty(U)$, and
+\begin{align*}
+	\int_U (D^{e_i}u)\psi\phi\,dm=-\int_U u\partial^{e_i}(\psi\phi)\,dm=-\int_U u(\partial^{e_i}\psi)\phi\,dm-\int_U u\psi\partial^{e_i}\phi\,dm.
+\end{align*}
+By definition, we have $D^{e_i}(u\psi)=(D^{e_i}u)\psi+u\partial^{e_i}\psi$, which is the case $\alpha=e_i$ of (\ref{eq:2.2}). Now we prove the general case by induction. Suppose formula (\ref{eq:2.2}) is valid for all multi-indices $\beta<\alpha$. We choose $\alpha=\beta+e_i$ for some $\vert\beta\vert=\vert\alpha\vert-1$ and $i\in[n]$. Then for any $\phi\in C_c^\infty(U)$, by the assumption of induction, we have
+\begin{align*}
+	\int_U u\psi\partial^\alpha\phi\,dm&=\int_Uu\psi \partial^\beta(\partial^{e_i}\phi)\,dm=(-1)^{\vert\beta\vert}\int_U\sum_{\gamma\leq\beta}{\beta\choose\gamma}D^\gamma u\,\partial^{\beta-\gamma}\psi\,\partial^{e_i}\phi\,dm.
+\end{align*}
+Using the product rule, we have
+\begin{align*}
+	\int_U u\psi\partial^\alpha\phi\,dm&=(-1)^{\vert\beta\vert+1}\sum_{\gamma\leq\beta}{\beta\choose\gamma}\int_U D^{e_i}(D^\gamma u\,\partial^{\beta-\gamma}\psi)\phi\,dm\\
+	&=(-1)^{\vert\alpha\vert}\sum_{\gamma\leq\beta}{\beta\choose\gamma}\int_U\left(D^{\gamma+e_i}u\,\partial^{\alpha-\gamma-e_i}\psi+D^{\gamma}u\,\partial^{\alpha-\gamma}\psi\right)\phi\,dm\\
+	&=(-1)^{\vert\alpha\vert}\sum_{\gamma\leq\beta+e_i}\int_U\left({\beta\choose{\gamma-e_i}}D^{\gamma}u\,\partial^{\alpha-\gamma}\psi+{\beta\choose\gamma}D^{\gamma}u\,\partial^{\alpha-\gamma}\psi\right)\phi\,dm\\
+	&=(-1)^{\vert\alpha\vert}\int_U\left(\sum_{\gamma\leq\alpha} {\alpha\choose\gamma}D^{\gamma}u\,\partial^{\alpha-\gamma}\psi\right)\phi\,dm.
+\end{align*}
+
+(iii) Since $F^\prime\in L^\infty(\bbR)$, the function $F$ is globally Lipschitz, and we suppose $\vert F(t)-F(s)\vert\leq L\vert t-s\vert$. By Theorem \ref{thm:2.5}, we choose a sequence $u_m\in C^\infty(U)$ such that $u_m\to u$ and $\partial^{e_i}u_m\to\partial^{e_i}u$ in $L^1_\loc(U)$. Let $v=F\circ u$, and $v_m=F\circ u_m\in C^1(U)$, with $\partial^{e_i}v_m=F^\prime(u_m)\partial^{e_i}u_m\in C(U)$. If $V\Subset U$, then
+\begin{align*}
+	\int_V\vert v_m-v\vert\,dm=\int_V\vert F(u_m)-F(u)\vert\,dm\leq L\int_V\vert u_m-u\vert\,dm\to 0\quad as\quad n\to\infty.
+\end{align*}
+Furthermore, for the partial derivatives, we have
+\begin{align*}
+	\int_V\vert\partial^{e_i}v_m-F^\prime(u)D^{e_i}u\vert\,dm&=\int_V\vert F^\prime(u_m)\partial^{e_i}u_m-F^\prime(u)D^{e_i}u\vert\,dm\\
+	&\leq\int_V\vert F^\prime(u_m)\vert\left\vert\partial^{e_i}u_m-D^{e_i}u\right\vert\,dm+\int_V\vert F^\prime(u_m)-F^\prime(u)\vert\left\vert D^{e_i}u\right\vert\,dm\\
+	&\leq L\int_V\left\vert\partial^{e_i}u_m-D^{e_i}u\right\vert\,dm+\int_V\underbrace{\vert F^\prime(u_m)-F^\prime(u)\vert\left\vert D^{e_i}u\right\vert}_{\leq 2L\vert D^e_i u\vert\,\in\,L^1(V)}\,dm.
+\end{align*}
+Using the fact that $\partial^e_i u_m\to D^{e_i} u$ in $L^1_\loc(U)$ and the Dominated Convergence Theorem, the last display converges to zero. Since $V\Subset U$ is arbitrary, we have $v_m\to v$ and $\partial^{e_i}v_m\to F^\prime(u)D^{e_i}u$ in $L^1_\loc(U)$. Again by Theorem \ref{thm:2.5}, we have $D^{e_i}(F\circ u)=D^{e_i}v=F^\prime(u)D^{e_i}u$.
+\end{proof}
+\paragraph{Remark.} Using a similar approximation argument applied in the proof of (iii), we can show that the product rule (\ref{eq:2.1}) holds for all $\psi\in C^1(U)$ and all weakly differentiable $u\in L^1_\loc(U)$.
+
+\subsection{Sobolev Spaces and Approximation}
+Sobolev spaces consist of functions whose weak derivatives belong to $L^p$. These spaces provide one of the most useful settings for the analysis of PDEs.
+\begin{definition}[Sobolev spaces]\label{sobolevspace}
+Let $U$ be an open subset of $\bbR^n$, $k\in\bbN$, and $1\leq p\leq\infty$. The \textit{Sobolev space} $W^{k,p}(U)$ consists of all locally integrable functions $u:U\to\bbR$ such that for each multi-index $\alpha$ with $\vert\alpha\vert\leq k$, the weak derivative $D^\alpha u$ exists and belongs to $L^p(U)$. We identify functions in $W^{k,p}(U)$ which agree a.e., and define the norm of $u\in W^{k,p}(U)$ to be \vspace{-0.07cm}
+\begin{align*}
+	\Vert u\Vert_{W^{k,p}(U)}:=\begin{cases}
+		\left(\sum_{\vert\alpha\vert\leq k}\int_U\vert D^\alpha u\vert^p\,dm\right)^{1/p},\ &1\leq p\leq\infty,\\
+		\max_{\vert\alpha\vert\leq k}\esssup_U\vert D^\alpha u\vert,\ &p=\infty.
+	\end{cases}
+\end{align*}
+We write $H^k(U)=W^{k,2}(U)$, where we define the inner product $\displaystyle\langle u,v\rangle_{H^k(U)}:=\sum_{\vert\alpha\vert\leq k}\int_U D^\alpha u\,D^\alpha v\,dm.$
+\end{definition}
+
+\paragraph{Remark I.} We need to check that $\Vert\cdot\Vert_{W^{k,p}(U)}$ is a norm on $W^{k,p}(U)$. Nonnegativeness and homogeneity of $\Vert\cdot\Vert_{W^{k,p}(U)}$ are clear, and the triangle inequality is also clear when $p=\infty$. Hence we only verify the triangle inequality in the case $1\leq p\leq\infty$. By Minkowski's inequality,
+\begin{align*}
+\Vert u+v\Vert_{W^{k,p}(U)}&=\left(\sum_{\vert\alpha\vert\leq k}\Vert D^\alpha u+D^\alpha v\Vert_{L^p(U)}^p\right)^{1/p}\leq\left(\sum_{\vert\alpha\vert\leq k}\left(\Vert D^\alpha u\Vert_{L^p(U)}+\Vert D^\alpha v\Vert_{L^p(U)}\right)^p\right)^{1/p}\\
+&\leq\left(\sum_{\vert\alpha\vert\leq k}\Vert D^\alpha u\Vert_{L^p(U)}^p\right)^{1/p}+\left(\sum_{\vert\alpha\vert\leq k}\Vert D^\alpha v\Vert_{L^p(U)}^p\right)^{1/p}=\Vert u\Vert_{W^{k,p}(U)}+\Vert v\Vert_{W^{k,p}(U)}.
+\end{align*}
+
+\paragraph{Remark II.} Corresponding to Proposition \ref{prop:2.6}, the following properties of Sobolev spaces holds:
+\begin{itemize}
+	\item[(i)] If $k\leq l$, then $W^{k,p}(U)\subset W^{l,p}(U)$. If $u\in W^{k,p}(U)$, then $D^\alpha u\in W^{k-\vert\alpha\vert,p}(U)$ for all $\vert\alpha\vert\leq k$.
+	\item[(ii)] If $u\in W^{k,p}(U)$ and $\psi\in C^\infty(U)$, then $u\psi\in W^{k,p}(U)$;
+	\item[(iii)] If $u\in W^{1,p}(U)$ and $F\in C^1(\bbR)$, then $F\circ u\in W^{1,p}(U)$.
+\end{itemize}
+
+\paragraph{} The Sobolev spaces have a nice structure.
+
+\begin{theorem}
+For each $k\in\bbN$ and $1\leq p\leq\infty$, the Sobolev space $W^{k,p}(U)$ is a Banach space.
+\end{theorem}
+\begin{proof}
+We need to show that $W^{k,p}(U)$ is complete. Let $(u_m)_{m=1}^\infty$ be a Cauchy sequence in $W^{k,p}(U)$. Then for each $\vert\alpha\vert\leq k$, $(D^\alpha u_m)_{m=1}^\infty$ is a Cauchy sequence in $L^p(U)$. By completeness of $L^p(U)$, there exists $u^{(\alpha)}\in L^p(U)$ such that $D^\alpha u_m\to u^{(\alpha)}$ in $L^p(U)$ for each $\vert\alpha\vert\leq k$, and in particular $u_m\to u$ in $L^p(U)$ when $\alpha=0$.
+
+Clearly, if we can show that $u\in W^{k,p}(U)$ and $D^\alpha u=u^{(\alpha)}$ for all $\vert\alpha\vert\leq k$, the result follows. To this end, we let $q=\frac{p}{p-1}$ be the Hölder conjugate, and fix any $\phi\in C_c^\infty(U)$. By Hölder's inequality,
+\begin{align}
+	&\left\vert\int_U (u_m-u)\partial^\alpha\phi\,dx\right\vert\leq\Vert u_m-u\Vert_{L^p(U)}\Vert\partial\phi\Vert_{L^q(U)}\to 0,\quad and\\
+	&\left\vert\int_U (D^\alpha u_m-u^{(\alpha)})\phi\,dx\right\vert\leq\Vert D^\alpha u_m-u^{(\alpha)}\Vert_{L^p(U)}\Vert\phi\Vert_{L^q(U)}\to 0.\label{convinterwd}
+\end{align} 
+These two limits imply the interchangeability of the limit and the integral:
+\begin{align*}
+	\int_U u\partial^\alpha\phi\,dx=\lim_{m\to\infty}\int_U u_m\partial^\alpha\phi\,dx=(-1)^{\vert\alpha\vert}\lim_{m\to\infty}\int_U D^\alpha u_m\phi\,dx=(-1)^{\vert\alpha\vert}\int_U u^{(\alpha)}\phi\,dx.
+\end{align*}
+Hence our assertion is valid. Since $D^\alpha u_m\to D^\alpha u$ in $L^p(U)$ for all $\vert\alpha\vert\leq k$, we have $u_m\to u$ in $W^{k,p}(U)$.
+\end{proof}
+
+\begin{definition}[Local Sobolev spaces]\label{Sobolevloc}
+Let $U$ be an open subset of $\bbR^n$, $k\in\bbN$, and $1\leq p\leq\infty$. The local Sobolev space $W^{k,p}_\loc(U)$ consists of all locally integrable
+functions $u:U\to\bbR$ whose restriction to any pre-compact $V\Subset U$ lies in $W^{k,p}(V)$, i.e.
+\begin{align*}
+	W_\loc^{k,p}(U)=\left\{u\in L^1_\loc(U):\forall V\Subset U,\ u|_V\in W^{k,p}(V)\right\}.
+\end{align*}
+We say a sequence of functions $u_m\in W_\loc^{k,p}(U)$ converges to $u$ in $W_\loc^{k,p}(U)$ if $\Vert u_m -u\Vert_{W^{k,p}(V)}\to 0$ as $m\to\infty$ for all pre-compact $V\Subset U$.
+\end{definition}
+\paragraph{Remark.} To summarize, for $k\in N$ and $1\leq p\leq\infty$, there are the, in general strict, inclusions
+\begin{align*}
+\begin{matrix}
+	L^p(U) &\subset &L^p_\loc(U) &\subset &L^1_\loc(U)\\
+	\cup & ~ & \cup & ~ & \cup\\
+	W^{k,p}(U) &\subset & W^{k,p}_\loc(U) &\subset & W^{k,1}_\loc(U)
+\end{matrix}
+\end{align*}
+Next we are going to discuss approximation of Sobolev functions.
+
+\begin{theorem}[Local approximation by smooth functions]\label{thm:2.10}
+Assume $1\leq p<\infty$. For each $u\in W^{k,p}(U)$, the function $u^\epsilon=\eta_\epsilon*\ol{u}^{(\epsilon)}\in C^\infty(U)$ for each $\epsilon>0$, and $u^\epsilon\to u$ in $W_\loc^{k,p}(U)$ as $\epsilon\to 0$.
+\end{theorem}
+\begin{proof}
+According to Proposition \ref{prop:1.8} and the Remark under Lemma \ref{lemma:2.4}, $u^\epsilon\to u$ and $D^\alpha u^\epsilon\to D^\alpha u$ in $L^p(V)$ as $\epsilon\to 0$ for all $\vert\alpha\vert\leq k$ and all pre-compact $V\Subset U$. Then
+\begin{align}
+	\Vert u^\epsilon-u\Vert_{W^{k,p}(V)}^p=\sum_{\vert\alpha\vert\leq k}\Vert D^\alpha u^\epsilon-D^\alpha u\Vert_{L^p(V)}^p\to 0\quad as\ \ \epsilon\to 0.\label{eq:2.3}
+\end{align}
+Hence $u^\epsilon\to u$ in $W_\loc^{k,p}(U)$ as $\epsilon\to 0$.
+\end{proof}
+
+\paragraph{Remark.} If $U=\bbR^n$, the convergence (\ref{eq:2.3}) remains valid by Proposition \ref{prop:1.5} when we replace $V$ by $\bbR^n$. Consequently, $C^\infty(\bbR^n)\cap W^{k,p}(\bbR^n)$ is dense in $W^{k,p}(\bbR^n)$ for $k\in\bbN$ and $1\leq p<\infty$. Now we assume $u\in C^\infty(\bbR^n)\cap W^{k,p}(\bbR^n)$, and choose $\phi\in C_c^\infty(\bbR^n)$ such that $\phi(x)=1$ for $\vert x\vert\leq 1$ and $\phi(x)=0$ for $\vert x\vert\geq 2$. Let $\phi_R=\phi(x/R)$. Then $u^R:=\phi_Ru\in C_c^\infty(\bbR^n)$, and by Leibniz rule, we have 
+$$D^\alpha u^R=\phi_RD^\alpha u+\frac{1}{R}h_R\to D^\alpha u,\quad\textit{as}\ \ R\to\infty,$$ 
+where $h_R$ is bounded in $L^p$ uniformly in $R$. Hence $u^R\to u$ in $W^{k,p}(\bbR^n)$ as $R\to\infty$. Therefore, the space $C^\infty_c(\bbR^n)$ is dense in $W^{k,p}(\bbR^n)$ for $k\in\bbN$ and $1\leq p<\infty$.
+
+We denote by $W_0^{k,p}(U)$ the closure of $C_c^\infty(U)$ in $W^{k,p}(U)$:
+\begin{align*}
+	W_0^{k,p}(U):=\ol{C_c^\infty(U)}^{\Vert\cdot\Vert_{W^{k,p}(U)}}
+\end{align*}
+For the case $U=\bbR^n$, we have the result $W_0^{k,p}(\bbR^n)=W^{k,p}(\bbR^n)$. However, we do not have a similar global approximation conclusion for general $U\subset\bbR^n$.
+
+\begin{theorem}[Global approximation by smooth functions on bounded domains]\label{thm:2.11}
+Assume that $U\subset\bbR^n$ is open and bounded, and $1\leq p<\infty$. Then for each $u\in W^{k,p}(U)$, there exists a sequence of functions $u_m\in C^\infty(U)\cap W^{k,p}(\bbR^n)$ such that $u_m\to u$ in $W^{k,p}(U)$ as $m\to\infty$.
+\end{theorem}
+\begin{proof}
+We write $U_r=\{x\in U:d(x,\partial U)>1/r\}$, and $V_r:=U_{r+3}\backslash\ol{U}_{r+1}$, where $r=1,2,\cdots$. Take any open $V_0\Subset U_4$ such that $U=\bigcup_{r=0}^\infty V_r$, and choose a smooth partition of unity $\phi_r:U\to[0,1]$ subordinate to $(V_r)_{r=0}^\infty$:
+\begin{align*}
+\phi_r\in C_c^\infty(V_r),\quad \sum_{r=0}^\infty\phi_r=1\ \textit{on}\ U.
+\end{align*}
+Then for any $u\in W^{k,p}(U)$, we have $\phi_ru\in W^{k,p}(U)$ and $\supp(\phi_r u)\in V_r$. Now fix $\delta>0$, and choose $\epsilon_r>0$ so small that $u^r=\eta*(\phi_ru)$ satisfies
+\begin{align*}
+\Vert u^r-\phi_r u\Vert_{W^{k,p}(U)}\leq\frac{\delta}{2^{r+1}},\ r=0,1,2,\cdots;\quad \supp u^r\subset U_{r+4}\backslash\ol{U}_r,\  r=1,2,\cdots.
+\end{align*}
+Let $v=\sum_{r=0}^\infty u^r$. Then $v\in C^\infty(U)$, since for each open set $V\Subset U$ there are at most finitely many nonzero terms in the sum. Furthermore,
+\begin{align*}
+	\Vert v-u\Vert_{W^{k,p}(V)}\leq\sum_{r=0}^\infty\Vert u^r-\phi_r u\Vert_{W^{k,p}(U)}\leq\delta\sum_{r=1}^\infty\frac{1}{2^{r+1}}=\delta.
+\end{align*}
+Taking the supremum over open sets $V\Subset U$, we conclude that $\Vert v-u\Vert_{W^{k,p}(U)}\leq\delta$.
+\end{proof}
+
+Now we discuss the approximation of Sobolev functions even up to the boundary of domain $U$. To prepare, we introduce some regularity conditions on boundaries.
+
+\begin{definition}[Regularity of boundaries]\label{boundaries}
+For a pre-compact $U\Subset\bbR^n$, its boundary $\partial U$ is said to be \textit{Lipschitz}, if for each $x^0\in\partial U$, there exists a radius $r>0$ and a Lipschitz continuous map $\gamma:\Omega\to\bbR$, defined on an open set $\Omega\subset\bbR^{n-1}$ with Lipschitz constant, say $L_\gamma$, such that, after possibly relabeling and reorienting some coordinate axes, (i) the part of the boundary $\partial U$ inside the closed ball $B(x^0,r)$ is the graph of $\gamma$, and (ii) the part of $U$ inside the closed ball $B(x^0,r)$ is of the simple form
+\begin{align*}
+	U\cap B(x^0,r)=\left\{x\in B(x^0,r):x_n>\gamma(x_1,\cdots,x_n)\right\}.
+\end{align*}
+In addition, for any $k\in\bbN\cup\{\infty\}$, $\partial U$ is said to be $C^k$ if $\gamma\in C^k(\Omega)$.
+\end{definition}
+\paragraph{Remark.} By compactness of $\partial U$, we can choose finitely many tuples $(x_1^0,r_1,\gamma_1),\cdots,(x_N^0,r_N,\gamma_N)$ such that the open balls $B^0(x^0_1,r_1),\cdots.B^0(x^0_N,r_N)$ cover $\partial U$. Consequently, the Lipschitz maps $\gamma$ we choose are \textit{uniformly Lipschitz}. In other words, for all $x^0\in\partial U$, the map $\gamma$ we choose to describe the local geometry of $\partial U$ has Lipschitz constant smaller than $\gamma:=\max_{1\leq j\leq N}\gamma_j$.
+
+\paragraph{} In a domain $U$ whose boundary $\partial U$ is Lipschitz, we can approximate a Sobolev function using functions smooth up to the boundary, i.e. the functions in $C^\infty(\ol{U})$.
+
+\begin{theorem}[Global approximation by functions smooth up to the boundary of Lipschitz domains]\label{thm:2.13}
+Assume that $U\subset\bbR^n$ is open and bounded, $\partial U$ is Lipschitz, and $1\leq p<\infty$. Then for each $u\in W^{k,p}(U)$, there exists a sequence of functions $u_m\in C^\infty(\ol{U})$ such that $u_m\to u$ in $W^{k,p}(U)$ as $m\to\infty$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} In this step, we construct a space for mollification within $U$. Given $x^0\in\partial U$, we pick a radius $r>0$ and a Lipschitz map $\gamma$ whose graph is part of $\partial U$ inside $B(x^0,r)$. Define the closed horizontal double cone $\wt C_0$ and open upward cone $C_0$:
+\begin{align*}
+\wt C_0=\{(x^\prime,x_n)\in\bbR^n:\vert x_n\vert\leq L\vert x^\prime\vert\},\quad C_0=\{(x^\prime,x_n)\in\bbR^n: x_n> L\vert x^\prime\vert\}.
+\end{align*}
+Then for any $y\in\partial U$, the translated horizontal double cone $\wt C_{y}=y+\wt C_0$ contains $\partial U\cap B(y,r(y))$, and the translated open upward cone $C_{y}=y+C_0$ lies in $U$ within some radius $r(y)$ from $y$.
+
+Let $V=U\cap B^0(x^0,r/2)$. For any $x\in V$, define the upward shifted point
+\begin{align*}
+	x^\epsilon:=x+\epsilon\lambda e_n,\quad x\in V,\ \epsilon>0,
+\end{align*}
+where $\lambda>\sqrt{1+L^2}$ is so large that the ball $B(x^\epsilon,\epsilon)$ lies in the upward cone $C_{\tilde{x}}$ for all $0<\epsilon<1$, where $\tilde{x}\in\partial U\cap B(x_0,r/2)$ shares the same horizontal coordinates with $x$. Moreover, for all $\epsilon>0$ sufficiently small, the family $B(x^\epsilon,\epsilon)$ is located near $x$, hence in the open neighborhood $W:=U\cap B^0(x^0,r)$ for all $x\in V$.
+
+Now we define $u_\epsilon(x)=u(x^\epsilon)$ for all $x\in V$, which is the function $u$ translated a distance $\lambda\epsilon$ in the $e_n$ direction. Write $v^\epsilon=\eta_\epsilon*u_\epsilon$. Then $v^\epsilon$ is not only defined on $V$, because for any $\tilde{x}\in\partial U\cap B(x_0,r/2)$,
+\begin{align*}
+	v^\epsilon(\tilde{x})=\int_{B(\tilde{x},\epsilon)}\eta_\epsilon(\tilde{x}-y)u_\epsilon(y)\,dy=\int_{B(\tilde{x},\epsilon)}\eta_\epsilon(\tilde{x}-y)u(\underbrace{y+\epsilon\lambda e_n}_{\in B(\tilde{x}+\epsilon\lambda e_n,\epsilon)})\,dy.
+\end{align*}
+Since $B(\tilde{x}+\epsilon\lambda e_n,\epsilon)\subset C_{\tilde{x}}$, $	v^\epsilon(\tilde{x})$ is well-defined. Consequently, $v^\epsilon$ is also defined on a sufficiently small neighborhood of $\tilde{x}\in\partial V\cap\partial U$, and $v^\epsilon\in C^\infty(\ol{V})$.
+
+\textit{Step II:} We prove that $v^\epsilon\to u$ in $W^{k,p}(V)$. To this end, we take any multi-index $\vert\alpha\vert\leq k$. Then
+\begin{align*}
+	\Vert\partial^\alpha v^\epsilon-D^\alpha u\Vert_{L^p(V)}&\leq\Vert\partial^\alpha v^\epsilon-D^\alpha u_\epsilon\Vert_{L^p(V)}+\Vert D^\alpha u_\epsilon-D^\alpha u\Vert_{L^p(V)}\\
+	&=\Vert\eta_\epsilon*(D^\alpha u_\epsilon)-D^\alpha u_\epsilon\Vert_{L^p(V)}+\Vert D^\alpha u_\epsilon-D^\alpha u\Vert_{L^p(V)}\\
+	&\leq\left\Vert\eta_\epsilon*(D^\alpha u)-D^\alpha u\right\Vert_{L^p(\bbR^n)}+\Vert D^\alpha u_\epsilon-D^\alpha u\Vert_{L^p(\bbR^n)}
+\end{align*}
+The first term vanishes as $\epsilon\to 0$ by Proposition \ref{prop:1.6}, and the second term also vanishes by continuity of translation operator in $L^p$-norm.\vspace{0.1cm}
+
+\textit{Step III:} We finally prove the global result via partition of unity. Pick $\delta>0$. By compactness of $\partial U$, there exist finitely many points $x_i^0\in\partial U$, radii $r_i>0$, corresponding sets $V_i=U\cap B^0(x_i^0,\frac{r_i}{2})$ and functions $v^i\in C^\infty(V_i)$, where $i=1,\cdots,N$ such that the open balls $B^0(x_i^0,\frac{r_i}{2})$ form a cover of $\partial U$, and (by Step II) $$\Vert v^i-u\Vert_{W^{k,p}(V_i)}<\delta.$$ 
+Choose $V_0\Subset U$ such that $(V_i)_{i=0}^N$ is an open cover $U$, and $v^0\in C^\infty(\ol{V}_0)$ such that $\Vert v^0-u\Vert_{W^{k,p}(V_0)}<\delta$ by Theorem \ref{thm:2.10}. By taking a smooth partition of unity $(\phi_i)_{i=0}^N$
+subordinate to the open cover, we construct a smooth function $v=\sum_{i=0}^N\phi_iv_i\in C^\infty(\ol{U})$. Furthermore, for each $\vert\alpha\vert\leq k$, one have
+\begin{align*}
+	\Vert D^\alpha v-D^\alpha u\Vert_{L^p(U)}&\leq\sum_{i=1}^N\Vert D^\alpha(\phi_i v_i)-D^\alpha(\phi_i u)\Vert_{L^p(V_i)}\\
+	&\leq\sum_{i=1}^N\left\Vert\sum_{\beta\leq\alpha}{\alpha\choose\beta}D^\beta\phi_i(D^{\alpha-\beta}v_i-D^{\alpha-\beta}u)\right\Vert_{L^p(V_i)}\\
+	&\leq C\sum_{i=1}^N\Vert v_i-u\Vert_{W^{k,p}(U)}\leq C(N+1)\delta
+\end{align*}
+for some constant $C=C(k,p)>0$. Since $\delta>0$ can be arbitrarily small, the proof is completed.
+\end{proof}
+
+\subsection{Absolute Continuity on Lines} 
+In this section, we discuss the relation between the weak partial derivatives and the classical partial derivatives. Throughout this discussion, the absolute continuity of functions restricted to line segments plays an important role. Keep in mind that we identify functions that agree a.e..
+
+\begin{theorem}[ACL characterization]\label{ACLchar}
+Let $1\leq p\leq\infty$ and $u\in L^p(U)$. Then $u\in W^{1,p}(U)$ if and only if $u$ has a representative $\ol{u}$ that has the ACL property, i.e. $\ol{u}$ is \emph{a}bsolutely \emph{c}ontinuous on almost all \emph{l}ine segments in $U$ parallel to the coordinate axes and whose (classical) partial derivatives exist a.e. and belong to $L^p(U)$. Moreover, the (classical)
+partial derivatives of $\ol{u}$ agree a.e. with the weak derivatives of $u$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} We first suppose that $u\in W^{1,p}(U)$, and find its representative $\ol{u}$ having the desired property. \vspace{0.2cm}
+
+\textsc{Case I: $1\leq p<\infty$.}  Write $x\in I$ as $x=(x_{-i},x_i)$, where
+\begin{align*}
+	x_{-i}\in U_i:=\left\{t_{-i}\bbR^{n-1}:\{(t_{-i},t_i):t_i\in\bbR\}\cap U\neq\emptyset\right\},\quad and\quad x_i\in U_{x_{-i}}:=\left\{t_i\in\bbR:(x_{-i},t_i)\in U\right\}
+\end{align*} 
+By Theorem \ref{thm:2.10}, the mollifiers $u^\epsilon$ converges to $u$ in $W^{k,p}(V)$ for any $V\Subset U$. By Fubini's theorem,
+\begin{align*}
+	\lim_{\epsilon\to 0}\int_{U_i}\int_{V_{x_{-i}}}\sum_{\vert\alpha\vert\leq1}\vert D^\alpha u^{\epsilon}(x_{-i},x_i)-D^\alpha u(x_{-i},x_i)\vert^p dx_i\,dx_{-i}=0.
+\end{align*}
+Consequently, we can find a subsequence $\epsilon_l\to 0$ such that \begin{align}
+\lim_{l\to\infty}\int_{V_{x_{-i}}}\sum_{\vert\alpha\vert\leq1}\vert D^\alpha u^{\epsilon_l}(x_{-i},x_i)-D^\alpha u(x_{-i},x_i)\vert^pdx_i=0\quad for\ a.e.\ x_{-i}\in U_i.\label{eq:2.6}
+\end{align}
+
+Denote $u_l=u^{\epsilon_l}$, and let $\ol{u}=\lim_{l\to\infty}u_l$. By Proposition \ref{prop:1.8}, $\ol{u}$ agrees with $u$ except on a Lebesgue null set $E\subset U$. Again by Fubini's theorem,
+\begin{align*}
+	\int_{U_i}\int_{U_{x_{-i}}}\sum_{\vert\alpha\vert=1}\vert D^\alpha u(x_{-i},x_i)\vert^p\,dx_i\,dx_{-i}<\infty,\quad\int_{U_i}\mathcal{L}^1(\{x_i\in U_{x_{-i}}:(x_{-i},x_i)\in E\})\,dx_{-i}=0.
+\end{align*}
+Correspondingly, we may find a set $N_i\subset U_i$ with $\mathcal{L}^{n-1}(N_i)=0$ such that for all $x_{-i}\in U_i\backslash N_i$,
+\begin{align*}
+	\int_{U_{x_{-i}}}\sum_{\vert\alpha\vert=1}\vert D^\alpha u(x_{-i},x_i)\vert^p\,dx_i<\infty,\quad \mathcal{L}^1(\{x_i\in U_{x_{-i}}:(x_{-i},x_i)\in E\})=0.
+\end{align*}
+Fix any such $x_{-i}$, and let $I\subset U_{x_{-i}}$ be a maximal open interval. Fix $t_0\in I$ with $(x_{-i},t_0)\in U\backslash E$, and let $t\in I$. Then there exists an open set $V\Subset U$ containing both $(x_{-i},t_0)$ and $(x_{-i},t)$. Since $u_l\in C^\infty(V)$, by fundamental theorem of calculus, one have
+\begin{align*}
+	u_l(x_{-i},t)=u_l(x_{-i},t_0)+\int_{t_0}^t\partial_{x_i}u_l(x_{-i},s)\,ds.
+\end{align*}
+Since $(x_{-i},t_0)\in U\backslash E$, we have $u_l(x_{-i},t_0)\to\ol{u}(x_{-i},t_0)$. Moreover, by (\ref{eq:2.6}),
+\begin{align*}
+	\lim_{l\to\infty}\int_{t_0}^t\vert\partial_{x_i}u_l(x_{-i},s)-D_{x_i}u(x_{-i},s)\vert\,ds=0.
+\end{align*}
+Therefore, once $(x_{-i},t_0)\in U\backslash E$, which holds for a.e. $t\in I$, we have
+\begin{align*}
+	\ol{u}(x_{-i},t)=\ol{u}(x_{-i},t_0)+\int_{t_0}^t\partial_{x_i}u(x_{-i},s)\,ds.
+\end{align*}
+It is seen that the function $\ol{u}(x_{-i},\cdot)$ is absolutely continuous in $I$, and $\partial_{x_i}\ol{u}=D_{x_i}u$ for a.e. $t\in I$.\vspace{0.2cm}
+
+\textsc{Case II: $p=\infty$.} We first consider an open ball $B\Subset U$, and prove that $u$ is Lipschitz in $B$. Since $u\in W^{1,\infty}(U)$, there exists $M>0$ such that $\esssup_{U}\vert Du\vert\leq M$. Then for all $\epsilon>0$ small enough,
+\begin{align*}
+	u^\epsilon(x)=(\eta_\epsilon*u)(x)\quad and\quad \partial_{x_i} u^\epsilon(x)=(\eta_\epsilon*D_{x_i}u)(x),\ i=1,\cdots,n,\quad \forall x\in B.
+\end{align*}
+Hence $\Vert u^\epsilon\Vert_{L^\infty(B)}\leq\Vert u\Vert_{L^\infty(B)}$, and $\sup_B\vert\nabla u^\epsilon\vert\leq\esssup_B\Vert Du\Vert_\infty\leq M$. This implies that the family $(u^\epsilon)$ is uniformly bounded and equicontinuous:
+\begin{align*}
+	\vert u^\epsilon(x)-u^\epsilon(y)\vert\leq M\vert x-y\vert.
+\end{align*}
+By Arzelà-Ascoli theorem, we may find a subsequence $\epsilon_l\to 0$ such that $u_l:=u^{\epsilon_l}$ converges uniformly to a function $\ol{u}:B\to\bbR$ as $l\to\infty$, and $\vert\ol{u}(x)-\ol{u}(y)\vert\leq M\vert x-y\vert$. Note $u=\ol{u}$ a.e. in $B$.
+
+By covering $U$ with countably many balls and applying the standard diagonal trick, we can extend $u$ to a continuous function $\ol{u}:U\to\bbR$ such that $u=\ol{u}$ a.e..
+
+Now we prove that $\ol{u}$ is Lipschitz on all segments $I$ in $U$. If $I$ falls in a ball, the result is clear. Otherwise, by compactness of $I$, we can find finitely many balls $B_i$ covering $I$ and points $x_0,x_1,\cdots,x_N\in U$ such that the segment $I=\{tx_0+(1-t)x_N:t\in[0,1]\}$ consists of $N$ subsegments $I_i=\{tx_{i-1}+(1-t)x_i:t\in[0,1]\}\subset B_i$, where $i=1,\cdots,N$. For any $x,y\in I$, with $x_{j+1},x_{j+2},\cdots,x_k\in\{tx+(1-t)y:t\in[0,1]\}$, we have
+\begin{align*}
+	\vert u(x)-u(y)\vert&\leq\vert u(x)-u(x_j)\vert + \vert u(x_{j+1})-u(x_j)\vert +\cdots +\vert u(x_k)-u(x_{k-1})\vert + \vert u(y)-u(x_k)\vert\\
+	&\leq M\vert x-x_j\vert + M\vert x_j-x_{j-1}\vert + \cdots + M\vert x_k-x_{k-1}\vert + M\vert y-x_k\vert=M\vert x-y\vert.
+\end{align*}
+Hence $\ol{u}$ is Lipschitz on $I$. If $I$ is parallel to any coordinate axis, the partial derivative of $\ol{u}$ with respect to the corresponding variable is bounded by $M$. Hence $\partial_{x_i}\ol{u}\in L^\infty(U)$.\vspace{0.2cm}
+
+\textit{Step II:} Conversely, let $\ol{u}$ be the representative of $u$ having the desired property. Fix $i=1,\cdots,n$ and let $x_{-i}\in U_i$ be such that $\ol{u}(x_{-i},\cdot)$ is absolutely continuous on every connected component of the open set $U_{x_{-i}}$. Then for every $\phi\in C^\infty_c(U)$, $\ol{u}(x_{-i},\cdot)\phi(x_{-i},\cdot)$ is absolutely continuous. By the integration by parts formula,
+\begin{align*}
+	\int_{U_{x_{-i}}}\ol{u}(x_{-i},t)\partial_{x_i}\phi(x_{-i},t)\,dt=-\int_{U_{x_{-i}}}\partial_{x_i}\ol{u}(x_{-i},t)\phi(x_{-i},t)\,dt,
+\end{align*}
+which holds for a.e. $x_{-i}\in U_i$. Integrating over $U_i$ and using Fubini's theorem yields
+\begin{align*}
+	\int_U\ol{u}(x)\partial_{x_i}\phi(x)\,dx=\int_U\partial_{x_i}\ol{u}(x)\phi(x)\,dx.
+\end{align*}
+Therefore, $D^{e_i}\ol{u}=\partial^{e_i}\ol{u}\in L^p(U)$ for all $i=1,\cdots,n$, and $u\in W^{1,p}(U)$.
+\end{proof}
+\paragraph{Remark.} In the case $W^{1,\infty}(U)$, we did not require $I$
+to be coordinate-aligned, and the Lipschitz property holds on all line segments. We next introduce a very useful characterization of space $W^{1,\infty}(U)$.
+
+\begin{theorem}\label{thm:2.15}
+Let $U\subset\bbR^n$ be a convex set. Then $C^{0,1}(\ol{U})=W^{1,\infty}(U)$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} Let $u\in C^{0,1}(\ol{U})$. Then $u$ is Lipschitz on every segment parallel to coordinates axis, with partial derivatives bounded by $[u]_{C^{0,1}(\ol{U})}$. This implies $u\in W^{1,\infty}(U)$.
+
+\textit{Step II:} Conversely, let $u\in W^{1,\infty}(U)$. According to our construction of $\ol{u}$ in the Step I in the proof of Theorem \ref{ACLchar}, $u$ admits a representative $\ol{u}$ that is Lipschitz on all line segments in $U$ with Lipschitz constant $M\geq\esssup_U\vert Du\vert$. Since $U$ is convex, the line segment connecting any two points $x,y\in U$ lies in $U$, and the global Lipschitzness follows. Noticing that $u\in L^\infty(U)$, we have $u\in C^{0,1}(\ol{U})$.
+\end{proof}
+
+\newpage
+\section{Extensions and Traces}
+\subsection{Extensions}
+In this section, we discuss the extension of functions in the Sobolev space. Whereas in the realm of $L^p$ spaces extending an $L^p$ function on a domain $U\subset\bbR^n$ to all $\bbR^n$ within $L^p$ is trivial, just extend naturally by zero. This does not work for Sobolev spaces, already not for those of first order $W^{1,p}$. A key point is to jump singularities across $\partial$ that obstruct existence of weak derivatives. We let $1\leq p\leq\infty$ throughout this section.
+\begin{theorem}[Extension]\label{sobolevextension}
+Assume that $U\Subset\bbR^n$ is bounded and $\partial U$ is Lipschitz. Then for any bounded open set $V$ that contains the closure of $U$, in symbols $U\Subset V\Subset\bbR^n$, there is a bounded linear operator
+\begin{align*}
+	E:W^{1,p}(U)\to W^{1,p}(V)\hookrightarrow W^{1,p}(\bbR^n),\quad u\mapsto Eu=\ol{u},
+\end{align*}
+such that (i) $\ol{u}|_U=u\ a.e.$; (ii) $\ol{u}$ is compactly supported in $V$; and (iii)
+\begin{align}
+	\Vert\ol{u}\Vert_{W^{1,p}(\bbR^n)}=\Vert\ol{u}\Vert_{W^{1,p}(V)}\leq c\Vert u\Vert_{W^{1,p}(U)}, \label{consext}
+\end{align}
+where $c>0$ is a constant depending on $n$, $p$, $U$ and $V$.
+\end{theorem}
+\paragraph{Remark.} The function $Eu=\ol{u}$ is called an \textit{extension} of $u$ on $\bbR^n$.
+\begin{proof}
+\textit{Step I:} In this step, we derive the extension operator in the half ball model. Let $B\subset\bbR^n$ be the open ball with center $x^0$ lying in the hyperplane $\{x_n=0\}$ and of radius $r$. Define
+\begin{align*}
+	B_+:=B\cap\{x_n>0\},\quad B_-:=B\cap\{x_n<0\}.
+\end{align*}
+We prove that there exists a linear map
+\begin{align*}
+	E_0:W^{1,p}(B_+)\to W^{1,p}(B),\quad u\mapsto E_0u=\ol{u}
+\end{align*}
+such that $\ol{u}|_{B^+}=u$, and
+\begin{align}
+	\Vert\ol{u}\Vert_{W^{1,p}(B)}\leq 16\Vert u\Vert_{W^{1,p}(B_+)}.\label{eq:3.1}
+\end{align}
+\textsc{Case I: $1\leq p<\infty$.} Without loss of generality, we suppose $u\in C^1(\ol{B}_+)$. By Theorem \ref{thm:2.13}, the first two spaces in the inclusion $C^\infty(\ol{B}_+)\subset C^1(\ol{B}_+)\subset W^{1,p}(B_+)$ are both dense in $W^{1,p}(B_+)$. Therefore, if we can construct a linear operator $E_0:C^1(\ol{B}_+)\to C^1(\ol{B})$ satisfying (\ref{eq:3.1}), then we can extend it to $E_0:W^{1,p}(B_+)\to W^{1,p}(B)$ by a density argument and completeness of $W^{1,p}(B)$. To this end, we define
+\begin{align*}
+	\ol{u}(x)=\begin{cases}
+		u(x),\ &x\in\ol{B}_+,\\
+		-3u(x^\prime,-x_n)+4u(x^\prime,-\frac{x_n}{2}),\ &x=(x^\prime,x_n)\in \ol{B}_-.
+	\end{cases}
+\end{align*}
+We claim that $\ol{u}\in C^1(\ol{B})$. To check this, we write $u^+=\ol{u}|_{\ol{B}_+}$ and $u^-=\ol{u}|_{\ol{B}_-}$. Clearly, we have $u^+=u^-$ on $B\cap\{x_n=0\}$. Furthermore,
+\begin{align*}
+	&\partial_{x_i}u^-(x^\prime,x_n)=-3\partial_{x_i}u(x^\prime,-x_n)+4\partial_{x_i}u(x^\prime,-\frac{x_n}{2}),\quad i=1,\cdots,n-1,\\
+	&\partial_{x_n}u^-(x^\prime,x_n)=3\partial_{x_n}u(x^\prime,-x_n)-2\partial_{x_n}u(x^\prime,-\frac{x_n}{2}).
+\end{align*}
+Hence we have $\partial^\alpha u^+=\partial^\alpha u^-$ along $B\cap\{x_n=0\}$ for all $\vert\alpha\vert\leq 1$, and $\overline{u}\in C^1(\ol{B})$.
+
+Now we derive the estimate (\ref{eq:3.1}). By Jensen's inequality,
+\begin{align*}
+	&\vert u^-(x^\prime, x_n)\vert^p\leq 2^{p-1}\left(\vert 3u(x^\prime,-x_n)\vert^p+\left\vert 4u(x^\prime,-\frac{x_n}{2})\right\vert^p\right)\leq 2^{3p-1}\left(\vert u(x^\prime,-x_n)\vert^p+\left\vert u(x^\prime,-\frac{x_n}{2})\right\vert^p\right)
+\end{align*}
+Integrate on both sides of the last display, and change the variable $x_n$:
+\begin{align*}
+\Vert u^-\Vert_{L^p(B_-)}^p\leq 2^{3p-1}\Vert u\Vert_{L^p(B_+)}^p+2^{3p}\Vert u\Vert_{L^p(B_+)}^p\leq 2^{3p+1}\Vert u\Vert_{L^p(B_+)}^p.
+\end{align*}
+Similarly, we have $\Vert\partial_{x_i}u^-\Vert_{L^p(B^-)}^p\leq 2^{3p+1}\Vert\partial_{x_i}u\Vert_{L^p(B^+)}^p$ for all $i=1,\cdots,n$. Henceforth,
+\begin{align*}
+	\Vert\ol{u}\Vert_{W^{1,p}(B)}^p = \sum_{\vert\alpha\vert\leq 1}\Vert\partial^\alpha\ol{u}\Vert_{L^p(B)}^p = \sum_{\vert\alpha\vert\leq 1}\left(\Vert\partial^\alpha u^+\Vert_{L^p(B_+)}^p+\Vert\partial^\alpha u^-\Vert_{L^p(B_-)}^p\right)\leq 2^{4p}\Vert u\Vert_{W^{1,p}(B_+)}^p.
+\end{align*}
+\textsc{Case II: $p=\infty$.} By Theorem \ref{thm:2.15}, we have $C^{0,1}=W^{1,\infty}$ for both $B_+$ and $B$. We then consider the map $E_0$ given by simple horizontal reflection:
+\begin{align*}
+	E_0:C^{0,1}(B_+)\to C^{0,1}(B),\quad u\mapsto\ol{u}:B\ni(x^\prime,x_n)\mapsto u(x^\prime,\vert x_n\vert).
+\end{align*}
+Then $\ol{u}$ is indeed Lipschitz with the same Lipschitz constant as $u$, and
+\begin{align*}
+	\Vert\ol{u}\Vert_{W^{1,\infty}(B)}=\max_{\vert\alpha\vert\leq k}\esssup_{B}\vert D^\alpha\ol{u}\vert=\max_{\vert\alpha\vert\leq k}\esssup_{B_+}\vert D^\alpha u\vert=\Vert u\Vert_{W^{1,\infty}(B_+)},
+\end{align*}
+
+\textit{Step II:} In this step we extend $u$ near $x_0\in\partial U$. If $\partial U$ is not flat near $x^0$, we can find a Lipschitz map $\gamma:\bbR^{n-1}\supset\Omega\to\bbR$ with Lipschitz constant $M$ whose graph coincides the part of $\partial U$ within a small ball $B(x^0,r)$. Consider the neighborhoods $X=\Omega\times\bbR$ of $x^0=(x^0_{-n},x^0_n)$ and $Y=\Omega\times\bbR$ of $y^0=(x^0_{-n},0)$. Define
+\begin{align*}
+	&\Phi:X\to Y,\quad x\mapsto\Phi(x):=(x_1,\cdots,x_{n-1},x_n-\gamma(x_1,\cdots,x_{n-1})),\\
+	&\Psi:Y\to X,\quad y\mapsto\Psi(y):=(y_1,\cdots,y_{n-1},y_n+\gamma(y_1,\cdots,y_{n-1})).
+\end{align*}
+Then $\Phi=\Psi^{-1}$ is a bi-Lipschitz map, since $$\vert\Phi(x)-\Phi(z)\vert\leq\sqrt{2(1+M^2)}\vert x-z\vert\quad and\quad \vert\Psi(y)-\Psi(z)\vert\leq\sqrt{2(1+M^2)}\vert y-z\vert.$$ 
+By definition, $\Phi$ flattens $\partial U$ near $x^0$. By Rademacher’s Theorem, the graph map $\gamma$ is
+differentiable for a.e. $x_{-n}\in\Omega$. Hence the linearizations of $\Phi$ and $\Psi$ exist pointwise a.e. and, furthermore, the Jacobian is triangular with diagonal elements $1$. Thus $\det D\Phi = 1 = \det D\Psi$ pointwise a.e..
+
+Now we derive the local extension of $u\in W^{k,p}(U)$ near $x^0\in\partial D$. Pick a small ball $B$ centered at $y^0=\Phi(x^0)$ and contained in the open neighborhood $\Phi(B^0(x^0,r))$ of $y^0$. Let $B_+$ be the upper open half ball of $B$, and consider the restriction of $u$ to the open set $V=\Psi(B_+)$. Then $u\in W^{1,p}(V)$.
+
+Next pull back $u:V\to\bbR$ to the $y$ coordinates to obtain the function $v:= u\circ\psi:B_+\to\bbR$ which lies in $W^{1,p}(B_+)$ by Proposition, and $\Vert v\Vert_{W^{1,p}(B_+)}=\Vert u\Vert_{W^{1,p}(V)}$. Then we employ the extension operator constructed in Step I to pick an extension $\ol{v}=E_0v$ of $v=u\circ\psi$ from the upper half ball $B_+$ to the whole ball $B$. The extension of $u$ from $V=\Psi(B_+)$ to $A=\Psi(B)$ is defined by
+\begin{align*}
+	\ol{u}=\ol{v}\circ\Phi\in W^{1,p}(A),\quad \Vert\ol{u}\Vert_{W^{1,p}(A)}=\Vert\ol{v}\Vert_{W^{1,p}(B)}.
+\end{align*}
+According to estimate (\ref{eq:3.1}), we have
+\begin{align}
+	\Vert\ol{u}\Vert_{W^{1,p}(A)}=\Vert\ol{v}\Vert_{W^{1,p}(B)}\leq 16\Vert v\Vert_{W^{1,p}(B^+)}= 16\Vert u\Vert_{W^{1,p}(V)}.\label{eq:3.2}
+\end{align}
+
+\textit{Step III:} In this step, we extend $u$ globally via a finite partition of unity. By Step II and compactness of $\partial U$, there exist finitely many $x_i^0\in\partial U$ and local extensions $\ol{u}_i=\ol{v}^i\circ\Phi:A_i\to\bbR$ covering $\partial U$, where $i=1,\cdots,N$. Now we pick $A_0\Subset U$ such that $U\Subset A:=\bigcup_{i=0}^NA_i\Subset\bbR^n$, and pick a smooth partition of unity $(\phi_i)_{i=0}^N$ subordinate to the open cover $(A_i)_{i=0}^N$ of $U$. Extend $U$ to $A$ by $\ol{u}=\sum_{i=0}^N\phi_i\ol{u}_i\in W^{1,p}(A)$.
+We then have the following estimate of $\Vert\ol{u}\Vert_{W^{1,p}(A)}$:
+\begin{align*}
+\Vert\ol{u}\Vert_{W^{k,p}(A)}\leq\sum_{i=0}^N\Vert\phi_i\ol{u}_i\Vert_{W^{1,p}(A_i)}&\leq\sum_{i=0}^N 2n^{1/p}\Vert\phi_i\Vert_{W^{1,\infty}(A_i)}\Vert\ol{u}_i\Vert_{W^{k,p}(A_i)}\tag{By product rule}\\
+&\leq 2n^{1/p}\max_{1\leq i\leq N}\Vert \phi_i\Vert_{W^{1,\infty}(A_i)}\sum_{i=0}^N\Vert\ol{u}_i\Vert_{W^{1,p}(A_i)}\\
+&\leq\underbrace{32n^{1/p}(1+N)\max_{1\leq i\leq N}\Vert \phi_i\Vert_{W^{1,\infty}(A_i)}}_{=:c}\Vert u\Vert_{W^{1,p}(U)},\tag{By estimate (\ref{eq:3.2})}
+\end{align*}
+where we use $1/p=0$ when $p=\infty$. Then $c$ is a constant depending only on $n,p$ and $U$. Furthermore, the linearity of the mapping $u\mapsto\ol{u}$ follows from $E_0$ in Step I.\vspace{0.1cm}
+
+\textit{Step IV:} Given $u\in W^{1,p}(U)$ and $U\Subset V\Subset\bbR^n$, we have $U\Subset(V\cap A)\Subset\bbR^n$. We then pick up a cutoff function $\chi\in C_c^\infty(V\cap A)$ with $0\leq\chi\leq 1$ and $\chi\equiv 1$ on $U$. Then $\chi\ol{u}\in W^{1,p}(V)$, where $\ol{u}$ constructed in Step III is restricted to $V$. Furthermore, we have the following estimate for $\Vert\chi\ol{u}\Vert_{W^{1,p}(V)}$:
+\begin{align*}
+	\Vert\chi\ol{u}\Vert_{W^{1,p}(V)}=\Vert\chi\ol{u}\Vert_{W^{1,p}(V\cap A)}\leq\Vert\chi\ol{u}\Vert_{W^{1,p}(A)}\leq 2n^{1/p}\Vert\chi\Vert_{W^{1,\infty}(A)}\Vert\ol{u}\Vert_{W^{k,p}(A)}\leq 2cn^{1/p}\Vert u\Vert_{W^{1,p}(U)}.
+\end{align*}
+This completes the proof.
+\end{proof}
+
+\paragraph{Remark.} (i) If $1\leq p<\infty$, by Theorem \ref{thm:2.11}, we can approximate $u\in W^{1,p}(V)$ by a sequence of functions $v_l\in C^\infty(V)$, and $C^\infty_c(V)\ni \chi v_l\to \chi\ol{u}$ in $W^{1,p}(V)$. Consequently, the extension $\ol{u}\in W_0^{1,p}(V)$:
+\begin{align*}
+	E:W^{1,p}(U)\to W^{1,p}_0(V)\hookrightarrow W^{1,p}(\bbR^n),\ \ u\mapsto Eu:=\ol{u}.
+\end{align*}
+(ii) If $p=\infty$, the constant $c$ in (\ref{consext}) is actually independent of $n$.
+
+\begin{theorem}\label{thm:3.2}
+Let $U$ be a bounded, open subset of $\bbR^n$, and let $\partial U$ be Lipschitz. Then $C^{0,1}(\ol{U})=W^{1,\infty}(U)$.
+\end{theorem}
+\begin{proof}
+If $u\in C^{0,1}(\ol{U})$, we can apply Step I in the proof of Theorem \ref{thm:2.15} to argue that $u\in W^{1,\infty}(U)$. Conversely, if $u\in W^{1,\infty}(U)$, we can simply apply Step I in the proof of Theorem \ref{thm:2.15} to the extension $Eu$ of $u$ on $\bbR^n$, which is a convex set.
+\end{proof}
+
+\subsection{Traces}
+
+\newpage
+\section{Sobolev Inequalities}
+\subsection{Sub-dimensional Case $p<n$: Gagliardo-Nirenberg-Sobolev Inequality}
+In this section, we suppose $1\leq p <n$, and we consider the following basic question: Can we estimate the $L^q(\bbR^n)$-norm of a smooth, compactly supported function in terms of the $L^p(\bbR^n)$-norm of its derivative. In other words, we are looking for an estimate of the form
+\begin{align}
+	\Vert u\Vert_{L^q(\bbR^n)}\leq c\Vert Du\Vert_{L^p(\bbR^n)},\quad u\in C_c^\infty(\bbR^n).\label{eq:4.1}
+\end{align}
+\paragraph{A scaling argument.} We wonder if the estimate (\ref{eq:4.1}) holds for any $q\in[1,\infty]$. Take $u\in C_c^\infty(\bbR^n)$ with $u\not\equiv 0$, and define for $\lambda>0$ the rescaled function $u_\lambda(x)=u(\lambda x)$. Then
+\begin{align*}
+	Du_\lambda=\lambda(Du)_\lambda.
+\end{align*}
+We then obtain
+\begin{align*}
+	&\Vert u_\lambda\Vert_{L^q(\bbR^n)}=\left(\int_{\bbR^n}\vert u_\lambda\vert^q\,dx\right)^{1/q}=\left(\lambda^{-n}\int\vert u\vert^q\,dx\right)^{1/q}=\lambda^{-n/q}\Vert u\Vert_{L^q(\bbR^n)},\\
+	&\Vert Du_\lambda\Vert_{L^p(\bbR^n)}=\left(\sum_{\vert\alpha\vert=1}\int_{\bbR^n}\vert D^\alpha u\vert^p\right)^{1/p}=\left(\lambda^{p-n}\sum_{\vert\alpha\vert=1}\int_{\bbR^n}\vert D^\alpha u\vert^p\right)^{1/p}=\lambda^{1-n/p}\Vert Du\Vert_{L^p(\bbR^n)}.
+\end{align*}
+These norms must scale according to the same exponent, otherwise (\ref{eq:4.1}) is falsified by letting $\lambda\to 0$ or $\lambda\to\infty$. Hence we have $n/p-n/q=1$, and $q=\frac{np}{n-p}$.
+
+\begin{definition}[Sobolev conjugate]
+If $1\leq p<n$, the Sobolev conjugate of $p$ is
+\begin{align*}
+	p^*=\frac{np}{n-p}.
+\end{align*}
+Note that $\frac{1}{p^*}=\frac{1}{p}-\frac{1}{n}$, and $p^*>p$.
+\end{definition}
+\paragraph{} We have the following estimate for $L^{p^*}$-norm f a Sobolev function.
+\begin{theorem}[Gagliardo-Nirenberg-Sobolev inequality]
+Assume that $1\leq p<n$. There exists a constant $C$, depending on $p$ and $n$ only, such that
+\begin{align}
+	\Vert u\Vert_{L^{p^*}(\bbR^n)}\leq C\Vert Du\Vert_{L^p(\bbR^n)},\quad\forall u\in C^1_c(\bbR^n).\label{gnsinequality}
+\end{align}
+\end{theorem}
+\begin{proof}
+\textit{Step I:} We first prove the case $p=1$. Since $u$ has compact support, we have
+\begin{align*}
+	u(x)=\int_{-\infty}^{x_i}\partial_{x_i}u(x_1,\cdots,x_{i-1},y_i,x_{i+1},\cdots,x_n)\,dy_i,
+\end{align*}
+We denote by $\vert Du\vert_1=\vert\partial_{x_1}u\vert+\cdots+\vert\partial_{x_n}u\vert$. Then
+\begin{align*}
+	\vert u(x)\vert\leq\int_{-\infty}^{x_i}\vert\partial_{x_i}u(x_1,\cdots,x_{i-1},y_i,x_{i+1},\cdots,x_n)\vert\,dy_i\leq\int_{-\infty}^{\infty}\vert Du\vert_1\,dx_i.
+\end{align*}
+Consequently,
+\begin{align*}
+	\vert u(x)\vert^{\frac{n}{n-1}}\leq\prod_{i=1}^n\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_i\right)^{\frac{1}{n-1}}.
+\end{align*}
+We integrate both sides of the last display with respect to the variable $x_1$. By generalized Hölder's inequality,
+\begin{align*}
+	\int_{-\infty}^\infty\vert u(x)\vert^{\frac{n}{n-1}}\,dx_1&\leq	\int_{-\infty}^\infty\prod_{i=1}^n\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_i\right)^{\frac{1}{n-1}}\,dx_1\\
+	&=\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\right)^{\frac{1}{n-1}}\int_{-\infty}^\infty\prod_{i=2}^n\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_i\right)^{\frac{1}{n-1}}\,dx_1\\
+	&\leq\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\right)^{\frac{1}{n-1}}\left(\prod_{i=2}^n\int_{-\infty}^\infty\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\,dx_i\right)^{\frac{1}{n-1}}.
+\end{align*}
+Again, we integrate both sides with respect to $x_2$. By generalized Hölder's inequality,
+\begin{align*}
+	&\int_{-\infty}^\infty\int_{-\infty}^\infty\vert u(x)\vert^{\frac{n}{n-1}}\,dx_1\,dx_2\\
+	&\leq\left(\int_{-\infty}^\infty\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\,dx_2\right)^{\frac{1}{n-1}}\int_{-\infty}^\infty\left(\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\right)^{\frac{1}{n-1}}\left(\prod_{i=3}^n\int_{-\infty}^\infty\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\,dx_i\right)^{\frac{1}{n-1}}\,dx_2\\
+	&\leq\left(\int_{-\infty}^\infty\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\,dx_2\right)^{\frac{2}{n-1}}\left(\prod_{i=3}^n\int_{-\infty}^\infty\int_{-\infty}^\infty\int_{-\infty}^\infty\vert Du\vert_1\,dx_1\,dx_2\,dx_i\right)^{\frac{1}{n-1}}.
+\end{align*}
+We continue to integrate with respect to $x_3,\cdots,x_n$, and obtain that
+\begin{align}
+	\int_{\bbR^n}\vert u\vert^{\frac{n}{n-1}}\,dx\leq\left(\int_{\bbR^n}\vert Du\vert_1\,dx\right)^{\frac{n}{n-1}}.\label{gns1}
+\end{align}
+This is indeed the case $p^*=\frac{n}{n-1}$ and $C=1$ of estimate (\ref{gnsinequality}).\vspace{0.1cm}
+
+\textit{Step II:} Now we consider the case $1<p<n$. Applying the estimate (\ref{gns1}) to $v=\vert u\vert^{\gamma}$, where $\gamma>1$ is to be selected, we have
+\begin{equation}
+	\begin{aligned}
+		\left(\int_{\bbR^n}\vert u\vert^{\frac{\gamma n}{n-1}}\,dx\right)^{\frac{n-1}{n}}&\leq\int_{\bbR^n}\gamma\vert u\vert^{\gamma-1}\vert Du\vert_1\,dx\\
+		&\leq\gamma\left(\int_{\bbR^n}\vert u\vert^{\frac{(\gamma-1)p}{p-1}}dx\right)^{\frac{p-1}{p}}\left(\int_{\bbR^n}\vert Du\vert_1^p\,dx\right)^{1/p}\\
+		&\leq\gamma\left(\int_{\bbR^n}\vert u\vert^{\frac{(\gamma-1)p}{p-1}}dx\right)^{\frac{p-1}{p}}n^{\frac{p-1}{p}}\Vert Du\Vert_{L^p(\bbR^n)}.
+	\end{aligned}\label{gnsp}
+\end{equation}
+Now we choose $\gamma>1$ such that $\frac{\gamma n}{n-1}=\frac{(\gamma-1)p}{p-1}$. That is, $\gamma=\frac{(n-1)p}{n-p}=\frac{(n-1)p^*}{n}.$ Then (\ref{gnsp}) becomes
+\begin{align*}
+	\left(\int_{\bbR^n}\vert u\vert^{p^*}\,dx\right)^{1/p^*}\leq\frac{n^{\frac{p-1}{p}}(n-1)p}{n-p}\Vert Du\Vert_{L^p(\bbR^n)},
+\end{align*}
+which completes the proof of (\ref{gnsinequality}).
+\end{proof}
+
+\begin{theorem}[Estimate for $W^{1,p}$ on $\bbR^n$, $1\leq p<n$]\label{thm:4.3}
+Assume that $1\leq p\leq n$ and $p\leq q\leq p^*$, and $u\in W^{1,p}(U)$. Then $u\in L^q(U)$, with the estimate
+	\begin{align}
+		\Vert u\Vert_{L^q(\bbR^n)}\leq C\Vert u\Vert_{W^{1,p}(\bbR^n)}\label{w1pbrn}
+	\end{align}
+	for some constant $C$ depending only on $p,q$ and $n$.
+\end{theorem}
+\newpage
+\begin{proof}
+By the Remark under Theorem \ref{thm:2.10}, we can find a sequence $u_m\in C_c^\infty(\bbR^n)$ that converges to $u$ in $W^{1,p}(\bbR^n)$. According to Theorem \ref{gnsinequality}, we have
+\begin{align*}
+	\Vert u_m-u_l\Vert_{L^{p^*}(\bbR^n)}\leq np^*\Vert Du_m-Du_l\Vert_{L^p(\bbR^n)},\quad\forall l,m\geq 1.
+\end{align*}
+Hence $(u_m)$ is a Cauchy sequence in $L^{p^*}(\bbR^n)$, and $u_m\to\tilde u$ for some $\tilde u\in L^{p^*}(\bbR^n)$. Furthermore, $\tilde u$ and $u$ are identified, since we can find a subsequence of $(u_m)$ that converges a.e. to $\tilde u$ from $L^{p^*}$ convergence, and to $u$, from $L^p$ convergence. Hence $u\in L^{p^*}(\bbR^n)$, and $$\Vert u\Vert_{L^{p^*}(\bbR^n)}\leq np^*\Vert Du\Vert_{L^p(\bbR^n)}.$$
+For the estimate (\ref{w1pbrn}), the case $q=p$ and $q=p^*$ are clear. If $p<q<p^*$, we choose $0<\theta< 1$ such that $\frac{1}{q}=\frac{\theta}{p}+\frac{1-\theta}{p^*}$. By Hölder's inequality,
+\begin{align*}
+\int_{\bbR^n}\vert u\vert^q\,dx=\int_{\bbR^n}\vert u\vert^{\theta q}\vert u\vert^{(1-\theta)q}\,dx\leq\left(\int_{\bbR^n}\vert u\vert^p\,dx\right)^{\frac{\theta q}{p}}\left(\int_{\bbR^n}\vert u\vert^{p^*}\,dx\right)^{\frac{(1-\theta)q}{p}}.
+\end{align*}
+Therefore $$\Vert u\Vert_{L^q(\bbR^n)}\leq \Vert u\Vert_{L^p(\bbR^n)}^{\theta}\Vert u\Vert_{L^{p^*}(\bbR^n)}^{1-\theta}\leq (np^*)^{1-\theta}\Vert u\Vert_{L^p(\bbR^n)}^\theta\Vert Du\Vert_{L^p(\bbR^n)}^{1-\theta}.$$ 
+To derive (\ref{w1pbrn}), we use Jensen's inequality:
+\begin{align*}
+\theta\log\frac{a^p}{\theta}+(1-\theta)\log\frac{b^p}{1-\theta}\leq\log(a^p+b^p)\quad\Rightarrow\quad a^\theta b^{1-\theta}\leq\theta^{\frac{\theta}{p}}(1-\theta)^{\frac{1-\theta}{p}}(a^p+b^p)^{1/p},\qquad \forall a,b>0.
+\end{align*}
+Then we obtain
+\begin{align*}
+	\Vert u\Vert_{L^q(\bbR^n)}\leq(np^*)^{1-\theta}\theta^{\frac{\theta}{p}}(1-\theta)^{\frac{1-\theta}{p}}\left(\Vert u\Vert_{L^p(\bbR^n)}^p+\Vert Du\Vert_{L^p(\bbR^n)}^p\right)^{1/p}=:C\Vert u\Vert_{W^{1,p}(\bbR^n)}.
+\end{align*}
+This completes the proof of (\ref{w1pbrn}).
+\end{proof}
+
+Now we give a similar estimate of the $W^{1,p}$-norm of a weakly differentiable function on a Lipschitz domain.
+
+\begin{theorem}[Estimate for $W^{1,p}$ on Lipschitz domains, $1\leq p<n$]\label{thm:4.4}
+Let $U$ be a bounded, open subset of $\bbR^n$ and suppose $\partial U$ is Lipschitz. Assume that $1\leq p< n$, and $u\in W^{1,p}(U)$. Then $u\in L^{p^*}(U)$, with the estimate
+\begin{align*}
+	\Vert u\Vert_{L^{p^*}(U)}\leq C\Vert u\Vert_{W^{1,p}(U)}
+\end{align*}
+for some constant $C$ depending only on $p,n$ and $U$.
+\end{theorem}
+\begin{proof}
+Since $\partial U$ is Lipschitz, by Theorem \ref{sobolevextension}, there exists an extension $\ol{u}\in W^{1,p}(\bbR^n)$ such that $\ol{u}=u$ in $U$, $\ol{u}$ has compact support in $\bbR^n$, and
+\begin{align}
+	\Vert\ol{u}\Vert_{W^{1,p}(\bbR^n)}\leq C_1\Vert u\Vert_{W^{1,p}(U)},\label{eq:4.5}
+\end{align}
+where $C_1$ is a constant depending only on $p,n$ and $U$. Since $\ol{u}$ has compact support, by the Remark under Theorem \ref{thm:2.10}, there exists a sequence of functions $u_m\in C_c^\infty(\bbR^n)$ such that $u_m\to\ol{u}$ in $W^{1,p}(\bbR^n)$. By Theorem \ref{gnsinequality}, $u_m\to\ol{u}$ in $L^{p^*}(\bbR^n)$ as well, and $\Vert u_m\Vert_{L^{p^*}(\bbR^n)}\leq np^*\Vert Du_m\Vert_{L^p(\bbR^n)}$. Then we have the limiting bound
+\begin{align*}
+	\Vert u\Vert_{L^{p^*}(U)}\leq\underbrace{\Vert\ol{u}\Vert_{L^{p^*}(\bbR^n)}\leq np^*\Vert D\ol{u}\Vert_{L^p(\bbR^n)}}_{m\to\infty}\leq np^*\Vert \ol{u}\Vert_{W^{1,p}(\bbR^n)}\overset{(\ref{eq:4.5})}{\leq} C_1np^*\Vert u\Vert_{W^{1,p}(U)}.
+\end{align*}
+The desired result then follows by letting $C=C_1np^*$.
+\end{proof}
+
+\paragraph{Remark.} If $U$ is a bounded, open subset of $\bbR^n$ and $\partial U$ is Lipschitz, we have $$W^{1,p}(U)\subset L^{p^*}(U)\subset L^q(U),\quad q\in[1,p^*].$$
+by Hölder's inequality $\Vert u\Vert_{L^q(U)}\leq\vert U\vert^{\frac{p^*-q}{p^*q}}\Vert u\Vert_{L^{p^*}(U)},$ we have
+\begin{align*}
+	\Vert u\Vert_{L^q(U)}\leq C\Vert u\Vert_{W^{1,p}(U)},\quad q\in[1,p^*],
+\end{align*}
+where $C$ is a constant depending only on $p,q,n$ and $U$.
+
+\begin{theorem}[Estimate for $W^{1,p}_0$ on bounded domains, $1\leq p<n$]\label{thm:4.5}
+	Let $U$ be a bounded, open subset of $\bbR^n$. Assume that $1\leq p<n$, and $u\in W_0^{1,p}(U)$. Then we have the estimate
+	\begin{align}
+		\Vert u\Vert_{L^q(U)}\leq C\Vert Du\Vert_{L^p(U)}\label{eq:4.6}
+	\end{align}
+	for each $q\in[1,p^*]$, with the constant $C$ depending only on $p,q,n$ and $U$.
+\end{theorem}
+\begin{proof}
+Since $u\in W_0^{1,p}(U)$, there exists a sequence of functions $u_m\in C_c^\infty(U)$ such that $u_m\to u$ in $W^{1,p}(U)$. We the extend each $u_m$ to $\bbR^n$ by assigning $u_m=0$ on $\bbR^n\backslash U$. By letting $m\to\infty$ in the Gagliardo-Nirenberg-Sobolev inequality for $u_m$, we obtain $$\Vert u\Vert_{L^{p^*}(U)}\leq C\Vert Du\Vert_{L^p(U)}.$$
+Since $U$ is bounded, we have $\vert U\vert<\infty$, and the desired result follows from Hölder's inequality.
+\end{proof}
+
+\begin{corollary}[Classical Poincaré's inequality]\label{cor:4.6}
+Let $U$ be a bounded, open subset of $\bbR^n$, and $1\leq p\leq \infty$. For any $u\in W_0^{1,p}(U)$, we have the estimate
+\begin{align}
+	\Vert u\Vert_{L^p(U)}\leq C\Vert Du\Vert_{L^{p}(U)},\label{eq:4.7}
+\end{align}
+where the constant $C$ depending only on $p,n$ and $U$.
+\end{corollary}
+\begin{proof}
+For $1\leq p<n$, the estimate (\ref{eq:4.7}) is a special case of (\ref{eq:4.6}), since $p<p^*$. For $n\leq p<\infty$, we choose $1\leq q<n$ such that $q< n\leq p<q^*:=\frac{nq}{n-q}$. Since $W_0^{1,p}(U)\subset W^{1,q}(U)$, by (\ref{eq:4.6}), we have
+\begin{align*}
+	\Vert u\Vert_{L^p(U)}\leq C\Vert Du\Vert_{L^q(U)}\leq \vert U\vert^{\frac{pq}{p-q}} C\Vert Du\Vert_{L^p(U)}.
+\end{align*}
+
+Finally, for $p=\infty$, we take a sequence $u_m\in C_c^\infty(U)$ that converges to $u$ in $W^{1,\infty}(U)$. Using the fundamental theorem of calculus, we have
+\begin{align*}
+	\vert u_m(x_1,\cdots,x_n)\vert&=\left\vert\int_{-\infty}^{x_i}\partial_{x_i}u_m(x_1,\cdots,x_{i-1},y_i,x_{i+1},\cdots,x_n)\,dy_i\right\vert\\
+	&\leq\int_{-\infty}^\infty\Vert Du_m\Vert_{L^{\infty}(U)}\,dx_i\leq\diam(U)\,\Vert Du_m\Vert_{L^{\infty}(U)}
+\end{align*}
+By taking the supremum of the left hand side and letting $m\to\infty$ in the last display, we can obtain that $\Vert u\Vert_{L^\infty(U)}\leq\diam(U)\left\Vert Du\right\Vert_{L^\infty(U)}$. This complete the proof.
+\end{proof}
+
+\paragraph{The borderline case: $p=n$.} Owing to Theorem \ref{thm:4.5} and the fact that $p^*=\frac{np}{n-p}\to\infty$ as $p\nearrow n$, we might expect $u\in L^\infty(U)$, provided $u\in W^{1,n}(U)$. This is however false if $n>1$. 
+
+As a counterexample, let $U=B^0(0,1)$ be the unit open ball in $\bbR^n$, where $n>1$. Then the function $u(x)=\log\log\bigl(1+\frac{1}{\vert x\vert}\bigr)$ belongs to $W^{1,n}(U)$, but not to $L^\infty(U)$.
+
+\subsection{Super-dimensional Case $p>n$: Morrey's Inequality}
+In this section, we assume that $n<p\leq\infty$. We show that $u$ has a Hölder continuous representative, provided that $u\in W^{1,p}(U)$.
+\begin{theorem}[Morrey's inequality]\label{morreyinequality}
+Assume that $n<p\leq\infty$. There exists a constant $C$, depending on $p$ and $n$ only, such that
+\begin{align}
+	\Vert u\Vert_{C^{0,\gamma}(\bbR^n)}\leq C\Vert u\Vert_{W^{1,p}(\bbR^n)},\quad\forall u\in C^1(\bbR^n)\cap L^p(\bbR^n),\label{morrey}
+\end{align}
+where $\gamma=1-\frac{n}{p}$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} We claim that there exists a constant $C_1$, depending only on $n$, such that
+\begin{align}
+	\frac{1}{\mathcal{L}^n(B(x,r))}\int_{B(x,r)}
+	\vert u(y)-u(x)\vert\,dy\leq C_1\int_{B(x,r)} \frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy,\label{morreyest1}
+\end{align}
+for each ball $B(x,r)$, where $\mathcal{L}^n$ is the Lebesgue measure on $\bbR^n$. To this end, take any $\vert w\vert=1$. If $0<s<r$,
+\begin{align*}
+	\vert u(x+sw)-u(x)\vert=\left\vert\int_0^s\frac{d}{dt}u(x+tw)\,dt\right\vert=\left\vert\int_0^s Du(x+tw)\cdot w\,dt\right\vert\leq\int_0^s\vert Du(x+tw)\vert\,dt.
+\end{align*}
+Integrate with respect to $w$ on $\partial B(0,1)$:
+\begin{align*}
+\int_{\partial B(0,1)}\vert u(x+sw)-u(x)\vert\,dS(w)\leq&\int_0^s\int_{\partial B(0,1)}\vert Du(x+tw)\vert\,dS(w)\,dt\\
+\overset{y=x+tw}{=}&\int_0^s\int_{\partial B(x,t)}\frac{\vert Du(y)\vert}{t^{n-1}}\,dS(y)\,dt\\
+\overset{t=\vert x-y\vert}{=}&\int_{B(x,s)}\frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy=\int_{B(x,r)}\frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy.
+\end{align*}
+By changing the variable $z=x+sw$ in the left hand side of the last display, we have
+\begin{align*}
+	\int_{\partial B(x,s)}\vert u(z)-u(x)\vert dS(z)\leq s^{n-1}\int_{B(x,r)}\frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy.
+\end{align*}
+Next integrate with respect to $s$ from $0$ to $r$:
+\begin{align*}
+	\int_{B(x,r)}\vert u(y)-u(x)\vert\,dy\leq\frac{r^n}{n}\int_{B(x,r)}\frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy.
+\end{align*}
+This completes the proof of (\ref{morreyest1}).\vspace{0.1cm}
+
+\textit{Step II:} Fix any $x\in\bbR^n$. By (\ref{morreyest1}) and Hölder's inequality,
+\begin{equation*}
+	\begin{aligned}
+	\vert u(x)\vert&\leq\frac{1}{\mathcal{L}^n(B(x,1))}\left(\int_{B(x,1)}\vert u(x)-u(y)\vert\,dy+\int_{B(x,1)}\vert u(y)\vert\,dy\right)\\
+	&\leq C_1\int_{B(x,1)}\frac{\vert Du(y)\vert}{\vert y-x\vert^{n-1}}\,dy+\mathcal{L}^n(B(x,1))^{-1/p}\Vert u\Vert_{L^p(B(x,1))}\\
+	&\leq C_1\left(\int_{\bbR^n}\vert Du\vert^p\,dy\right)^{1/p}\left(\int_{B(x,1)}\vert y-x\vert^{-\frac{(n-1)p}{p-1}}\,dy\right)^{\frac{p-1}{p}}+\mathcal{L}^n(B(x,1))^{-1/p}\Vert u\Vert_{L^p(\bbR^n)}\\
+	&\leq C\Vert u\Vert_{W^{1,p}(\bbR^n)},
+\end{aligned}\label{morreyest2}
+\end{equation*}
+where $C=C(n,p)$ is a constant. The last estimate holds since $p>n$ implies $(n-1)\frac{p}{p-1}<n$, and
+\begin{align*}
+	\int_{B(x,1)}\vert y-x\vert^{-\frac{(n-1)p}{p-1}}\,dy<\infty.
+\end{align*}
+
+\textit{Step III:} Choose any two points $x,y\in\bbR^n$, and write $r:=\vert x-y\vert$. Let $W=B(x,r)\cap B(y,r)$. Then
+\begin{align*}
+\vert u(y)-u(x)\vert\leq\frac{1}{\mathcal{L}^n(W)}\left(\int_W\vert u(x)-u(z)\vert\,dz + \int_W\vert u(y)-u(z)\vert\,dz\right).
+\end{align*}
+By estimate (\ref{morreyest1}), we have
+\begin{align*}
+	\frac{1}{\mathcal{L}^n(W)}\int_W\vert u(x)-u(z)\vert\,dz&\leq\frac{\mathcal{L}^n(B(x,r))}{\mathcal{L}^n(W)}\frac{1}{\mathcal{L}^n(B(x,r))}\int_{B(x,r)}\vert u(x)-u(z)\vert\,dz\\
+	&\leq\frac{C_1\mathcal{L}^n(B(x,r))}{\mathcal{L}^n(W)}\int_{B(x,r)}\frac{\vert Du(z)\vert}{\vert z-x\vert^{n-1}}\,dz\\
+	&\leq \frac{C_1\mathcal{L}^n(B(x,r))}{\mathcal{L}^n(W)}\left(\int_{B(x,r)}\vert Du\vert^p\,dz\right)^{1/p}\left(\int_{B(x,r)}\frac{dz}{\vert z-x\vert^{\frac{(n-1)p}{p-1}}}\right)^{\frac{p-1}{p}}\\
+	&\leq C_2\left(r^{n-\frac{(n-1)p}{p-1}}\right)^{\frac{p-1}{p}}\Vert Du\Vert_{L^p(B(x,r))}\leq C_2r^{1-\frac{n}{p}}\Vert Du\Vert_{L^p(\bbR^n)},
+\end{align*}
+where $C_2$ is a constant depending on $n$ and $p$ only. Similarly, we have
+\begin{align*}
+	\frac{1}{\mathcal{L}^n(W)}\int_W\vert u(x)-u(z)\vert\,dz\leq C_2r^{1-\frac{n}{p}}\Vert Du\Vert_{L^p(\bbR^n)}.
+\end{align*}
+Consequently,
+\begin{align*}
+	[u]_{C^{0,1-\frac{n}{p}}(\bbR^n)}=\sup_{x\neq y}\frac{\vert u(y)-u(x)\vert}{\vert y-x\vert^{1-\frac{n}{p}}}\leq C\Vert Du\Vert_{L^p(\bbR^n)}.
+\end{align*}
+This inequality together with (\ref{morreyest2}) completes the proof of (\ref{morrey}).
+\end{proof}
+\paragraph{Remark.} We provide a slight variant of the estimate of $\vert u(x)-u(y)\vert$, where $\vert x-y\vert\leq r$. Since both $B(x,r)$ and $B(y,r)$ are include in the ball $B(x,2r)$, we have
+\begin{align*}
+	\vert u(y)-u(x)\vert\leq Cr^{1-\frac{n}{p}}\Vert Du\Vert_{L^p(B(x,2r))}
+\end{align*} 
+for all $u\in C^1(B(x,2r))$, $y\in B(x,r)$ and $n<p<\infty$.
+
+\begin{theorem}[Estimate for $W^{1,p}$ on Lipschitz domains, $n<p\leq\infty$]\label{thm:4.8}
+Let $U$ be a bounded, open subset of $\bbR^n$, and suppose that $\partial U$ is Lipschitz. Assume $n<p\leq\infty$ and $u\in W^{1,p}(U)$. Then $u$ has a representative $u^*\in C^{0,\gamma}(\ol{U})$ for $\gamma=1-\frac{n}{p}$, with the estimate
+\begin{align}
+	\Vert u^*\Vert_{C^{0,\gamma}(\ol{U})}\leq C\Vert u\Vert_{W^{1,p}(U)},\label{eq:4.11}
+\end{align}
+where the constant $C$ depends on $p,n$ and $U$ only.
+\end{theorem}
+\begin{proof}
+The case $p=\infty$ can be easily adapted from Theorem \ref{thm:3.2}. Hence we assume that $n<p<\infty$. 
+
+Since $\partial U$ is Lipschitz, by Theorem \ref{sobolevextension}, there exists an extension $\ol{u}\in W^{1,p}(\bbR^n)$ such that $\ol{u}=u$ a.e. in $U$, $\ol{u}$ has compact support in $\bbR^n$, and
+\begin{align}
+	\Vert\ol{u}\Vert_{W^{1,p}(\bbR^n)}\leq C_1\Vert u\Vert_{W^{1,p}(U)},\label{eq:4.12}
+\end{align}
+where $C_1$ is a constant depending only on $p,n$ and $U$. According to the Remark under Theorem \ref{thm:2.10}, we can find a sequence of functions $u_m\in C_c^\infty(\bbR^n)$ converging to $\ol{u}$ in $W^{1,p}(\bbR^n)$. By Theorem \ref{morreyinequality}, $(u_m)$ is also a Cauchy sequence in $C^{1-\frac{n}{p}}(\bbR^n)$, which converges to some $u^*\in C^{1-\frac{n}{p}}(\bbR^n)$. Clearly, $u^*=u$ a.e. on $U$. Furthermore, letting $m\to\infty$ in Morrey's inequality for $u_m$ yields $\Vert u^*\Vert_{C^{0,\gamma}(\ol{U})}\leq C\Vert\ol{u}\Vert_{W^{1,p}(\bbR^n)}$. Combining this with estimate (\ref{eq:4.12}) concludes the proof.
+\end{proof}
+
+\paragraph{Remark.} The preceding proof remains valid if we replace $U$ by $\bbR^n$ and omit the extension step. We therefore restate our conclusion as follows: Assume $n<p\leq\infty$ and $u\in W^{1,p}(\bbR^n)$. Then $u$ has a representative $u^*\in C^{0,\gamma}(\bbR^n)$ for $\gamma=1-\frac{n}{p}$, with the estimate
+\begin{align*}
+	\Vert u^*\Vert_{C^{0,\gamma}(\bbR^n)}\leq C\Vert u\Vert_{W^{1,p}(\bbR^n)},
+\end{align*}
+where the constant $C$ depends on $p$ and $n$ only.
+
+\paragraph{} Now we use the tool of Morrey's inequality to investigate more closely the connections between weak partial derivatives and partial derivatives.
+
+\begin{theorem}[Super-dimensional differentiability almost everywhere]\label{thm:4.9}
+Assume that $u\in W_\loc^{1,p}(U)$ for some $n<p\leq\infty$. Then $u$ is differentiable a.e. in $U$, and its gradient equals its weak gradient a.e..
+\begin{proof}
+We first assume that $n<p<\infty$. We identify $u$ to its continuous version by applying Morrey's inequality on a countable set of balls covering $U$. For a.e. $x\in U$, by Lebesgue's differentiation theorem,
+\begin{align*}
+	\frac{1}{\mathcal{L}^n(B(x,r))}\int_{B(x,r)}\vert Du(x)-Du(z)\vert^p\,dz\to 0\ \ as\ \ r\to 0.
+\end{align*}
+We then fix such a point $x$, and set $v(y):=u(y)-u(x)-Du(x)\cdot (y-x)$.
+Since the differentiation is a local problem, we choose $B(x,\delta)\subset U$. Then $v\in W^{1,p}(B(x,\delta))$. 
+
+By Proposition \ref{prop:1.8} and Theorem \ref{thm:2.10}, the mollifications $v^\epsilon\in C^\infty(U)$ converges to $v$ uniformly on $B(x,\delta)$ and in $W^{1,p}(B(x,\delta))$ as $\epsilon\to 0$. According to the remark under Theorem \ref{morreyinequality} and by approximation $\epsilon\to 0$, for each $y\in U$ with $r:=\vert x-y\vert<\delta/2$, we have Morrey's estimate
+\begin{align*}
+	\vert v(y)-v(x)\vert\leq Cr^{1-\frac{n}{p}}\left(\int_{B(x,2r)}\vert Dv(z)\vert^p\,dz\right)^{1/p}.
+\end{align*}
+Consequently,
+\begin{align*}
+	\vert u(y)-u(x)-Du(x)\cdot (y-x)\vert&\leq Cr^{1-\frac{n}{p}}\left(\int_{B(x,2r)}\vert Du(x)-Du(z)\vert^p\,dz\right)^{1/p}\\
+	&\leq C^\prime r\left(\frac{1}{\mathcal{L}^n(B(x,2r))}\int_{B(x,2r)}\vert Du(x)-Du(z)\vert^p\,dz\right)^{1/p}=o(r)=o(\vert x-y\vert).
+\end{align*}
+Hence $u$ is differentiable at $x$, and its gradient coincides its weak gradient at $x$. Finally, for the case $p=\infty$, just note that $W_\loc^{1,\infty}(U)\subset W^{1,p}_\loc(U)$ for all $1\leq p<\infty$.
+\end{proof}
+\end{theorem}
+
+The following theorem is a direct consequence of Theorem \ref{thm:4.9}.
+
+\begin{theorem}[Rademacher's theorem]\label{thm:4.10}
+Let $u$ be locally Lipschitz continuous in $U$. Then $u$ is differentiable almost everywhere in $U$.
+\end{theorem}
+
+\newpage
+\subsection{General Sobolev Inequalities}
+\subsubsection{Sub-dimensional Case: $kp<n$}
+\begin{theorem}[General Sobolev inequality, $kp<n$]\label{thm:4.11}
+Let $U$ be a bounded, open subset of $\bbR^n$, with a Lipschitz boundary. Assume $u\in W^{k,p}(U)$, and $kp<n$. Then $u\in L^q(U)$, where
+\begin{align*}
+	\frac{1}{q}=\frac{1}{p}-\frac{k}{n},\quad q=\frac{np}{n-kp}.
+\end{align*}
+Furthermore, we have the estimate
+\begin{align*}
+	\Vert u\Vert_{L^q(U)}\leq C\Vert u\Vert_{W^{k,p}(U)},
+\end{align*}
+where $C$ is a constant depending only on $k,p,n$ and $U$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} For every multi-index $\vert\alpha\vert\leq k-1$, we have $D^\alpha u\in W^{1,p}(U)$. By Gagliardo-Nirenberg-Sobolev inequality [Theorem \ref{thm:4.4}], there exists a constant $C=C(n,p,U)>0$ depending only on $n,p$ and $U$, such that
+\begin{align*}
+	\Vert D^\alpha u\Vert_{L^{p^*}(U)}\leq C\Vert D^\alpha u\Vert_{W^{1,p}(U)}\leq C\Vert u\Vert_{W^{k,p}(U)}.
+\end{align*}
+Hence $u\in W^{k-1,p^*}(U)$, where $p<p^*=\frac{np}{n-p}<n$. If $k=2$, we are done by applying Gagliardo-Nirenberg-Sobolev inequality once again, where $q=p^{**}=\frac{np^*}{n-p^*}=\frac{np}{n-2p}$:
+\begin{align*}
+	\Vert u\Vert_{L^{p^{**}}(U)}\leq C(n,p^*,U)\Vert u\Vert_{W^{1,p^*}(U)}\leq C(n,p^*,U)(1+n)C(n,p,U)\Vert u\Vert_{W^{2,p}(U)}.
+\end{align*}
+\textit{Step II:} We denote $p_2=p^{**}$, $p_3=p^{***}$, and so on. If $k\geq 3$, we can prove by induction such that
+\begin{align*}
+	&\Vert D^\alpha u\Vert_{L^{p^{**}}(U)}\leq C_2\Vert D^\alpha u\Vert_{W^{1,p^*}(U)}\leq C_2\Vert u\Vert_{W^{{k-1},p^*}(U)},\quad\forall\vert\alpha\vert\leq k-2,\quad\textit{and}\ \ u\in W^{k-2,p^{**}}(U);\\
+	&\Vert D^\alpha u\Vert_{L^{p^{***}}(U)}\leq C_3\Vert D^\alpha u\Vert_{W^{1,p^{**}}(U)}\leq C_3\Vert u\Vert_{W^{{k-2},p^{**}}(U)},\quad\forall\vert\alpha\vert\leq k-3,\quad\textit{and}\ \ u\in W^{k-3,p^{***}}(U);\\
+	&\cdots;\\
+	&\Vert D^\alpha u\Vert_{L^{p_{k-1}}(U)}\leq C_{k-1}\Vert D^\alpha u\Vert_{W^{1,p_{k-2}}(U)}\leq C_{k-1}\Vert u\Vert_{W^{2,p_{k-2}}(U)},\quad\forall\vert\alpha\vert\leq 1,\quad\textit{and}\ u\in W^{1,p_{k-1}}(U).
+\end{align*}
+Hence $u\in W^{1,p_{k-1}}(U)$. Since $p<p_{k-1}<n$, again by Gagliardo-Nirenberg-Sobolev inequality, we have
+\begin{align*}
+	\Vert u\Vert_{L^{p_k}(U)}\leq C_k\Vert u\Vert_{W^{1,p_{k-1}}(U)}&\leq (1+n)C_kC_{k-1}\Vert u\Vert_{W^{2,p_{k-2}}(U)}\\
+	&\leq (1+n)\left(1+n+n^2\right)C_kC_{k-1}C_{k-2}\Vert u\Vert_{W^{3,p_{k-3}}(U)}\leq\cdots\\
+	&\leq (1+n)\left(1+n+n^2\right)\cdots\left(1+n+n^2+\cdots+n^{k-1}\right)C_kC_{k-1}\cdots C_1\Vert u\Vert_{W^{k,p}(U)}.
+\end{align*}
+where $C_1,\cdots,C_k$ are constants depending only on $k,n,p$ and $U$.  This completes the proof.
+\end{proof}
+\paragraph{Remark.} In fact, we have the inclusions
+\begin{align*}
+	W^{k,p}(U)\subset W^{k-1,p^*}(U)\subset W^{k-2,p^{**}}(U)\subset\cdots\subset W^{k-l,q}(U),
+\end{align*}
+where $l\in\{0,1,\cdots,k\}$ and $\frac{1}{q}=\frac{1}{p}-\frac{l}{n}$. Moreover, there exists a constant $C$ depending only on $n,p,q,l$ and $U$ such that
+\begin{align*}
+	\Vert u\Vert_{W^{k-l,q}(U)}\leq C\Vert u\Vert_{W^{k,p}(U)},\quad\forall u\in W^{k,p}(U).
+\end{align*}
+This means that $W^{k,p}(U)\hookrightarrow W^{k-l,q}(U)$ is a continuous embedding, where $q=\frac{np}{n-lp}>p$.
+
+\subsubsection{Super-dimensional Case: $kp>n$}
+\begin{theorem}[General Sobolev inequality, $kp>n$]\label{thm:4.12}
+Let $U$ be a bounded, open subset of $\bbR^n$, with a Lipschitz boundary. Assume $u\in W^{k,p}(U)$, and $kp>n$. Then $u$ has a representative $u^*\in C^{k-\left\lfloor\frac{n}{p}\right\rfloor-1,\gamma}(\ol{U})$, where
+\begin{align*}
+	\gamma=\begin{cases}
+		1+\left\lfloor\frac{n}{p}\right\rfloor-\frac{n}{p},\quad
+		&\frac{n}{p}\notin\bbN,\\
+		any\ \mu\in(0,1),\quad &\frac{n}{p}\in\bbN.
+	\end{cases}
+	\end{align*}
+	Furthermore, we have the estimate
+	\begin{align*}
+		\Vert u^*\Vert_{C^{k-\left\lfloor\frac{n}{p}\right\rfloor-1,\gamma}(U)}\leq C\Vert u\Vert_{W^{k,p}(U)},
+	\end{align*}
+	where $C$ is a constant depending only on $k,p,n,\gamma$ and $U$.
+\end{theorem}
+\begin{proof}
+\textsc{Case I: $n/p\notin\bbN$.} The key idea is to apply general Sobolev inequality [Theorem \ref{thm:4.11}] to the largest sub-dimensional case $lp<n$. Given $lp<n$, we have $u\in W^{k-l,r}(U)$, where $\frac{1}{r}=\frac{1}{p}-\frac{l}{n}$. Choose $l\in\bbN$ such that $l<\frac{n}{p}< l+1$, that is, $l=\lfloor n/p\rfloor$. Then $r=\frac{np}{n-pl}>n$ is super-dimensional, $k-l\geq 1$, and $D^\alpha u\in W^{1,r}(U)$ admits a representative $(D^\alpha u)^*\in C^{0,\gamma}(\ol{U})$ by Morrey's inequality for each $\vert\alpha\vert\leq k-l-1$, where $\gamma=1-n/r=1+\lfloor n/p\rfloor-n/p$. Furthermore, we have the estimate
+\begin{align*}
+	\Vert D^\alpha u\Vert_{C^{0,\gamma}(\ol{U})}\leq C\Vert D^\alpha u\Vert_{W^{1,r}(U)}\leq C\Vert u\Vert_{W^{k-l,r}(U)}, 
+\end{align*}
+where the constant $C$ only depends on $n,p$ and $U$. Consequently, $u^*\in C^{k-\left\lceil\frac{n}{p}\right\rceil,\gamma}(\ol{U})$, and
+\begin{align*}
+	\Vert u\Vert_{C^{k-l-1,\gamma}(\ol{U})}=\sum_{\vert\alpha\vert\leq k-l-1}\Vert D^\alpha u\Vert_{C(\ol{U})}+\sum_{\vert\alpha\vert=k-l-1}[D^\alpha u]_{C^{0,\gamma}(\ol{U})}\leq C^\prime\Vert u\Vert_{W^{k-l,r}(U)},
+\end{align*}
+where the constant $C^\prime$ only depends on $n,p,k$ and $U$.\vspace{0.15cm}
+
+\textsc{Case II: $n/p\in\bbN$.} To apply general Sobolev inequality [Theorem \ref{thm:4.11}] to the sub-dimensional case, we choose $l=\frac{n}{p}-1\in\{0,1,\cdots,k-2\}$. Then $u\in W^{k-l,q}(U)$ for $q=\frac{np}{n-lp}=n$. By Gagliardo-Nirenberg-Sobolev inequality, for all $r\in(n,\infty)$, we have
+\begin{align*}
+	\Vert D^\alpha u\Vert_{L^r(U)}\leq C\Vert D^\alpha u\Vert_{W^{1,\frac{nr}{n+r}}(U)},\quad\forall\vert\alpha\vert\leq k-l-1=k-\frac{n}{p},
+\end{align*}
+where $C$ is a constant depending only on $n,r$ and $U$, and $D^\alpha u\in L^r(U)$. By Morrey's inequality, we have $D^\alpha u\in C^{0,1-\frac{n}{r}}(\ol{U})$ for all $\vert\alpha\vert\leq k- \frac{n}{p}-1$ and all $r\in(n,\infty)$. Consequently, $u\in C^{k-\frac{n}{p}-1,\gamma}(\ol{U})$ for all $0<\gamma<1$, and we have the estimate
+\begin{align*}
+	\Vert u\Vert_{C^{k-\frac{n}{p}-1,\gamma}(\ol{U})}\leq C^\prime\Vert u\Vert_{W^{k-l,n}(U)}\leq C^{\prime\prime}\Vert u\Vert_{W^{k,p}(U)},
+\end{align*}
+where $C^\prime$ is a constant depending only on $k,n,p,\gamma$ and $U$.
+\end{proof}
+\paragraph{Remark.} For the case $p=\infty$, we have the limit conclusion $W^{1,\infty}(U)=C^{0,1}(\ol{U})$ Theorem \ref{thm:3.2} for $k=1$.
+
+\newpage
+\subsubsection{The Borderline Case: $kp=n$}
+\begin{lemma}\label{lemma:4.13}
+Let $U$ be a bounded, open subset of $\bbR^n$ with a Lipschitz boundary. Let \begin{align*}
+	\begin{cases}
+		p=\infty,\quad &n=1,\\
+		1\leq p<\infty,\quad &n\geq 2.
+	\end{cases}
+\end{align*}
+Then $W^{1,n}(U)\subset L^p(U)$, and there exists a constant $C$, depending on $n,p$ and $U$ only, such that
+\begin{align*}
+	\Vert u\Vert_{L^p(U)}\leq C\Vert u\Vert_{W^{1,n}(U)},\quad\forall u\in W^{1,n}(U).
+\end{align*}
+\end{lemma}
+\begin{proof}
+\textsc{Case I: $n=1$.} If $v\in C_c^\infty(\bbR)$, we have $$\vert v(x)\vert\leq\int_{-\infty}^{\infty}\vert Du(y)\vert dy.$$
+Hence $\Vert v\Vert_{L^\infty(\bbR)}\leq\Vert Dv\Vert_{L^1(\bbR)}\leq\Vert v\Vert_{W^{1,1}(\bbR)}$. Then for each $u\in W^{1,1}(U)$, extend $u$ to $\ol{u}\in W^{1,1}(\bbR)$ with $$\Vert\ol{u}\Vert_{W^{1,1}(\bbR)}\leq c\Vert u\Vert_{W^{1,1}(U)},$$ where $c$ is a constant depending on $U$ only. By approximation $\ol{u}$ with $C_c^\infty(\bbR)$, we have
+\begin{align*}
+	\Vert u\Vert_{L^\infty(U)}\leq\Vert\ol{u}\Vert_{L^\infty(\bbR)}\leq\Vert\ol{u}\Vert_{W^{1,1}(\bbR)}\leq c\Vert u\Vert_{W^{1,1}(U)}.
+\end{align*}
+
+\textsc{Case II: $n\geq 2$.} Take $n\leq q<\infty$, and set $\frac{1}{s}=\frac{1}{n}+\frac{1}{q}$. Then $1\leq s<n$, and $q=\frac{ns}{n-s}$. Since $U$ is bounded, by Hölder's inequality, we have
+\begin{align*}
+	\Vert u\Vert_{W^{1,s}(U)}\leq(1+n)^{\frac{1}{n}-\frac{1}{s}}\vert U\vert^{\frac{n-s}{ns}}\Vert u\Vert_{W^{1,n}(U)}.
+\end{align*}
+Since $q=s^*=\frac{ns}{n-s}$, by Theorem \ref{thm:4.4}, we can find a constant $C(n,q,U)$ such that
+\begin{align*}
+	\Vert u\Vert_{L^q(U)}\leq C(n,q,U)\Vert u\Vert_{W^{1,s}(U)}\leq C^\prime(n,q,U)\Vert u\Vert_{W^{1,n}(U)}.
+\end{align*}
+Since $\vert U\vert<\infty$, we have
+\begin{align*}
+	\Vert u\Vert_{L^p(U)}\leq C^{\prime\prime}(n,q,U)\Vert u\Vert_{W^{1,n}(U)}
+\end{align*}
+for all $1\leq q\leq p$. Since $q$ can be chosen arbitrarily large, the result follows.
+\end{proof}
+\paragraph{Remark.} The conclusion still holds if $n=1$ and we replace $U$ by $\bbR$, where constant $C$ is $1$.
+
+\begin{theorem}\label{thm:4.14}
+Let $U$ be a bounded, open subset of $\bbR^n$ with a Lipschitz boundary. Assume $u\in W^{k,p}(U)$, and $kp=n$. Then $u\in L^q(U)$ for all $1\leq q<\infty$, and we have the estimate
+\begin{align*}
+	\Vert u\Vert_{L^q(U)}\leq C\Vert u\Vert_{W^{k,p}(U)},
+\end{align*}
+where $C$ is a constant depending only on $k,p,q,n$ and $U$.
+\end{theorem}
+\begin{proof}
+Similar to our proof of Theorem \ref{thm:4.12}, we have the inclusions
+\begin{align*}
+	W^{k,p}(U)\subset W^{k-1,p^*}(U)\subset W^{k-2,p^{**}}(U)\subset\cdots\subset W^{1,n}(U).
+\end{align*}
+The last inclusion holds since $\frac{1}{n}=\frac{1}{p}-\frac{k-1}{n}$. The result then immediately follows from Lemma \ref{lemma:4.13}.
+\end{proof}
+
+\newpage
+\subsection{Compact Embeddings: Rellich-Kondrachov Compactness Theorem}
+The Gagliardo-Nirenberg-Sobolev inequality shows that $W^{1,p}(U)$ is continuously embedded into $L^{p^*}(U)$ in the sub-dimensional case $1\leq p <n$. Next, we are going to demonstrate that $W^{1,p}(U)$ is in fact compactly embedded
+into the space $L^q(U)$ when $1\leq q<p^*$.
+
+\begin{definition}[Compact Embedding]\label{compactembedding}
+Let $X$ and $Y$ be Banach spaces, and $X\subset Y$. We say $X$ is \textit{compactly embedded} in $Y$, written $X\Subset Y$, if the identity operator
+\begin{align*}
+	\id:X\to Y,\quad x\mapsto x
+\end{align*}
+is continuous and compact, i.e.
+\begin{itemize}
+	\item[(i)] there exist some constant $c$ such that $\Vert x\Vert_Y\leq c\Vert x\Vert_X$ for all $x\in X$, and
+	\item[(ii)] each bounded subset of $X$ is precompact in $Y$.
+\end{itemize}
+\end{definition}
+\paragraph{Remark.} Since compactness coincides sequential compactness in metrizable spaces, (ii) equals that \textit{every bounded sequence of points of $X$ has a subsequence converging in $Y$.}
+
+\begin{theorem}[Rellich-Kondrachov Compactness Theorem]\label{RKCT}
+Let $U$ be a bounded, open subset of $\bbR^n$ with a Lipschitz boundary. Assume $1\leq p <n$. Then $$W^{1,p}(U)\Subset L^q(U)$$ for all $1\leq q< p^*$.
+\end{theorem}
+\begin{proof}
+\textit{Step I:} Assume that $1\leq q<p^*$. Using Gagliardo-Nirenberg-Sobolev inequality [Theorem \ref{thm:4.4}], we obtain the continuous embedding $W^{1,p}(U)\hookrightarrow L^q(U)$, with $$\Vert u\Vert_{L^q(U)}\leq C\Vert u\Vert_{W^{1,p}(U)}$$ for all $u\in W^{1,p}(U)$, where the constant $C$ depending only on $n,p,q$ and $U$. Then it remains to show that any bounded sequence $(u_m)$ in $W^{1,p}(U)$ has a subsequence $(u_{m_l})$ converging in $L^q(U)$.\vspace{0.15cm}
+
+\textit{Step II:} By extension theorem [\ref{sobolevextension}], we may assume that every $u_m$ is in $W^{1,p}(\bbR^n)$ and supported on a precompact set $V\Subset U$, and $\sup_{m\in\bbN}\Vert u_m\Vert_{W^{1,p}(\bbR^n)}<\infty$. 
+
+Then we study the mollifiers $u_m^\epsilon=\eta_\epsilon*u_m$, and we may assume that the support of $u_m^\epsilon$ is in $V$ for all $m\in\bbN$. We first prove that
+\begin{align}
+	\lim_{\epsilon\to 0}\sup_{m\in\bbN}\Vert u_m^\epsilon-u_m\Vert_{L^q(V)}= 0.\label{eq:4.13}
+\end{align}
+If $u_m$ is smooth, we have
+\begin{align*}
+	u_m^\epsilon(x)-u_m(x)&=\frac{1}{\epsilon^n}\int_{B(x,\epsilon)}\eta\left(\frac{x-z}{\epsilon}\right)(u_m(z)-u_m(x))\,dz\\
+	&=\int_{B(0,1)}\eta(y)\left(u_m(x-\epsilon y)-u_m(x)\right)\,dy\\
+	&=\int_{B(0,1)}\eta(y)\int_0^1\frac{d}{dt}\left(u_m(x-\epsilon ty)\right)dt\,dy\\
+	&=-\epsilon\int_{B(0,1)}\eta(y)\int_0^1 Du_m(x-\epsilon t y)\cdot y\,dt\,dy.
+\end{align*}
+Consequently,
+\begin{align*}
+	\Vert u^\epsilon_m-u_m\Vert_{L^1(V)}&=\int_V\vert u_m^\epsilon(x)-u_m(x)\vert\,dx\\
+	&\leq\epsilon\int_{B(0,1)}\eta(y)\int_0^1\int_V\vert Du_m(x-\epsilon ty)\vert\,dx\,dt\,dy\\
+	&\leq\epsilon\int_V\vert Du_m(z)\vert\,dz=\epsilon\Vert Du_m\Vert_{L^1(V)}.
+\end{align*}
+By approximation, this estimate also holds for $u_m\in W^{1,p}(U)$. Since $V$ is bounded, we have
+\begin{align*}
+	\Vert u^\epsilon_m-u_m\Vert_{L^1(V)}\leq\epsilon\Vert Du_m\Vert_{L^1(V)}\leq\epsilon C\Vert Du_m\Vert_{L^p(V)}
+\end{align*}
+Note that $u_m$ is bounded in $W^{1,p}(\bbR^n)$. Then the estimate (\ref{eq:4.13}) holds when $q=1$. If $1<q< p^*$, let $0<\theta<1$ be such that $$\frac{\theta}{1}+\frac{1-\theta}{p^*}=\frac{1}{q}.$$ Akin to the interpolation statement employed in the proof of Theorem \ref{thm:4.3}, we have
+\begin{align*}
+	\Vert u_m^\epsilon-u_m\Vert_{L^q(V)}\leq\Vert u_m^\epsilon-u_m\Vert_{L^1(V)}^\theta\Vert u_m^\epsilon-u_m\Vert_{L^{p^*}(V)}^{1-\theta}.
+\end{align*}
+While the first term converges to $0$, the estimate (\ref{eq:4.13}) follows from the boundedness of the second term, by Gagliardo-Nirenberg-Sobolev inequality.\vspace{0.15cm}
+
+\textit{Step III:} Fix any $\epsilon>0$. We verify that $(u_m^\epsilon)_{m=1}^\infty$ satisfies Arzelà-Ascoli criterion: We claim that the sequence $(u_m^\epsilon)_{m=1}^\infty$ is uniformly bounded and uniformly equicontinuous, i.e.
+\begin{itemize}
+	\item[(i)] $\sup_{m\in\bbN}\Vert u_m^\epsilon\Vert_\infty<\infty$, and
+	\item[(ii)] for all $\eta>0$, there exists $\delta>0$ such that for all $m\in\bbN$ and all $\vert x-y\vert<\delta$, $\vert u^\epsilon_m(x)-u^\epsilon_m(y)\vert<\eta$.
+\end{itemize}
+To prove the first assertion, note that
+\begin{align*}
+	\vert u_m^\epsilon(x)\vert&\leq\int_{B(x,\epsilon)}\eta_\epsilon(x-y)\vert u_m(y)\vert\,dy\leq\Vert\eta_\epsilon\Vert_{L^\infty(\bbR^n)}\Vert u_m\Vert_{L^1(V)}\\
+	&\leq\frac{1}{\epsilon^n}\Vert u_m\Vert_{L^1(V)}\leq\frac{\vert V\vert^{1/p}}{\epsilon^n}\Vert u_m\Vert_{L^p(V)}.
+\end{align*}
+Since $(u_m)_{m=1}^\infty$ is bounded in $W^{1,p}(U)$, the first assertion holds. For the second assertion,
+\begin{align*}
+	\vert Du^\epsilon_m(x)\vert&\leq\int_{B(x,\epsilon)}\vert D\eta_\epsilon(x-y)\vert\left\vert u_m(y)\right\vert dy\\
+	&\leq\Vert D\eta_\epsilon\Vert_{L^\infty(\bbR^n)}\Vert u_m\Vert_{L^1(V)}\leq\frac{\vert V\vert^{1/p}}{\epsilon^{1+n}}\Vert Du_m\Vert_{L^p(V)}.
+\end{align*}
+Consequently, we have $\sup_{m\in\bbN}\Vert Du_m^\epsilon\Vert_{L^\infty(V)}<\frac{C}{\epsilon^{1+n}}$ for some constant $C$ depending only on $n,p$ and $V$, and the second assertion holds. By Arzelà-Ascoli theorem, the sequence $(u_m^\epsilon)_{m=1}^\infty$ has a subsequence $(u_m^j)_{j=1}^\infty$ that converges uniformly on $V$, and
+\begin{align}
+	\limsup_{j,k\to\infty}\,\bigl\Vert u^\epsilon_{m_j}-u^\epsilon_{m_k}\bigr\Vert_{L^q(V)}=0.\label{eq:4.14}
+\end{align}
+
+\textit{Step IV:} Fix any $\delta>0$. By estimate (\ref{eq:4.13}), we choose $\epsilon>0$ to so small that
+\begin{align*}
+	\sup_{m\in\bbN}\Vert u_m^\epsilon-u_m\Vert_{L^q(V)}<\frac{\delta}{2}.
+\end{align*}
+Combining this bound with (\ref{eq:4.14}), we obtain
+\begin{align*}
+	\limsup_{j,k\to\infty}\left\Vert u_{m_j}-u_{m_k}\right\Vert_{L^q(V)}&\leq\limsup_{j,k\to\infty}\left(\bigl\Vert u_{m_j}-u_{m_j}^\epsilon\bigr\Vert_{L^q(V)}+\bigl\Vert u_{m_j}^\epsilon-u_{m_k}^\epsilon\bigr\Vert_{L^q(V)}+\bigl\Vert u_{m_k}^\epsilon-u_{m_k}\bigr\Vert_{L^q(V)}\right)
+	<\delta,
+\end{align*}
+where $(m_j)_{j=1}^\infty$ is the subsequence chosen in Step III, which depends on $\epsilon$. Next, we employ our conclusion on $\delta=1,\frac{1}{2},\frac{1}{3},\cdots$ and use Cantor's standard diagonal statement to extract a subsequence $(m_l)_{l=1}^\infty$ satisfying
+\begin{align*}
+	\limsup_{l,k\to\infty}\left\Vert u_{m_l}-u_{m_k}\right\Vert_{L^q(V)}=0.
+\end{align*}
+By completeness of the space $L^q(V)$, the result follows.
+\end{proof}
+
+For $n<p\leq\infty$, we have a similar conclusion following from Morrey's inequality and Arzelà-Ascoli theorem.
+\begin{theorem}\label{thm:4.17}
+Let $U$ be a bounded, open subset of $\bbR^n$ with a Lipschitz boundary. Assume $n<p\leq\infty$. Then $$W^{1,p}(U)\Subset L^q(U)$$ for all $1\leq q\leq\infty$.
+\end{theorem}
+\begin{proof}
+By Arzelà-Ascoli theorem, we know that $C^{0,\gamma}(\ol{U})\Subset C(\ol{U})$ for all $0<\gamma\leq 1$. Let $(u_m)_{m=1}^\infty$ be a bounded sequence in $W^{1,p}(U)$. By Morrey's inequality, $(u_m)$, identified to its Hölder continuous version, is also bounded in $C^{0,1-\frac{n}{p}}(\ol{U})$. Hence there is a subsequence $(u_{m_k})_{k=1}^\infty$ that converges uniformly on $U$. Since $U$ is bounded, $(u_{m_k})_{k=1}^\infty$ converges in $L^q(U)$ for all $1\leq q\leq\infty$, and the result follows.
+\end{proof}
+
+For the borderline case $p=n$, we have the following limiting conclusion.
+
+\begin{theorem}\label{thm:4.18}
+Let $U$ be a bounded, open subset of $\bbR^n$ with a Lipschitz boundary. Then $$W^{1,n}(U)\Subset L^q(U)$$ for all $1\leq q<\infty$.
+\end{theorem}
+\begin{proof}
+According to Lemma \ref{lemma:4.13}, the embedding $W^{1,n}(U)\hookrightarrow L^q(U)$ is continuous for all $1\leq q<\infty$. Now take any bounded sequence $(u_m)_{m=1}^\infty$  in $W^{1,n}(U)$. Then for every $1\leq p<n$, since $U$ is bounded, $(u_m)_{m=1}^\infty$ is also bounded in $W^{1,p}(U)$. By Rellich-Kondrachov compactness theorem, for any $1\leq q<p^*$, there exists a subsequence $(u_{m_k})_{k=1}^\infty$ that converges in $L^q(U)$. Since $p^*=\frac{np}{n-p}\to\infty$ as $p\to n$, the result follows.
+\end{proof}
+
+\paragraph{Remark.} Summarizing Theorems \ref{RKCT}, \ref{thm:4.17} and \ref{thm:4.18}, we have
+\begin{align*}
+	W^{1,p}(U)\Subset L^p(U)
+\end{align*}
+for all $1\leq p\leq\infty$. Moreover, we have
+\begin{align*}
+	W^{1,p}_0(U)\Subset L^p(U)
+\end{align*}
+for all $1\leq p\leq\infty$, even if $\partial U$ is not Lipschitz.
+
+\newpage
+\subsection{Poincaré’s Inequality}
+\paragraph{Notation.} Given a bounded set $U\subset\bbR^n$ and a function $u\in L^1(U)$, define the \textit{mean value of $u$ in $U$} as
+\begin{align*}
+	(u)_U=\frac{1}{\vert U\vert}\int_U u(x)\,dx.
+\end{align*}
+Similarly, define the \textit{mean value of} $u\in L^1(B(x,r))$ over the ball $B(x,r)$ as
+\begin{align*}
+	(u)_{x,r}=\frac{1}{\vert B(x,r)\vert}\int_{B(x,r)} u(y)\,dy.
+\end{align*}
+\begin{theorem}[Poincaré's inequality]\label{poincaregeneral}
+Let $U$ be a bounded, open and connected subset of $\bbR^n$, with a Lipschitz boundary. Assume $1\leq p\leq\infty$. Then there exists a constant $C$, depending only on $n,p$ and $U$, such that
+\begin{align*}
+	\Vert u-(u)_U\Vert_{L^p(U)}\leq C\Vert Du\Vert_{L^p(U)}
+\end{align*}
+for each $u\in W^{1,p}(U)$.
+\end{theorem}
+\begin{proof}
+Argue by contradiction. Were the estimate false, there would exist for each $m\in\bbN$ a Sobolev function $u_m\in W^{1,p}(U)$ satisfying
+\begin{align*}
+	\Vert u_m-(u_m)_U\Vert_{L^p(U)}> m\Vert Du_m\Vert_{L^p(U)}.
+\end{align*}
+We then renormalize by defining
+\begin{align*}
+	v_m=\frac{u_m-(u_m)_U}{\Vert u_m-(u_m)_U\Vert_{L^p(U)}},\quad m=1,2,\cdots.
+\end{align*}
+Thus $(v_m)_U=0$, $\Vert v_m\Vert_{L^p(U)}=1$, and $\Vert Dv_m\Vert_{L^p(U)}\leq\frac{1}{m}$. In particular, the sequence $(v_m)_{m=1}^\infty$ is bounded in $W^{1,p}(U)$. By Rellich-Kondrachov compactness theorem, there is a subsequence $(v_{m_k})_{k=1}^\infty$ that converges in $L^p(U)$, with the limit written by $v\in L^p(U)$. Clearly, we have $(v)_U=0$, and $\Vert v\Vert_{L^p(U)}=1$. On the other hand, for each $\phi\in C_c^\infty(U)$, one have
+\begin{align*}
+	\int_U v\partial_{x_i}\phi\,dx=\lim_{k\to\infty}\int_U v_{m_k}\partial_{x_i}\phi\,dx=\lim_{k\to\infty}\int_U (D_{x_i}v_{m_k})\phi\,dx=0,\quad i=1,\cdots,n.
+\end{align*}
+Therefore, $v\in W^{1,p}(U)$, and $Dv=0$ a.e. on $U$.
+
+Now we prove that $v$ is constant a.e. on $U$. Given $\epsilon>0$, we take the local mollification $v^\epsilon=\eta_\epsilon*\ol{v}^{(\epsilon)}$. Clearly, we have $D_{x_i}v^\epsilon=\eta_\epsilon*D_{x_i}v=0$ on $U^{2\epsilon}$ for all $i=1,\cdots,n$. Consequently, $v^\epsilon$ remains constant on each connected component of $U^{2\epsilon}$. Next, given any $x,y\in U$, since $U$ is connected, we can connect them with a polygonal path $\Gamma\subset U$. Let $\delta=\inf_{z\in\Gamma}d(z,\partial U)$, and take $\epsilon<\delta/2$. Then $\Gamma\subset U^{2\epsilon}$, and $x,y$ lies in the same component of $U^{2\epsilon}$. Hence $v^\epsilon(x)=v^\epsilon(y)$ for all $\epsilon<\delta/2$. By Proposition \ref{prop:1.8}, since $v^\epsilon\to v$ a.e. on $U$, we obtain that $v$ is constant a.e. on $U$. 
+
+Finally, since $(v)_U=0$, we have $v\equiv 0$. However, this implies $\Vert v\Vert_{L^p(U)}=0$, a contradiction!
+\end{proof}
+
+We immediately obtain the following result.
+
+\begin{theorem}[Poincaré's inequality for a ball]\label{poincareball}
+Assume $1\leq p\leq\infty$. Then there exists a constant $C$, depending only on $n$ and $p$, such that
+\begin{align*}
+	\Vert u-(u)_{x,r}\Vert_{L^p(B(x,r))}\leq Cr\Vert Du\Vert_{L^p(B(x,r))}
+\end{align*}
+for each ball $B(x,r)\subset\bbR^n$ and each function $u\in W^{1,p}(B^0(x,r))$.
+\end{theorem}
+\begin{proof}
+The estimate of $u\in W^{1,p}(B^0(0,1))$ is a special case of Theorem \ref{poincaregeneral}, where $U=B^0(0,1)$. Generally, if $u\in W^{1,p}(B^0(x,r))$, let $v(z)=u(x+rz)$. Then $v\in W^{1,p}(B^0(0,1))$, and
+\begin{align*}
+	\Vert v-(v)_{0,1}\Vert_{L^p(B(0,1))}\leq C\Vert Dv\Vert_{L^p(B(0,1))}.
+\end{align*}
+The desired result follows from changing variables.
+\end{proof}
+
+\paragraph{Space of bounded mean oscillation.} A function $u\in L^1_\loc(\bbR^n)$ is said to be \textit{of bounded mean oscillation} if
+\begin{align}
+	\sup_{B(x,r)\subset\bbR^n}\frac{1}{\vert B(x,r)\vert}\int_{B(x,r)}\vert u(y)-(u)_{x,r}\vert\,dy<\infty.\label{eq:4.15}
+\end{align}
+The space of all such functions is called the space of functions of bounded mean oscillation, after dividing out constant functions:
+$$\mathrm{BMO}(\bbR^n)\subset L^1_\loc(\bbR^n)/\{\text{constant functions}\},$$ 
+and the left-hand side of (\ref{eq:4.15}) defines a norm $\Vert\cdot\Vert_{\mathrm{BMO}(\bbR^n)}$ on this subspace.
+
+\paragraph{Remark.} Let $u\in W^{1,n}(\bbR^n)$, and $B(x,r)\in\bbR^n$. By Hölder's and Poincaré's inequalities,
+\begin{align*}
+	\frac{1}{\vert B(x,r)\vert}\int_{B(x,r)}\vert u(y)-(u)_{x,r}\vert\,dy&\leq\left(\frac{1}{\vert B(x,r)\vert}\int_{B(x,r)}\vert u(y)-(u)_{x,r}\vert^n\,dy\right)^{1/n}\\
+	&\leq\frac{Cr}{\vert B(x,r)\vert}\Vert Du\Vert_{L^n(B(x,r))}=\frac{C}{\vert B(0,1)\vert}\Vert Du\Vert_{L^n(B(x,r))}.
+\end{align*}
+Therefore, $W^{1,n}(\bbR^n)$ is continuously embedded into $\mathrm{BMO}(\bbR^n)$, and
+\begin{align*}
+	\Vert u\Vert_{\mathrm{BMO}(\bbR^n)}\leq C\Vert Du\Vert_{L^n(\bbR^n)}\leq C\Vert u\Vert_{W^{1,n}(\bbR^n)}.
+\end{align*}
+
+\newpage
+\section{Second-order Elliptic Equations}
+In this chapter, we study the second-order elliptic equations. The problem we are mostly interested in is the following boundary value problem, which consists of a partial differential equation (PDE) and a homogeneous Dirichlet boundary condition (BC):
+\begin{align}
+\begin{cases}
+	Lu=f\ &in\ U,\\
+	u=0\ &on\ \partial U,
+\end{cases}\label{bvpdir}
+\end{align}
+where $U$ is a bounded, open subset of $\bbR^n$, $f:U\to\bbR$ is a known function, and $u:\ol{U}\to\bbR$ is the unknown. The partial differential operator $L$ is of second order. Given coefficient functions $a^{ij},b^i,c,\ (i,j=1,\cdots,n)$, the operator $L$ is given by the either of the following forms:
+\begin{itemize}
+	\item\textit{Divergence form.} 
+	\begin{align}
+		Lu=-\sum_{i,j=1}^n\left(a^{ij}(x)u_{x_i}\right)_{x_j}+\sum_{i=1}^n b^i(x)u_{x_i}+c(x)u.\label{divform}
+	\end{align}
+	\item\textit{Non-divergence form.}
+	\begin{align}
+		Lu=-\sum_{i,j=1}^n a^{ij}(x)u_{x_ix_j}+\sum_{i=1}^n b^i(x)u_{x_i}+c(x)u.\label{nondivform}
+	\end{align}
+\end{itemize}
+When the quadratic coefficients $a^{ij}\in C^1(U)$, any of the two forms of $L$ can be rewritten in the other using product rule. For example, the divergence form (\ref{divform}) can be written in the non-divergence form:
+\begin{align*}
+	Lu=-\sum_{i,j=1}^na^{ij}(x)u_{x_ix_j}+\sum_{i=1}^n \left(b^i(x)-\sum_{j=1}^na^{ij}_{x_j}\right)u_{x_i}+c(x)u.
+\end{align*}
+Both the two forms are discussed in our study, based on the situation.
+
+\subsection{The Dual Space of $H_0^1$}
+Let $U$ be an open subset of $\bbR^n$. The Sobolev space $H^1(U)=W^{1,2}(U)$ is a Hilbert space with inner product
+\begin{align*}
+	\langle u,v\rangle_{H^1(U)}=\int_U (uv+Du\cdot Dv)\,dx,\quad u,v\in H^1(U).
+\end{align*}
+The space $H_0^1(U)$ is the closure of $C_c^\infty(U)$ in $H^1(U)$. Since $H_0^1(U)$ is a closed subspace of $H^1(U)$, it is also a Hilbert space with the inner product inherited from $H^1(U)$. We write $H^{-1}(U)$ for the dual space to $H_0(U)$:
+\begin{align*}
+	H^{-1}(U)=\left\{f\,|\,f:H_0^1(U)\to\bbR\ is\ a\ bounded\ linear\ functional\right\}.
+\end{align*}
+We write $\langle f\,|\,u\rangle$ for the pairing $f(u)$ between $H^{-1}(U)$ and $H_0^1(U)$. If $f\in H^{-1}(U)$, we define it norm
+\begin{align*}
+	\Vert f\Vert_{H^{-1}(U)}=\sup\left\{\langle f\,|\,u\rangle:u\in H_0^1(U),\Vert u\Vert_{H^{0,1}(U)}\leq 1\right\}
+\end{align*}
+By Riesz representation theorem, we have the isomorphism $H^{-1}(U)\cong H_0^1(U)$. However, in this section, we prefer not to identify the space $H_0^1(U)$ with its dual. We point out that, despite the isomorphism, $H^{-1}(U)$ and $H_0^1(U)$ are not equal sets. For further discussion, we study another identification of $H^{-1}(U)$. This characterization of $H^{-1}(U)$ will be extremely useful in our discussion of second-order linear PDEs.
+\begin{theorem}
+Assume $f\in H^{-1}(U)$. Then there exist functions $f^0,f^1,\cdots,f^n\in L^2(U)$ such that
+\begin{align}
+	\langle f\,|\,v\rangle=\int_U\left(f^0v+\sum_{i=1}^n f^i v_{x_i}\right)\,dx,\quad\forall v\in H_0^1(U).\label{repofh-1}
+\end{align}
+Furthermore,
+\begin{align}
+	\Vert f\Vert_{H^{-1}(U)}=\inf\left\{\left(\int_U\sum_{i=0}^n\vert f^i\vert^2\,dx\right)^{1/2}: f^0,f^1,\cdots,f^n\in L^2(U)\ satisfies\ (\ref{repofh-1})\right\}\label{normestimateofh-1}
+\end{align}
+\end{theorem}
+\begin{proof}
+By Riesz representation theorem, for each $f\in H^{-1}(U)$, there exists $u\in H_0^1(U)$ such that
+\begin{align}
+	\langle f\,|\,v\rangle = \langle u,v\rangle_{H_0^1(U)}=\int_U(uv+Du\cdot Dv)\,dx,\quad\forall v\in H_0^1(U).\label{eq:5.3}
+\end{align}
+We choose $f^0=u$, and $f^i=u_{x_i}$ for $i=1,\cdots,n$. Then we establish (\ref{repofh-1}). To show (\ref{normestimateofh-1}), assume
+\begin{align*}
+	\langle f\,|\,v\rangle=\int_U\left(g^0v+\sum_{i=1}^n g^i v_{x_i}\right)\,dx,\quad\forall v\in H_0^1(U)
+\end{align*}
+for some $g^0,g^1,\cdots,g^n\in L^2(U)$. Setting $v=u$ in (\ref{eq:5.3}), we get, by Cauchy's inequality,
+\begin{align*}
+	\int_U(\vert u\vert^2+\vert Du\vert^2)\,dx=\int_U\left(g^0u+\sum_{i=1}^n g^i u_{x_i}\right)\,dx\leq\left(\int_U\sum_{i=0}^n\vert g^i\vert^2\,dx\right)^{1/2}\left(\int_U(\vert u\vert^2+\vert Du\vert^2)\,dx\right)^{1/2}.
+\end{align*}
+Hence
+\begin{align}
+	\int_U(\vert u\vert^2+\vert Du\vert^2)\,dx=\int_U\sum_{i=0}^n\vert f^i\vert^2\,dx\leq\int_U\sum_{i=0}^n\vert g^i\vert^2\,dx.\label{eq:5.4}
+\end{align}
+Finally, note that when $\Vert v\Vert_{H_0^1(U)}\leq 1$,
+\begin{align*}
+	\langle f\,|\,v\rangle\leq\left(\int_U\sum_{i=0}^n\vert f^i\vert^2\,dx\right)^{1/2},
+\end{align*}
+and the equality holds when we choose $v=\frac{u}{\Vert u\Vert_{H_0^1(U)}}$. Hence
+\begin{align}
+	\Vert f\Vert_{H^{-1}(U)}=\sup\left\{\langle f\,|\,v\rangle:v\in H_0^1(U),\Vert v\Vert_{H^{0,1}(U)}\leq 1\right\}=\int_U\sum_{i=0}^n\vert f^i\vert^2\,dx.\label{eq:5.5}
+\end{align}
+Then (\ref{normestimateofh-1}) follows from (\ref{eq:5.4}) and (\ref{eq:5.5}).
+\end{proof}
+
+\paragraph{Remark I.} Using integration by parts, we can write (\ref{repofh-1}) to
+\begin{align*}
+	\langle f\,|\,v\rangle=\int_U\left(f^0-\sum_{i=1}^n f^i_{x_i}\right)v\,dx.
+\end{align*}
+Hence we write $f=f^0-\sum_{i=1}^n f^i_{x_i}$ whenever (\ref{repofh-1}) holds. 
+
+Also, we obtain a characterization of $H^{-1}(U)$: if $f\in H^{-1}(U)$, then $f$ is the sum of a $L^2$ function $f^0$ and the divergence of a vector $(f^1,\cdots,f^n)$ of $L^2$ functions (in weak/distributional sense). 
+
+\paragraph{Remark II.} If $f\in L^2(U)$, we let $f^0=f$ and $f^1,\cdots,f^n=0$. Then $f=f^0-\sum_{i=1}^n f_{x_i}^i\in H^{-1}(U)$, with
+\begin{align*}
+	\langle f\,|\,v\rangle=\langle f,v\rangle_{L^2(U)}.
+\end{align*}
+By (\ref{normestimateofh-1}), we have $\Vert f\Vert_{H^{-1}(U)}\leq\left(\int_U\vert f^0\vert^2\,dx\right)^{1/2}\leq\Vert f\Vert_{L^2(U)}$. Hence we get the inclusion
+\begin{align*}
+	H^1_0(U)\subset L^2(U)\hookrightarrow H^{-1}(U).
+\end{align*}
+We have the following density argument.
+
+\begin{theorem}
+The space $L^2(U)$ is dense in $H^{-1}(U)$.
+\end{theorem}
+\begin{proof}
+Fix $f\in H^{-1}(U)$. By Riesz representation theorem, we can find $u\in H_0^1(U)$ with $\langle f,v\rangle=\langle u,v\rangle_{H_0^1(U)}$ for all $v\in H_0^1(U)$. We then find an approximation $C_c^\infty(U)\ni u_n\to u$ in $H^1(U)$. Then
+\begin{align*}
+	\langle u_n,v\rangle_{H_0^1(U)}=\int_U(u_nv+Du_n\cdot Dv)\,dx=\int_U(u_n-\Delta u_n)v\,dx.\tag{integration by parts}
+\end{align*}
+Since $u_n\in C_c^\infty(U)$, we have $u_n-\Delta u_n\in L^2(U)$. Let $f_n:H_0^1(U)\to\bbR$ be the functional $$\langle f_n,v\rangle=\langle u_n,v\rangle_{H_0^1(U)}=\langle u_n-\Delta u_n,v\rangle_{L^2(U)}.$$ 
+Then $f_n$ is a bounded linear functional on $L^2(U)$, and
+\begin{align*}
+	\vert\langle f-f_n\,|\,v\rangle\vert=\vert\langle u-u_n,v\rangle_{H_0^1(U)}\vert\leq\Vert u-u_n\Vert_{H_0^1(U)}\Vert v\Vert_{H_0^1(U)}
+\end{align*}
+By taking a supremum on both sides over $\Vert v\Vert_{H_0^1(U)}\leq 1$, we obtain $\Vert f-f_n\Vert_{H^{-1}(U)}\leq\Vert u-u_n\Vert_{H_0^1(U)}$, which converges to $0$ as $n$ goes to infinity. Then we complete the proof.
+\end{proof}
+\paragraph{Remark.} In the preceding proof, we identify the space $L^2(U)$ with its dual. In fact, we prove that $(L^2(U))^*$ is dense in the space $H^{-1}(U)$.
+
+\subsection{The Lax-Milgram Theorem}
+In this section, we introduce a general result in Hilbert spaces. We will make use of this result when we establish the weak formulation of PDEs. 
+
+Let $H$ be a real Hilbert space with inner product $\langle\cdot,\cdot\rangle_H$ and norm $\Vert\cdot\Vert_H=\sqrt{\langle\cdot,\cdot\rangle_H}$. We continue to write $\langle\cdot\,|\,\cdot\rangle$ for the action of
+an element of $H^*$ on an element of $H$.
+\begin{theorem}[Lax-Milgram Theorem]\label{laxmil}
+Suppose that $B:H\times H\to\bbR$ is a bilinear form, for which there exists constants $\alpha,\beta>0$ such that
+\begin{itemize}
+\item[(i)] (Boundedness) $\vert B(u,v)\vert\leq\alpha\Vert u\Vert_H\Vert v\Vert_H$ for all $u,v\in H$; and
+\item[(ii)] (Coercivity) $B(u,u)\geq\beta\Vert u\Vert_H^2$ for all $u\in H$.
+\end{itemize}
+Then for each $f\in H^*$, there exists a unique $u\in H$ such that
+\begin{align*}
+	B(u,v)=\langle f\,|\,v\rangle
+\end{align*}
+for all $v\in H$.
+\end{theorem}
+\paragraph{Remark.} If $B$ is symmetric, i.e. $B(u,v)=B(v,u)$ for all $u,v\in H$, then $B$ becomes a inner product on $H$, and our result is the Riesz representation theorem.
+\begin{proof}[Proof of Theorem \ref{laxmil}]
+We fix $u\in U$, so $B(u,\cdot)$ is a bounded linear functional on $H$. By Riesz representation theorem, there exists a unique $w_u\in H$ such that $B(u,v)=\langle w_u,v\rangle_H$ for all $v\in H$. We then let $A:H\to H$ be the operator that maps each $u\in H$ to this unique $w_u$, i.e. $B(u,v)=\langle Au,v\rangle_H$ for all $v\in H$.
+
+\begin{itemize}
+\item\textit{Claim I.} $A\in H^*$.
+
+Let $\alpha,\beta\in\bbR$ and $u_1,u_2\in H$. Then 
+\begin{align*}
+	\langle A(\alpha u_1+\beta u_2),v\rangle_H=B(\alpha u_1+\beta u_2,v)&=\alpha B(u_1,v)+\beta B(u_2,v)\\
+	&=\alpha\langle Au_1,v\rangle_H+\beta\langle Au_2,v\rangle_H=\langle\alpha Au_1+\beta Au_2,v\rangle_H,\quad\forall v\in H.
+\end{align*}
+Hence $A(\alpha u_1+\beta u_2)=\alpha Au_1+\beta Au_2$, and the linearity follows. To show that $A$ is bounded, note that
+\begin{align*}
+	\Vert Au\Vert_H^2=B(u,Au)\leq\alpha\Vert u\Vert_H\Vert Au\Vert_H\quad\Rightarrow\quad\Vert Au\Vert_H\leq\alpha\Vert u\Vert_H,\ \ \forall u\in H.
+\end{align*}
+\item\textit{Claim II.} $A$ is injective, and the range $\mathfrak{R}(A)$ of $A$ is closed in $H$.
+
+We first show that $A$ is injective. By coercivity,
+\begin{align*}
+	Au=0\quad\Rightarrow\quad\Vert u\Vert_H^2\leq\frac{1}{\beta}B(u,u)=\langle Au,u\rangle_H=0\quad\Rightarrow\quad u=0\quad\Rightarrow\quad \ker A=0.
+\end{align*}
+Next we show that $\mathfrak{R}(A)$ is closed in $H$. Let $w\in\ol{\mathfrak{R}(A)}$. Then we can find a sequence $w_n\in\mathfrak{R}(A)$ such that $\Vert w_n-w\Vert_H\to 0$. Let $u_n=A^{-1}w_n$. By coercivity,
+\begin{align*}
+	\Vert u_n-u_m\Vert_H\leq\frac{B(u_n-u_m,u_n-u_m)}{\beta\Vert u_n-u_m\Vert_H}&=\frac{\langle Au_n-Au_m,u_n-u_m\rangle_H}{\beta\Vert u_n-u_m\Vert_H}\\
+	&=\frac{\langle w_n-w_m,u_n-u_m\rangle_H}{\beta\Vert u_n-u_m\Vert_H}\leq\frac{1}{\beta}\Vert w_n-w_m\Vert_H.
+\end{align*}
+Hence $(u_n)$ is a Cauchy sequence in $H$. By completeness, we can find $u\in H$ with $\Vert u_n-u\Vert\to 0$. Then
+\begin{align*}
+	\Vert Au-w\Vert_H\leq\Vert Au-Au_n\Vert_H+\Vert Au_n-w\Vert_H\leq\alpha\Vert u-u_n\Vert_H+\Vert w_n-w\Vert_H\to 0.
+\end{align*}
+Hence $w=Au\in\mathfrak{R}(A)$. Therefore $\mathfrak{R}(A)$ is closed in $H$.
+\item\textit{Claim III.} $\mathfrak{R}(A)=H$.
+
+Since $\mathfrak{R}(A)$ is closed, every $u\in H$ can be uniquely decomposed to $u=u_0+u_1$ with $u_0\in\mathfrak{R}(A)$ and $u_1\in\mathfrak{R}(A)^\perp$. If $\mathfrak{R}(A)\neq H$, we choose $v\in H\backslash\mathfrak{R}(A)$ with orthogonal decomposition $v=v_0+v_1$. Then for all $u\in H$, we have $\langle Au,v_1\rangle_H=0$. Setting $u=v_1$, we get $B(v_1,v_1)=\langle Av_1,v_1\rangle_H=0$, and $v_1=0$ by coercivity. This implies $v=v_0\in\mathfrak{R}(H)$, a contradiction! Therefore $\mathfrak{R}(A)=H$.
+\end{itemize}
+Now, combining our \textit{Claims I, II and III}, we conclude that $A:H\to H$ is a bounded linear bijection. By \textit{Banach bounded inverse theorem}, there exists a bounded linear operator $A^{-1}:H\to H$ such that $AA^{-1}=A^{-1}A=\id$. Then for each $f\in H^*$, by Riesz representation theorem, there exists $w\in H$ such that $\langle f\,|\,v\rangle=\langle w,v\rangle_H$ for all $v\in H$. Let $u=A^{-1}w$, then
+\begin{align*}
+	B(u,v)=\langle Au,v\rangle=\langle AA^{-1}w,v\rangle=\langle w,v\rangle=\langle f\,|\,v\rangle.
+\end{align*}
+Finally, to prove uniqueness, assume $B(u,v)=B(u^\prime,v)=\langle f\,|\,v\rangle$ for all $v\in H$. By coercivity,
+\begin{align*}
+	\Vert u-u^\prime\Vert_H^2\leq\frac{1}{\beta}B(u-u^\prime,u-u^\prime)=\frac{\langle f\,|\,u-u^\prime\rangle-\langle f\,|\,u-u^\prime\rangle}{\beta}=0.
+\end{align*}
+Then we complete the proof.
+\end{proof}
+
+\subsection{Weak Formulation and Poisson's Equation}
+In this section, we study the weak formulation of the boundary value problem (\ref{bvpdir}). Through our discussion, we assume the differential operator is given by the divergence form (\ref{divform}):
+\begin{align*}
+	Lu=-\sum_{i,j=1}^n\left(a^{ij}(x)u_{x_i}\right)_{x_j}+\sum_{i=1}^n b^i(x)u_{x_i}+c(x)u.
+\end{align*}
+In fact, the exact solution of a second-order PDE can be intractable. To simplify our problem, we may concern if our PDE holds in the sense of integration, which gives rise to the weak formulation of PDE.
+
+\paragraph{Motivation.} We assume that $u$ is a smooth solution of the BVP (\ref{bvpdir}). We the multiply the PDE $Lu=f$ by a test function $v\in C_c^\infty(U)$ and integrate over $U$:
+\begin{align*}
+	\int_U\left(\sum_{i,j=1}^n a^{ij}(x)u_{x_i}v_{x_j}+\sum_{i=1}^n b^iu_{x_i}v + cuv\right)dx=\int_U fv\,dx.
+\end{align*}
+Here we use integration by parts in the first term on the left side, where the boundary term vanishes since $v=0$ on $\partial U$. By approximation, we can obtain the same identity when the smooth function $v$ is replaced by $v\in H_0^1(U)$, and the resulting identity make sense if and only if $u\in H_0^1(U)$. Here we incorporate the Dirichlet BCs $u=0$ on $\partial U$ by choosing $u\in H_0^1(U)$. We require the above identity holds for a weak solution $u$.
+
+\begin{definition}
+The bilinear form $B:H_0^1(U)\times H_0^1(U)\to\bbR$ associated with the divergence form operator $L$ defined by (\ref{divform}) is given by
+\begin{align*}
+	B(u,v)=\int_U\left(\sum_{i,j=1}^n a^{ij}(x)u_{x_i}v_{x_j}+\sum_{i=1}^n b^iu_{x_i}v + cuv\right)dx,\quad u,v\in H_0^1(U).
+\end{align*}
+\end{definition}
+
+When $f\in L^2(U)$, our goal becomes finding a function $u\in H_0^1(U)$ such that $B(u,v)=\langle f,v\rangle_{L^2(U)}$ holds for all $v\in H_0^1(U)$. More generally, we consider the following problem:
+\begin{align}
+	\begin{cases}
+		Lu=f^0-\sum_{i=1}^n f^i_{x_i}\ &in\ U,\\
+		u=0\ &on\ \partial U,
+	\end{cases}\label{pdeelliptic}
+\end{align}
+where $f=f^0-\sum_{i=1}^n f^i_{x_i}\in H^{-1}(U)$, and $f_0,f_1,\cdots,f_n\in L^2(U)$.
+
+\begin{definition}[Weak solutions]\label{weaksolelliptic}
+Let $L$ be a divergence form operator defined by (\ref{divform}), and let $B$ be the associated bilinear form.
+\begin{itemize}
+\item[(i)] Let $f\in L^2(U)$. A function $u\in H_0^1(U)$ is said to be a weak solution to problem (\ref{bvpdir}), if
+\begin{align*}
+	B(u,v)=\langle f,v\rangle_{L^2(U)}
+\end{align*}
+for all $v\in H_0^1(U)$.
+\item[(ii)] Let $f=f^0-\sum_{i=1}^n f^i_{x_i}\in H^{-1}(U)$, and $f_0,f_1,\cdots,f_n\in L^2(U)$. A function $u\in H_0^1(U)$ is said to be a \textit{weak solution} to problem (\ref{pdeelliptic}), if
+\begin{align*}
+	B(u,v)=\langle f\,|\,v\rangle
+\end{align*}
+for all $v\in H_0^1(U)$, where $\langle f\,|\,v\rangle=\int_U(f^0v+\sum_{i=1}^nf^iv_{x_i})\,dx$ is the pairing of $H^{-1}(U)$ and $H_0^1(U)$.
+\end{itemize}
+\end{definition}
+
+\paragraph{Example: Poisson's equation.} Let $f\in H^{-1}(U)$. We consider the following boundary value problem:
+\begin{align*}
+\begin{cases}
+	-\Delta u=f\ &in\ U,\\
+	u=0\ &on\ \partial U.
+\end{cases}
+\end{align*}
+For a divergence form operator $L$, this is the case $a^{ij}(x)=\delta_{ij}, b^i(x)=0$ and $c(x)=0$.
+
+The bilinear form associated with the negative Laplacian operator $L=-\Delta$ is
+\begin{align*}
+	B(u,v)=\int_U\delta_{ij}u_{x_i}v_{x_j}\,dx=\int_U Du\cdot Dv\,dx, 
+\end{align*}
+and the weak formulation of this problem is
+\begin{align*}
+	B(u,v)=\langle f\,|\,v\rangle,\quad\forall v\in H_0^1(U).
+\end{align*}
+Now we study the property of bilinear form $B$. For any $u,v\in H_0^1(U)$, one can show boundedness:
+\begin{align*}
+	\vert B(u,v)\vert=\left\vert\int_U Du\cdot Dv\,dx\right\vert\leq\Vert Du\Vert_{L^2(U)}\Vert Dv\Vert_{L^2(U)}\leq\Vert u\Vert_{H_0^1(U)}\Vert v\Vert_{H_0^1(U)}.
+\end{align*}
+Furthermore, by classical Poincaré's inequality [Corollary \ref{cor:4.6}], there exists a constant $C>0$ such that
+\begin{align*}
+	\vert B(u,u)\vert=\int_U\vert Du\vert^2\,dx=\Vert Du\Vert_{L^2(U)}^2\geq\frac{1}{C^2}\Vert u\Vert_{L^2(U)}^2,\quad\forall u\in H_0^1(U).
+\end{align*}
+Then one can show coercivity:
+\begin{align*}
+	\vert B(u,u)\vert=\frac{C^2}{1+C^2}\Vert Du\Vert_{L^2(U)}^2+\frac{1}{1+C^2}\Vert Du\Vert_{L^2(U)}^2\geq\frac{1}{1+C^2}\left(\Vert u\Vert_{L^2(U)}^2+\Vert Du\Vert_{L^2(U)}^2\right)\geq\frac{1}{1+C^2}\Vert u\Vert_{H_0^1(U)}^2.
+\end{align*}
+Therefore, by Lax-Milgram theorem [Theorem \ref{laxmil}], \textit{there exists a unique weak solution $u\in H_0^1(U)$ to the Poisson's equation under homogeneous Dirichlet boundary conditions.}
+
+\paragraph{} Finally, we introduce the definition of elliptic PDEs, which is a generalization of Poisson's equation. 
+
+\begin{definition}[Uniformly elliptic operators]
+Let $L$ be a partial differential operator of either divergence form (\ref{divform}) or non-divergence form (\ref{nondivform}). Assume the coefficient functions $a^{ij},b^i,c\in L^\infty(U)$ for all $i,j=1,\cdots,n$, and also assume the symmetry condition $$a^{ij}=a^{ji},\quad i,j=1,\cdots,n.$$ 
+The operator $L$ is said to be \textit{(uniformly) elliptic}, if there exists a constant $\theta>0$ such that
+\begin{align*}
+	\sum_{i,j=1}^n a^{ij}(x)\xi_i\xi_j\geq\theta\vert\xi\vert^2
+\end{align*}
+for a.e. $x\in U$ and all $\xi\in\bbR^n$.
+\end{definition}
+\paragraph{Remark.} For each $x\in U$, we write $A(x)=(a^{ij}(x))_{i,j=1}^n$ to be the symmetric $n\times n$ matrix associated with the quadratic coefficients. Ellipticity essentially requires that for a.e. $x\in U$, the matrix $A(x)$ is positive definite, and the smallest eigenvalue is lower bounded by some $\theta>0$.
+
+\newpage
+\subsection{Existence of Weak Solutions}
+In this section, we discuss the existence of weak solutions for uniformly elliptic PDEs. To proceed, we first try to verify the hypotheses of Lax-Milgram theorem.
+\begin{theorem}[Energy estimates]\label{energyest}
+Let $L$ be an elliptic partial differential operator, and let $B$ be the associated bilinear form. Then there exist constants $\alpha,\beta>0$ and $\gamma\geq 0$ such that
+\begin{align}
+	\vert B(u,v)\vert\leq\alpha\Vert u\Vert_{H_0^1(U)}\Vert v\Vert_{H_0^1(U)},\label{energybounded}
+\end{align}
+and
+\begin{align}
+	\beta\Vert u\Vert_{H_0^1(U)}^2\leq B(u,u)+\gamma\Vert u\Vert_{L^2(U)}^2\label{energycoercive}
+\end{align}
+for all $u,v\in H_0^1(U)$.
+\end{theorem}
+\begin{proof}
+For all $u,v\in H_0^1(U)$, we can check
+\begin{align*}
+	\vert B(u,v)\vert&=\left\vert\int_U\left(\sum_{i,j=1}^n a^{ij}(x)u_{x_i}v_{x_j}+\sum_{i=1}^n b^i u_{x_i}v+cuv\right)dx\right\vert\\
+	&\leq\sum_{i,j=1}^n\Vert a^{ij}\Vert_{L^\infty(U)}\int_U\vert Du\vert\left\vert Dv\right\vert dx+\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}\int_U\vert Du\vert\left\vert v\right\vert dx+\Vert c\Vert_{L^\infty(U)}\int_U\vert u\vert\left\vert v\right\vert dx\\
+	&\leq\underbrace{\max\left\{\sum_{i,j=1}^n\Vert a^{ij}\Vert_{L^\infty(U)}+\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)},\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}+\Vert c\Vert_{L^\infty(U)}\right\}}_\alpha \Vert u\Vert_{H_0^1(U)}\Vert v\Vert_{H_0^1(U)}.
+\end{align*}
+Next, by ellipticity, there exists $\theta>0$ such that
+\begin{align*}
+	\theta\int_U\vert Du\vert^2\,dx&\leq\int_U\sum_{i,j=1}^n a^{ij} u_{x_i}u_{x_j}\,dx=B(u,u)-\int_U\sum_{i=1}^n\left(b^i u_{x_i}u+cu^2\right)\,dx\\
+	&\leq B(u,u)+\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}\int_U\vert Du\vert\left\vert u\right\vert\,dx+\Vert c\Vert_{L^\infty(U)}\int_U \vert u\vert^2\,dx\\
+	&\leq B(u,u)+ \epsilon\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}\int_U\vert Du\vert^2\,dx+\left(\Vert c\Vert_{L^\infty(U)}+\frac{1}{4\epsilon}\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}\right)\int_U \vert u\vert^2\,dx,
+\end{align*}
+where $\epsilon>0$ is to be chosen. We take $\epsilon>0$ to be so small that
+\begin{align*}
+	\epsilon\sum_{i=1}^n\Vert b^i\Vert_{L^\infty(U)}\leq\frac{\theta}{2}.
+\end{align*}
+Then for some appropriate constant $\gamma$, we have
+\begin{align*}
+	\frac{\theta}{2}\int_U\vert Du\vert^2\,dx\leq B(u,u)+\gamma\int_U\vert u\vert^2\,dx.
+\end{align*}
+By classical Poincaré's inequality [Corollary \ref{cor:4.6}], there exists a constant $C>0$ such that
+\begin{align*}
+	\int_U\vert Du\vert^2\,dx\geq\frac{1}{C^2}\int_U\vert u\vert^2\,dx,\quad\forall u\in H_0^1(U).
+\end{align*}
+Combining the last two display, we have
+\begin{align*}
+	\int_U\vert Du\vert^2\,dx\geq\frac{1}{1+C^2}\left(\int_U\vert u\vert^2\,dx+\int_U\vert Du\vert^2\,dx\right)\geq\frac{1}{1+C^2}\Vert u\Vert_{H_0^1(U)}^2.
+\end{align*}
+By setting $\beta=\frac{\theta}{2(1+C^2)}$, we have
+\begin{align*}
+	\beta\Vert u\Vert_{H_0^1(U)}^2\leq B(u,u)+\gamma\Vert u\Vert_{L^2(U)}.
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+\paragraph{Remark.} When $\gamma>0$, the coercivity condition of the Lax-Milgram theorem is not satisfied. The following existence theorem must confront this possibility.
+
+\begin{theorem}[First existence theorem for weak solutions]\label{ellipex1}
+Let $L$ be an elliptic partial differential operator. There is a constant $\gamma\geq 0$ such that for all $\lambda\geq\gamma$ and each function $f=f^0-\sum_{i=1}^n f^i_{x_i}\in H^{-1}(U)$, where $f^0,f^1,\cdots,f^n\in L^2(U)$, there exists a unique weak solution $u\in H_0^1(U)$ to the boundary value problem
+\begin{align}
+\begin{cases}
+	Lu+\lambda u = f^0-\sum_{i=1}^n f^i_{x_i}\ &in\ U\\
+	u=0\ &on\ \partial U.
+\end{cases}\label{ellipticbvpex1}
+\end{align}
+\end{theorem}
+\begin{proof}
+We consider the operator $L_\lambda=L+\lambda\id$, which has the associated bilinear form
+\begin{align*}
+	B_\lambda(u,v)=B(u,v)+\lambda\langle u,v\rangle_{L^2(U)},\quad u,v\in H_0^1(U).
+\end{align*}
+Take $\gamma\geq 0$ from Theorem \ref{energyest}, then $B_\lambda$ satisfies the hypotheses of Lax-Milgram theorem for all $\lambda\geq\mu$. We then fix $f=f^0-\sum_{i=1}^n f^i_{x_i}\in L^2(U)$. By Lax-Milgram theorem, there exists a unique $u\in H_0^1(U)$ such that
+\begin{align*}
+	B_\lambda(u,v)=\langle f\,|\,v\rangle=\int_U\left(f^0u+\sum_{i=1}^n f^i u_{x_i}\right)dx.
+\end{align*}
+for all $v\in H_0^1(U)$. In fact, $u$ is the unique weak solution of (\ref{ellipticbvpex1}).
+\end{proof}
+\paragraph{Remark.} In fact, we show that $L_\lambda=L+\lambda\id:H_0^1(U)\to H^{-1}(U)$ is an isomorphism for all $\lambda\geq\gamma$.
+
+\paragraph{Adjoint operators.} We assume that $b^i\in C^1(\ol{U})$. If $u,v\in H_0^1(U)$, we use integration by parts to obtain
+\begin{align*}
+	\int_U (Lu) v\,dx &=\int_U\left(-\sum_{i,j=1}^n\left(a^{ij}u_{x_i}\right)_{x_j}+\sum_{i=1}^n b^iu_{x_i}+cu\right)v\,dx\\
+	&=\int_{U}\left(\sum_{i,j=1}^n a^{ij}u_{x_i}v_{x_j}-\sum_{i=1}^n (b^iv)_{x_i}ux+ cuv\right)dx\\
+	&=\int_{U}\sum_{i,j=1}^n\left(a^{ij}u_{x_i}v_{x_j}-\sum_{i=1}^n b^iuv_{x_i} +\left(c-\sum_{i=1}^n b_{x_i}\right)uv\right)\,dx\\
+	&=\int_U u\underbrace{\left(-\sum_{i,j=1}^n(a^{ij}v_{x_j})_{x_i}-\sum_{i=1}^n b^iv_{x_i}+\left(c-\sum_{i=1}^n b_{x_i}\right)v\right)}_{L^*v}dx.
+\end{align*}
+This identity has a form similar to the definition of adjoint: $\langle Lu,v\rangle_{L^2(U)}=\langle u,L^*v\rangle_{L^2(U)}$.
+
+\begin{definition}[Adjoint]
+Let $L$ be an divergence form elliptic operator with $b_i\in C^1(\ol{U})$ for all $i=1,\cdots,n$. The operator $L^*$, called the \textit{formal adjoint} of $L$, is defined as
+\begin{align*}
+	L^*v=-\sum_{i,j=1}^n(a^{ij}v_{x_j})_{x_i}-\sum_{i=1}^n b^iv_{x_i}+\left(c-\sum_{i=1}^n b_{x_i}\right)v.
+\end{align*}
+The adjoint bilinear form $B^*:H_0^1(U)\times H_0^1(U)\to \bbR$, associated with $L^*$, is defined by
+\begin{align*}
+	B^*(v,u)=B(u,v),\quad u,v\in H_0^1(U).
+\end{align*}
+Fix $f\in H^{-1}(U)$. We say that $v\in H_0^1(U)$  is a weak solution of the adjoint problem
+\begin{align*}
+\begin{cases}
+	L^*v=f\ &in\ U,\\
+	v=0\ &on\ \partial U,
+\end{cases}
+\end{align*}
+if $B^*(v,u)=\langle f\,|\,u\rangle$ for all $u\in H_0^1(U)$, where $\langle\cdot\,|\,\cdot\rangle$ is the pairing between $H^{-1}(U)$ and $H^1_0(U)$.
+\end{definition}
+
+\paragraph{Fredholm alternative.} To study the solvability of elliptic PDEs, we need the tool of Fredholm alternative, which incorporates existence and uniqueness of solutions.
+
+To start with, we consider a bounded linear operator $T$ on a Hilbert space $H$. We have some standard results in functional analysis, about the kernel and range of $T$ and its adjoint:
+\begin{align*}
+	\ker(T)=\mathfrak{R}(T^*)^\perp,\quad \ker (T^*)=\mathfrak{R}(T)^\perp,\quad \ol{\mathfrak{R}(T)}=\ker(T^*)^\perp,\quad \ol{\mathfrak{R}(T^*)}=\ker(T)^\perp.
+\end{align*}
+
+Next, we consider a compact operator $K:H\to H$, i.e. $K$ maps each bounded subset of $H$ to a precompact subset of $H$. Compactness implies numbers of good properties. Here are some helpful facts:
+\begin{itemize}
+\item[(i)] The adjoint $K^*$ of $K$ is also a compact operator.
+\item[(ii)] Every nonzero point of $\sigma(K)$ (the spectrum of $K$) is an eigenvalue of $K$. In other words, if $\lambda\neq 0$ and $\lambda I-K$ is not invertible, then there exists $x\in H$ such that $Kx=\lambda x$. This implies
+\begin{align*}
+	\ker(\lambda\id -K)=\{0\}\quad\overset{\lambda\neq 0}{\Leftrightarrow}\quad\mathfrak{R}(\lambda\id-K)=H.
+\end{align*}
+In other words, when $\lambda\neq 0$, $\lambda\id-K$ is injective if and only if it is surjective.
+\item[(iii)] If $\lambda\neq 0$, then $\mathfrak{R}(\lambda\id-K)$ is a closed subspace of $H$.
+\item[(iv)] If $\lambda\in\sigma(K)\backslash\{0\}$, the eigenspace of $K$ associated with $\lambda$ is finite dimensional, and $$\dim\ker(\lambda\id-K)=\dim\ker(\lambda\id-K^*).$$
+\end{itemize}
+Therefore, if $K:H\to H$ is a compact operator and $\lambda\neq 0$, the following statements are equivalent:
+\begin{align*}
+	(a)\ \ker(\lambda\id-K)=\{0\};\quad (b)\ \mathfrak{R}(\lambda\id-K)=H;\quad (c)\ \ker(\lambda\id-K^*)=\{0\};\quad (d)\ \mathfrak{R}(\lambda\id-K^*)=H.
+\end{align*}
+We formally summarize our result below.
+
+\begin{theorem}[Fredholm alternative]\label{fredalt}
+Let $K$ be a compact operator on a Hilbert space $H$, and fix $\lambda\neq 0$. Then exactly one of the following statements holds:
+\begin{itemize}
+	\item[(a)] For every $v\in H$, the equation $\lambda u-Ku=v$ has a unique solution $u\in H$;
+	\item[(b)] The eigenvalue problem $Ku=\lambda u$ has nonzero solution $u\neq 0$ in $H$.
+\end{itemize}
+Furthermore, if (a) holds for $K$, it also holds for the adjoint operator $K^*$; otherwise, (b) holds for both the operator $K$ and its adjoint operator $K^*$, and their eigenspaces associated with $\lambda$ has the same dimension.
+\end{theorem}
+
+\paragraph{Remark.} We can interpret the basic results as follows: In an appropriately formulated problem, either
+\begin{itemize}
+\item[(a)] The inhomogeneous equation can be solved uniquely for each choice of data, or
+\item[(b)] The homogeneous equation has a nontrivial solution.
+\end{itemize}
+We derive an existence theorem for weak solutions of elliptic PDEs using Fredholm alternative.
+\begin{theorem}[Second existence theorem for weak solutions]\label{ellipex2}
+Let $L$ be a elliptic operator.
+\begin{itemize}
+\item[(i)] Exactly one of the following statements holds: either
+\begin{itemize}
+\item[(a)] for each $f\in L^2(U)$, there exists a unique weak solution $u\in H_0^1(U)$ of the boundary value problem
+\begin{align}
+\begin{cases}
+Lu=f\ &in\ U,\\
+u=0\ &on\ \partial U,
+\end{cases}\label{nonhomoellip}
+\end{align}
+\end{itemize}
+or else
+\begin{itemize}
+\item[(b)] there exists a nonzero weak solution $u\neq 0$ in $H_0^1(U)$ of the homogeneous problem
+\begin{align}
+	\begin{cases}
+		Lu=0\ &in\ U,\\
+		u=0\ &on\ \partial U.
+	\end{cases}\label{homoellip}
+\end{align}
+\end{itemize}
+The dichotomy (a) \& (b) is the Fredholm alternative.
+\item[(ii)] Furthermore, should (b) hold, the dimension of the subspace $N\subset H_0^1(U)$ of weak solutions of (\ref{homoellip}) is finite and equals the dimension of the subspace $N^*\in H_0^1(U)$ of weak solutions of the adjoint problem
+\begin{align}
+	\begin{cases}
+		L^*v=0\ &in\ U,\\
+		v=0\ &on\ \partial U.
+	\end{cases}\label{adjhomoellip}
+\end{align}
+\item[(iii)] Finally, the boundary value problem (\ref{nonhomoellip}) has a weak solution if and only if
+\begin{align*}
+	\langle f,v\rangle_{L^2(U)}=0,\quad\forall v\in N^*.
+\end{align*}
+\end{itemize}
+\end{theorem}
+\begin{proof}
+We choose $\lambda=\gamma$ in Theorem \ref{ellipex1}, and assume without loss of generality $\gamma>0$. Define the bilinear form
+\begin{align*}
+	B_\gamma(u,v)=B(u,v)+\gamma\langle u,v\rangle_{L^2(U)},\quad u,v\in H_0^1(U)
+\end{align*}
+associated with the operator $L_\gamma=L+\gamma\id$. Then for each $g\in L^2(U)$ there exists a unique $u\in H_0^1(U)$ solving $B_\gamma(u,v)=\langle g,v\rangle_{L^2(U)}$ for all $v\in H_0^1(U)$. We define the inverse $L_\gamma^{-1}:L^2(U)\to H_0^1(U)$ by writing $u=L_\gamma^{-1}g$. For $f\in L^2(U)$, we observe that $u$ is a weak solution of problem (\ref{nonhomoellip}) if and only if
+\begin{align*}
+	u=L_\gamma^{-1}(\gamma u+f).
+\end{align*}
+We let $K=\gamma L_\gamma^{-1}$ and $h=L^{-1}_\gamma f$. Then we rewrite this problem to $(\id -K)u=h$. To employ Fredholm alternative, we claim that $K:L^2(U)\to L^2(U)$ is a compact bounded linear operator. To this end, we note that, by energy estimate [Theorem \ref{energyest}] (\ref{energycoercive}), for $g\in L^2(U)$ and $u=L^{-1}_\gamma g$,
+\begin{align*}
+	\beta\Vert u\Vert_{H_0^1(U)}^2 \leq B_\gamma(u,u)=\langle g,u\rangle_{L^2(U)}\leq\Vert g\Vert_{L^2(U)}\Vert u\Vert_{L^2(U)}\leq\Vert g\Vert_{L^2(U)}\Vert u\Vert_{H_0^1(U)}.
+\end{align*}
+Then
+\begin{align*}
+	\Vert Kg\Vert_{H_0^1(U)}\leq\frac{\gamma}{\beta}\Vert g\Vert_{L^2(U)}.
+\end{align*}
+By Rellich-Kondrachov compactness theorem, we have $H^1(U)\Subset L^2(U)$, hence every bounded subset of $H^1(U)$ is precompact in $L^2(U)$, and $K:L^2(U)\to L^2(U)$ is a compact operator.
+
+According to the Fredholm alternative, exactly one of the following statements holds: either
+\begin{itemize}
+	\item[(a)] For each $h\in L^2(U)$, the equation $(\id -K)u=h$ has a unique solution $u\in L^2(U)$; or else,
+	\item[(b)] The equation $(\id-K)u=0$ has a nonzero solution $u\neq 0$ in $L^2(U)$.
+\end{itemize}
+
+Should the statement (a) holds, we fix any $f\in L^2(U)$, and set $h=L_\gamma^{-1}f\in H_0^1(U)\subset L^2(U)$. Then we find a unique $u\in L^2(U)$ with $(\id-K)u=h$, and in fact $u=Ku+h\in H_0^1(U)$. This is the weak solution to (\ref{nonhomoellip}).
+
+Should the statement (b) holds, the nonzero solution $u=Ku\in H_0^1(U)$. Furthermore, the space $N$ of solutions of (\ref{homoellip}) is $\ker(\id-K)$. According to Theorem \ref{fredalt}, $N$ is of finite dimension. A similar procedure shows that the space $N^*$ of solutions of (\ref{adjhomoellip}) is $\ker(\id-K^*)$, which has the same dimension as $N$.
+
+Finally, when the statement (b) holds, the problem (\ref{nonhomoellip}) is has a weak solution if and only if the equation $(\id-K)u=h$ has a solution, if and only if $h\in\mathfrak{R}(\id-K)=\ker(\id-K^*)^\perp=(N^*)^\perp$. Note that for all $v\in N^*$,
+\begin{align*}
+	\langle f,v\rangle_{L^2(U)}=\langle f,K^*v\rangle_{L^2(U)}=\langle Kf,v\rangle_{L^2(U)}=\gamma\langle h,v\rangle_{L^2(U)}.
+\end{align*}
+Therefore, the boundary problem (\ref{nonhomoellip}) has a weak solution if and only if $f\in(N^*)^\perp$.
+\end{proof}
+
+\begin{theorem}[Third existence theorem for weak solutions]\label{ellipex3}
+Let $L$ be a elliptic operator.
+\begin{itemize}
+\item[(i)] There exists an at most countable set $\Sigma\subset\bbR$ such that the boundary value problem
+\begin{align}
+\begin{cases}
+	Lu=\lambda u+f & in\ U\\
+	u=0 & on\ \partial U.
+\end{cases}\label{ellipeqweak}
+\end{align}
+has a unique weak solution for each $f\in L^2(U)$ if and only if $\lambda\notin\Sigma$.
+\item[(ii)] If $\Sigma$ is infinite, then $\Sigma=\{\lambda_k\}_{k=0}^\infty$, the values of a nondecreasing sequence with $\lambda_k\to\infty$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+We take the constant $\gamma$ from Theorem \ref{ellipex1}, and assume without loss of generality $\gamma>0$. Let $\lambda>-\gamma$. According to Fredholm alternative [Theorem \ref{fredalt}], the boundary value problem (\ref{ellipeqweak}) has a unique solution for each $f\in L^2(U)$ if and only if $0$ is not an eigenvalue of $L$; that is, $u=0$ is the only weak solution of the following homogeneous problem:
+\begin{align*}
+	\begin{cases}
+		L_\gamma u=(\gamma+\lambda)u & in\ U\\
+		u=0 & on\ \partial U,
+	\end{cases}
+\end{align*}
+where $L_\gamma=L+\gamma\id$. The PDE holds when $$u=(\lambda+\gamma)L_\gamma^{-1}u=\frac{\gamma+\lambda}{\gamma}Ku,$$ where $K=\gamma L_\gamma^{-1}$ is a compact bounded linear operator on $L^2(U)$. Therefore, the boundary value problem (\ref{ellipeqweak}) has a unique solution for each $f\in L^2(U)$ if and only if $\frac{\gamma}{\gamma+\lambda}$ is not an eigenvalue of $K$.
+
+Since $K$ is a compact operator on $L^2(U)$, its spectrum $\sigma(K)$ is either a finite set or the values of a sequence converging to $0$. Then the set $\Sigma$ has at most countably many values, and $\lambda_k\to\infty$ if $\Sigma$ is infinite.
+\end{proof}
+
+\paragraph{Remark.} The set $\Sigma$ is called the \textit{(real) spectrum} of the operator $L$. When $\lambda\in\Sigma$, by the Fredholm alternative, the following eigenvalue problem has nonzero solution $u\neq 0$ in $H_0^1(U)$:
+\begin{align*}
+	\begin{cases}
+		Lu=\lambda u & in\ U\\
+		u=0 & on\ \partial U.
+	\end{cases}
+\end{align*}
+
+\begin{theorem}[Boundedness of the inverse]
+If $\lambda\notin\Sigma$, there exists a constant $C$ such that for all $f\in L^2(U)$,
+\begin{align*}
+	\Vert u\Vert_{L^2(U)}\leq C\Vert f\Vert_{L^2(U)},
+\end{align*}
+where $u$ is the unique weak solution of problem (\ref{ellipeqweak}). The constant $C$ depends only on $\lambda$, $U$ and $L$.
+\end{theorem}
+\begin{proof}
+Argue by contradiction. Assume that there exists sequences $f_k\in L^2(U)$ and $u_k\in H_0^1(U)$ such that $u_k$ is a weak solution of (\ref{ellipeqweak}) when $f=f_k$:
+\begin{align*}
+	\begin{cases}
+		Lu_k=\lambda u_k+f_k & in\ U\\
+		u_k=0 & on\ \partial U.
+	\end{cases},
+\end{align*}
+but $\Vert u_k\Vert_{L^2(U)}>k\Vert f_k\Vert_{L^2(U)}$, $k=1,2,\cdots$. We may also assume with no loss that $\Vert u_k\Vert_{L^2(U)}=1$, so $f_k\to 0$ in $L^2(U)$. According to the energy estimate, the sequence $(u_k)$ is also bounded in $H_0^1(U)$:
+\begin{align*}
+	\beta\Vert u_k\Vert_{H_0^1(U)}&\leq B(u_k,u_k)+\gamma\Vert u_k\Vert_{L^2(U)}\\
+	&=\langle \lambda u_k+f_k,u_k\rangle_{L^2(U)}+\gamma\Vert u_k\Vert_{L^2(U)}^2<\frac{1}{k}+\lambda+\gamma\leq 1+\lambda+\gamma.
+\end{align*}
+By Banach-Alaoglu theorem and Rellich-Kondrachov theorem, there exists a subsequence $(u_{k_j})$ such that
+\begin{align*}
+	u_{k_j}\to u\ weakly\ in\ H_0^1(U),\quad and\quad u_{k_j}\to u\ in\ L^2(U).
+\end{align*} 
+Since $B(\cdot,v)$ is a bounded linear functional on $H_0^1(U)$ for all $v\in H_0^1(U)$, we have
+\begin{align*}
+	B(u,v)=\lim_{j\to\infty} B(u_{k_j},v)=\lim_{j\to\infty}\langle\lambda u_{k_j}+f_{k_j},v\rangle_{L^2(U)}=\langle\lambda u,v\rangle_{L^2(U)}.
+\end{align*}
+Therefore $u$ is a weak solution of the homogeneous problem
+\begin{align*}
+\begin{cases}
+	Lu=\lambda u\ &in\ U,\\
+	u=0\ &on\ \partial U.
+\end{cases}
+\end{align*}
+Since $\lambda\notin\Sigma$, we have $u\equiv 0$ by the Fredholm alternative. However $\Vert u\Vert_{L^2(U)}=1$, because $u_{k_j}\to u$ in $L^2(U)$, leading to a contradiction!
+\end{proof}
+
+\subsection{Regularity}
+\end{document}

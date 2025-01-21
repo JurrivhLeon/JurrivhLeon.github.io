@@ -1,0 +1,1677 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{dsfont}
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{float} 
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{subfigure} 
+\usepackage{threeparttable}
+\usepackage{ulem}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\setitemize[1]{itemsep=0.8pt,partopsep=0.8pt,parsep=\parskip,topsep=0.8pt}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+%% Number of equations.
+\numberwithin{equation}{section}
+%% New symbols.
+\newcommand{\rmb}{\mathrm{b}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}{\perp\!\!\!\perp}
+\newcommand{\bfw}{\mathbf{w}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\scr}{\mathscr}
+\renewcommand{\cal}{\mathcal}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\ol}{\overline}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\DeclareFontFamily{U}{mathx}{}
+\DeclareFontShape{U}{mathx}{m}{n}{<-> mathx10}{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\gr}{Gr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Le}{Le}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\conv}{Conv}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\argmin}{argmin}
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\renewcommand{\i}{\mathrm{i}}
+\renewcommand{\proofname}{\textit{Proof}}
+\renewcommand*{\thesubfigure}{(\arabic{subfigure})}
+\renewcommand{\baselinestretch}{1.15}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{remark}{Remark}
+
+\title{\bf Fourier Analysis and Distribution Theory}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.80}
+\author{\textsc{Jyunyi Liao}}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+\section{Preliminaries}
+\subsection{Convolution}
+In this section we study the convolution operation on $\bbR^n$. If a function $f$ is defined on $U\subset\bbR^n$, we can replace it by its natural zero extension $f:\bbR^n\to\bbR$ which assigns $f(x)=0$ for $x\notin U$.
+\begin{definition}[Convolution]
+	\label{def:1.1} Let $f,g:\bbR^n\to\mathbb{R}$ be Lebesgue measurable functions. Define the bad set as
+	\begin{align*}
+		E(f,g) := \left\{x\in\bbR^n:\int_{\bbR^n}\left\vert f(x-y)g(y)\right\vert dy = \infty\right\}.
+	\end{align*}
+	The \textit{convolution} of $f$ and $g$ is the function $f * g:\mathbb{R}^n\to\mathbb{R}$ defined by
+	\begin{align*}
+		(f*g)(x) = \begin{cases}
+			\int_{\bbR^n} f(x-y)g(y)\,dy,\ &x\notin E(f,g),\\
+			0,\ &x\in E(f,g).
+		\end{cases}
+	\end{align*}
+\end{definition}
+\paragraph{Remark.} Define $F:\bbR^{2n}\to\mathbb{R},(x,y)\mapsto f(x)$ and $G:\bbR^{2n}\to\mathbb{R},(x,y)\mapsto g(y)$. Then both $F$ and $G$ are measurable functions on $\mathbb{R}^{2n}$, as well as their product $F\cdot G:(x,y)\mapsto f(x)g(y)$. Given linear transformation $T(x,y)=(x-y,y)$, the composition $H=(F\cdot G)\circ T: (x,y)\mapsto f(x-y)g(y)$ is measurable. By Tonelli's theorem, the function $x\mapsto\int_{\bbR^n}\vert H(x,y)\vert\,dy$ is measurable, and $E(f,g)$ is a Lebesgue measurable set.
+
+Clearly, the convolution operation is both commutative and associative, i.e. $f*g=g*f$, and $(f*g)*h = f*(g*h)$. Furthermore, the distributivity of convolution with respect to functional addition immediately follows, i.e. $f*(g+h)=f*g+f*h$.
+
+\begin{proposition}[Properties of convolution]\label{prop:1.2}
+	Let $f,g:\mathbb{R}^n\to\mathbb{R}$ be Lebesgue measurable functions.
+	\begin{itemize}
+		\item[(i)] If $f,g\in L^1(\mathbb{R}^n)$, then the bad set $E(f,g)$ is of measure zero. Moreover, $f*g\in L^1(\mathbb{R}^n)$, and
+		\begin{align}
+			\int_{\bbR^m} (f*g)\,dm = \int_{\bbR^n}f\,dm\int_{\bbR^n}g\,dm.\label{convl1b}
+		\end{align}
+		\item[(ii)] If $f\in C_u(\mathbb{R}^n)$ and $g\in L^1(\mathbb{R}^n)$, then $f*g\in C_u(\mathbb{R}^n)$.
+		\item[(iii)] If $f\in L^p(\bbR^n)$ and $g\in L^1(\bbR^n)$, then $f*g\in L^p(\bbR^n)$, and $$\Vert f*g\Vert_{L^p}\leq\Vert f\Vert_{L^p}\Vert g\Vert_{L^1}.$$
+	\end{itemize}
+\end{proposition}
+\begin{proof}
+	(i) Define the measurable function $H(x,y)\mapsto f(x-y)g(y)$ on $\mathbb{R}^{2n}$. By Tonelli's theorem, 
+	\begin{align*}
+		\int_{\mathbb{R}^{2n}}\vert H\vert\,dm = \int_{\bbR^n}\left(\int_{\bbR^n} \left\vert f(x-y)\right\vert\left\vert g(y)\right\vert dx\right)dy = \Vert f\Vert_{L^1}\Vert g\Vert_{L^1}.
+	\end{align*}
+	Hence $H:\mathbb{R}^{2n}\to\mathbb{R}$ is integrable. By Fubini's theorem, for a.e. $x\in\mathbb{R}^n$, $y\mapsto H(x,y)$ is integrable, hence $m(E(f,g))=0$. Furthermore, the function $f*g:x\mapsto \int_{\bbR^n}H(x,y)\,dy$ is also integrable, that is, $f*g\in L^1(\mathbb{R}^n)$. The equation (\ref{convl1b}) follows from Fubini's theorem.
+	\vspace{0.1cm}
+	
+	(ii) Given $\epsilon>0$. By uniform continuity of $f$, there exists $\eta > 0$ such that $\vert f(x) - f(x^\prime)\vert < \epsilon/\Vert g\Vert_{L^1}$ for all $\vert x-x^\prime\vert < \eta$, . As a result, for all $x,x^\prime\in\mathbb{R}^n$ such that $\vert x-x^\prime\vert < \eta$, we have
+	\begin{align*}
+		\vert(f*g)(x) - (f*g)(x^\prime)\vert
+		&\leq \int_{\bbR^n} \left\vert f(x-y) - f(x^\prime-y)\right\vert \left\vert g(y)\right\vert dy < \epsilon.
+	\end{align*}
+	
+	(iii) is a special case of the following proposition.
+\end{proof}
+
+\begin{proposition}[Young's convolution inequality]\label{prop:1.3}
+	Given $r\in[1,\infty]$ and Hölder $r$-conjugates $p,q\in[1,\infty]$, i.e. $\frac{1}{p}+\frac{1}{q}=1+\frac{1}{r}$. If $f\in L^p(\bbR^n)$ and $g\in L^q(\bbR^n)$, then the bad set $E(f,g)$ is of measure zero, and we have
+	\begin{align*}
+		\Vert f*g\Vert_{L^r}\leq\Vert f\Vert_{L^p}\Vert g\Vert_{L^q}.
+	\end{align*}
+\end{proposition}
+\paragraph{Remark.} Note that $r=\frac{pq}{p+q-pq}\geq 1\ \Leftrightarrow\ \frac{pq}{p+q}\geq\frac{1}{2}\ \Leftrightarrow\  p\geq\frac{q}{2q-1}\ \Leftrightarrow\ q\geq\frac{p}{2p-1}$,\\
+and $r<\infty\ \Leftrightarrow\ p+q>pq\ \Leftrightarrow\  p<\frac{q}{q-1}\ \Leftrightarrow\ q<\frac{p}{p-1}$.
+\begin{proof}
+	We first bound $f*g$. By applying generalized Hölder's inequality on $\frac{1}{r}+\frac{r-p}{pr}+\frac{r-q}{qr}=1$, we have
+	\begin{align*}
+		\vert (f*g)(x)\vert&\leq\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert\,dy\\
+		&= \int_{\bbR^n}\left(\vert f(x-y)\vert^p\vert g(y)\vert^q\right)^{1/r}\vert f(x-y)\vert^{\frac{r-p}{r}}\vert g(y)\vert^{\frac{r-q}{r}}\,dy\\
+		&\leq\left(\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\right)^{1/r}\left(\int_{\bbR^n}\vert f(x-y)\vert^p\,dy\right)^{\frac{r-p}{pr}}\left(\int_{\bbR^n}\vert g(y)\vert^q\,dy\right)^{\frac{r-q}{qr}}\\
+		&=\left(\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\right)^{1/r}\left\Vert f\right\Vert_{L^p}^{\frac{r-p}{r}}\left\Vert g\right\Vert_{L^q}^{\frac{r-q}{r}}.
+	\end{align*}
+	Consequently, we have
+	\begin{align*}
+		\int_{\bbR^n}\left(\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert\,dy\right)^r\,dx&\leq \left(\int_{\bbR^n}\int_{\bbR^n}\vert f(x-y)\vert^p\vert g(y)\vert^q\,dy\,dx\right)\left\Vert f\right\Vert_{L^p}^{r-p}\left\Vert g\right\Vert_{L^q}^{r-q}\\
+		&\leq \left\Vert f\right\Vert_{L^p}^{r-p}\left\Vert g\right\Vert_{L^q}^{r-q}\int_{\bbR^n}\left(\int_{\bbR^n}\vert f(x-y)\vert^p\,dx\right)\vert g(y)\vert^q\,dy=\left\Vert f\right\Vert_{L^p}^r\left\Vert g\right\Vert_{L^q}^r,
+	\end{align*}
+	where we use Fubini's theorem in the second inequality. From the last display, we have $m(E(f,g))=0$, and $\Vert f*g\Vert_{L^r}\leq\Vert f\Vert_{L^p}\Vert g\Vert_{L^q}$.
+\end{proof}
+\paragraph{Remark.} If $f\in L^p_\loc(\bbR^n)$, and $g\in L^q(\bbR^n)$ is compactly supported, then $f*g\in L^r_\loc(\bbR^n)$.
+
+\begin{proposition}[Convolution of compactly supported functions]\label{prop:1.4}
+	Let $f,g:\mathbb{R}^n\to\mathbb{R}$.
+	\begin{itemize}
+		\item[(i)] If $f,g\in L^1(\mathbb{R}^n)$, then $\supp(f*g)\subset\overline{\supp f + \supp g} := \overline{\left\{x+y:x\in\supp f,y\in\supp g\right\}}$. Furthermore, if both $f$ and $g$ are compactly supported on $\mathbb{R}$, then $f*g$ is also compactly supported. In this case, $\supp(f*g)\subset\supp f + \supp g$.
+		\vspace{0.1cm}
+		\item[(ii)] Let $1\leq p\leq \infty$, and let $k\in\mathbb{N}_0$. If $f\in C_c^k(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C^k_u(\mathbb{R}^n)$. Furthermore, differentiation commutes with convolution, i.e.,
+		\begin{align*}
+			\partial^\alpha(f*g)=\partial^\alpha f * g,\qquad\forall\vert\alpha\vert\leq k,
+		\end{align*}
+		\item[(iii)] Let $1\leq p\leq \infty$. If $f\in C_c^\infty(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C_u^\infty(\mathbb{R}^n)$. Similarly, differentiation commutes with convolution, i.e., $\partial^\alpha(f * g)=\partial^\alpha f * g$ for multi-indices $\alpha$.
+	\end{itemize}
+\end{proposition}
+\paragraph{Remark.} Here is a slight modification of assertions (ii) and (iii):
+\begin{itemize}
+{\it\item[(ii')] Let $1\leq p\leq \infty$, and let $k\in\mathbb{N}_0$. If $f\in C_c^k(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C^k_u(\mathbb{R}^n)$. Furthermore, differentiation commutes with convolution, i.e.,
+\begin{align*}
+	\partial^\alpha(f*g)=\partial^\alpha f * g,\qquad\forall\vert\alpha\vert\leq k,
+\end{align*}
+\item[(iii')] Let $1\leq p\leq \infty$. If $f\in C_c^\infty(\mathbb{R}^n)$ and $g\in L^p(\mathbb{R}^n)$, then $f * g\in C_u^\infty(\mathbb{R}^n)$. Similarly, differentiation commutes with convolution, i.e., $\partial^\alpha(f * g)=\partial^\alpha f * g$ for multi-indices $\alpha$.}
+\end{itemize}
+\begin{proof}
+	(i) Let $f,g\in L^1(\mathbb{R}^n)$, and take any $x\in\mathbb{R}^n$. Then
+	\begin{align*}
+		(f*g)(x) = \int_{\bbR^n} f(x-y)g(y)\,dy = \int_{(x-\supp f)\cap \supp g}f(x-y)g(y)\,dy.
+	\end{align*}
+	For $x\notin \supp f + \supp g$, we have $(x-\supp f)\cap \supp g=\emptyset$, which implies $(f*g)(x) = 0$. Hence
+	\begin{align*}
+		(f*g)(x)\neq 0\ \Rightarrow x\in \supp f + \supp g\ \Rightarrow\ \supp(f*g)\subset\overline{\supp f + \supp g}.
+	\end{align*}
+	If $f,g\in C_c(\mathbb{R}^n)$, then $\supp f$ and $\supp g$ are compact in $\mathbb{R}^n$. Define $\phi(x,y)=x+y$, which is a continuous map on $\mathbb{R}^n\times\bbR^n$. Then $\supp f + \supp g = \phi(\supp f\times\supp g)$ is also compact. Consequently, $\supp f + \supp g$ is closed, and its closed subset $\supp (f*g)$ is also compact. which implies $f*g\in C_c(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	(ii) \textit{Step I:} We first show the case $k=0$. Let $q=p/(p-1)$. Note that $f$ is continuous and compact supported, then $m(\supp f) < \infty$, $f$ is uniformly continuous, and $\Vert f\Vert_\infty = \max_{x\in\supp f}\vert f(x)\vert < \infty$. By Hölder's inequality, for all $x\in\mathbb{R}^n$, we have
+	\begin{align*}
+		\int_{\bbR^n}\left\vert f(x-y)\right\vert\left\vert g(y)\right\vert dy \leq \Vert f\Vert_{L^q}\Vert g\Vert_{L^p} \leq m\bigl(\supp f\bigr)^{1/q}\Vert f\Vert_\infty\Vert g\Vert_{L^p} < \infty.
+	\end{align*}
+	Then $f*g$ is well-defined on $\mathbb{R}^n$. To show uniform continuity of $f*g$, we fix $\epsilon>0$ and let $\eta$ be such that $\vert x-x^\prime\vert<\eta$ implies $\vert f(x)-f(x^\prime)\vert < \epsilon$. Then
+	\begin{align*}
+		\vert(f*g)(x) - (f*g)(x^\prime)\vert &= \left\vert\int_{\bbR^n} \left[f(x-y) - f(x^\prime-y)\right]g(y)\,dy\right\vert\\
+		&\leq 2m\bigl(\supp f\bigr)^{1/q}\left\Vert g\right\Vert_{L^p}\epsilon.
+	\end{align*}
+	
+	\textit{Step II:} We prove the case $k=1$. It suffices to show the interchangeability of derivative and integral. Given any quantity $h>0$, we have
+	\begin{align}
+		\frac{(f*g)(x+he_i) - (f*g)(x)}{h} = \int_{\bbR^n} \frac{f(x+he_i - y) - f(x-y)}{h}g(y)\,dy.\label{eq:1.2}
+	\end{align}
+	Since $f\in C^1_c(\mathbb{R}^n)$, by Lagrange's mean value theorem, there exists $\xi\in[0,1]$ such that
+	\begin{align}
+		\left\vert\frac{f(x+h e_i - y) - f(x-y)}{h}\right\vert = \left\vert \partial_{x_i}f(x+\xi h e_i - y)\right\vert,\label{eq:1.3}
+	\end{align}
+	Note that $\partial_{x_i}f$ is also continuous and compactly supported on $\mathbb{R}^n$, the RHS of (\ref{eq:1.3}) is bounded by $\Vert\partial_{x_i}f\Vert_\infty$, and the integrand in (\ref{eq:1.2}) is dominated by an integrable function $\Vert \partial_{x_i}f\Vert_\infty g$. Using Lebesgue's dominate convergence theorem, we have
+	\begin{align*}
+		\lim_{h\to 0}\int_{\bbR^n}\frac{f(x+h e_i - y) - f(x-y)}{h}g(y)\,dy = \int_{\bbR^n} \frac{\partial f}{\partial x_i}(x-y)g(y)\,dy.
+	\end{align*}
+	Therefore $\partial_{x_i}(f*g) = \partial_{x_i}f * g$. Since $\partial_{x_i}f\in C_c(\mathbb{R}^n)$, we have $\partial_{x_i}(f*g)\in C_u(\mathbb{R}^n)$, and $f*g\in C_u^1(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	\textit{Step III:} Use induction. Suppose our conclusion holds for $C_c^{k-1}(\mathbb{R}^n)$. For each $f\in C^k_c(\mathbb{R}^n)\subset C^{k-1}_c(\mathbb{R}^n)$, $\partial^{k-1} f\subset C^1_c(\mathbb{R}^n)$. By Step II, for any $\vert\alpha\vert=k-1$,
+	\begin{align*}
+		\partial^{\alpha+e_i}(f*g) = \partial_{x_i}(\partial^\alpha(f*g)) = \partial_{x_i}(\partial^\alpha f*g) = (\partial^{\alpha+e_i} f)* g,
+	\end{align*} 
+	which is uniformly continuous on $\mathbb{R}^n$. Hence $f*g\in C_u^k(\mathbb{R}^n)$.
+	\vspace{0.1cm}
+	
+	(iii) Note that $C_c^\infty(\mathbb{R}^n) = \bigcap_{k=0}^\infty C_c^k(\mathbb{R}^n)$, we have $\partial^\alpha(f*g) = \partial^\alpha f * g$ for all $\alpha\in\mathbb{N}_0^n$. Following Step II, $\partial^\alpha f\in C_c(\mathbb{R}^n)$ implies $\partial^\alpha(f*g)\in C_u(\mathbb{R}^n)$ for all $\alpha\in\mathbb{N}_0^n$. Hence $f*g\in\bigcap_{k=0}^\infty C_u^k(\mathbb{R}^n) = C_u^\infty(\mathbb{R}^n)$.
+\end{proof}
+
+\paragraph{Translation operators.} Let $X$ be a vector space, let $Y^X$ be the set of functions $f:X\to Y$, and let $s$ be a vector in $X$. The \textit{translation operator} $\tau_s:Y^X\to Y^X$ is defined as
+\begin{align*}
+	(\tau_s f)(x) = f(x-s),\ \forall f\in Y^X.
+\end{align*}
+The following proposition gives a description of the continuity of $(\tau_s)_{s\in X}$ in $C_c$ and $L^p$ spaces.
+
+\begin{proposition}\label{prop:1.5}
+Let $1\leq p < \infty$. 
+\begin{itemize}
+\item[(i)] For any $f\in C_c(\mathbb{R}^n)$, $\tau_sf\to f$ uniformly and in $L^p$-norm as $s\to 0$.
+\item[(ii)] For any $f\in L^p(\mathbb{R}^n)$, $\tau_sf\to f$ in $L^p$-norm as $s\to 0$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+	Let $f\in C_c(\mathbb{R}^n)$, and let $B_1=\{x\in\bbR^n:\vert x\vert\leq 1\}$ be the compact unit ball in $\bbR^n$. The collection of functions $\{\tau_s f: \vert s\vert\leq 1\}$ has a common support
+	\begin{align*}
+		K = \bigcup_{\vert s\vert\leq 1}\supp(\tau_s f) = \supp f + B_1 = \{x+y:x\in\supp f, y\in B_1\}.
+	\end{align*}
+	Since the addition operation is continuous, $K$ is also a compact subset of $\bbR^n$.
+	
+	By uniform continuity of $f$, given $\epsilon>0$, there exists $\delta > 0$ such that $\vert f(x) - f(y)\vert < \epsilon$ for all $\vert x-y\vert < \delta$. Hence $\tau_s f\to f$ uniformly as $s\to 0$. Moreover, for any $s$ with $\vert s\vert<\left\vert\min(\delta,1)\right\vert$, we have
+	\begin{align*}
+		\Vert\tau_s f-f\Vert_{L^p}^p = \int_K \vert f(x-s) - f(x)\vert^p dx \leq \mu(K)\,\epsilon^p.
+	\end{align*}
+	Since $\mu(K)<\infty$, and $\epsilon$ is arbitrary, we conclude that $\Vert\tau_s f-f\Vert_{L^p}\to 0$ as $s\to 0$.
+	
+	Now we assume $f\in L^p(\bbR^n)$, and fix $\epsilon > 0$. Since $C_c(\bbR^n)$ is dense in $L^p(\bbR^n)$, there exists $g\in C_c(\mathbb{R}^n)$ such that $\Vert f-g\Vert_\infty < \epsilon/3$. Choose $\delta$ such that $\Vert\tau_s g -g\Vert_{L^p}<\epsilon/3$ for all $\vert s\vert<\delta$. Then for all $\vert s\vert<\delta$,
+	\begin{align*}
+		\Vert \tau_s f - f\Vert_{L^p} &\leq \Vert \tau_s f - \tau_s g\Vert_{L^p} + \Vert \tau_s g - g\Vert_{L^p} + \Vert g - f\Vert_{L^p} = 2\Vert f - g\Vert + \Vert\tau_s g -g\Vert_{L^p} < \epsilon.
+	\end{align*}
+	Therefore, $\lim_{s\to 0}\Vert \tau_s f - f\Vert_{L^p}=0$ for all $f\in L^p(\bbR^n)$.
+\end{proof}
+
+\begin{proposition}[Mollification]\label{generalmollif}
+	Let $\phi\in L^1(\bbR^n)$, with $\int_{\bbR^n}\phi\,dx=a$. Given $t>0$, define
+	\begin{align}
+	\phi_t(x)=\frac{1}{t^n}\phi\left(\frac{x}{t}\right).\label{shrinkage}
+	\end{align}
+	\begin{itemize}
+		\item[(i)] If $f\in L^p(\bbR^n)$, $f*\phi_t\to af$ in $L^p(\bbR^n)$ as $t\to 0$.
+		\item[(ii)] If $f$ is bounded and uniformly continuous, $f*\phi_t\to af$ uniformly as $t\to 0$. 
+	\end{itemize}
+\end{proposition}
+\begin{proof}
+	Using the decomposition $\phi=\phi^+-\phi^-$, we may assume $\phi\geq 0$ on $\bbR^n$. We further assume $a=1$ by replacing $\phi$ by $\phi/a$ if necessary. Then
+	\begin{align*}
+		(f *\phi_t)(x) - f(x) &= \int_{\vert y\vert\leq t} (f(x-y)-f(x))\phi_t(y)\,dy=\int_{\vert y\vert\leq t}(\tau_yf-f)(x)\phi_t(y)\,dy.
+	\end{align*}
+	By Jensen's inequality and Fubini's theorem,
+	\begin{align*}
+		\int_{\bbR^n}\vert(f *\phi_t)(x) - f(x)\vert^p\,dx&=\int_{\bbR^n}\left\vert\int_{\vert y\vert\leq t}(\tau_yf-f)(x)\phi_t(y)\,dy\right\vert^p dx\\
+		&\leq \int_{\bbR^n}\int_{\vert y\vert\leq t}\vert\tau_y f (x)-f(x)\vert^p\,\phi_t(y)\,dy\,dx\leq\sup_{\vert y\vert<t}\Vert\tau_y f-f\Vert_{L^p}.
+	\end{align*}
+	By continuity of the translation operator, the first result follows. For the second result, use the same estimate for $f*\phi_t-f$ and the uniform continuity of $f$.
+\end{proof}
+
+When we establish the density arguments of $C_c^\infty$ functions, the above result is very useful.
+\begin{proposition}\label{prop:1.6}
+	For $1\leq p <\infty$, $C_c^\infty(\mathbb{R}^n)$ is dense in $L^p(\mathbb{R}^n)$.
+\end{proposition}
+\begin{proof}
+By the first assertion in Proposition \ref{generalmollif}, $C^\infty_c(\bbR^n)$ is dense in $C_c(\bbR)$ in $\Vert\cdot\Vert_1$ norm. Since $C_c(\bbR^n)$ is dense in $L^p(\bbR^n)$, the result follows.
+\end{proof}
+
+\begin{proposition}\label{ccdenseinc0}
+	For $1\leq p <\infty$, $C_c^\infty(\mathbb{R}^n)$ is dense in $C_0(\bbR^n)$.
+\end{proposition}
+\begin{proof}
+By the second assertion in Proposition \ref{generalmollif}, $C^\infty_c(\bbR^n)$ is dense in $C_c(\bbR)$ in $\Vert\cdot\Vert_\infty$ norm. Since $C_0(\bbR^n)$ is the closure of $C_c(\bbR^n)$ in $\Vert\cdot\Vert_\infty$ norm, the result follows.
+\end{proof}
+
+Aside from the convergence in $L^p$-norm discussed in Proposition \ref{generalmollif}, we are also interested in the pointwise convergence property of mollification $f*\phi_\epsilon$.
+
+\begin{proposition}[Mollification]\label{pwconvgmollif}
+Assume $\phi\in L^1(\bbR^n)$ satisfies $\vert\phi(x)\vert\leq C(1+\vert x\vert)^{-n-\gamma}$ for some $C,\gamma>0$, and $\int_{\bbR^n}\phi\,dx=a$. Define $\phi_\epsilon$ as in (\ref{shrinkage}). Let $1\leq p\leq\infty$. If $f\in L^p(\bbR^n)$, then $(f*\phi_\epsilon)(x)\to af(x)$ as $\epsilon\to 0$ for every Lebesgue point $x$ of $f$.
+\end{proposition}
+\begin{proof}
+If $x$ is a Lebesgue point of $f$, we have
+\begin{align*}
+	\lim_{r\to 0^+}\frac{1}{r^n}\int_{B(x,r)}\vert f(y)-f(x)\vert\,dy=0.
+\end{align*}
+For any $\epsilon>0$, we choose $\delta>0$ such that $\int_{B(x,r)}\vert f(y)-f(x)\vert\,dy<r^n\epsilon$ for all $r\leq\delta$, and set
+\begin{align*}
+	I_1=\int_{\vert y\vert<\delta}\vert f(x-y)-f(x)\vert\left\vert\phi_t(y)\right\vert dy,\quad I_2=\int_{\vert y\vert\geq\delta}\vert f(x-y)-f(x)\vert\left\vert\phi_t(y)\right\vert dy.
+\end{align*}
+We claim that $I_1$ is bounded by $A\epsilon$, where $A$ is independent of $t$, and $I_2\to 0$ as $t\to 0$. Since
+\begin{align*}
+	\left\vert (f*\phi_t)(x)-af(x)\right\vert\leq I_1+I_2,
+\end{align*} 
+we will have
+\begin{align*}
+	\limsup_{t\to 0^+}\left\vert (f*\phi_t)(x)-af(x)\right\vert\leq A\epsilon,
+\end{align*}
+Since $\epsilon>0$ is arbitrary, the proof will be completed.
+
+To estimate $I_1$, let $N$ be the integer such that $2^N\leq\delta/t<2^{N+1}$, if $\delta/t\geq 1$, and $N=0$ if $\delta/t<1$. We view the ball $\vert y\vert<\delta$ as the union of the annuli $2^{-k}\delta\leq\vert y\vert< 2^{1-k}\delta$, $1\leq k\leq N$ and the ball $\vert y\vert<2^{-N}\delta$. On the $k^\text{th}$ annulus we use the estimate
+\begin{align*}
+	\left\vert\phi_t(y)\right\vert=\frac{1}{t^n}\left\vert\phi\left(\frac{y}{t}\right)\right\vert\leq Ct^{-n}\left\vert\frac{y}{t}\right\vert^{-n-\gamma}\leq Ct^{-n}\left(\frac{2^{-k}\delta}{t}\right)^{-n-\gamma}
+\end{align*}
+and in the ball $\vert y\vert<2^{-N}\delta$, we use the estimate $\vert\phi_t(y)\vert\leq Ct^{-n}$. Thus
+\begin{align*}
+	I_1&\leq\sum_{k=1}^NCt^{-n}\left(\frac{2^{-k}\delta}{t}\right)^{-n-\gamma}\int_{2^{-k}\delta\leq\vert y\vert<2^{1-k}\delta}\vert f(x-y)-f(x)\vert\,dy +Ct^{-n}\int_{\vert y\vert<2^{-N}\delta}\vert f(x-y)-f(x)\vert\,dy\\
+	&\leq C\epsilon\sum_{k=1}^N(2^{1-k}\delta)^n t^{-n}\left(\frac{2^{-k}\delta}{t}\right)^{-n-\gamma}+C\epsilon(2^{-N}\delta)^n t^{-n}= 2^nC\epsilon\left(\frac{\delta}{t}\right)^{-\gamma} \sum_{k=1}^N 2^{k\gamma}+C\epsilon\left(\frac{2^{-N}\delta}{t}\right)^n\\
+	&=2^nC\epsilon\left(\frac{\delta}{t}\right)^{-\gamma}\frac{2^{(N+1)\gamma}-2^\gamma}{2^\gamma-1}+C\epsilon\left(\frac{2^{-N}\delta}{t}\right)^n\leq  \underbrace{2^nC\left(\frac{2^\gamma}{2^\gamma-1}+1\right)}_{=:A}\epsilon.
+\end{align*}
+As for $I_2$, if $q$ is the conjugate exponent to $p$ and $\chi$ is the characteristic function of the set $\{y\in\bbR^n:\vert y\vert\geq\delta\}$,
+\begin{align*}
+	I_2\leq\int_{\vert y\vert\geq\delta}\left(\vert f(y-x)\vert-\vert f(x)\vert\right)\left\vert\phi_t(y)\right\vert\,dy\leq\Vert f\Vert_{L^p}\left\Vert\chi\phi_t\right\Vert_{L^q}+\left\vert f(x)\right\vert\Vert\chi\phi_t\Vert_{L^1}.
+\end{align*}
+If $q=\infty$, 
+\begin{align*}
+	\left\Vert\chi\phi_t\right\Vert_{L^\infty}\leq Ct^{-n}\left(1+\frac{\delta}{t}\right)^{-n-\gamma}=\frac{Ct^\delta}{(t+\delta)^{n+\gamma}}\leq\frac{Ct^\delta}{\delta^{n+\gamma}},
+\end{align*}
+which converges to $0$ as $t\to 0$. If $1\leq q<\infty$, we switch to the sphere coordinates:
+\begin{align*}
+	\left\Vert\chi\phi_t\right\Vert_{L^q}&=\int_{\vert y\vert\geq\delta}t^{-nq}\left\vert\phi\left(\frac{y}{t}\right)\right\vert^q\,dy=\int_{\vert z\vert\geq\delta/t}t^{n(1-q)}\left\vert\phi\left(z\right)\right\vert^q\,dz\\
+	&\leq C_n t^{n(1-q)}\int_{\delta/t}^\infty r^{n-1}C(1+r)^{-(n+\gamma)q}\,dr\\
+	&\leq  C_nC t^{n(1-q)}\int_{\delta/t}^\infty r^{n-1-(n+\gamma)q}\,dr\\
+	&=C_nC t^{n(1-q)}\frac{(\delta/t)^{n-(n+\gamma)q}}{(n+\gamma)q-n}=\frac{C_nC\delta^{n-(n+\gamma)q}t^{\gamma q}}{(n+\gamma)q-n},
+\end{align*}
+which also converges to $0$ as $t\to 0$. Therefore $I_2\to 0$ as $t\to 0$, and we are done.
+\end{proof}
+
+
+Finally we see an application of the mollification.
+\begin{proposition}[$C^\infty$-Urysohn lemma]\label{cinfurysohn}
+Let $U\subset\bbR^n$ be an open set, and let $K\subset U$ be a compact set. There exists $f\in C_c^\infty(U)$ such that $0\leq f\leq 1$, and $f=1$ on $K$.
+\end{proposition}
+\begin{proof}
+Since $K$ is compact and $U$ is open, we take $0<\epsilon<d(K,U^c)$. Define
+\begin{align*}
+	V=\left\{x\in U:d(x,K)\leq\frac{\epsilon}{3}\right\},\quad\text{and}\quad W=\left\{x\in U:d(x,K)<\frac{2\epsilon}{3}\right\}.
+\end{align*}
+Then $V$ is a compact set, $W$ is an open set, and $K\subset V^\circ\subset V\subset W\subset\ol{W}\subset U$. By Urysohn's lemma, there exists $g\in C_c(W)$ such that $0\leq g\leq 1$ and $g=1$ on $V$. Now we choose $\phi\in C_c^\infty(\bbR^n)$ such that $\phi$ is supported on the closed ball $\ol{B(0,\frac{\epsilon}{3})}$ and $\int_{\bbR^n}\phi(x)\,dx=1$. Then $f=g*\phi$ is the desired function.
+\end{proof}
+
+\subsection{The Schwartz Space}
+\begin{definition}[Schwartz space]
+The \textit{Schwartz space} consists of all $C^\infty$-functions, which, together with their derivatives, vanishes at infinity faster than any power of $\vert x\vert$. More precisely, for any $f\in C^\infty(\bbR^n)$, any nonnegative integer $N$ and any multi-index $\alpha\in\bbN_0^n$, define the norm
+\begin{align*}
+	\Vert f\Vert_{(N,\alpha)}=\sup_{x\in\bbR^n}(1+\vert x\vert)^N\vert \partial^\alpha f(x)\vert.
+\end{align*}
+The Schwartz space is
+\begin{align*}
+	\cal{S}(\bbR^n)=\left\{f\in C^\infty(\bbR^n):\Vert f\Vert_{(N,\alpha)}<\infty\ for\ all\ N\in\bbN_0,\ \alpha\in\bbN_0^n\right\}.
+\end{align*}
+\end{definition}
+\paragraph{Remark.} For any $\phi\in C^\infty_c(\bbR^n)$, all its derivatives are also $C_c^\infty$, and
+\begin{align*}
+	\Vert\phi\Vert_{(N,\alpha)}\leq \sup_{x\in\supp\phi}(1+\vert x\vert)^N\Vert \partial^\alpha\phi\Vert_\infty<\infty.
+\end{align*}
+Therefore, we have $C_c^\infty(\bbR^n)\subset\cal{S}(\bbR^n)$.
+
+\begin{proposition}
+The Schwartz space $\cal{S}(\bbR^n)$ is a Fréchet space under the topology induced by norms $\Vert\cdot\Vert_{(N,\alpha)}$.
+\end{proposition}
+\begin{proof}
+It suffices to show the completeness of $\cal{S}(\bbR^n)$. Let $(f_k)$ be a Cauchy sequence in $\cal{S}(\bbR^n)$, which implies that $\Vert f_k-f_m\Vert_{(N,\alpha)}\to 0$ as $k,m\to\infty$ for all $N\in\bbN_0$ and all multi-indices $\alpha\in\bbN_0^n$. In particular, for each $\alpha$, the sequence $(\partial^\alpha f_k)$ converges uniformly to a function $g_\alpha$. We denote by $e_j=(0,\cdots,\underset{j\text{-th}}{1},0,\cdots,0)$. Then\vspace{-0.1cm}
+\begin{align*}
+	f_k(x+he_j)-f_k(x)=\int_0^h\frac{\partial f_k}{\partial x_j}(x+te_j)\,dt.
+\end{align*}
+Letting $k\to\infty$ and apply dominated convergence theorem, we obtain $g_0(x+he_j)-g_0(x)=\int_0^h g_{e_j}(x+te_j)\,dt,$
+which implies that $\partial_{x_j}g_0=g_{e_j}$ by the fundamental theorem of calculus. An inductive argument on $\vert\alpha\vert$ implies $D^\alpha g_0=g_\alpha$. Then $\Vert f_k-g_0\Vert_{(N,\alpha)}\to 0$ for all $N\in\bbN_0$ and all $\alpha\in\bbN_0^n$.
+\end{proof}
+\begin{proposition}[Characterization of Schwartz space]\label{charschwartz}
+Let $f\in C^\infty(\bbR^n)$. The following are equivalent:
+\begin{itemize}
+\item[(i)] $f\in\cal{S}(\bbR^n)$;
+\item[(ii)] For all multi-indices $\alpha,\beta\in\bbN_0^n$, the function $x^\beta \partial^\alpha f$ is bounded;
+\item[(iii)] For all multi-indices $\alpha,\beta\in\bbN_0^n$, the function $\partial^\alpha(x^\beta f)$ is bounded.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+To show (i) $\Rightarrow$ (ii), note that $\vert x\vert^\beta\leq(1+\vert x\vert)^N$ for $\vert\beta\vert\leq N$. On the other hand, if (ii) holds, we fix an order $N\in\bbN$ and a multi-index $\alpha\in\bbN_0^n$, and take
+\begin{align*}
+	\delta_N=\min\left\{\sum_{j=1}^n\vert x_j\vert^N:\vert x\vert^2=\sum_{j=1}^n\vert x_j\vert^2=1\right\}>0.
+\end{align*}
+By homogeneity, we have $\sum_{j=1}^n\vert x_j\vert^N\geq\delta_N\vert x\vert^N$ for all $x\in\bbR^n$, and
+\begin{align*}
+	\left(1+\vert x\vert\right)^N&\leq 2^N\left(1+\vert x\vert^N\right)\leq 2^N\left(1+\frac{1}{\delta_N}\sum_{j=1}^n\vert x_j\vert^N\right)\leq \frac{2^N}{\delta_N}\sum_{\vert\beta\vert\leq N}\vert x^\beta\vert.
+\end{align*}
+Hence (ii) $\Rightarrow$ (i). The equivalence of (ii) and (iii) follows from the fact that each $\partial^\alpha(x^\beta f)$ is a linear combination of terms of the form $x^\delta\partial^\gamma f$ and vice versa, by the product rule.
+\end{proof}
+
+\begin{proposition}
+Let $f,g\in\cal{S}(\bbR^n)$. Then $f*g\in\cal{S}(\bbR^n)$.
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:1.4} (iii'), we have $f*g\in C^\infty(\bbR^n)$. Furthermore, since
+\begin{align*}
+	1+\vert x\vert\leq 1+\vert x-y\vert+\vert y\vert\leq \left(1+\vert x-y\vert\right)\left(1+\vert y\vert\right),
+\end{align*}
+we have for all order $N\in\bbN_0$ and multi-index $\alpha\in\bbN_0^n$ that
+\begin{align*}
+	(1+\vert x\vert)^N\left\vert\partial^\alpha(f*g)(x)\right\vert&\leq\int_{\bbR^n}\left(1+\vert x-y\vert\right)^N\vert\partial^\alpha(x-y)\vert\left(1+\vert y\vert\right)^N\vert g(y)\vert\,dy\\
+	&\leq\Vert f\Vert_{(N,\alpha)}\Vert g\Vert_{(N+n+1,\alpha)}\int_{\bbR^n}\left(1+\vert y\vert\right)^{-n-1}\,dy\\
+	&\leq\Vert f\Vert_{(N,\alpha)}\Vert g\Vert_{(N+n+1,\alpha)}\int_0^\infty\frac{C_n}{1+r^2}\,dr<\infty,
+\end{align*}
+where $C_n$ is some constant depends only on the dimension $n$.
+\end{proof}
+
+\begin{proposition}
+$\cal{S}(\bbR^n)$ is dense in $L^p(\bbR^n)$ $(1\leq p<\infty)$ and in $C_0(\bbR^n)$.
+\end{proposition}
+\begin{proof}
+Since $\cal{S}(\bbR^n)\supset C^\infty_c(\bbR^n)$, the result follows from Propositions \ref{prop:1.6} and \ref{ccdenseinc0}.
+\end{proof}
+
+\newpage
+\section{Fourier Transform}
+\subsection{Fourier Series}
+In this part, we study the periodic functions on $\bbR^n$. A function $f:\bbR^n\to\bbC$ is said to be \textit{$2\pi$-periodic}, if
+\begin{align*}
+	f(x+2\pi\kappa)=f(x)
+\end{align*}
+for all $x\in\bbR^n$ and all $\kappa\in\bbZ^n$. According to periodicity, every $2\pi$-periodic function $f$ is completely determined by its values on the cube $[0,2\pi)^n$. Hence we may regard $f$ as a function on the quotient space 
+$$\bbT^n=\bbR^n/2\pi\bbZ^n=\{x+2\pi\bbZ^n:x\in\bbR^n\}.$$
+We call $\bbT^n$ the $n$-dimensional torus. For measure-theoretic purposes, we identify $\bbT^n$ with the cube $Q=[0,2\pi)^n$, and the Lebesgue measure on $\bbT^n$ is induced by Lebesgue measure on $Q$. In particular, $m(\bbT^n)=m(Q)=(2\pi)^n$. Functions on $\bbT^n$ maybe considered as periodic functions on $\bbR^n$ or as functions $Q$, depending on the context.
+
+\begin{theorem}\label{orthobasis}
+The functions $(e^{i\kappa\cdot x})_{\kappa\in\bbZ^n}$ form an orthogonal basis of $L^2(\bbT^n)$.
+\end{theorem}
+\begin{proof}
+Let $\cal{A}$ be the set of all finite linear combinations of $e^{i\kappa\cdot x}$. Then $\cal{A}$ is a self-adjoint algebra that separates points and vanishes at no points of $\bbT^n$. Since $\bbT^n$ is compact, by Stone-Weierstrass theorem, $\cal{A}$ is dense in $C(\bbT^n)$ in the supremum norm, and hence in $L^2$-norm. Since $C(\bbT^n)$ is dense in $L^2(\bbT^n)$, the result follows.
+\end{proof}
+
+The Fourier series of a periodic function is then defined by its expansion under the orthogonal basis.
+
+\begin{definition}
+If $f\in L^2(\bbT^n)$, we define its Fourier transform $\wh{f}:\bbZ^n\to\bbC$ by
+\begin{align}
+	\wh{f}(\kappa)=\frac{\langle f,e^{i\kappa\cdot x}\rangle_{L^2}}{\langle e^{i\kappa\cdot x},e^{i\kappa\cdot x}\rangle_{L^2}}=\frac{1}{(2\pi)^n}\int_{Q}f(x)e^{-i\kappa\cdot x}\,dx,\label{fourierperiodic}
+\end{align}
+and we call the series $\sum_{\kappa\in\bbZ^n}\wh{f}(\kappa)e^{i\kappa\cdot x}$ the Fourier series of $f$.
+\end{definition}
+\paragraph{Remark I.} According to Theorem \ref{orthobasis}, the Fourier series of a function $f\in L^2(\bbT^n)$ converges to $f$ in $L^2$. Consequently, we have the Parseval's equality:
+\begin{align*}
+	\Vert\wh{f}\Vert_{\ell^2}^2:=\sum_{\kappa\in\bbZ^n}\vert\wh{f}(\kappa)\vert^2=\frac{1}{(2\pi)^n}\Vert f\Vert^2_{L^2}.
+\end{align*}
+Hence the Fourier transform $\cal{F}$ maps $L^2(\bbT^n)$ onto $\ell^2(\bbZ^n)$.
+\paragraph{Remark II.} In fact, the definition (\ref{fourierperiodic}) of Fourier transform makes sense if $L^1(\bbT^n)$, and $\vert\wh{f}(\kappa)\vert\leq(2\pi)^{-n}\Vert f\Vert_{L^1}$. Hence the Fourier transform $\cal{F}$ is a bounded linear map from $L^1(\bbT^n)$ to $\ell^\infty(\bbZ^n)$.
+\begin{theorem}[Convolution Theorem] Let $f,g\in L^1(\bbR^n)$. Then
+	\begin{align*}
+		\wh{f*g}=(2\pi)^{n}\wh{f}\,\wh{g}.
+	\end{align*}
+\end{theorem}
+\begin{proof}
+	By Young's convolution inequality [Proposition \ref{prop:1.3}], $f*g\in L^1(\bbT^n)$. By Fubini's theorem,
+	\begin{align*}
+		\wh{(f*g)}(\kappa)
+		&=\frac{1}{(2\pi)^{n}}\int_{Q}\int_{Q}f(x-y)g(y)e^{-i\kappa\cdot x}\,dy\,dx=\int_{Q}\left(\frac{1}{(2\pi)^{n}}\int_{Q}f(x-y)e^{-i\kappa\cdot(x-y)}\,dx\right)g(y)e^{-i\kappa\cdot y}\,dy\\
+		&=\wh{f}(\kappa)\int_{Q}g(y)e^{-i\kappa\cdot y}\,dy=(2\pi)^n\wh{f}(\kappa)\,\wh{g}(\kappa).
+	\end{align*}
+	Thus we finish the proof.
+\end{proof}
+
+\newpage
+\subsection{Fourier Transform on $L^1(\bbR^n)$}
+\begin{definition}[Fourier transform]
+For $f\in L^1(\bbR^n)$, we define its \textit{Fourier transform} by
+\begin{align*}
+	(\cal{F}f)(\omega)=\wh{f}(\omega)=(2\pi)^{-n/2}\int_{\bbR^n} f(x)e^{-i \omega\cdot x}\,dx,\quad \omega\in\bbR^n,
+\end{align*}
+and its \textit{inverse Fourier transform} by
+\begin{align*}
+	(\cal{F}^{-1}f)(x)=\widecheck{f}(x)=(2\pi)^{-n/2}\int_{\bbR^n} f(\omega)e^{i \omega\cdot x}\,d\omega,\quad x\in\bbR^n.
+\end{align*}
+\end{definition}
+\paragraph{Remark.} By definition, both $\cal{F}$ and $\cal{F}^{-1}$ are linear operators. That is, for all $f,g\in L^1(\bbR^n)$ and $\alpha,\beta\in\bbC$,
+\begin{align*}
+	\cal{F}(\alpha f+\beta g)=\alpha \cal{F}f+\beta\cal{F}g,\quad \cal{F}^{-1}(\alpha f+\beta g)=\alpha \cal{F}^{-1}f+\beta\cal{F}^{-1}g.
+\end{align*}
+Also, we have $\widecheck{f}(x)=\wh{f}(-x)$. In the sequel, we first consider the Fourier transform.
+\begin{theorem}[Riemann-Lebesgue lemma]
+The Fourier transform $\cal{F}$ maps $L^1(\bbR^n)$ into $C_0(\bbR^n)$.
+\end{theorem}
+\begin{proof}
+Fix $f\in L^1(\bbR^n)$. By definition, for all $\omega\in\bbR^n$,
+\begin{align*}
+	\vert\wh{f}(\omega)\vert\leq(2\pi)^{-n/2}\int_{\bbR^n}\vert f(x)\vert\,dx.
+\end{align*}
+Hence $\wh{f}$ is bounded, and
+\begin{align}\label{blpoffourier}
+	\Vert\wh{f}\Vert_\infty\leq(2\pi)^{-n/2}\Vert f\Vert_{L^1}.
+\end{align}
+To show continuity of $\wh{f}$, use dominated convergence theorem:
+\begin{align*}
+	\lim_{h\to 0}f(\omega+h)-f(\omega)&=(2\pi)^{-n/2}\lim_{h\to 0}\int \underbrace{f(x)e^{-i x\cdot\omega}\left(e^{-i x\cdot h}-1\right)}_{dominated\ by\ 2\vert f\vert\in L^1(\bbR^n)}\,dx\\
+	&=(2\pi)^{-n/2}\int f(x)e^{-ix\cdot\omega}\lim_{h\to 0}\left(e^{-ix\cdot h}-1\right)\,dx =0.
+\end{align*}
+Hence $\wh{f}$ is a bounded continuous function. It remains to show that $\wh{f}(\omega)\to 0$ as $\vert\omega\vert\to\infty$. Note that
+\begin{align*}
+	\wh{f}(\omega)&=(2\pi)^{-n/2}\int_{\bbR^n}f(x)e^{-i x\cdot\omega}\,dx=(2\pi)^{-n/2}\int_{\bbR^n}f\left(x+\frac{\omega\pi}{\vert\omega\vert^2}\right)e^{-i\bigl(x+\frac{\omega\pi}{\vert\omega\vert^2}\bigr)\cdot\omega}\,dx\\
+	&=-(2\pi)^{-n/2}\int_{\bbR^n}f\left(x+\frac{\omega\pi}{\vert\omega\vert^2}\right)e^{-i x\cdot\omega}\,dx.
+\end{align*}
+By averaging,
+\begin{align*}
+	\vert\wh{f}(\omega)\vert&=\frac{(2\pi)^{-n/2}}{2}\left\vert\int_{\bbR^n}\left( f(x)-f\left(x+\frac{\omega\pi}{\vert\omega\vert^2}\right)\right) e^{-i x\cdot\omega}\,dx\right\vert\\
+	&\leq\frac{(2\pi)^{-n/2}}{2}\int_{\bbR^n}\left\vert f(x)-f\left(x+\frac{\omega\pi}{\vert\omega\vert^2}\right)\right\vert dx\\
+	&=\frac{(2\pi)^{-n/2}}{2}\Vert f-\tau_hf\Vert_{L^1},\quad where\ \ h=-\frac{\omega\pi}{\vert\omega\vert^2}.
+\end{align*}
+By translation continuity, the last display converges to $0$ as $\vert\omega\vert\to\infty$.
+\end{proof}
+\paragraph{Remark.} By (\ref{blpoffourier}), the Fourier transform $\cal{F}:L^1(\bbR^n)\to C_0(\bbR^n)$ is a bounded linear operator.
+
+\begin{proposition}[Properties of Fourier transform]
+Let $f,g\in L^1(\bbR^n)$.
+\begin{itemize}
+\item[(i)] $\int_{\bbR^n}\wh{f}(x)g(x)\,dx=\int_{\bbR^n}f(x)\wh{g}(x)\,dx$.
+\item[(ii)] $\wh{\ol{f}}=\ol{\widecheck{f}}$, and $\widecheck{\ol{f}}=\ol{\wh{f}}$.
+\item[(iii)] (Translation/Modulation) Let $\xi\in\bbR^n$. Then $\wh{(\tau_\xi f)}(\omega)=e^{-i\omega\cdot\xi}\wh{f}(\omega)$, and $\wh{e^{i\xi\cdot x}f}=\tau_\xi\wh{f}$.
+\item[(iv)] (Linear transformation) If $T:\bbR^n\to\bbR^n$ is an invertible linear transformation, and $S=(T^*)^{-1}$ is its inverse transpose, then
+\begin{align*}
+	\wh{f\circ T}=\left\vert\det T\right\vert^{-1}\wh{f}\circ S.
+\end{align*}
+In particular, if $T$ is a rotation matrix, i.e. $T^*T=TT^*=\id$, then $\wh{f\circ T}=\wh{f}\circ T$; if $Tx=t^{-1}x$ is a dilation, then $\wh{(f\circ T)}(\omega)=t^n\wh{f}(t\omega)$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(i) By Fubini's theorem,
+\begin{align*}
+	\int_{\bbR^n}\wh{f}(x)g(x)\,dx&=\int_{\bbR^n}\left(\int_{\bbR^n}f(\omega)e^{-i\omega\cdot x}\,d\omega\right)g(x)\,dx\\
+	&=\int_{\bbR^n}\int_{\bbR^n}f(\omega)g(x)e^{-i\omega\cdot x}\,dx\,d\omega=\int_{\bbR^n}f(\omega)\wh{g}(\omega)\,d\omega.
+\end{align*}
+(ii) We only prove the first identity (the second is similar):
+\begin{align*}
+	\int_{\bbR^n}\ol{f(x)}e^{-i\omega\cdot x}\,dx=\ol{\int_{\bbR^n}f(x)e^{i\omega\cdot x}\,dx}=\ol{\widecheck{f}(x)}.
+\end{align*}
+(iii) By definition,
+\begin{align*}
+	\wh{(\tau_\xi f)}(\omega)=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}f(x-\xi)e^{-i\omega\cdot x}\,dx=\frac{1}{(2\pi)^{n/2}}e^{-i\omega\cdot\xi}\int_{\bbR^n}f(x-\xi)e^{-i\omega\cdot (x-\xi)}\,dx=e^{i\omega\cdot\xi}\wh{f}(\omega),
+\end{align*}
+and
+\begin{align*}
+	\wh{(e^{i\xi\cdot x}f)}(\omega)=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}e^{i\xi\cdot x}f(x)e^{-i\omega\cdot x}\,dx=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}f(x)e^{-i(\omega-\xi)\cdot x}\,dx=\wh{f}(\omega-\xi).
+\end{align*}
+(iv) By definition,
+\begin{align*}
+	\wh{(f\circ T)}(\omega)&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}f(Tx)e^{i\omega\cdot x}\,dx\\
+	&=\frac{1}{(2\pi)^{n/2}}\frac{1}{\left\vert\det T\right\vert}\int_{\bbR^n}f(y)e^{i\omega\cdot T^{-1}y}\,dy\\
+	&=\frac{1}{(2\pi)^{n/2}}\frac{1}{\left\vert\det T\right\vert}\int_{\bbR^n}f(y)e^{iS\omega\cdot y}\,dy=\frac{1}{\left\vert\det T\right\vert}\wh{f}(S\omega).
+\end{align*}
+Thus we finish the proof.
+\end{proof}
+\paragraph{Remark.} Let $\epsilon>0$. Recall our notation that $\phi_\epsilon(x)=\frac{1}{\epsilon^n}\phi(\frac{x}{\epsilon})$, we have
+\begin{align*}
+	\wh{\phi_\epsilon}(\omega)=\wh{\phi}(\epsilon\omega).
+\end{align*}
+Moreover, if we let $g(x)=f(-x)$, then
+\begin{align*}
+	\wh{g}(x)=\wh{f}(-x)=\widecheck{f}(x).
+\end{align*}
+Next we discuss the relation between Fourier transform and differentiation.
+
+\begin{proposition}[Differentiation]\label{fourierdiff}
+Let $k\in\mathbb{N}_0$ and $f\in L^1(\bbR^n)$.
+\begin{itemize}
+\item[(i)] If $x^\alpha f\in L^1(\bbR^n)$ for all multi-indices $\vert\alpha\vert\leq k$, then $\wh{f}\in C^k(\bbR^n)$, and
+\begin{align*}
+	\partial^\alpha\wh{f}=[(-ix)^\alpha f]\,\wh{\ }
+\end{align*}
+\item[(ii)] If $f\in C^k(\bbR^n)$, $\partial^\alpha f\in L^1(\bbR^n)$ for all multi-indices $\vert\alpha\vert\leq k$, and $\partial^\alpha f\in C_0(\bbR^n)$ for all $\vert\alpha\vert\leq k-1$, then
+\begin{align*}
+	\wh{\partial^\alpha f}(\omega)=(i\omega)^\alpha\wh{f}(\omega).
+\end{align*}
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(i) Let $F(x,\omega)=f(x)e^{-i\omega\cdot x}$. Then
+\begin{align*}
+	\frac{\partial F}{\partial\omega_j}(x,\omega)=-ix_jf(x)e^{-i\omega\cdot x},\quad j=1,2,\cdots,n.
+\end{align*}
+Fix $j\in\{1,2,\cdots,n\}$. Note that when $h$ is near $0$, we have
+\begin{align*}
+	\left\vert\frac{F(x,\omega+he_j)-F(x,\omega)}{h}\right\vert=\left\vert\frac{\e^{-ihx_j}-1}{h}\right\vert\left\vert f(x)\right\vert\leq 2\vert x_jf(x)\vert.
+\end{align*}
+Since $x_jf\in L^1(\bbR^n)$, by dominated convergence theorem,
+\begin{align*}
+	\lim_{h\to 0}\frac{\wh{f}(\omega+he_j)-\wh{f}(\omega)}{h}&=\frac{1}{(2\pi)^{n/2}}\lim_{h\to 0}\int_{\bbR^n}\frac{F(x,\omega+he_j)-F(x,\omega)}{h}\,dx\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\lim_{h\to 0}\frac{F(x,\omega+he_j)-F(x,\omega)}{h}\,dx\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}-ix_jf(x)e^{-i\omega\cdot x}\,dx=\wh{-ix_j f}.
+\end{align*}
+(ii) Consider $\vert\alpha\vert=1$. Since $\partial^\alpha f\in L^1(\bbR^n)$ and $f\in C_0(\bbR^n)$, use Fubini's theorem and integrate by parts:
+\begin{align*}
+	\wh{\frac{\partial f}{\partial x_j}}(\omega)&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n} \frac{\partial f}{\partial x_j}(x)e^{-i\omega\cdot x}\,dx=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\left(\int_{-\infty}^\infty \frac{\partial f}{\partial x_j}(x)e^{-i\omega_j x_j}\,dx_j\right) e^{-i\omega_{-j}\cdot x_{-j}}\,dx_{-j}\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\left(f(x)e^{-i\omega_jx_j}\big|_{x_j=-\infty}^{x_j=\infty} +i\omega_j\int_{-\infty}^\infty f(x)e^{-i\omega_j x_j}\,dx_j\right) e^{-i\omega_{-j}\cdot x_{-j}}\,dx_{-j}\\
+	&=\frac{i\omega_j}{(2\pi)^{n/2}}\int_{\bbR^n} f(x)e^{-i\omega\cdot x}\,dx=i\omega_j\wh{f}(\omega).
+\end{align*}
+Hence we prove the case $k=\vert\alpha\vert=1$ for (i) and (ii). The general case follows from induction on $\vert\alpha\vert$.
+\end{proof}
+
+\begin{theorem}[Convolution Theorem]\label{convthm2}
+Let $f,g\in L^1(\bbR^n)$. Then
+\begin{align*}
+	\wh{f*g}=(2\pi)^{n/2}\wh{f}\,\wh{g}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+By Young's convolution inequality [Proposition \ref{prop:1.3}], $f*g\in L^1(\bbR^n)$. By Fubini's theorem,
+\begin{align*}
+	\wh{(f*g)}(\omega)
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\int_{\bbR^n}f(x-y)g(y)e^{-i\omega\cdot x}\,dy\,dx=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\int_{\bbR^n}f(x-y)e^{-i\omega\cdot(x-y)}g(y)e^{-i\omega\cdot y}\,dy\,dx\\
+	&=\int_{\bbR^n}\left(\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}f(x-y)e^{-i\omega\cdot(x-y)}\,dx\right)g(y)e^{-i\omega\cdot y}\,dy\\
+	&=\wh{f}(\omega)\int_{\bbR^n}g(y)e^{-i\omega\cdot y}\,dy=(2\pi)^{n/2}\wh{f}(\omega)\,\wh{g}(\omega).
+\end{align*}
+Thus we finish the proof.
+\end{proof}
+
+We compute the Fourier transform of a function.
+\begin{lemma}\label{finvfeq}
+Define the function $\Phi:\bbR^n\to\bbR$ by $\displaystyle\Phi(x)=e^{-\frac{\vert x\vert^2}{2}}$.
+Then $\Phi=\wh{\Phi}=\widecheck{\Phi}$.
+\end{lemma}
+\begin{proof} For all $\omega\in\bbR^n$,
+\begin{align*}
+	\wh{\Phi}(\omega)&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}e^{-\frac{\vert x\vert^2}{2}}e^{-i x\cdot\omega}\,dx=\prod_{j=1}^n\left(\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{-x_j^2/2}e^{-i x_j\omega_j}\,dx_j\right)\\
+	&=\prod_{j=1}^n\left(\frac{e^{-\omega_j^2/2}}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{-(x_j+\i\omega_j)^2/2}\,dx_j\right)=\prod_{j=1}^n\left(\frac{e^{-\omega_j^2/2}}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{-x_j^2/2}\,dx_j\right)\\
+	&=\prod_{j=1}^ne^{-\omega_j^2/2}=e^{-\frac{\vert\omega\vert^2}{2}}.
+\end{align*}
+Hence $\wh{\Phi}=\Phi$. The case $\widecheck{\Phi}=\Phi$ is similar.
+\end{proof}
+
+Now we discuss how to recover a function $f$ from its Fourier transform $\wh{f}$.
+
+\begin{theorem}[Fourier inversion theorem]\label{fourierinversion}
+Let $f\in L^1(\bbR^n)$. If $\wh{f}\in L^1(\bbR^n)$, then $(\wh{f})\widecheck{\ }=f\ a.e.$.
+\end{theorem}
+\begin{proof}
+We take the function $\Phi$ in Lemma \ref{finvfeq}. Consider the function
+\begin{align*}
+	f^t(x)&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\Phi(t\omega)\wh{f}(\omega)e^{i\omega\cdot x}\,d\omega=\frac{1}{(2\pi)^n}\int_{\bbR^n}\int_{\bbR^n}\Phi(t\omega)f(y)e^{i\omega\cdot(x-y)}\,dy\,d\omega.
+\end{align*}
+Since $0\leq\Phi\leq 1$ is bounded, $\vert \Phi(t\omega)\wh{f}(\omega)\vert\leq\wh{f}(\omega)$. Since $\wh{f}\in L^1(\bbR^n)$, by dominated convergence theorem,
+\begin{align*}
+	\lim_{t\to 0}f^t(x)=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\lim_{t\to 0}\Phi(t\omega)\wh{f}(\omega)e^{i\omega\cdot x}\,d\omega=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\wh{f}(\omega)e^{i\omega\cdot x}\,d\omega=(\wh{f})\widecheck{\ }(x),\quad\forall x\in\bbR^n.
+\end{align*}
+On the other hand, if we show that $f^t\to f$ in $L^1$ as $t\to 0$, the result follows. By Fubini's theorem,
+\begin{align*}
+	f^t(x)&=\frac{1}{(2\pi)^n}\int_{\bbR^n}\int_{\bbR^n}\Phi(t\omega)f(y)e^{i\omega\cdot(x-y)}\,dy\,d\omega\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\left(\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\Phi(t\omega)e^{i\omega\cdot(x-y)}\,d\omega\right)f(y)\,dy\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\left(\frac{t^{-d}}{(2\pi)^{n/2}}\int_{\bbR^n}\Phi(\xi)f(y)e^{i\frac{\xi}{t}\cdot(x-y)}\,d\xi\right)\,dy\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}t^{-d}\Phi\left(\frac{x-y}{t}\right)f(y)\,dy=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\Phi_t\left(x-y\right)f(y)\,dy.
+\end{align*}
+By Proposition \ref{generalmollif}, $\Phi_t * f\to(2\pi)^{n/2} f$ in $L^1$. Thus we complete the proof.
+\end{proof}
+\paragraph{Remark.} We also have $\cal{F}\widecheck{f}=f\ a.e.$ under the same assumption. To show this, let $g(x)=f(-x)$. Then
+\begin{align*}
+	(\wh{g})\widecheck{\ }(x)=(\cal{F}^{-1}\widecheck{f})(x)=(\cal{F}\widecheck{f})(-x).
+\end{align*}
+Since $(\wh{g})\widecheck{\ }=g\ a.e.$ and $g(x)=f(-x)$, the result follows.
+
+\begin{corollary}\label{fourierker}
+If $f\in L^1(\bbR^n)$ and $\wh{f}=0\ a.e.$, then $f=0\ a.e.$.
+\end{corollary}
+\begin{proof}
+Clearly $\wh{f}=0\in L^1(\bbR^n)$. Then $f=(\wh{f})\widecheck{\ }=0$. Here all equalities hold in a.e. sense.
+\end{proof}
+
+\paragraph{Remark.} Also, if $f\in L^1(\bbR^n)$ and $\widecheck{f}=0\ a.e.$, then $f=0\ a.e.$.
+
+\subsection{Fourier Transform on $L^2(\bbR^n)$}
+\begin{theorem}
+The Fourier transform $\cal{F}$ is an isomorphism of the Schwartz space $\cal{S}(\bbR^n)$ onto itself.
+\end{theorem}
+\begin{proof}
+Take $f\in\cal{S}(\bbR^n)$. By Proposition \ref{charschwartz} (i), $x^\beta\partial^\alpha f\in L^1(\bbR^n)\cap C_0(\bbR^n)$ for all multi-indices $\alpha,\beta\in\bbN_0^n$. By Proposition \ref{fourierdiff} (i), $\wh{f}\in C^\infty(\bbR^n)$, and
+\begin{align*}
+	\wh{x^\beta\partial^\alpha f}=i^{\vert\beta\vert}\partial^\beta\wh{(\partial^{\alpha}f)}=i^{\vert\alpha\vert+\vert\beta\vert}\partial^\beta(\omega^{\alpha}\wh{f}).
+\end{align*}
+Since $x^\beta\partial^\alpha f\in L^1(\bbR^n)$, we have $\partial^\beta(\omega^{\alpha}\wh{f})\in C_0(\bbR^n)$, which is bounded. By Proposition \ref{charschwartz} (ii), $\wh{f}\in\cal{S}(\bbR^n)$. Furthermore, since $\int_{\bbR^n}(1+\vert x\vert)^{-n-1}\,dx<\infty$, by 
+Hölder's inequality,
+\begin{align*}
+	\bigl\Vert\partial^\beta(\omega^\alpha\wh{ f})\bigr\Vert_\infty=\bigl\Vert\wh{x^\beta\partial^\alpha f}\bigr\Vert_\infty\leq\left\Vert x^\beta\partial^\alpha f\right\Vert_{L^1}\leq C\left\Vert(1+\vert x\vert)^{n+1}x^\beta\partial^\alpha f\right\Vert_{\infty}\leq C\Vert f\Vert_{(\vert\beta\vert+n+1,\alpha)}.
+\end{align*}
+Following the proof of Proposition \ref{charschwartz}, we have $\Vert\wh{f}\Vert_{(N,\alpha)}\leq C_{N,\alpha}\sum_{\vert\gamma\vert\leq\vert\alpha\vert}\Vert f\Vert_{(N+n+1,\gamma)}$. Hence the Fourier transform $\cal{F}$ maps $\cal{S}(\bbR^n)$ continuously into itself. On the other hand, since $\widecheck{f}(x)=\wh{f}(-x)$, the inverse Fourier transform $\cal{F}^{-1}$ also maps the Schwartz space $\cal{S}(\bbR^n)$ into itself. By Fourier inversion theorem [Theorem \ref{fourierinversion}], these maps are inverse to each other on $\cal{S}(\bbR^n)$. Hence we complete the proof.
+\end{proof}
+
+\begin{theorem}[Plancherel]\label{plancherel}
+$\cal{F}$ extends from $L^1(\bbR^n)\cap L^2(\bbR^n)$ to a unitary isomorphism on $L^2(\bbR^n)$.
+\end{theorem}
+\begin{proof}
+Let $f,g\in\cal{S}(\bbR^n)$, and let $h=\ol{\wh{g}}$. Then
+\begin{align*}
+	\wh{h}(\omega)=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^d}\ol{\wh{g}(x)}e^{-i\omega\cdot x}\,dx=\frac{1}{(2\pi)^{n/2}}\ol{\int_{\bbR^d}\wh{g}(x)e^{i\omega\cdot x}\,dx}=\ol{(\wh g)\widecheck{\ }(\omega)}
+\end{align*}
+By Fourier inversion theorem, we have $\wh{h}=\ol{g}$. Hence
+\begin{align*}
+	\langle f,g\rangle_{L^2}&=\int_{\bbR^d}f(x)\ol{g(x)}\,dx=\int_{\bbR^d} f(x)\wh{h}(x)\,dx=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^d}\int_{\bbR^d} f(x)h(\omega)e^{-i\omega\cdot x}\,d\omega\,dx\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^d}\left(\int_{\bbR^d} f(x)e^{-i\omega\cdot x}\,dx\right)h(\omega)\,d\omega\tag{By Fubini's theorem}\\
+	&=\int_{\bbR^d}\wh{f}(\omega)h(\omega)\,d\omega=\int_{\bbR^d}\wh{f}(\omega)\ol{\wh{g}(\omega)}\,d\omega=\langle\wh{f},\wh{g}\rangle_{L^2}.
+\end{align*}
+Hence $\cal{F}|_{\cal{S}(\bbR^n)}$ preserves the $L^2$ inner product. Now for each $f\in L^2(\bbR^n)$, since $\cal{S}(\bbR^n)$ is dense in $L^2(\bbR^n)$, we can take a sequence $f_k\in\cal{S}(\bbR^n)$ with $f_k\to f$ in $L^2$. Then $(\wh{f_k})$ is a Cauchy sequence in $L^2(\bbR^n)$:
+\begin{align*}
+	\lim_{k,j\to\infty}\Vert\wh{f_k}-\wh{f_j}\Vert_{L^2}= \lim_{k,j\to\infty}\Vert \wh{f_k-f_j}\Vert_{L^2}=\lim_{k,j\to\infty}\Vert f_k-f_j\Vert_{L^2} =0.
+\end{align*}
+This sequence converges to a limit $\wh{f}=\cal{F}f\in L^2(\bbR^n)$. If $g_k\in\cal{S}(\bbR^n)$ with $g_k\to f$ in $L^2$, we have
+\begin{align*}
+	\Vert\wh{g}-\wh{f}\Vert_{L^2}=\lim_{k\to\infty}\Vert\wh{g}_k-\wh{f}_k\Vert_{L^2}=\lim_{k\to\infty}\Vert g_k-f_k\Vert_{L^2}\leq\lim_{k\to\infty}\Vert g_k-f\Vert_{L^2}+\lim_{k\to\infty}\Vert f-f_k\Vert_{L^2}=0.
+\end{align*} 
+Hence the limit does not depend on the choice of the sequence $(f_k)$, and the transform $\wh{f}=\cal{F}f$ is well-defined. Furthermore, for all $f,g\in L^2(\bbR^n)$, we have
+\begin{align*}
+	\langle f,g\rangle_{L^2}=\langle\wh{f},\wh{g}\rangle_{L^2}.
+\end{align*}
+Hence $\cal{F}$ is a unitary isomorphism on $L^2(\bbR^n)$.
+\end{proof}
+
+\paragraph{Remark.} Likewise, $\cal{F}^{-1}$ also extends from $L^1(\bbR^n)\cap L^2(\bbR^n)$ to a unitary isomorphism on $L^2(\bbR^n)$.
+
+\begin{corollary}
+Let $f\in L^2(\bbR^n)$. Then $(\wh{f})\widecheck{\ }=f$.
+\end{corollary}
+\begin{proof}
+Take a sequence $f_k\in\cal{S}(\bbR^n)$ with $f_k\to f$ in $L^2$. Then $\wh{f_k}\to\wh{f}$ in $L^2$, and $f_k=(\wh{f_k})\widecheck{\ }\to(\wh{f})\widecheck{\ }$ in $L^2$.
+\end{proof}
+
+Also, we have an explicit formula for Fourier transform in $L^2$.
+\begin{corollary}
+Let $f\in L^2(\bbR^n)$. Then
+\begin{align*}
+	\wh{f}(\omega)=\frac{1}{(2\pi)^{n/2}}\lim_{N\to\infty}\int_{\vert x\vert\leq N}f(x)e^{-i\omega\cdot x}\,dx,
+\end{align*}
+where the limit is in $L^2$ sense.
+\end{corollary}
+\begin{proof}
+We choose $f_N=f\chi_{\{\vert x\vert\leq N\}}$, which is in $L^1(\bbR^n)\cap L^2(\bbR^n)$ by Cauchy-Schwarz inequality, and converges in $L^2$ to $f$ as $N\to\infty$, by monotone convergence theorem. By Plancherel theorem, $\wh{f}_N\to\wh{f}$ in $L^2$.
+\end{proof}
+Finally we introduce the convolution theorem for $L^2$-functions.
+\begin{proposition}
+If $f,g\in L^2(\bbR^n)$, then $(\wh{f}\,\wh{g})\widecheck{\ }=(2\pi)^{-n/2}(f*g)$.
+\end{proposition}
+\begin{proof}
+By Plancherel's theorem and Hölder's inequality, we have $\wh{f},\wh{g}\in L^2(\bbR^n)$, and $\wh{f}\,\wh{g}\in L^1(\bbR^n)$. We fix $x\in\bbR^n$, and set $h_x(y)=\ol{g(x-y)}$. Then
+\begin{align*}
+	\wh{h_x}(\omega)=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\ol{g(x-y)}e^{-i\omega\cdot y}\,dy=\frac{1}{(2\pi)^{n/2}}\ol{\int_{\bbR^n}g(x-y)e^{-i\omega\cdot(x-y)}\,dy\,e^{i\omega\cdot x}}=\ol{\wh{g}(\omega)}e^{-i\omega\cdot x}.
+\end{align*}
+Since $\cal{F}$ is unitary in $L^2(\bbR^n)$,
+\begin{align*}
+	(f*g)(x)=\int_{\bbR^n}f(y)\ol{h_x(y)}\,dy=\int_{\bbR^n}\wh{f}(\omega)\ol{\wh{h_x}(\omega)}\,d\omega=\int_{\bbR^n}\wh{f}(\omega)\wh{g}(\omega)e^{i\omega x}\,d\omega=(2\pi)^{n/2}(\wh{f}\,\wh{g})\widecheck{\ }(x).
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+
+By Fourier inversion theorem and linearity of Laplacian operator,
+\begin{align*}
+	\Delta f(x)&=\Delta\int_{\bbR^n}\frac{\wh{f}(\omega)}{(2\pi)^{n/2}}e^{i\omega\cdot x}\,d\omega=\int_{\bbR^n}\frac{\wh{f}(\omega)}{(2\pi)^{n/2}}\Delta e^{i\omega\cdot x}\,d\omega=-\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\vert\omega\vert^2\wh{f}(\omega)e^{i\omega\cdot x}\,d\omega
+\end{align*}
+By taking the Fourier transform on both sides, we have
+\begin{align*}
+	\wh{\Delta f}(\omega)=-\vert\omega\vert^2\wh{f}(\omega).
+\end{align*}
+
+\newpage
+\subsection{Fourier Transform of Radial Functions and Hankel Transform}
+\paragraph{Bessel functions.} Consider the Bessel's differential equation about function $y(z)$:
+\begin{align}
+	z^2y^{\prime\prime}+zy^{\prime}+(z^2-\nu^2)y=0.\label{besseldiff}
+\end{align}
+The \textit{Bessel function of the first kind} of order $\nu\in\bbC$ solves this equation:
+\begin{align*}
+	J_\nu(z)=\sum_{m=0}^\infty\frac{(-1)^m}{\Gamma(m+1)\Gamma(\nu+m+1)}\left(\frac{z}{2}\right)^{2m+\nu},\quad z\in\bbC\backslash\{0\},
+\end{align*}
+where the power in this definition is given by $z^\nu=e^{\nu\log z}$, where $\log z$ is chosen to be the principal branch of the logarithm, i.e. $-\pi<\arg(z)\leq\pi$. The Bessel function $J_{\nu}(z)$ is holomorphic in $\bbC\backslash(-\infty,0]$ for every $\nu\in\bbC$. 
+
+\begin{itemize}
+\item When $\nu\notin\bbZ$, the Bessel functions $J_\nu(z)$ and $J_{-\nu}(z)$ are linearly independent, and the general solution of the Bessel's equation is 
+\begin{align*}
+	y(z)=\gamma_1 J_\nu(z)+\gamma_2 J_{-\nu}(z),\quad \gamma_1,\gamma_2\in\bbC.
+\end{align*}
+\item When $\nu=n\in\bbZ$, the Bessel function $J_n$ has an analytic extension to $\bbC$. Furthermore, using the property that $1/\Gamma(-n)=0$ for nonnegative integers $n=0,1,2,\cdots$, we have
+\begin{align*}
+	J_{-n}(z)=(-1)^n J_n(z),\quad n\in\bbN_0.
+\end{align*}
+\item To get a solution of (\ref{besseldiff}) when $\nu=n\in\bbZ$ that is linearly independent of from $J_{\pm\nu}$, we introduce the\textit{Bessel function of the second kind} of order $\nu\in\bbC$, which is defined as 
+\begin{align*}
+	Y_\nu(z)=\frac{J_\nu(z)\cos(\nu\pi)-J_{-\nu}(x)}{\sin(\nu\pi)},\quad\nu\notin\bbZ,\quad and\quad Y_n(z)=\lim_{\nu\notin\bbZ,\,\nu\to n}Y_\nu(z),\quad n\in\bbZ.
+\end{align*}
+The Bessel function $Y_n(z)$ solves (\ref{besseldiff}) when $\nu=n\in\bbZ$.
+\end{itemize}
+\begin{proposition}\label{besselprop1}
+Let $\nu\in\bbC$, and let $J_\nu(z)$ be the Bessel function of the first kind.
+\begin{itemize}
+\item[(i)] The following recursive formulae hold:
+\begin{align*}
+	J_{\nu-1}(z)=\frac{dJ_\nu}{dz}+\frac{\nu}{z}J_\nu(z),\quad\mathrm{and}\quad J_{\nu+1}(z)=-\frac{dJ_\nu}{dz}+\frac{\nu}{z}J_\nu(z).
+\end{align*}
+\item[(ii)] In particular, $$J_{1/2}(z)=\sqrt{\frac{2}{\pi z}}\sin(z),\quad\mathrm{and}\quad J_{-1/2}(z)=\sqrt{\frac{2}{\pi z}}\cos(z).$$
+\end{itemize}
+\end{proposition}
+\paragraph{Remark.} Combining the two assertions, one can recurrently derive Bessel functions of half integer orders.
+\begin{proof}
+(i) The first formula follows from the following identity:
+\begin{align*}
+	\frac{d}{dz}\left[z^\nu J_\nu(z)\right]&=\sum_{m=0}^\infty\frac{(-1)^m(2m+2\nu)}{\Gamma(m+1)\Gamma(\nu+m+1)}\frac{z^{2m+2\nu-1}}{2^{2m+\nu}}=\sum_{m=0}^\infty\frac{(-1)^m}{\Gamma(m+1)\Gamma(\nu+m)}\frac{z^{2m+2\nu-1}}{2^{2m+\nu-1}}=z^\nu J_{\nu-1}(z).
+\end{align*}
+Similarly, the second formula follows from the following identity:
+\begin{align*}
+	\frac{d}{dz}\left[z^{-\nu} J_\nu(z)\right]&=\sum_{m=0}^\infty\frac{(-1)^m(2m)}{\Gamma(m+1)\Gamma(\nu+m+1)}\frac{z^{2m-1}}{2^{2m+\nu}}=\sum_{m=1}^\infty\frac{(-1)^m}{\Gamma(m)\Gamma(\nu+m+1)}\frac{z^{2m-1}}{2^{2m+\nu-1}}\\
+	&=\sum_{m=0}^\infty\frac{(-1)^{m+1}}{\Gamma(m+1)\Gamma(\nu+m+2)}\frac{z^{2m+1}}{2^{2m+\nu+1}}=-z^{-\nu} J_{\nu+1}(z).
+\end{align*}
+(ii) Note that $\Gamma\left(\frac{1}{2}\right)=\sqrt{\pi}$. Then
+\begin{align*}
+J_{\frac{1}{2}}(z)&=\sum_{m=0}^\infty\frac{(-1)^m}{\Gamma(m+1)\Gamma(m+\frac{3}{2})}\left(\frac{z}{2}\right)^{2m+\frac{1}{2}}=\sqrt{\frac{2}{z}}\sum_{m=0}^\infty\frac{(-1)^m}{m!\left(m+\frac{1}{2}\right)\left(m-\frac{1}{2}\right)\cdots\frac{1}{2}\Gamma\left(\frac{1}{2}\right)}\left(\frac{z}{2}\right)^{2m+1}\\
+&=\sqrt{\frac{2}{z}}\sum_{m=0}^\infty\frac{(-1)^m}{(2m+1)!\sqrt{\pi}}z^{2m+1}=\sqrt{\frac{2}{\pi z}}\sin(z),
+\end{align*}
+and
+\begin{align*}
+	J_{-\frac{1}{2}}(z)&=\sum_{m=0}^\infty\frac{(-1)^m}{\Gamma(m+1)\Gamma(m+\frac{1}{2})}\left(\frac{z}{2}\right)^{2m-\frac{1}{2}}=\sqrt{\frac{2}{z}}\sum_{m=0}^\infty\frac{(-1)^m}{m!\left(m-\frac{1}{2}\right)\left(m-\frac{3}{2}\right)\cdots\frac{1}{2}\Gamma\left(\frac{1}{2}\right)}\left(\frac{z}{2}\right)^{2m}\\
+	&=\sqrt{\frac{2}{z}}\sum_{m=0}^\infty\frac{(-1)^m}{(2m)!\sqrt{\pi}}z^{2m}=\sqrt{\frac{2}{\pi z}}\cos(z).
+\end{align*}
+Therefore we complete the proof.
+\end{proof}
+
+The Bessel functions are related to the integral of plane wave functions on the sphere.
+\begin{proposition}[Sphere integral form of the Bessel functions of the first kind]\label{besselintegral}
+	Let $n\geq 2$, and denote by $S^{n-1}=\{x\in\bbR^n:\vert x\vert=1\}$ the unit sphere in $\bbR^n$. Then
+	\begin{align}
+		\int_{S^{n-1}}e^{i\omega\cdot x}\,dS(\omega)=(2\pi)^{\frac{n}{2}}\vert x\vert^{1-\frac{n}{2}}J_{\frac{n}{2}-1}(\vert x\vert).\label{integralbessel}
+	\end{align}
+\end{proposition}
+
+The proof of this result requires some technical lemmata. We first introduce a type of special integrals.
+
+\begin{lemma}\label{sinpowerintegral} For each $n,m\in\bbN_0$,
+\begin{align*}
+	\int_0^\pi\sin^n\theta\cos^{2m}\theta\,d\theta=\frac{\Gamma\left(m+\frac{1}{2}\right)\Gamma\left(\frac{n+1}{2}\right)}{\Gamma\left(m+\frac{n}{2}+1\right)}.
+\end{align*}
+In particular,
+\begin{align*}
+	\int_0^\pi\sin^n\theta\,d\theta=\frac{\Gamma\left(\frac{n+1}{2}\right)\sqrt{\pi}}{\Gamma\left(\frac{n}{2}+1\right)}.
+\end{align*}
+\end{lemma}
+\begin{proof}
+(i) We begin from the second integral. Let $I_n=\int_0^\pi\sin^n\theta\,d\theta$. To begin with, we have $I_0=\pi$ and $I_1=2$. For $n\geq 2$, compute $I_n$ recurrently:
+\begin{align*}
+	I_n=-\int_0^\pi\sin^{n-1}\theta\,d\cos\theta=\int_0^\pi(n-1)\sin^{n-2}\theta\cos^2\theta\,d\theta=(n-1)(I_{n-2}-I_n).
+\end{align*}
+Hence $I_n=\frac{n-1}{n}I_{n-2}$. By induction, for any $n\in\bbN_0$,
+\begin{align*}
+	I_{2k+1}=\frac{2k}{2k+1}\cdot\frac{2k-2}{2k-1}\cdot\cdots\cdot\frac{2}{3}\cdot I_1=\frac{\Gamma\left(k+1\right)\sqrt{\pi}}{\Gamma\left(k+\frac{3}{2}\right)},
+\end{align*}
+and
+\begin{align*}
+	I_{2k}=\frac{2k-1}{2k}\cdot\frac{2k-3}{2k-2}\cdot\cdots\cdot\frac{1}{2}\cdot I_0=\frac{\Gamma\left(k+\frac{1}{2}\right)\sqrt{\pi}}{\Gamma\left(k+1\right)}.
+\end{align*}
+The first result is obtained by summarizing the last two identities.
+
+(ii) Let $I_{n,m}=\int_0^\pi\sin^n\theta\cos^{2m}\theta\,d\theta$. Then
+\begin{align*}
+	I_{n,m}&=\int_0^\pi\sin^n\theta\cos^{2m-1}\theta\,d\sin\theta=-\int_0^\pi\sin\theta\,d\left(\sin^n\theta\cos^{2m-1}\theta\right)\\
+	&=-n\int_0^\pi\sin^n\theta\cos^{2m}\theta\,d\theta+(2m-1)\int_0^\pi\sin^{n+2}\theta\cos^{2m-2}\theta\,d\theta\\
+	&=-nI_{n,m}+(2m-1)(I_{n,m-1}-I_{n,m})=(1-2m-n)I_{n,m}+(2m-1)I_{n,m-1}.
+\end{align*}
+Hence $I_{n,m}=\frac{2m-1}{2m+n}I_{n,m-1}$. By induction,
+\begin{align*}
+	I_{n,m}&=\frac{2m-1}{2m+n}\cdot\frac{2m-3}{2m+n-2}\cdot\cdots\cdot\frac{1}{n+2}\cdot I_{n,0}\\
+	&=\frac{2^m\Gamma\left(m+\frac{1}{2}\right)/\sqrt{\pi}}{2^m\Gamma\left(m+\frac{n}{2}+1\right)/\Gamma\left(\frac{n}{2}+1\right)}\frac{\Gamma\left(\frac{n+1}{2}\right)\sqrt{\pi}}{\Gamma\left(\frac{n}{2}+1\right)}=\frac{\Gamma\left(m+\frac{1}{2}\right)\Gamma\left(\frac{n+1}{2}\right)}{\Gamma\left(m+\frac{n}{2}+1\right)}.
+\end{align*}
+Therefore the first result holds.
+\end{proof}
+
+\begin{lemma} Let $n\geq 2$. The surface area of unit sphere $S^{n-1}=\{x\in\bbR^n:\vert x\vert=1\}$ is $\sigma_{n-1}=\frac{2\pi^{n/2}}{\Gamma\left(n/2\right)}$.
+\end{lemma}
+\begin{proof}
+Using the spherical coordinates, and by Lemma \ref{sinpowerintegral}, we have
+\begin{align*}
+	\sigma_{n-1}=\int_{S^{n-1}}dS(x)=\int_0^\pi\sigma_{n-2}\sin^{n-2}\theta\,d\theta=\frac{\Gamma\left(\frac{n-1}{2}\right)\sqrt{\pi}}{\Gamma\left(\frac{n}{2}\right)}\sigma_{n-2}.
+\end{align*}
+Since $\sigma_1=2\pi$ and $\Gamma(1)=1$, the result follows by induction. 
+\end{proof}
+
+\begin{proof}[Proof of Proposition \ref{besselintegral}]
+Let $r=\vert x\vert$. Since $\int_{S^{n-1}}e^{i\omega\cdot x}\,dS(\omega)$ is radial about $x$, we take $x=(r,0,\cdots,0)$:
+\begin{align}
+	\int_{S^{n-1}}e^{i\omega\cdot x}\,dS(\omega)=\int_{S^{n-1}}e^{ir\omega_1}\,dS(\omega).
+\end{align}
+For $\omega\in S^{n-1}$, let $\theta=\arccos(\langle\omega,e_1\rangle)$, where $e_1=(1,0,\cdots,0)$. Then $\cos\theta=\omega_1$, and $\sin\theta=\sqrt{\omega_2^2+\cdots+\omega_n^2}$. Switching to the spherical coordinates, we have
+\begin{align}
+	\int_{S^{n-1}}e^{i\omega\cdot x}\,dS(\omega)&=\int_{S^{n-1}}e^{ir\omega_1}\,dS(\omega)=\int_0^\pi e^{ir\cos\theta}\sigma_{n-2}\sin^{n-2}\theta \,d\theta\notag\\
+	&=\frac{2\pi^{\frac{n-1}{2}}}{\Gamma\left(\frac{n-1}{2}\right)}\int_0^\pi e^{ir\cos\theta}\sin^{n-2}\theta \,d\theta.\label{besselint1}
+\end{align}
+We compute the last integral by expanding the exponent and integrating term by term:
+\begin{align}
+	\int_0^\pi e^{ir\cos\theta}\sin^{n-2}\theta \,d\theta&=\sum_{k=0}^\infty\frac{(ir)^k}{k!}\int_0^\pi \cos^k\theta\sin^{n-2}\theta\,d\theta=\sum_{m=0}^\infty\frac{\Gamma\left(m+\frac{1}{2}\right)\Gamma\left(\frac{n-1}{2}\right)}{\Gamma\left(m+\frac{n}{2}\right)}\frac{(ir)^{2m}}{(2m)!}\notag\\
+	&=\sum_{m=0}^\infty\frac{(2m-1)!!\sqrt{\pi}\,\Gamma\left(\frac{n-1}{2}\right)}{2^m\Gamma\left(m+\frac{n}{2}\right)}\frac{(ir)^{2m}}{(2m)!}=\sum_{m=0}^\infty\frac{(-1)^m \sqrt{\pi}\,\Gamma\left(\frac{n-1}{2}\right)}{m!\,\Gamma\left(m+\frac{n}{2}\right)}\left(\frac{r}{2}\right)^{2m}\label{besselint2},
+\end{align}
+where the odd terms vanishes by symmetry on $[0,\pi]$, and the even terms follow from Lemma \ref{sinpowerintegral}. Combining (\ref{besselint1}) and (\ref{besselint2}), we obtain
+\begin{align*}
+	\int_{S^{n-1}}e^{i\omega\cdot x}\,dS(\omega)&=2\pi^{\frac{n}{2}}\sum_{m=0}^\infty\frac{(-1)^m}{m!\,\Gamma\left(m+\frac{n}{2}\right)}\left(\frac{r}{2}\right)^{2m}=(2\pi)^{\frac{n}{2}}r^{1-\frac{n}{2}}J_{\frac{n}{2}-1}(r).
+\end{align*}
+Thus we complete the proof.
+\end{proof}
+
+We now turn to the Laplace transforms of some specific functions involving Bessel functions.
+\begin{proposition}\label{laptransbessel}
+For every $\nu>-1$ and $r>0$,
+\begin{align}
+	\int_0^\infty J_\nu(x)x^{\nu+1}e^{-rx}\,dx=\frac{2^{\nu+1}\Gamma\left(\nu+\frac{3}{2}\right)r}{\sqrt{\pi}(1+r^2)^{\nu+\frac{3}{2}}}.\label{laplacebessel}
+\end{align}
+\end{proposition}
+\begin{proof}
+For $0<r<1$ and $\mu>0$, the Taylor series of $(1+r)^{-\mu}$ is
+\begin{align*}
+(1+r)^{-\mu}=\sum_{m=0}^\infty\frac{(-1)^m\Gamma(\mu+m)}{m!\,\Gamma(\mu)}r^m.
+\end{align*}
+Replacing $r$ by $1/r^2$, we have
+\begin{align*}
+\frac{r^{2\mu}}{(1+r^2)^\mu}=\sum_{m=0}^\infty\frac{(-1)^m\Gamma(\mu+m)}{m!\,\Gamma(\mu)}r^{-2m},\quad r>1.
+\end{align*}
+Hence the right hand side of (\ref{laplacebessel}) is
+\begin{align}
+	\frac{2^{\nu+1}\Gamma\left(\nu+\frac{3}{2}\right)r}{\sqrt{\pi}(1+r^2)^{\nu+\frac{3}{2}}}&=\frac{2^{\nu+1}\Gamma\left(\nu+\frac{3}{2}\right)r^{-2\nu-2}}{\sqrt{\pi}}\sum_{m=0}^\infty\frac{(-1)^m\Gamma(\nu+\frac{3}{2}+m)}{m!\,\Gamma\left(\nu+\frac{3}{2}\right)}r^{-2m}\notag\\
+	&=\sum_{m=0}^\infty\frac{(-1)^m2^{\nu+1}\Gamma\left(\nu+\frac{3}{2}+m\right)}{\Gamma(m+1)\sqrt{\pi}}r^{-2m-2\nu-2}\notag\\
+	&=\sum_{m=0}^\infty\frac{(-1)^m\Gamma\left(2\nu+2m+2\right)}{2^{2m+\nu}\Gamma(m+1)\Gamma\left(\nu+m+1\right)}r^{-2m-2\nu-2},\label{legendrebessel}
+\end{align}
+where the last equality follows from Legendre's duplication formula. Now we turn to the integral. By Sterling's formula, there exists a constant $c_\nu$ depending only on $\nu>-1$ such that $\Gamma\left(\nu+m+1\right)\geq\frac{m!}{c_\nu}$. Then
+\begin{align*}
+	\sum_{m=1}^\infty \frac{x^{2m+2\nu+1}e^{-rx}}{2^{2m+\nu}\Gamma(m+1)\Gamma\left(\nu+m+1\right)}&\leq \frac{c_\nu}{2^\nu} x^{2\nu+1}e^{-rx}\sum_{m=1}^\infty\frac{x^{2m}}{(2^mm!)^2}\\
+	&\leq \frac{c_\nu}{2^\nu} x^{2\nu+1}e^{-rx}\sum_{m=1}^\infty\frac{x^{2m}}{(2m)!}\leq \frac{c_\nu}{2^\nu} x^{2\nu+1}e^{-(r-1)x},
+\end{align*}
+which is absolutely integrable. Using dominated convergence theorem, we can interchange infinite summation and integral in the left hand side of (\ref{laplacebessel}):
+\begin{align*}
+\int_0^\infty J_\nu(x)x^{\nu+1}e^{-rx}\,dx&=\sum_{m=1}^\infty \frac{(-1)^m}{2^{2m+\nu}\Gamma(m+1)\Gamma\left(\nu+m+1\right)}\int_0^\infty x^{2m+2\nu+1}e^{-rx}\,dx\\
+&=\sum_{m=1}^\infty \frac{(-1)^mr^{-2m-2\nu-2}}{2^{2m+\nu}\Gamma(m+1)\Gamma\left(\nu+m+1\right)}\int_0^\infty y^{-2m-2\nu-1}e^{-y}\,dy\\
+&=\sum_{m=0}^\infty\frac{(-1)^m\Gamma\left(2\nu+2m+2\right)}{2^{2m+\nu}\Gamma(m+1)\Gamma\left(\nu+m+1\right)}r^{-2m-2\nu-2},
+\end{align*}
+which is consistent with (\ref{legendrebessel}). Hence the identity (\ref{laplacebessel}) holds for $r>1$. Finally, since both sides of (\ref{legendrebessel}) is analytic in the region $\Re(r)>0$ and $\vert\Im(r)\vert<1$, the case $0<r\leq 1$ follows from analytic continuation.
+\end{proof}
+
+Now we study the Fourier transform of radial functions on $\bbR^n$. A function $F:\bbR^n\to\bbC$ is said to be radial, if there exists a function $f$ such that $F(x)=f(\vert x\vert)$ for all $x\in\bbR^n$.
+
+\begin{definition}[Hankel transform]\label{hankeltransform}
+Let $\nu\geq-\frac{1}{2}$. We define the \textit{Hankel transform of order $\nu$} of a function $f\in L^2((0,\infty),r\,dr)$ by
+\begin{align*}
+	(H_\nu f)(\lambda)=\int_0^\infty rf(r)J_\nu(\lambda r)\,dr,\quad\lambda>0.
+\end{align*}
+\end{definition}
+
+The Hankel transform of order $\frac{n}{2}-1$ is related to the Fourier transform of radial functions in $\bbR^n$.
+
+\begin{theorem}
+Let $F\in L^1(\bbR^n)\cap C(\bbR^n)$ be a radial function, i.e. $F(x)=f(\vert x\vert)$ for $x\in\bbR^n$. Then the Fourier transform $\wh{F}$ is also radial, i.e. $\wh{F}(\omega)=\phi(\vert\omega\vert)$, with
+\begin{align*}
+	\phi(\lambda)=\lambda^{1-\frac{n}{2}}\int_0^\infty r^{\frac{n}{2}}f(r)J_{\frac{n}{2}-1}(\lambda r)\,dr
+\end{align*}
+In other words, $\vert\omega\vert^{\frac{n}{2}-1}\wh{F}(\omega)$ coincides the Hankel transform of order $\frac{n}{2}-1$ of $r^{\frac{n}{2}-1}f(r)$
+\end{theorem}
+\begin{proof}
+For the case $n=1$, we have $J_{-1/2}(z)=\sqrt{\frac{2}{\pi z}}\cos(z)$ by Proposition \ref{besselprop1}. Since $F:\bbR\to\bbC$ is even,
+\begin{align*}
+	\wh{F}(\omega)&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty F(x)e^{-i\omega x}\,dx=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty F(x)\left(\cos(\omega x)-i\sin(\omega x)\right)dx\\
+	&=\sqrt{\frac{2}{\pi}}\int_0^\infty f(r)\cos(\vert\omega\vert r)\,dr=\vert\omega\vert^{\frac{1}{2}}\int_0^\infty\sqrt{r}f(r) J_{-\frac{1}{2}}(\vert\omega\vert r)\,dr.
+\end{align*}
+For the case $n\geq 2$, we switch to sphere coordinates and use Proposition \ref{besselintegral}:
+\begin{align*}
+	\wh{F}(\omega)&=(2\pi)^{-\frac{n}{2}}\int_{\bbR^n}F(x)e^{-i\omega\cdot x}\,dx=(2\pi)^{-\frac{n}{2}}\int_0^\infty r^{n-1}\int_{S^{n-1}}f(r\vert x\vert)e^{-ir\omega\cdot x}\,dS(x)\,dr\\
+	&=(2\pi)^{-\frac{n}{2}}\int_0^\infty r^{n-1}f(r)\left(\int_{S^{n-1}}e^{-ir\omega\cdot x}\,dS(x)\right)\,dr\\
+	&=(2\pi)^{-\frac{n}{2}}\int_0^\infty r^{n-1}f(r)\cdot (2\pi)^{\frac{n}{2}}(r\vert\omega\vert)^{1-\frac{n}{2}}J_{\frac{n}{2}-1}(r\vert\omega\vert)\,dr\\
+	&=\vert\omega\vert^{1-\frac{n}{2}}\int_0^\infty r^{\frac{n}{2}}f(r)J_{\frac{n}{2}-1}(r\vert\omega\vert)\,dr.
+\end{align*}
+Then we conclude the proof.
+\end{proof}
+\paragraph{Remark.} In particular, taking $n=2$, we know that the Hankel transform of order $0$ coincides the Fourier transformation of radial function in $\bbR^2$.
+
+\newpage
+\subsection{Application in Partial Differential Equations}
+\paragraph{Fourier transform and differential operators.} Consider the Laplacian operator:
+\begin{align*}
+	\Delta:C^2(\bbR^n)\to C(\bbR^n),\qquad \Delta f=\sum_{j=1}^n\frac{\partial^2 f}{\partial x_j^2}.
+\end{align*}
+For the plane wave function $f(x)=e^{i\omega\cdot x}$, we have
+\begin{align*}
+	\Delta e^{i\omega\cdot x}=\sum_{j=1}^n(i\omega_j)^2e^{i\omega\cdot x}=-\vert\omega\vert^2e^{i\omega\cdot x}.
+\end{align*}
+In other words, the function $e^{i\omega\cdot x}$ is an eigenfunction of $\Delta$, with eigenvalue $-\vert\omega\vert^2$. Furthermore, under regularity conditions [See Proposition \ref{fourierdiff}], we have
+\begin{align*}
+	\wh{\Delta f}(\omega)=\sum_{j=1}^n(i\omega_j)^2\wh{f}(\omega)=-\vert\omega\vert^2\wh{f}(\omega).
+\end{align*}
+This identity shows that \textit{the Fourier transform diagonalizes the Laplacian $\Delta$.} In other words, the Laplacian is nothing more than an explicit multiplier when viewed using the Fourier transform.
+
+\begin{example}[Heat equation with Dirichlet boundary condition]
+Consider the heat equation about the time-varying function $u(x,t)$, which is defined on $\bbR^n\times\bbR_+$:
+\begin{align}
+\begin{cases}
+	u_t=\Delta_x u & \mathrm{in}\ \bbR^n\times(0,\infty),\\
+	u(x,0)=f(x)& \mathrm{on}\ \bbR^n\times\{t=0\},\\
+	\lim_{\vert x\vert\to\infty}u(x,t)=0 &\mathrm{for}\ t\in[0,\infty),
+\end{cases}\label{heateq}
+\end{align}
+where the initial function $f\in L^1(\bbR^n)\cap C_0(\bbR^n)$.
+\end{example}
+\textit{\hspace{-1.5em}Solution.}
+We let $\wh{u}(\omega,t)=\int_{\bbR^n}u(x,t)e^{-i\omega\cdot x}\,dx$ be the Fourier transform of $u$ with respect to $x$. Applying Fourier transform on both the heat equation and the initial condition, we get the initial value problem:\vspace{-0.1cm}
+\begin{align*}
+\begin{cases}
+\wh{u}_t=-\vert\omega\vert^2\wh{u},\\
+\wh{u}(\omega,0)=\wh{f}(\omega).
+\end{cases}
+\end{align*}
+The solution of this problem is given by $\wh{u}(\omega,t)=\wh{f}(\omega)e^{-\vert\omega\vert^2 t}$. To recover $u$, we employ the inverse Fourier transform and convolution theorem [Theorem \ref{convthm2}]:
+\begin{align*}
+	u(x,t)=\cal{F}^{-1}\left(\wh{f}(\omega)e^{-\vert\omega\vert^2 t}\right)=(2\pi)^{-n/2} f*\cal{F}^{-1}(e^{-\vert\omega\vert^2 t}).
+\end{align*}
+It remains to compute the inverse Fourier transform of $e^{-\vert\omega\vert^2 x}$:\vspace{-0.1cm}
+\begin{align*}
+	\cal{F}^{-1}(e^{-\vert\omega\vert^2 t})(x)&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}e^{-\vert\omega\vert^2 t}e^{i\omega\cdot x}\,d\omega=\prod_{j=1}^n\int_{-\infty}^\infty\frac{1}{\sqrt{2\pi}}e^{-\omega_j^2t+i\omega_jx_j}\,d\omega_j\\
+	&=\prod_{j=1}^n e^{-\frac{x_j^2}{4t}}\int_{-\infty}^\infty\frac{1}{\sqrt{2\pi}}e^{-\left(\omega_j\sqrt{t}-\frac{ix_j}{2\sqrt{t}}\right)^2}\,d\omega_j=\prod_{j=1}^n \frac{1}{\sqrt{2t}}e^{-\frac{x_j^2}{4t}}=\frac{1}{(2t)^{n/2}}e^{-\frac{\vert x\vert^2}{4t}}.
+\end{align*}
+Hence the solution of problem (\ref{heateq}) is given by
+\begin{align*}
+	u(x,t)=\frac{1}{(4\pi t)^{n/2}}\int_{\bbR^n}e^{-\frac{\vert y-x\vert^2}{4t}}f(y)\,dy.\tag*{\qed}
+\end{align*}
+\paragraph{Remark.} We write the heat kernel by
+\begin{align*}
+	\Phi_t(x)=\begin{cases}
+		\delta(x), &t=0,\\
+		(4\pi t)^{-n/2}e^{-\frac{\vert x\vert^2}{4t}}, &t>0.
+	\end{cases}
+\end{align*}
+Then the solution of problem (\ref{heateq}) can be represented as $u=\Phi_t*f$.
+
+\begin{example}[Heat equation with a source]
+	Consider the heat equation about the time-varying function $u(x,t)$, which is defined on $\bbR^n\times\bbR_+$:
+	\begin{align}
+		\begin{cases}
+			u_t=\Delta_x u+S(x,t) & \mathrm{in}\ \bbR^n\times(0,\infty),\\
+			u(x,0)=f(x)& \mathrm{on}\ \bbR^n\times\{t=0\},\\
+			\lim_{\vert x\vert\to\infty}u(x,t)=0 &\mathrm{for}\ t\in[0,\infty),
+		\end{cases}\label{heateqsource}
+	\end{align}
+	where the source $S(x,t)\in L^1(\bbR^n)\cap C_0(\bbR^n)$ for every $t$, and the initial function $f\in L^1(\bbR^n)\cap C_0(\bbR^n)$.
+\end{example}
+
+\textit{\hspace{-1.5em}Solution.} Similar to the case without the source $S(x,t)$, we apply Fourier transform on both the equation and the initial condition to get an initial value problem:
+\begin{align*}
+\begin{cases}
+	\wh{u}_t=-\vert\omega\vert^2\wh{u}+\wh{S}(\omega,t),\\
+	\wh{u}(\omega,0)=\wh{f}(\omega).
+\end{cases}
+\end{align*}
+We solve this problem by multiplying by a factor $e^{\vert\omega\vert^2 t}$:
+\begin{align*}
+	\frac{\partial}{\partial t}\left(e^{\vert\omega\vert^2 t}\wh{u}\right)&=e^{\vert\omega\vert^2 t}\left(\wh{u}_t+\vert\omega\vert^2\wh{u}\right)=e^{\vert\omega\vert^2 t}\wh{S}(\omega,t),\\
+	e^{\vert\omega\vert^2 t}\wh{u}(\omega,t)&=\wh{f}(\omega)+\int_0^te^{\vert\omega\vert^2 \tau}\wh{S}(\omega,\tau)\,d\tau,\\
+	\wh{u}(\omega,t)&=e^{-\vert\omega\vert^2 t}\wh{f}(\omega)+\int_0^te^{-\vert\omega\vert^2 (t-\tau)}\wh{S}(\omega,\tau)\,d\tau.
+\end{align*}
+Applying inverse Fourier transform, we obtain the solution of (\ref{heateqsource}):
+\begin{align*}
+	u(x,t)=\int_{\bbR^n}\Phi_t(x-y)f(y)\,dt+\int_0^t\int_{\bbR^n}\Phi_{t-\tau}(x-y)S(y,t)\,dy\,d\tau.\tag*{\qed}
+\end{align*}
+
+\begin{example}[Laplace equation in the upper half space]
+Consider the Laplace equation about the function $u(x,y)$ in the upper half space $\bbR^n\times\bbR_+$:
+	\begin{align}
+		\begin{cases}
+			\Delta u=0 & \mathrm{in}\ \bbR^n\times(0,\infty),\\
+			u(x,0)=f(x)& \mathrm{on}\ \bbR^n\times\{t=0\},\\
+			\lim_{\vert x\vert\to\infty}u(x,y)=0 &\mathrm{and}\ \ \lim_{ y\to\infty}u(x,y)=0,
+		\end{cases}\label{upperlaplace}
+	\end{align}
+	where the function $f\in L^1(\bbR^n)\cap C_0(\bbR^n)$.
+\end{example}
+\textit{\hspace{-1.5em}Solution.} We write the Laplace equation as $u_{yy}=\Delta_x u$, and apply Fourier transform on the variable $x$. Then we get the following initial value problem:
+\begin{align*}
+	\begin{cases}
+		\wh{u}_{yy}=\vert\omega\vert^2\wh{u},\\
+		\wh{u}(\omega,0)=\wh{f}(\omega),\\
+		\lim_{y\to\infty}\wh{u}(\omega,y)=0
+	\end{cases}
+\end{align*}
+Since $u$ is vanishing as $y\to\infty$, the solution to this problem is
+\begin{align*}
+	\wh{u}(\omega,y)=e^{-\vert\omega\vert y}\wh{f}(\omega).
+\end{align*}
+Hence the solution to (\ref{upperlaplace}) is \vspace{-0.1cm}
+\begin{align*}
+	u(x,y)=\frac{1}{(2\pi)^{n/2}}\cdot\cal{F}^{-1}(e^{-\vert\omega\vert y})*f.
+\end{align*}
+We compute inverse Fourier transform of $e^{-\vert\omega\vert y}$:
+\begin{align*}
+	\cal{F}^{-1}(e^{-\vert\omega\vert y})&=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}e^{-\vert\omega\vert y}e^{i\omega\cdot x}\,d\omega=\frac{1}{(2\pi)^{n/2}}\int_0^\infty\int_{\partial B(x,r)}e^{-\vert\omega\vert y}e^{i\omega\cdot x}\,dS(\omega)\,dr\\
+	&=\frac{1}{(2\pi)^{n/2}}\int_0^\infty\int_{S^{n-1}}e^{-ry}e^{ir\xi\cdot x}r^{n-1}\,dS(\xi)\,dr\\
+	&=\int_0^\infty r^{\frac{n}{2}}e^{-ry}\vert x\vert^{1-\frac{n}{2}}J_{\frac{n}{2}-1}(r\vert x\vert)\,dr\tag{By Proposition \ref{besselintegral}}\\
+	&=\vert x\vert^{-n}\int_0^\infty \rho^{\frac{n}{2}}e^{-\rho\frac{y}{\vert x\vert}}J_{\frac{n}{2}-1}(\rho)\,d\rho=\frac{2^{\frac{n}{2}}\Gamma\left(\frac{n+1}{2}\right)y}{\sqrt{\pi}\left(\vert x\vert^2+y^2\right)^{\frac{n+1}{2}}}.\tag{By Proposition \ref{laptransbessel}}
+\end{align*}
+Then\vspace{-0.1cm}
+\begin{align*}
+	u(x,y)=\pi^{-\frac{n+1}{2}}\Gamma\left(\frac{n+1}{2}\right)\int_{\bbR^n} \frac{y}{\left(\vert x-z\vert^2+y^2\right)^{\frac{n+1}{2}}}f(z)\,dz.\tag*{\qed}
+\end{align*}
+\paragraph{Remark.} We define the \textit{Poisson kernel} by \vspace{-0.1cm}
+\begin{align*}
+	P(x,y)=c_n\,\frac{y}{\left(\vert x\vert^2+y^2\right)^{\frac{n+1}{2}}},\quad\text{where}\ \ c_n=\pi^{-\frac{n+1}{2}}\Gamma\left(\frac{n+1}{2}\right).
+\end{align*}
+Then the solution of problem (\ref{heateq}) can be represented as $u(\cdot,y)=P(\cdot, y)*f$.
+
+\begin{example}[Wave equation with Dirichlet boundary condition]
+Consider the wave equation about the time-varying function $u(x,t)$, which is defined on $\bbR^n\times\bbR_+$:
+\begin{align}
+	\begin{cases}
+		u_{tt}=\Delta_x u & \mathrm{in}\ \bbR^n\times(0,\infty),\\
+		u(x,0)=f(x),\ u_t(x,0)=g(x)& \mathrm{on}\ \bbR^n\times\{y=0\},\\
+		\lim_{\vert x\vert\to\infty}u(x,t)=0& \mathrm{for}\ \ t\in[0,\infty).
+	\end{cases}\label{waveeq}
+\end{align}
+where the functions $f,g\in L^1(\bbR^n)\cap C_0(\bbR^n)$.
+\end{example}
+
+\textit{\hspace{-1.5em}Solution.} Applying Fourier transform with respect to the variable $x\in\bbR^n$, we get the initial value problem\vspace{-0.1cm}
+\begin{align*}
+	\begin{cases}
+		\wh{u}_{tt}=-\vert\omega\vert^2\wh{u},\\
+		\wh{u}(\omega,0)=\wh{f}(\omega),\quad\wh{u}_t(\omega,0)=\wh{g}(\omega).
+	\end{cases}
+\end{align*}
+The solution of this initial value problem is \vspace{-0.1cm}
+\begin{align*}
+	\wh{u}(\omega,t)=\wh{f}(\omega)\cos(\vert\omega\vert t)+\wh{g}(\omega)\frac{\sin(\vert\omega\vert t)}{\vert\omega\vert}.
+\end{align*}
+We write $R(x,t)=\frac{1}{(2\pi)^{n/2}}\cal{F}^{-1}\left(\frac{\sin(\vert\omega\vert t)}{\vert\omega\vert}\right).$ By convolution theorem, the solution to problem \ref{waveeq} is \vspace{-0.1cm}
+\begin{align*}
+	u(\cdot,t)=\frac{\partial}{\partial t}\left(R(\cdot,t)*f\right)+R(\cdot,t)*g.\tag*{\qed}
+\end{align*}
+
+\begin{example}[Transport equation]
+Consider the following transport equation with constant coefficients:
+\begin{align}
+\begin{cases}
+	u_t-b\cdot\nabla_x u=0 &\mathrm{in}\ \bbR^n\times(0,\infty),\\
+	u(x,0)=f(x) &\mathrm{on}\ \bbR^n\times\{t=0\},\\
+	\lim_{\vert x\vert\to\infty}u(x,t)=0& \mathrm{for}\ \ t\in[0,\infty),
+\end{cases}\label{transporteq}
+\end{align} 
+where the velocity $b\in\bbR^n$ is a constant vector, and $f\in L^1(\bbR^n)\cap C_0(\bbR^n)$.
+\end{example}
+\textit{\hspace{-1.5em}Solution.} We apply Fourier transform with respect to the variable $x$:
+\begin{align*}
+\begin{cases}
+	\wh{u}_t=ib\cdot\omega\wh{u},\\
+	\wh{u}(\omega,0)=\wh{f}(\omega).
+\end{cases}
+\end{align*}
+Then $\wh{u}(\omega,t)=e^{itb\cdot\omega}\wh{f}(\omega)$, and the solution to problem (\ref{transporteq}) is
+\begin{align*}
+	u(x,t)&=\cal{F}^{-1}\left[e^{itb\cdot\omega}\wh{f}(\omega)\right]=\frac{1}{(2\pi)^{n/2}}\int_{\bbR^n}\wh{f}(\omega) e^{i(x+tb)\cdot\omega}\,d\omega=f(x+tb).\tag*{\qed}
+\end{align*}
+
+\begin{example}[Linearized Korteweg-De Vries equation] Consider the equation about $u:\bbR\times\bbR_+\to\bbC$.
+\begin{align}
+\begin{cases}
+	u_t+u_{xxx}=0 &\mathrm{in}\ \bbR\times(0,\infty),\\
+	u(x,0)=f(x) &\mathrm{on}\ \bbR\times\{t=0\},\\
+	\lim_{\vert x\vert\to\infty}u(x,t)=0& \mathrm{for}\ \ t\in[0,\infty).
+\end{cases}\label{linkdv}
+\end{align}
+\end{example}
+\textit{\hspace{-1.5em}Solution.} We apply Fourier transform with respect to the variable $x$:
+\begin{align*}
+	\begin{cases}
+		\wh{u}_t-i\omega^3\wh{u}=0,\\
+		\wh{u}(\omega,0)=\wh{f}(\omega).
+	\end{cases}
+\end{align*}
+Then $\wh{u}(\omega,t)=e^{i\omega^3t}\wh{f}(\omega)$, and $u$ is recovered by taking the inverse Fourier transform of $\wh{u}$. By convolution theorem, $u=G(\cdot,t)*f$, where $G(\cdot,t)$ is the inverse Fourier transform of $e^{i\omega^3t}$ up to a factor $1/\sqrt{2\pi}$:
+\begin{align*}
+	G(x,t)=\frac{1}{2\pi}\int_{-\infty}^\infty e^{i\omega^3 t}e^{i\omega x}\,d\omega.
+\end{align*}
+We compute the function $G$ by constructing an ordinary differential equation for it. Fix $t=\frac{1}{3}$, and consider the function $g(x)=G(x,\frac{1}{3})$. Then $$\wh{g}(\omega)=\frac{1}{\sqrt{2\pi}}e^{i\omega^3/3}.$$
+By Proposition \ref{fourierdiff}, $$g^{\prime\prime}=\cal{F}^{-1}(-\omega^2\wh{g})=-\frac{1}{\sqrt{2\pi}}\cal{F}^{-1}\left(\omega^2 e^{i\omega^3/3}\right),\quad\mathrm{and}\quad xg=-i\cal{F}^{-1}(\wh{g}^\prime)=\frac{1}{\sqrt{2\pi}}\cal{F}^{-1}\left(\omega^2e^{i\omega^3/3}\right).$$
+Hence the function $g$ satisfies the \textit{Airy equation} $g^{\prime\prime}-xg=0$. Since our solution should vanish at infinity, we take the solution $g(x)=\mathrm{Ai}(x)$. For general $t>0$, applying change of variable gives
+\begin{align*}
+	G(x,t)=\frac{1}{2\pi}\int_{-\infty}^\infty e^{\frac{1}{3}i\left(\sqrt[3]{3t}\omega\right)^3}e^{i\omega x}\,d\omega=\frac{1}{\sqrt[3]{3t}}\mathrm{Ai}\left(\frac{x}{\sqrt[3]{3t}}\right).
+\end{align*}
+The solution to the problem (\ref{linkdv}) is $u(\cdot,t)=G(\cdot,t)* f$.
+
+\section{Distribution Theory}
+\subsection{Topology on $C^\infty_c(U)$}
+\paragraph{The Fréchet space $\cal{D}(K)$.} Let $K$ be a compact set of $\bbR^n$. The space $C_c^\infty(K)$ is defined to be the set of $C^\infty$ functions on $\bbR^n$ whose support is compact and contained in $K$. This space is a Fréchet space with the topology $\mathscr{T}_K$ defined by the norms
+\begin{align*}
+	\Vert\phi\Vert_{K,N}=\sup_{x\in K,\vert\alpha\vert\leq N}\vert\partial^\alpha\phi(x)\vert,\quad N\in\bbN_0.
+\end{align*}
+That is, a local base for this topology at $\phi\in C_c^\infty(K)$ is the family of sets
+\begin{align*}
+	U_{K,N}^\epsilon(\phi)=\left\{\psi\in C_c^\infty(K):\Vert\psi-\phi\Vert_{K,N}<\epsilon\right\},
+\end{align*}
+where $N\in\bbN_0$ and $\epsilon>0$.  Indeed, we only need to define the base sets  $$U_{K,N}^\epsilon=\left\{\psi\in C_c^\infty(K):\Vert\psi\Vert_{K,N}<\epsilon\right\},\quad N\in\bbN_0,\ \epsilon>0$$ at $0$, and take $\phi+U_{K,N}^\epsilon$ to be the base sets at $\phi$. The Fréchet space $C_c^\infty(K)$ is metrizable by setting
+\begin{align*}
+	d_K(\phi,\psi)=\sum_{N=1}^\infty\frac{1}{2^N}\frac{\Vert\phi-\psi\Vert_{K,N}}{1+\Vert\phi-\psi\Vert_{K,N}},\quad\phi,\psi\in C_c^\infty(K).
+\end{align*}
+
+We denote by $\cal{D}(K)$ the space $C^\infty_c(K)$ endowed with the topology $\scr{T}_K$. In $\cal{D}(K)$, every sequence $(\phi_k)$ converges to $\phi$ if and only if $\partial^\alpha\phi_k\to\partial^\alpha\phi$ uniformly for all multi-indices $\alpha$. 
+
+
+\paragraph{Construct a base for a topology on $C_c^\infty(U)$.} For an open set $U\subset\bbR^n$, the space $C_c^\infty(U)$ is defined to be the set of $C^\infty$ functions whose support is compact and contained in $U$. Indeed, $C_c^\infty(U)$ can be viewed as the union of spaces $C_c^\infty(K)$ as $K$ ranges over all compact subsets of $U$. 
+
+To construct a topology on $C_c^\infty(U)$, let $\scr{B}_0$ be the family of all balanced\footnote{A subset $E$ of a vector space $X$ is balanced if $tx\in E$ for all $x\in E$ and $\vert t\vert\leq 1$.}, convex sets $V\subset C_c^\infty(U)$ such that $V\cap C_c^\infty(K)\in\scr{T}_K$ for all compact $K\subset U$. We can show that $\scr{B}_0$ is nonempty. For example, let
+\begin{align}
+	V_N^\epsilon=\left\{\psi\in C_c^\infty(U):\sup_{x\in U,\vert\alpha\vert\leq N}\vert\partial^\alpha\psi(x)\vert<\epsilon\right\}.\label{ccinftyneighborhood}
+\end{align}
+Then $V_N^\epsilon$ is balanced, convex, and $V_N^\epsilon\cap C_c^\infty(K)=U_{K,N}^\epsilon\in\mathscr{T}_K$. We then define
+\begin{align*}
+	\mathscr{B}=\left\{\phi+V:\phi\in C_c^\infty(U),V\in\mathscr{B}_0\right\}.
+\end{align*}
+The sets in $\scr{B}$ gives an appropriate topology on $C_c^\infty(U)$.
+
+\begin{theorem}
+The family $\scr{B}$ is a base for a locally convex Hausdorff topology $\scr{T}$ on $C_c^\infty(U)$ that turns $C_c^\infty(U)$ into a topological vector space.
+\end{theorem}
+\paragraph{Remark.} We write for $\cal{D}(U)$ the topological space $(C_c^\infty(U),\scr{T})$. Its elements are called \textit{testing functions}.
+\begin{proof}
+\textbf{Step I.} We first verify that $\scr{B}$ is a base for a topology on $C_c^\infty(U)$. It suffices to verify the following two conditions:
+\begin{itemize}
+\item[(i)] For each $\phi\in C_c^\infty(U)$ there exists $U\in\scr{B}$ such that $\phi\in U$;
+\item[(ii)] For each $U_1,U_2\in\scr{B}$ with $U_1\cap U_2\neq\emptyset$ and each $\phi\in U_1\cap U_2$, there exists $V\in\mathscr{B}$ such that $V\ni\phi$ and $V\subset U_1\cap U_2$. In other words, $\mathscr{B}$ is closed under finite intersection operation.
+\end{itemize}
+
+\item$\bullet$ For (i), we let $\phi\in C_c^\infty(U)$, $N\in\bbN_0$ and $\epsilon>0$. The set $V_N^\epsilon$ defined in (\ref{ccinftyneighborhood}) is in $\mathscr{B}_0$, and $\phi+V_N^\epsilon\in\mathscr{B}$. 
+\item$\bullet$ For (ii), we let $\phi_1,\phi_2\in C_c^\infty(U)$ and $V_1,V_2\in\mathscr{B}_0$ be such that $(\phi_1+V_1)\cap(\phi_2+V_2)\neq\emptyset$. We fix any $\phi\in(\phi_1+V_1)\cap(\phi_2+V_2)$, and take a compact set $K\subset U$ such that $K$ contains the supports of $\phi_1$, $\phi_2$ and $\phi$. Then for $j=1,2$, we have $$\phi-\phi_j\in V_j\cap C_c^\infty(K)\in\scr{T}_K.$$  Using the continuity of scalar multiplication in $C_c^\infty(K)$, we may find $0<\alpha<1$, such that
+\begin{align*}
+	\phi-\phi_j\in(1-\alpha)(V_j\cap C_c^\infty(K))\subset(1-\alpha)V_j,\quad j=1,2.
+\end{align*} 
+By convexity of the sets $V_j$, we have $$\phi-\phi_j+\alpha V_j=(1-\alpha)V_j+\alpha V_j=V_j,\quad j=1,2,$$ so that $\phi+\alpha V_j\in\phi_j+V_j$ for $j=1,2$, and $\phi+\alpha(V_1\cap V_2)\subset(\phi_1+V_1)\cap(\phi_2+V_2).$ Hence $\mathscr{B}$ is a base for a topology $\scr{T}$ given by all unions of members of $\scr{B}$.
+
+\item\textbf{Step II.} Next we verify that $C_c^\infty(U)$ is a topological vector space under $\scr{T}$.
+\item$\bullet$ To prove the continuity of scalar multiplication at a point $(t_0,\phi_0)\in\bbC\times C_c^\infty(U)$, we notice that each neighborhood of $t_0\phi_0$ contains some $t_0\phi_0+V$, where $V\in\scr{B}_0$. Let $K=\supp(\phi_0)$. Then $\phi_0\in \cal{D}(K)$. By continuity of scalar multiplication in $\cal{D}(K)$, we may find $\gamma>0$ so small that
+\begin{align*}
+	\gamma\phi_0\in\frac{1}{2}\left(V\cap C_c^\infty(K)\right)\subset\frac{1}{2}V.
+\end{align*}
+Let $s=\frac{1}{2(\vert t_0\vert+\gamma)}$. Then for every $\vert t-t_0\vert<\gamma$ and $\phi\in\phi_0+sV$,
+\begin{align*}
+	t\phi-t_0\phi_0=t(\phi-\phi_0)+(t-t_0)\phi\in tsV+\frac{1}{2}V\subset\frac{1}{2}V+\frac{1}{2}V=V,
+\end{align*}
+where we use the fact that $V$ is convex and balanced. Therefore $t\phi\in t_0\phi_0+V$ for every $\vert t-t_0\vert<\gamma$ and $\phi\in\phi_0+sV$, which proves the continuity of scalar multiplication.
+\item$\bullet$ To prove the continuity of addition at a point $(\phi_1,\phi_2)\in C_c^\infty(U)\times C_c^\infty(U)$, consider a neighborhood $\phi_1+\phi_2+V$ of $\phi_1+\phi_2$, where $V\in\scr{B}_0$. The convexity of $V$ implies that
+\begin{align*}
+	\left(\phi_1+\frac{1}{2}V\right)+\left(\phi_2+\frac{1}{2}V\right)=\phi_1+\phi_2+V.
+\end{align*}
+Since $V\cap \cal{D}(K)\in\scr{T}_K$ for all compact $K\subset U$, and since the scalar multiplication is continuous in $\cal{D}(K)$, we have $\frac{1}{2}V\cap\cal{D}(K)\in\scr{T}_K$ for all compact $K\subset U$, and $\frac{1}{2}V\in\mathscr{B}_0$. Hence both $\phi_1+\frac{1}{2}V$ and $\phi_2+\frac{1}{2}V$ are in $\mathscr{B}$, and the addition operation is continuous.
+
+\item\textbf{Step III.} Finally, to prove that $(C_c^\infty(U),\scr{T})$ is a Hausdorff space, we take $\phi_1\neq\phi_2$ from $C_c^\infty(U)$ and define
+\begin{align*}
+	V=\left\{\psi\in C_c^\infty(U):\sup_{x\in U}\vert\psi(x)\vert<\frac{1}{2}\sup_{x\in U}\vert\phi_1(x)-\phi_2(x)\vert\right\}.
+\end{align*}
+In view of (\ref{ccinftyneighborhood}), we have $V\in\mathscr{B}_0$. If $\phi\in(\phi_1+V)\cap(\phi_2+V)$, we have
+\begin{align*}
+	\sup_{x\in U}\vert\phi_1(x)-\phi_2(x)\vert&\leq\sup_{x\in U}\vert\phi(x)-\phi_1(x)\vert+\sup_{x\in U}\vert\phi(x)-\phi_2(x)\vert\\
+	&<\frac{1}{2}\sup_{x\in U}\vert\phi_1(x)-\phi_2(x)\vert+\frac{1}{2}\sup_{x\in U}\vert\phi_1(x)-\phi_2(x)\vert=\sup_{x\in U}\vert\phi_1(x)-\phi_2(x)\vert,
+\end{align*}
+a contradiction! Hence $(\phi_1+V)\cap(\phi_2+V)=\emptyset$, and we finish the proof.
+\end{proof}
+
+We now show that the topology $\scr{T}$, when restricted to $\cal{D}(K)$, for some compact set $K\subset U$, does not produce more open sets than the ones in $\mathscr{T}_K$.
+\begin{proposition}\label{subktop}
+Let $U\subset\bbR^n$ be an open set. For every compact set $K\subset U$, the topology on $\cal{D}(K)$ coincide with the relative topology of $\cal{D}(K)$ as a subspace of $\cal{D}(U)$.
+\end{proposition}
+\begin{proof}
+Fix a compact set $K\subset U$ and let $W\in\mathscr{T}$. We claim $W\cap\cal{D}(K)\in\mathscr{T}_K$. We may assume $W\cap\cal{D}(K)$ is nonempty, otherwise the claim is clear. Let $\phi\in W\cap\cal{D}(K)$. Since $\mathscr{B}$ is a base for $\mathscr{T}$, we take $V\in\scr{B}_0$ such that $\phi+V\subset W$. Then $\phi+(V\cap\cal{D}(K))\subset W\cap\cal{D}_K$, and $\phi+(V\cap\cal{D}(K))\in\mathscr{T}_K$ since $\phi\in\cal{D}(K)$ and $V\cap\cal{D}(K)\in\mathscr{T}_K$. Hence every point of $W\cap\cal{D}(K)$ is in the interior with respect to $\scr{T}_K$, and $W\cap\cal{D}(K)\in\scr{T}_K$.
+
+Conversely, let $W\subset\mathscr{T}_K$. We claim that $W=V\cap\cal{D}(K)$ for some open $V\in\scr{T}$. Since the family of sets $U_{K,N}^\epsilon$ is a local base for the topology $\mathscr{T}_K$, for each $\phi\in W$, we may find $N_\phi\in\bbN_0$ and $\epsilon_\phi>0$ such that $\phi+U_{K,N_\phi}^{\epsilon_\phi}\subset W$. Let $V_{N_\phi}^{\epsilon_\phi}$ be defined as in (\ref{ccinftyneighborhood}). Then
+\begin{align*}
+	(\phi+V_{N_\phi}^{\epsilon_\phi})\cap\cal{D}(K)=\phi+U_{K,N_\phi}^{\epsilon_\phi}\subset W,
+\end{align*}
+and $\phi+V_{N_\phi}^{\epsilon_\phi}\in\scr{B}$. Therefore $V=\bigcup_{\phi\in W}(\phi+V_{N_\phi}^{\epsilon_\phi})$ is a set in $\scr{T}$ with the desired property.
+\end{proof}
+
+\begin{proposition}\label{topoboundcmpact}
+Let $U\subset\bbR^n$ be an open set. If $W\subset\cal{D}(U)$ is topologically bounded, there exists a compact set $K\subset U$ such that $W\subset\cal{D}(K)$.
+\end{proposition}
+\begin{proof}
+Assume that $W$ is not contained in $\cal{D}(K)$ for any compact $K\subset U$. We take an increasing sequence $(K_j)$ of compact sets such that $K_j\subset\mathring{K}_{j+1}$ for all $j\in\bbN$ and $U=\bigcup_{j=1}^\infty K_j$. Then we may find for each $j\in\bbN$ a function $\phi_j\in W$ and a point $x_j\in K_{j+1}\backslash K_j$ such that $\phi_j(x_j)\neq 0$. Define
+\begin{align*}
+	V=\left\{\phi\in\cal{D}(U):\vert\phi(x_j)\vert<\frac{1}{j}\vert\phi_j(x_j)\vert\ \text{for all}\ j\in\bbN\right\}.
+\end{align*}
+Since each compact set $K\subset U$ contains only finitely many $x_j$, we have $V\cap\cal{D}(K)\in\mathscr{T}_K$, and so $V\subset\mathscr{T}$. Since $W$ is topologically bounded, there exists $t>0$ such that $W\subset tV$. If an integer $N\geq t$, we have $\phi_N(x_N)\neq 0$, and $t^{-1}\vert\phi_N(x_N)\vert\geq N^{-1}\vert\phi_N(x_N)\vert$. Hence $t^{-1}\phi_N\notin V$, and $\phi_N\notin tV$. However $\phi_N\in W\subset tV$, which yields a contradiction. Hence there exists a compact $K\subset U$ with $\cal{D}(K)\supset W$.
+\end{proof}
+
+The topology on $\cal{D}(U)$ is complete, and convergent sequence in $\cal{D}(U)$ can be explicitly characterized.
+\begin{proposition}\label{convgD}
+Let $U\subset\bbR^n$. The space $\cal{D}(U)$ is complete. Furthermore, a sequence $(\phi_j)$ in $\cal{D}(U)$ converges to $\phi\in\cal{D}(U)$ if and only if
+\begin{itemize}
+	\item[(i)] there exists a compact set $K\subset U$ such that $(\phi_j)\subset\cal{D}(K)$, and
+	\item[(ii)] $\lim_{j\to\infty}\partial^\alpha\phi_j=\partial^\alpha\phi$ uniformly on $K$ for each multi-index $\alpha\in\bbN_0^n$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+Let $(\phi_j)$ be a Cauchy sequence in $\cal{D}(U)$. Then $(\phi_j)$ is topologically bounded, and by Proposition \ref{topoboundcmpact}, there exists a compact set $K\subset U$ such that $(\phi_j)\subset\cal{D}(K)$. By Proposition \ref{subktop}, we obtain a Cauchy sequence $(\phi_j)$ in $\cal{D}(K)$. Therefore, for every $N\in\bbN_0$ and every $\epsilon>0$, there exists $M$ such that
+\begin{align*}
+	\sup_{x\in K,\vert\alpha\vert\leq N}\left\vert\phi_j(x)-\phi_k(x)\right\vert<\epsilon
+\end{align*}
+for all $j,k\geq M$. Consequently, for every multi-index $\alpha\in\bbN_0^n$ with $\vert\alpha\vert\leq N$, the Cauchy sequence $\{\partial^\alpha\phi_j\}$ converges uniformly in $K$ to a continuous function $\psi_\alpha\in C_c(K)$. An inductive argument using the fundamental theorem of calculus shows that $\partial^\alpha\psi_0=\psi_\alpha$ for every multi-index $\alpha\in\bbN_0^n$ with $\vert\alpha\vert\leq N$. Given the arbitrariness of $N\in\bbN_0$, we conclude that $\psi_0\in\cal{D}(K)$ and that the sequence $(\phi_j)$ converges to $\psi_0$ with respect to $\scr{T}$. Hence the space $\cal{D}(U)$ is complete.
+
+Conversely, if a sequence $(\phi_j)$ in $\cal{D}(U)$ satisfies conditions (i) and (ii), it converges to $\phi$ in $\cal{D}(K)$. By Proposition \ref{topoboundcmpact}, it also converges to $\phi$ in $\cal{D}(U)$.
+\end{proof}
+
+Now we discuss the continuous mappings on $\cal{D}(U)$.
+\begin{proposition}\label{contD}
+Let $U\subset\bbR^n$ be an open set, $X$ a locally convex topological vector space, and $T:\cal{D}(U)\to X$ a linear operator. The following properties are equivalent:
+	\begin{itemize}
+		\item[(i)] $T$ is continuous.
+		\item[(ii)] $T$ is bounded, i.e. it sends topologically bounded sets of $\cal{D}(U)$ into topologically bounded sets of $X$.
+		\item[(iii)] If $(\phi_j)$ converges to $\phi$ in $\cal{D}(U)$, then $\lim_{j\to\infty} T\phi_j=T\phi$.
+		\item[(iv)] The restriction of $T$ to $\cal{D}(K)$ is continuous for every compact set $K\subset U$.
+	\end{itemize}
+If $X=\bbC$, the following statement is also equivalent to above all:
+\begin{itemize}
+\item[(v)] For every compact set $K\subset U$, there exists an integer $N\in\bbN_0$ and a constant $c_K>0$ such that $\vert T\phi\vert\leq c_K\Vert\phi\Vert_{K,N}$ for all $\phi\in\cal{D}(K)$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+We prove that (i) $\Rightarrow$ (ii) $\Rightarrow$ (iii) $\Rightarrow$ (iv) $\Rightarrow$ (i).
+\item$\bullet$ (i) $\Rightarrow$ (ii). Suppose that $T:\cal{D}\to X$ is continuous, and $W\subset \cal{D}(U)$ is a topologically bounded set. If $V$ is a neighborhood of $0$ in $X$, then $T^{-1}(V)$ is a neighborhood of $0$ in $\cal{D}(X)$, and there exists $t>0$ such that $W\subset tT^{-1}(V)$. Consequently $T(W)\subset tV$. Hence $T(W)$ is also topologically bounded.
+
+\item$\bullet$ (ii) $\Rightarrow$ (iii). We may assume $(\phi_j)\to 0$ by replacing $(\phi_j)$ with $(\phi_j-\phi)$. By Proposition \ref{convgD}, there exists a compact set $K$ such that $(\phi_j)\subset\cal{D}(K)$, and $d_K(\phi_j,0)\to 0$ as $j\to\infty$. 
+
+Let $B=\{\phi\in\cal{D}(K):d_K(\phi,0)<1\}$ be the unit ball in $\cal{D}(K)$ centered at $0$. If $T$ is bounded, the set $T(B)$ is topologically bounded. Then for any neighborhood $V$ of $0$ in $X$, there exists $t>0$ such that $T(B)\subset tV$, so $T(t^{-1}B)\subset V$. Since $d_K(\phi_j,0)\to 0$ as $j\to 0$, there exists $N$ such that $\phi_j\in t^{-1}(B)$ for all $j\geq N$. Hence $(T\phi_j)$ is eventually in $V$, and $T\phi_j$ converges to $0$.
+
+\item$\bullet$ (iii) $\Rightarrow$ (iv). Fix a compact set $K\subset U$. If $(\phi_j)$ is a sequence in $\cal{D}(K)$ such that $d_K(\phi_j,0)\to 0$ as $j\to\infty$, by Proposition \ref{convgD}, we have $\phi_j\to 0$ in $\cal{D}(U)$, and $T\phi=\lim_{j\to\infty}T\phi_j$ by property (iii). Hence the restriction of $T$ to $\cal{D}(K)$ is continuous at $0$. By linearity, the restriction is continuous.
+
+\item$\bullet$ (iv) $\Rightarrow$ (i). For every neighborhood $V$ of $0$ in $X$ and every compact set $K\subset U$, the restriction of $T$ to $\cal{D}(K)$ is continuous at zero, and $T^{-1}(V)\cap\cal{D}(K)\in\scr{T}_K$. Since $K$ is arbitrary, $T^{-1}(V)\in\mathscr{T}$. Therefore, $T$ is continuous at $0$ and, by linearity, everywhere in $\cal{D}(U)$.
+
+\item$\bullet$ (iv) $\Leftrightarrow$ (v). Let $X=\bbC$. Assume that (iv) holds and fix a compact $K\subset U$. By continuity of $T|_{\cal{D}(K)}$ at the origin, there exists $N\in\bbN_0$ and $\epsilon>0$ such that $U_{K,N}^\epsilon\subset  T^{-1}(\{\vert z\vert<1\})$, that is, $\vert T\phi\vert<1$ for all $\phi\in\cal{D}(K)$ with $\Vert\phi\Vert_{K,N}<\epsilon$. If $\phi\in\cal{D}(K)$ and $\phi\neq 0$, then $\Vert\phi\Vert_{K,N}\neq 0$, and by linearity of $T$, we have $\vert T\phi\vert\leq\frac{2}{\epsilon}\Vert\phi\Vert_{K,N}$. Conversely, if (v) holds, for any $\delta>0$, by taking $\epsilon>0$ sufficiently small, we have $\vert T\phi\vert<\delta$ for all $\phi\in U_{K,N}^\epsilon$. Hence the restriction $T|_{\cal{D}(K)}$ is continuous.
+\end{proof}
+
+\begin{proposition}
+Let $U$ and $U^\prime$ be open subsets of $\bbR^n$, and $T:\cal{D}(U)\to\cal{D}(U^\prime)$ a linear operator. The following properties are equivalent: 
+\begin{itemize}
+	\item[(i)] $T$ is continuous if and only if 
+	\item[(ii)] for each compact set $K\subset U$, there exists a compact set $K^\prime\subset U^\prime$ such that $T(\cal{D}(K))\subset\cal{D}(K^\prime)$, and the restriction $T:\cal{D}(K)\to\cal{D}(K^\prime)$ is continuous.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+(ii) $\Rightarrow$ (i) is a special case of the implication (iv) $\Rightarrow$ (i) in Proposition \ref{contD}. To prove (i) $\Rightarrow$ (ii), we let $T:\cal{D}(U)\to\cal{D}(U^\prime)$ be a continuous linear operator and fix a compact set $K\subset U$. According to the implication (i) $\Rightarrow$ (iv) in Proposition \ref{contD}, the restriction of $T$ to $\cal{D}(K)$ is continuous. If we can show that $T(\cal{D}(K))\subset\cal{D}(K^\prime)$ for some compact $K^\prime\subset U^\prime$, the proof will be completed by Proposition \ref{subktop}.
+
+Assume that $T(\cal{D}(K))$ is not contained in $\cal{D}(K^\prime)$ for any compact $K^\prime\subset U^\prime$. Take an increasing sequence $(K_j^\prime)$ of compact sets such that $K_j^\prime\subset\mathring{K}_{j+1}^\prime$ for all $j\in\bbN$ and $U^\prime=\bigcup_{j=1}^\infty K_j^\prime$. Then we may find for each $j\in\bbN$ a function $\phi_j\in\cal{D}(U^\prime)$ and a point $x_j\in K_{j+1}^\prime\backslash K_j^\prime$ such that $d_K(\phi_j,0)=1$ and $(T\phi_j)(x_j)\neq 0$. Since $(\phi_j)$ is topologically bounded in $\cal{D}(U)$, by Proposition \ref{contD} (ii), $(T\phi_j)$ is topologically bounded in $\cal{D}(U^\prime)$, and by Proposition \ref{topoboundcmpact}, there exists $K^\prime\subset U^\prime$ such that $(\phi_j)\subset\cal{D}(K^\prime)$, which is contradiction!
+\end{proof}
+
+\newpage
+\subsection{Distributions}
+\paragraph{Motivation.} Let $f\in L^p(\bbR^n)$, where $1<p\leq\infty$. For $q=\frac{p}{p-1}$, we define $T_f:L^q(\bbR^n)\to\bbC$ by
+\begin{align*}
+	T_f g=\int_{\bbR^n} f(x)g(x)\,dx,\quad g\in L^q(\bbR^n).
+\end{align*}
+The Riesz representation theorem states that the map $f\mapsto T_f$ is an isometric isomorphism of $L^p(\bbR^n)$ onto the dual space $L^q(\bbR^n)^*$ of $L^q(\bbR^n)$. In other words, $f\in L^p(\bbR^n)$ is completely determined by its action as a bounded linear functional on $L^q(\bbR^n)$. On the other hand, by Lebesgue differentiation theorem,
+\begin{align*}
+	\lim_{r\to 0^+}\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\,dy=f(x),\quad\text{for}\ a.e.\ x\in\bbR^n,
+\end{align*}
+where $B(x,r)$ is the (open) ball of radius $r$ about $x$, and $m$ is the Lebesgue measure. Hence if we take $g=m(B(x,r))^{-1}\chi_{B(x,r)}$, we can recover the pointwise value of $f$ for almost every $x\in\bbR^n$ as $r\to 0$. Thus, we lose nothing by thinking of $f$ as a linear mapping from $L^q(\bbR^n)$ to $\bbC$ rather than a map from $\bbR^n$ to $\bbC$.
+
+The idea of distribution follows by allowing $f\in L^1_\loc(\bbR^n)$ and requiring $\phi\in\cal{D}(\bbR^n)$. The map $T_f$ defines a linear functional on $\cal{D}(\bbR^n)$, and the pointwise values of $f$ can be recovered a.e. by a similar approach of Theorem \ref{pwconvgmollif}. Nevertheless, there are also linear functionals on $\cal{D}(\bbR^n)$ that are not of the form $T_f$. 
+
+
+
+\begin{definition}[Distribution]
+Let $U$ be an open subset of $\bbR^n$. A \textit{distribution} on $U$ is a continuous linear functional on $\cal{D}(U)$. The space of all distributions on $U$ is denoted by $\cal{D}^\prime(U)$. We equip $\cal{D}^\prime(U)$ with the weak* topology, i.e. the neighborhoods of $T_0\in\cal{D}^\prime(U)$ is generated by the sets
+\begin{align*}
+	U^\epsilon_{f_1,\cdots,f_m}(T_0)=\left\{T\in\cal{D}^\prime(U):\vert Tf_j-T_0f_j\vert<\epsilon,\ j=1,2,\cdots,m\right\},
+\end{align*}
+where $\epsilon>0$, $m\in\bbN$ and $f_1,\cdots,f_m\in C_c^\infty(U)$. Furthermore, a sequence $T_j\to T$ in the weak* topology if and only if $T_jf\to Tf$ for all $f\in C_c^\infty(U)$.
+\end{definition}
+\paragraph{Notations.} If $F\in\cal{D}^\prime(U)$ and $\phi\in C_c^\infty(U)$, we use the pairing notation $\langle F,\phi\rangle$ for the value of $F$ evaluated at the point $\phi$. Sometimes it is helpful to pretend that a distribution $F\in\cal{D}^\prime(U)$ is a function on $U$ even when it really is not, and to write $\int_U F(x)\phi(x)\,dx$ instead of $\langle F,\phi\rangle$.
+
+We shall use a tilde to denote the reflection of a function in the origin: $\wt{\phi}(x)=\phi(-x)$.
+\begin{example} Following are some examples of distribution on an open set $U\subset\bbR^n$:
+\begin{itemize}
+	\item Every function $f\in L^1_\loc(U)$ defines a distribution on $U$, namely, the functional $\phi\mapsto\int f\phi\,dx$. Clearly, two functions that are equal a.e. define the same distribution, since they are identified in $L^1_\loc(U)$.
+	\item Every Radon measure $\mu$ on $U$ defines a distribution $\phi\mapsto\int\phi\,d\mu$.
+	\item For a point $x_0\in U$ and a multi-index $\alpha\in\bbN_0^n$, the map $\phi\mapsto\partial^\alpha\phi(x_0)$ defines a distribution that does not arise from a function. 
+	\item In particular, when $U=\bbR^n$, $\alpha=0$ and $x=0$, this distribution arise from a measure $\mu$ which is the point mass at the origin $0$. We call this distribution the \textit{Dirac $\delta$-function}, denoted by $\delta$:
+	\begin{align*}
+		\langle\delta,\phi\rangle=\phi(0),\quad\phi\in C_c^\infty(\bbR^n).
+	\end{align*}
+    It can be represented heuristically as
+    \begin{align*}
+    	\delta(x)=\begin{cases}
+    		\infty, &x=0,\\
+    		0, &x\neq 0,
+    	\end{cases}
+    \end{align*}
+    and we write $\int_{\bbR^n}\delta(x)\phi(x)\,dx=\phi(0)$.
+\end{itemize}
+\end{example}
+We have the following approximation for Dirac $\delta$-function.
+\begin{proposition}
+Assume $f\in L^1(\bbR^n)$ and $\int_{\bbR^n}f(x)\,dx=1$. Define $$f_t(x)=\frac{1}{t^n}f\left(\frac{x}{t}\right),\quad t>0.$$
+Then $f_t\to \delta$ in $\cal{D}^\prime(\bbR^n)$ as $t\to 0$.
+\end{proposition}
+\begin{proof}
+If $\phi\in C_c^\infty(\bbR^n)$, \vspace{-0.1cm}
+\begin{align*}
+	\langle f_t,\phi\rangle=\int_{\bbR^n}f_t(x)\phi(x)\,dx=\int_{\bbR^n}f_t(x)\wt\phi(-x)\,dx=(f_t*\wt\phi)(0),
+\end{align*}
+which converges to $\wt\phi(0)=\phi(0)=\langle\delta,\phi\rangle$ as $t\to 0$ by Proposition \ref{generalmollif}.
+\end{proof}
+
+Let $F\in\cal{D}^\prime(U)$ be a distribution on an open set $U\subset\bbR^n$. For an open set $V\subset U$, we say $F=0$ on $V$ if $\langle F,\phi\rangle =0$ for all $\phi\in C_c^\infty(V)$ (for example, if $F\in L^1_\loc(U)$, it means that $F=0$ a.e. on $V$).  Since a function in $C_c^\infty(V_1\cup V_2)$ need not to be supported in either $V_1$ or $V_2$, it is not so clear that $F=0$ on both $V_1$ and $V_2$ implies $F=0$ on $V_1\cup V_2$. Nevertheless, it is true:
+\begin{proposition}
+Let $(V_\alpha)_{\alpha\in A}$ be a collection of open subsets of $U$, and $V=\bigcup_{\alpha\in A}V_\alpha$. If $F\in\cal{D}^\prime(U)$ and $F=0$ on each $V_\alpha$, then $F=0$ on $V$.
+\end{proposition}
+\begin{proof}
+If $\phi\in C_c^\infty(V)$, by compactness, there exist finitely many $\alpha_1,\cdots,\alpha_m\in A$ such that $\supp(\phi)\subset\bigcup_{j=1}^m V_{\alpha_j}$. Take a smooth partition of unity $(\psi_j)_{j=1}^m$, i.e. $\supp(\psi_j)\subset V_{\alpha_j}$ for each $j$ and $\sum_{j=1}^m\psi_j=1$ on $\supp(\phi)$. Then \vspace{-0.05cm} $$\langle F,\phi\rangle=\sum_{j=1}^m\langle F,\phi\psi_j\rangle=0.$$
+Hence $F=0$ on $V$.
+\end{proof}
+\paragraph{Remark I.} According to this proposition, we can take a maximal open set $W$ on which $F=0$, namely the union of all open sets on which $F=0$. Its complement $U\backslash W$ is called the \textit{support of $F$}.
+\paragraph{Remark II.} More generally, we say two distributions $F,G\in\cal{D}^\prime(V)$ \textit{agree} on an open set $V\subset U$ if $F-G=0$ on $V$. According to this proposition, if two distributions agree on each member of a collection of open sets, they also agree on the union of those open sets.
+
+\paragraph{Operations on distributions.} Let $U\subset\bbR^n$ be an open set, and $F\in\cal{D}^\prime(U)$.
+\begin{itemize}
+\item[(i)] (Product). If $\psi\in C^\infty(U)$, we define the \textit{product} $\psi F$ to be \vspace{-0.05cm} $$\langle\psi F,\phi\rangle=\langle F,\psi\phi\rangle,\quad\phi\in \cal{D}(U).$$
+For any compact $K\subset U$ and any sequence $\phi_j\in C_c^\infty(K)$ that converges to $\phi$ in $\cal{D}(K)$, since $\psi\phi_j\to\psi\phi$ and $F|_{\cal{D}(K)}$ is continuous, we have $\langle F,\psi\phi_j\rangle\to\langle F,\psi\phi\rangle$. Hence $\psi F\in\cal{D}^\prime(U)$.
+
+\item[(ii)] (Translation). If $y\in\bbR^n$ and $F\in L^1_\loc(U)$,\vspace{-0.05cm}
+\begin{align*}
+	\int_{U+y} F(x-y)\phi(x)\,dx=\int_U F(x)\phi(x+y)\,dx,\quad\phi\in\cal{D}(U+y).
+\end{align*}
+Similarly, for $F\in\cal{D}^\prime(U)$, we define the \textit{translated distribution} $\tau_y F$ to be \vspace{-0.05cm} 
+\begin{align*}
+	\langle\tau_y F,\phi\rangle=\langle F,\tau_{-y}\phi\rangle,\quad\phi\in \cal{D}(U+y).
+\end{align*}
+Then $\tau_y F\in\cal{D}^\prime(U+y)$. In particular, the point mass at $y$ is $\tau_y\delta$. 
+
+\item[(iii)] (Composition with linear map). If $T:\bbR^n\to\bbR^n$ is an invertible linear transformation and $F\in L^1_\loc(U)$,
+\begin{align*}
+    \int_U F(Tx)\phi(x)\,dx=\left\vert\det(T)\right\vert^{-1}\int_{T^{-1}(U)} F(y)\phi(T^{-1}y)\,dy,\quad \phi\in\cal{D}(T^{-1}(U)).
+\end{align*}  
+Similarly, for $F\in\cal{D}^\prime(U)$, we define the \textit{composition} $F\circ T$ to be
+\begin{align*}
+	\langle F\circ T,\phi\rangle=\left\vert\det(T)\right\vert^{-1}\langle F,\phi\circ T^{-1}\rangle,\quad \phi\in\cal{D}(T^{-1}(U)).
+\end{align*}
+Then $F\circ T=\cal{D}^\prime(T^{-1}(U))$. In particular, if $Tx=-x$, we define the \textit{reflection of $F$ in the origin} by
+\begin{align*}
+    \langle\wt{F},\phi\rangle=\langle F,\wt{\phi}\rangle,\quad \phi\in \cal{D}^\infty(-U).
+\end{align*}
+
+\item[(iv)] (Convolution). Given $\psi\in C_c^\infty(\bbR^n)$, let $V=\left\{x:x-y\in U\ \text{for all}\ y\in\supp(\psi)\right\}$. If $F\in L^1_\loc(U)$,
+\begin{align*}
+   	(F*\psi)(x)=\int_U F(y)\psi(x-y)\,dy=\int_U F(y)(\tau_x\wt\psi)(y)\,dy,\quad x\in V,
+\end{align*}
+and by Fubini's theorem, if $\phi\in C_c^\infty(V)$,
+\begin{align*}
+	\int_V (F*\psi)(x)\phi(x)\,dx&=\int_V\int_U F(y)\psi(x-y)\phi(x)\,dy\,dx\\
+	&=\int_U\int_V F(y)\wt\psi(y-x)\phi(x)\,dx\,dy=\int_U F(y)(\phi*\wt{\psi})(y)\,dy.
+\end{align*}
+For $F\in\cal{D}^\prime(U)$, we have two approaches to define the \textit{convolution} $F*\psi$:
+\begin{itemize}
+	\item Analogous to the first identity, define $F*\psi$ be the function
+	\begin{align*}
+		(F*\psi)(x)=\langle F,\tau_x\wt\psi\rangle,\quad x\in V.
+	\end{align*}
+\item Analogous to the second identity, define $F*\psi$ be the mapping
+\begin{align*}
+	\langle F*\psi,\phi\rangle=\langle F,\phi*\wt\psi\rangle,\quad\phi\in\cal{D}(V).
+\end{align*}
+If $K\subset V$ is compact and $(\phi_j)\subset C_c^\infty(K)$ is a sequence converging to $\phi$ in $\cal{D}(K)$, we have 
+\begin{align*}
+	\partial^\alpha(\phi_j*\wt\psi)=(\partial^\alpha\phi_j)*\wt\psi\to(\partial^\alpha\phi)*\wt\psi=\partial^\alpha(\phi*\wt\psi)
+\end{align*}
+uniformly for all multi-indices $\alpha\in\bbN_0^n$. Hence $(F*\psi)|_{\cal{D}(K)}$ is continuous, and $F*\psi\in\cal{D}^\prime(V)$.
+\end{itemize}
+\end{itemize}
+
+The following proposition shows that the two definitions of the convolution $F*\psi$ coincide. Furthermore, the distribution as a function on $U$ is infinitely differentiable.
+
+\begin{proposition}\label{convolutionD}
+Let $U\subset\bbR^n$ be open. Given $\psi\in C_c^\infty(\bbR^n)$, let $V=\left\{x:x-y\in U\ \text{for all}\ y\in\supp(\psi)\right\}$. For $F\in\cal{D}^\prime(U)$, define $(F*\psi)(x)=\langle F,\tau_x\wt\psi\rangle$ for all $x\in V$. Then
+\begin{itemize}
+	\item[(i)] $F*\psi\in C^\infty(V)$, and $\partial^\alpha(F*\psi)=F*(\partial^\alpha\psi)$ for all multi-indices $\alpha\in\bbN_0^n$;
+	\item[(ii)] For all $\phi\in C_c^\infty(V)$, we have $\int_V(F*\psi)(x)\phi(x)\,dx=\langle F,\phi*\wt\psi\rangle$.
+\end{itemize}
+\end{proposition}
+\begin{proof}
+If $x\in V$, by Proposition \ref{prop:1.5}, we have $\tau_{x+s}\wt\psi\to\tau_x\wt\psi$ uniformly as $s\to 0$, and the same holds for all partial derivatives. Then $\tau_{x+s}\wt\psi\to\tau_x\wt\psi$ in $\cal{D}(U)$ as $s\to 0$. By continuity of $F$ on $\cal{D}(U)$ we have that $\langle F,\tau_x\wt\psi\rangle$ is continuous in $x$. Furthermore, for any $j=1,2,\cdots,n$, we have
+\begin{align*}
+	\left\vert\frac{\psi(x+he_j-y)-\psi(x-y)}{h}-\partial_j\psi(x-y)\right\vert\leq\sup_{t\in\bbR:\vert t\vert<\vert h\vert}\left\vert\partial_j\psi(x+te_j-y)-\partial_j\psi(x-y)\right\vert.
+\end{align*}
+For any $\epsilon>0$, by uniform continuity of $\partial_j\psi$, there exists a constant $\eta>0$ independent of $x$ and $y$ such that the last bound is less than $\epsilon$ whenever $\vert h\vert<\eta$. Hence the difference quotient \begin{align}
+	\frac{\tau_{x+he_j}\wt\psi-\tau_x\wt\psi}{h}\to\tau_x\wt{\partial_j\psi}\label{diffquotientconvg}
+\end{align}
+uniformly as $h\to 0$. Since the same conclusion of difference quotient holds for all partial derivatives, the convergence (\ref{diffquotientconvg}) also holds in $\cal{D}(U)$. Therefore 
+\begin{align*}
+	\partial_j(F*\psi)(x)=\lim_{h\to 0} \frac{\langle F,\tau_{x+he_j}\wt\psi\rangle-\langle F,\tau_x\wt\psi\rangle}{h}=\langle F,\tau_x\wt{\partial_j\psi}\rangle=(F*\partial_j\psi)(x).
+\end{align*}
+By induction on $\vert\alpha\vert$, we have $F*\psi\in C^\infty(V)$, and $\partial^\alpha(F*\psi)=F*\partial^\alpha\psi$. To prove the second result, we note that $\psi,\phi\in C_c^\infty(\bbR^n)$. Then we approximate the convolution $\phi*\wt\psi$ by Riemann sums:
+\begin{align*}
+(\phi*\wt\psi)(x)=\int_{\bbR^n}\wt\psi(x-y)\phi(y)\,dy=\lim_{\epsilon\to 0^+}S_\epsilon(x):=\lim_{\epsilon\to 0^+}\epsilon^n\sum_{\kappa\in\bbZ^n}\wt\psi(x-\epsilon\kappa)\phi(\epsilon\kappa),
+\end{align*}
+where there are finitely many nonzero terms when $\kappa$ runs over $\bbZ^n$. The Riemann sums $S_\epsilon$ are supported in a common compact subset of $U$, and converges to $\phi*\wt\psi$ uniformly as $\epsilon\to 0$. Also, for all multi-indices $\alpha$, $\partial^\alpha S_\epsilon=\epsilon^n\sum_{\kappa\in\bbZ^n}\partial^\alpha\wt\psi(x-\epsilon\kappa)\phi(\epsilon\kappa)$ converges uniformly to $\partial^\alpha(\phi*\wt\psi)$. Hence $S_\epsilon\to\phi*\wt\psi$ in $\cal{D}(U)$, and
+\begin{align*}
+	\langle F,\phi*\wt\psi\rangle=\lim_{\epsilon\to 0^+}\langle F,S_\epsilon\rangle=\lim_{\epsilon\to 0^+}\epsilon^n\sum_{\kappa\in\bbZ^n}\phi(\epsilon\kappa)\langle F,\tau_{\epsilon\kappa}\wt\psi\rangle=\int_V\phi(x)\langle F,\tau_x\wt\psi\rangle\,dx=\int_V(F*\psi)(x)\phi(x)\,dx.
+\end{align*}
+Hence the two definitions of $F*\psi$ are equivalent.
+\end{proof}
+
+Next we show that although distributions can be highly singular objects, they can always be approximated by compactly supported smooth functions in the weak* topology.
+
+\begin{theorem}\label{ccdenseinDpr}
+For any open set $U\subset\bbR^n$, the space $C_c^\infty(U)$ is dense in $\cal{D}^\prime(U)$ in the weak* topology.
+\end{theorem}
+
+To prove this theorem we need some technical lemma.
+\begin{lemma}\label{ccdenseinDprlemma}
+Assume that $\phi,\psi\in C_c^\infty(\bbR^n)$ and $\int_{\bbR^n}\psi(x)\,dx=1$. Let $\psi_t(x)=t^{-n}\psi(t^{-1}x)$ for $t>0$.
+\begin{itemize}
+	\item[(i)] Given any neighborhood $U$ of $\supp(\phi)$, we have $\supp(\phi*\psi_t)\subset U$ for $t>0$ sufficiently small.
+	\item[(ii)] $\phi*\psi_t\to 0$ in $\cal{D}(\bbR^n)$ as $t\to 0$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+If $\supp(\psi)\subset\{x\in\bbR^n:\vert x\vert<R\}$, then $\supp(\phi*\psi_t)$ is contained in the set
+\begin{align*}
+	V=\left\{x\in\bbR^n:d(x,\supp(\phi))<tR\right\}.
+\end{align*}
+When $t<R^{-1}d(\supp(\phi),U^c)$, the support of $\phi*\psi_t$ is contained in $U$. Moreover, by Propositions \ref{prop:1.3} and \ref{generalmollif}, $\partial^\alpha(\phi*\psi_t)=(\partial^\alpha\phi)*\psi_t\to\partial^\alpha t$ uniformly as $t\to 0$, and the second result follows.
+\end{proof}
+\begin{proof}[Proof of Theorem \ref{ccdenseinDpr}]
+Assume $F\in\cal{D}^\prime(U)$. We first approximate $F$ by distributions supported on compact subsets of $U$, then approximate the latter by functions in $C_c^\infty(U)$.
+
+\item$\bullet$ Let $(V_j)$ be a sequence of precompact open subsets of $U$ increasing to $U$. For each $j$, by $C^\infty$-Urysohn lemma [Proposition \ref{cinfurysohn}], we take $\zeta_j\in C_c^\infty(U)$ such that $\zeta_j=1$ on $\ol{V}_j$. Given $\phi\in C_c^\infty(U)$, for $j$ sufficiently large we have $\supp(\phi)\subset V_j$, and $\langle F,\phi\rangle=\langle F,\zeta_j\phi\rangle=\langle\zeta_j F,\phi\rangle$. Hence $\zeta_j F\to F$ in the weak* topology as $j\to\infty$.
+
+\item$\bullet$ Let $\psi$ and $(\psi_t)$ be defined as in Lemma \ref{ccdenseinDprlemma}. Then $\phi*\wt\psi_t\to\phi$ in $\cal{D}(\bbR^n)$ as $t\to 0$. On the other hand, by Proposition \ref{convolutionD}, we have $(\zeta_j F)*\psi_t\in C^\infty(\bbR^n)$ and $\langle(\zeta_j F)*\psi_t,\phi\rangle=\langle\zeta_j F,\phi*\wt\psi_t\rangle\to\langle\zeta_j F,\phi\rangle$ as $t\to 0$. Hence $(\zeta_j F)*\psi_t\to\zeta_j F$ in $\cal{D}^\prime(\bbR^n)$. Observing that $\supp(\zeta_j)\subset V_k$ for some $k$, if $\supp(\phi)\cap\ol{V}_k=\emptyset$, we have $\supp(\phi*\wt\psi_t)\cap\ol{V}_k=\emptyset$ for $t>0$ sufficiently small, by Lemma \ref{ccdenseinDprlemma}, and $\langle(\zeta_j F)*\psi_t,\phi\rangle=\langle F,\zeta_j(\phi*\wt\psi_t)\rangle=0$. Hence $\supp((\zeta_j F)*\psi_t)\subset\ol{V}_k\subset U$, and $(\zeta_j F)*\psi_t\in C_c^\infty(U)$ for $j$ large enough and $t$ small enough.
+\end{proof}
+
+\paragraph{Derivatives of distributions.} Let $U$ be an open subset of $\bbR^n$. If $f\in C_c^\infty(U)$, for any multi-index $\alpha\in\bbN_0^n$,
+\begin{align*}
+	\int_U(\partial^\alpha f)(x)\phi(x)\,dx=(-1)^{\vert\alpha\vert}\int_U f(x)(\partial^\alpha\phi)(x)\,dx,\quad \phi\in C_c^\infty(U).
+\end{align*}
+This is the integration by parts formula, where the boundary term vanishes since $f$ is compactly supported. Generally, for $F\in\cal{D}^\prime(U)$, we can define a linear functional $\partial^\alpha F$ on $C_c^\infty(U)$ by
+\begin{align*}
+	\langle\partial^\alpha F,\phi\rangle=(-1)^{\vert\alpha\vert}\langle F,\partial^\alpha\phi\rangle,\quad\phi\in C_c^\infty(U).
+\end{align*}
+For any compact $K\subset U$ and any sequence $(\phi_j)\subset C_c^\infty(K)$ that converges to $\phi$ in $\cal{D}(K)$, by continuity of $F$, we have $\langle F,\partial^\alpha\phi_j\rangle\to\langle F,\partial^\alpha\phi\rangle$ as $j\to\infty$. Hence $\partial^\alpha F|_{\cal{D}(K)}$ is continuous, and $\partial^\alpha F\in\cal{D}^\prime(U)$.
+
+The distribution $\partial^\alpha F$ is called the \textit{$\alpha^\text{th}$ derivative of $F$}. Moreover, if $F_j\to F$ in $\cal{D}^\prime(U)$, we have $\langle\partial^\alpha F_j,\phi\rangle=\langle F_j,\partial^\alpha\phi\rangle\to\langle F,\partial^\alpha\phi\rangle=\langle \partial^\alpha F,\phi\rangle$ for each $\phi\in C_c^\infty(U)$, and $\partial^\alpha F_j\to\partial^\alpha F$ in $\cal{D}^\prime(U)$. Therefore, the differentiation operator $\partial^\alpha:\cal{D}^\prime(U)\to\cal{D}^\prime(U)$ is a continuous linear map with respect to the weak* topology. 
+
+In particular, for any locally integrable function $\psi\in L^1_\loc(U)$, we can define its derivatives of arbitrary order even if it is not differentiable in the classical sense. To be specific, we define $\langle T_\psi,\phi\rangle=\int_U\psi(x)\phi(x)\,dx$. The derivative $\partial^\alpha T_\psi$ of the distribution $T_\psi$ is called the \textit{$\alpha^\text{th}$ distributional derivative of $\psi$}, denoted by $\partial^\alpha\psi$. Following are some examples of distributional derivatives.
+
+\paragraph{Jump discontinuity.} For simplicity, we first consider the functions on $\bbR$. Differentiating functions with jump discontinuities leads to $\delta$-singularities. The simplest example is the \textit{Heaviside step function} $H=\chi_{[0,\infty)}$, for which we have
+\begin{align*}
+	\langle H^\prime,\phi\rangle=-\langle H,\phi^\prime\rangle=-\int_0^\infty\phi^\prime(x)\,dx=\phi(0)=\langle\delta,\phi\rangle,\quad\phi\in C_c^\infty(\bbR).
+\end{align*}
+Hence the first distributional derivative of $H$ is the Dirac function $\delta$. More generally, for any $x\in\bbR$, the distributional derivative of the step function $\tau_x H=\chi_{[x,\infty)}$ is $\tau_x\delta$, which is the point mass at $x$.
+
+If $f$ is piecewise continuously differentiable on $\bbR$, $f$ only has jump discontinuities at $x_1<x_2<\cdots<x_m$, and its pointwise derivative $\frac{df}{dx}$ is in $L^1_\loc(\bbR)$. Then
+\begin{align*}
+	\langle f^\prime,\phi\rangle&=-\langle f,\phi^\prime\rangle=-\sum_{j=0}^m\int_{x_j}^{x_{j+1}}f(x)\phi^\prime(x)\,dx\\
+	&=-\sum_{j=0}^m\left[f(x_{j+1}^-)\phi(x_{j+1})-f(x_j^+)\phi(x_j)-\int_{x_j}^{x_{j+1}}\frac{df}{dx}(y)\phi(y)\,dy\right]\\
+	&=\int_{-\infty}^\infty\frac{df}{dx}(y)\phi(y)\,dy+\sum_{j=1}^m\phi(x_j)\left[f(x_j^+)-f(x_j^-)\right]
+\end{align*}
+Therefore, the distributional derivative of $f$ is given by $$f^\prime=\frac{df}{dx}+\sum_{j=1}^m\left[f(x_j^+)-f(x_j^-)\right]\tau_{x_j}\delta.$$
+
+\paragraph{Generalized Heaviside step function.}
+
+\newpage
+\subsection{Compactly Supported Distributions}
+\paragraph{The $C^\infty$ topology.} Let $U\subset\bbR^n$ be an open set. The $C^\infty$ topology on the space $C^\infty(U)$ of all smooth functions on $U$ is the topology of uniform convergence of functions, together with all their derivatives, on compact subsets of $U$. This topology can be defined by a countable family of seminorms as follows. Let $(V_m)$ be an increasing sequence of precompact open subsets of $U$ whose union is $U$. For each $m\in\bbN$ and each multi-index $\alpha\in\bbN_0^n$, define the seminorm
+\begin{align}
+	\Vert f\Vert_{[m,\alpha]}=\sup_{x\in\ol{V}_m}\vert\partial^\alpha f(x)\vert.\label{cinftyfrechet}
+\end{align}
+With the topology induced by the family of these seminorms, the space $C^\infty(U)$ is a Fréchet space. Furthermore, a sequence $(f_j)$ converges to $f$ in $C^\infty(U)$ if and only if $\Vert f_j-f\Vert_{[m,\alpha]}\to 0$ for all $m\in\bbN,\alpha\in\bbN_0^n$, if and only if $\partial^\alpha f_j\to\partial^\alpha f$ uniformly on compact sets for all $\alpha\in\bbN_0^n$.
+\begin{proposition}\label{ccinftydenseincinfty}
+Let $U\subset\bbR^n$ be an open set. The space $C_c^\infty(U)$ is dense in $C^\infty(U)$.
+\end{proposition}
+\begin{proof}
+We take the sequence $(V_m)$ as in (\ref{cinftyfrechet}). By $C^\infty$-Urysohn lemma [Theorem \ref{cinfurysohn}], for each $m$, we take $\psi_m\in C_c^\infty(U)$ with $\psi_m=1$ on $\ol{V}_m$. If $\phi\in C^\infty(U)$, for all multi-indices $\alpha\in\bbN_0^^n$, we have $\Vert\psi_m\phi-\phi\Vert_{[m_0,\alpha]}=0$ for all indices $m\geq m_0$. Hence $\psi_m\phi\in C_c^\infty(U)$ converges to $\phi$ in the $C^\infty$ topology.
+\end{proof}
+
+If $U$ is an open subset of $\bbR^n$, we denote by $\cal{E}^\prime(U)$ the space of all distributions on $U$ whose support is a compact subset of $U$.
+
+\begin{theorem}
+Let $U\subset\bbR^n$ be an open set.
+\begin{itemize}
+	\item[(i)] If $F\in\cal{E}^\prime(U)$, then $F$ extends uniquely to a continuous linear functional on $C^\infty(U)$
+	\item[(ii)] If $G$ is a continuous linear functional on $C^\infty(U)$, then $G|_{C_c^\infty(U)}\in\cal{E}^\prime(U)$.
+\end{itemize} 
+To summarize, $\cal{E}^\prime(U)$ equals the dual space of $C^\infty(U)$.
+\end{theorem}
+\begin{proof}
+If $F\in\cal{E}^\prime(U)$, take $\psi\in C_c^\infty(U)$ such that $\psi=1$ on $\supp(F)$, and define the linear functional $G$ on $C^\infty(U)$ by $G\phi=\langle F,\psi\phi\rangle$. Since $F$ is continuous on $\cal{D}(\supp(\psi))$, and the topology of the latter is defined by the norms $\phi\mapsto\Vert\partial^\alpha\phi\Vert_\infty$, there exists $C>0$ and $N\in\bbN$ such that $\vert\langle G,\phi\rangle\vert=\vert\langle F,\psi\phi\rangle\vert\leq C\sum_{\vert\alpha\vert\leq N}\Vert\partial^\alpha(\psi\phi)\Vert_\infty$ for all $\phi\in C^\infty(U)$. By the product rule, if we choose $m$ large enough so that $\ol{V}_m\supset\supp(\psi)$,
+\begin{align*}
+	\vert\langle G,\phi\rangle\vert\leq C^\prime\sum_{\vert\alpha\vert\leq N}\sup_{x\in\supp(\psi)}\vert\partial^\alpha\phi(x)\vert\leq\ C^\prime\sum_{\vert\alpha\vert\leq N}\Vert\phi\Vert_{[m,\alpha]}.
+\end{align*}
+Hence $G$ is continuous on $C^\infty(U)$. By Proposition \ref{ccinftydenseincinfty}, the continuous extension $G$ of $F$ is unique.
+
+On the other hand, if $G$ is a continuous linear functional on $C^\infty(U)$, there exists constants $C,m$ and $N$ such that $\vert\langle G,\phi\rangle\vert\leq C\sum_{\vert\alpha\vert\leq N}\Vert\phi\Vert_{[m,\alpha]}$ for all $\phi\in C^\infty(U)$. Since $\Vert\phi\Vert_{[m,\alpha]}\leq\Vert\partial^\alpha\phi\Vert_\infty$, the functional $G$ is continuous on $\cal{D}(K)$ for each compact $K\subset U$, and $G|_{C_c^\infty(U)}\in\cal{D}^\prime(U)$. Moreover, if $\supp(\phi)\cap\ol{V}_m=\emptyset$, we have $\langle G,\phi\rangle=0$, and $\supp(G)\subset\ol{V}_m$. Hence $G|_{C_c^\infty(U)}\in\cal{E}^\prime(U)$.
+\end{proof}
+\paragraph{Remark.} In fact, one can easily check that the operations of multiplication by $C^\infty$ functions, translation, composition by invertible linear maps and differentiation, as is discussed in the last section, all preserves the class of $\cal{E}^\prime(U)$. The case of convolution is a bit more complicated.
+
+
+\newpage
+\subsection{Tempered Distributions and Fourier Transform}
+\begin{definition}[Tempered distributions]
+A \textit{tempered distribution (on $\bbR^n)$} is a continuous linear functional on the Schwartz space $\cal{S}(\bbR^n)$. The space of tempered distribution is denoted by $\cal{S}^\prime(\bbR^n)$. Usually, we equip $\cal{S}^\prime(\bbR^n)$ with the weak* topology.
+\end{definition}
+
+The following proposition helps to understand the relation of distributions and tempered distributions.
+\begin{proposition}\label{ccinftydenseinS}
+The space $C_c^\infty({\bbR^n})$ is dense in $\cal{S}({\bbR^n})$.
+\end{proposition}
+\begin{proof}
+We fix $\phi\in\cal{S}(\bbR^n)$, which is to be approximated. We take $\psi\in C_c^\infty(\bbR^n,[0,1])$ such that $\psi(0)=1$, and let $\psi^t(x)=\psi(tx)$ for $t>0$. Given any $N\in\bbN$ and $\epsilon>0$, we can choose a compact $K\subset\bbR^n$ such that $(1+\vert x\vert)^N\vert\phi(x)\vert<\epsilon$ for all $x\notin K$. Then $\psi^t(x)\to 1$ uniformly on $K$ as $t\to 0$, and $$\lim_{t\to 0}\Vert\psi^t\phi-\phi\Vert_{(N,0)}\leq\sup_{x\notin K}(1+\vert x\vert)^N\vert \psi^t(x)\phi(x)-\phi(x)\vert<\epsilon.$$ 
+By arbitrariness of $N$ and $\epsilon$, we have $\Vert\psi^t\phi-\phi\Vert_{(N,0)}\to 0$ as $t\to 0$ for all $N\in\bbN_0$. For the terms involving derivatives, by the product rule,
+\begin{align*}
+	(1+\vert x\vert)^N\partial^\alpha(\psi^t\phi-\phi)=(1+\vert x\vert)^N(\psi^t\partial^\alpha\phi-\partial^\alpha\phi)+R_t(x),
+\end{align*}
+where the remainder $R_t$ is a sum of terms involving derivatives of $\psi^t$. Since
+\begin{align*}
+	\left\vert\partial^\beta\psi^t(x)\right\vert= t^{\vert\beta\vert}\left\vert\partial^\beta\psi(tx)\right\vert\leq C_\beta t^{\vert\beta\vert},
+\end{align*}
+we have $\Vert R_t\Vert_\infty\leq Ct\to 0$ as $t\to 0^+$. An analogue of the preceding argument shows that $\Vert\psi^t\phi-\phi\Vert_{(N,\alpha)}\to 0$ as $t\to 0$. Hence $\psi^t\phi\in C_c^\infty(\bbR^n)$ converges to $\phi$ in $\cal{S}(\bbR^n)$, which completes the proof.
+\end{proof}
+\begin{remark}
+Since the convergence in $\cal{D}(\bbR^n)$ implies the convergence in $\cal{S}(\bbR^n)$, if $F\in\cal{S}^\prime(\bbR^n)$ is a tempered distribution, the restriction of $F$ to $C_c^\infty(\bbR^n)$ is also continuous. Hence $F|_{C_c^\infty(\bbR^n)}$ is a distribution. Furthermore, by Proposition \ref{ccinftydenseinS}, the restriction $F|_{C_c^\infty(\bbR^n)}$ determines $F\in\cal{S}^\prime(\bbR^n)$ uniquely. Thus we may identify $\cal{S}^\prime(\bbR^n)$ with the sets of all distributions on $\bbR^n$ that extends continuously from $C_c^\infty(\bbR^n)$ to $\cal{S}(\bbR^n)$.
+\end{remark}
+\begin{example}
+Following are some examples of tempered distributions on $\bbR^n$.
+\begin{itemize}
+	\item Every compactly supported distribution is tempered.
+	\item If $f\in L_\loc^1(\bbR^n)$ and $\int_{\bbR^n}(1+\vert x\vert)^{-N}\vert f(x)\vert\,dx<\infty$ for some $N\in\bbN_0$, then $f$ is tempered, since
+	\begin{align*}
+		\left\vert\int_{\bbR^n}f(x)\phi(x)\,dx\right\vert\leq\left\Vert(1+\vert x\vert)^{-N}f\right\Vert_{L^1}\left\Vert(1+\vert x\vert)^N\phi\right\Vert_\infty\leq C\Vert\phi\Vert_{(N,0)},\quad\phi\in\cal{S}(\bbR^n).
+	\end{align*}
+\item Given $\omega\in\bbR^n$, the plane wave function $f(x)=e^{i\omega\cdot x}$ on $\bbR^n$ is a tempered distribution on $\bbR^n$. This distribution is related to the Fourier transform: if $\phi\in\cal{S}(\bbR^n)$, we have $\langle f,\phi\rangle=\wh{\phi}(-\omega)$. 
+\item In fact, the exponential function $f(x)=e^{\beta\cdot x}$ on $\bbR^n$ is tempered if and only if $\beta$ is purely imaginary. We assume $\beta=\gamma+i\omega$ with $\delta,\omega\in\bbR^n$. If $\gamma\neq 0$, we take $\psi\in C_c^\infty(\bbR^n)$ with $\int_{\bbR^n}\psi(x)\,dx=1$ and let $\phi_m(x)=e^{-\beta\cdot x}\psi(x-m\gamma)$. Then $\phi_m\to 0$ in $\cal{S}(\bbR^n)$ as $m\to\infty$, but $\int_{\bbR^n}f\phi_m\,dx=\int_{\bbR^n}\psi\,dx=1$.
+\item If $F\in\cal{S}^\prime(\bbR^n)$, the derivative $\partial^\alpha F$ is also a tempered distribution. Indeed, $\phi_j\to\phi$ in $\cal{S}(\bbR^n)$ implies
+\begin{align*}
+	\langle\partial^\alpha F,\phi_j\rangle=\langle F,\partial^\alpha\phi_j\rangle\to\langle F,\partial^\alpha\phi\rangle=\langle \partial^\alpha F,\phi\rangle.
+\end{align*}
+\item A function $\psi\in C^\infty(\bbR^n)$ is called \textit{slowly increasing}, if $\psi$ and all its derivatives have at most polynomial growth at infinity, i.e. for every multi-index $\alpha$ there exists $N_\alpha\in\bbN_0$ such that $\vert\partial^\alpha\psi(x)\vert\leq C_\alpha(1+\vert x\vert)^{N_\alpha}$. If $F\in\cal{S}^\prime(\bbR^n)$, the product $\psi F$ with a slowly increasing $C^\infty$ function is also a tempered distribution.
+\item Let $F\in\cal{S}^\prime(\bbR^n)$. If $y\in\bbR^n$, the translated distribution $\tau_y F$ is also tempered; If $T$ is an invertible linear mapping on $\bbR^n$, the composition $F\circ T$ with an invertible linear map is also tempered.
+\end{itemize}
+\end{example}
+
+\newpage
+\begin{proposition}
+If $F\in\cal{S}^\prime(\bbR^n)$ and $\psi\in\cal{S}(\bbR^n)$, the function $(F*\psi)(x)=\langle F,\tau_x\wt\psi\rangle$ is a slowly increasing $C^\infty$ function, and we have
+\begin{align*}
+	\langle F,\phi*\wt\psi\rangle = \int_{\bbR^n}(F*\psi)(x)\phi(x)\,dx,\quad\phi\in\cal{S}(\bbR^n)..
+\end{align*}
+\end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\end{document} 
