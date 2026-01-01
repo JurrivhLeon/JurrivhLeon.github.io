@@ -35,3 +35,5 @@ I am an undergraduate student studying at School of Data Science, Fudan Universi
 
 [Information Theory](https://jurrivhleon.github.io/notes/it_ece.pdf)
 
+[Random Matrix Theory](https://jurrivhleon.github.io/notes/rmt.pdf)
+
